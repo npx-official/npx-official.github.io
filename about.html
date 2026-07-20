@@ -7,6 +7,60 @@
     <link rel="icon" href="assets/images/favicon.ico" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="css/style.css" />
+    <style>
+        .about-page {
+            text-align: center;
+        }
+        .about-page .about-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+        .about-page .about-card {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+        .about-page .tech-grid {
+            justify-content: center;
+        }
+        .about-page .achievements-list {
+            text-align: left;
+            display: inline-block;
+        }
+        .about-page .projects-list {
+            align-items: center;
+        }
+        .about-page .project-item {
+            text-align: left;
+            max-width: 500px;
+            width: 100%;
+        }
+        .about-page .github-stats .stats-grid {
+            justify-content: center;
+        }
+        .about-page .github-stats .stats-grid img {
+            max-width: 400px;
+            width: 100%;
+        }
+        .ascii-art {
+            text-align: center;
+            opacity: 0.3;
+            font-size: 0.5rem;
+            line-height: 1.2;
+            color: #6fffe0;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        .ascii-art pre {
+            display: inline-block;
+            text-align: left;
+            background: transparent;
+            border: none;
+            padding: 0;
+        }
+    </style>
 </head>
 <body>
 
@@ -18,7 +72,7 @@
 
         <nav class="navbar">
             <div class="logo">
-                <img src="assets/images/npx-logo.svg" alt="Ninja Logo" />
+                <img src="assets/images/npx-logo.svg" alt="NPX Logo" />
                 <span>NIGHT PULSE X</span>
             </div>
             <ul class="nav-links" id="navLinks">
@@ -34,7 +88,7 @@
         </nav>
 
         <section class="about-page">
-            <h1 class="page-title"><i class="fas fa-user-astronaut"></i> About Me</h1>
+            <h1 class="page-title" style="text-align:center;justify-content:center;"><i class="fas fa-user-astronaut"></i> About Me</h1>
             
             <!-- ASCII Art -->
             <div class="ascii-art">
@@ -147,3 +201,4 @@
     <script src="js/main.js"></script>
 </body>
 </html>
+
