@@ -756,3 +756,31 @@ footer {
     background: rgba(0, 255, 200, 0.3);
     color: white;
 }
+
+/* ====== HERO AVATAR ====== */
+.hero-avatar {
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
+    animation: float 3s ease-in-out infinite;
+}
+
+.hero-avatar img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 3px solid var(--accent-cyan);
+    box-shadow: 0 0 40px var(--glow-cyan), 0 0 80px rgba(0, 255, 200, 0.05);
+    object-fit: cover;
+    transition: all 0.3s ease;
+}
+
+.hero-avatar img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 60px var(--glow-cyan), 0 0 120px rgba(0, 255, 200, 0.15);
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
