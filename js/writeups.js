@@ -31,7 +31,9 @@ const writeupsData = [
     { name: 'Ghostlink', category: 'windows/hard', level: 'hard', os: 'windows', path: 'writeups/windows/hard/Ghostlink.html' },
     
     // ====== PROLABS ======
-    { name: 'Mythical', category: 'prolabs', level: 'prolabs', os: 'prolabs', path: 'writeups/prolabs/Mythical.html' },
+    { name: 'Mythical', category: 'prolabs', level: 'Advanced', os: 'mini prolabs', path: 'writeups/prolabs/Mythical.html' },
+// ====== PROLABS ======
+    { name: 'Puppet', category: 'prolabs', level: 'Advanced', os: 'mini prolabs', path: 'writeups/prolabs/Puppet.html' },
 ];
 
 // ====== CATEGORY INFO ======
