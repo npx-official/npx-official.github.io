@@ -21,44 +21,235 @@
             max-width: 800px;
             width: 100%;
             text-align: center;
+            background: rgba(0, 255, 200, 0.03);
+            border: 1px solid rgba(0, 255, 200, 0.1);
+            border-radius: 1.5rem;
+            padding: 2rem 2.5rem;
+            transition: all 0.3s ease;
         }
-        .about-page .tech-grid {
+        .about-page .about-card:hover {
+            border-color: rgba(0, 255, 200, 0.35);
+            background: rgba(0, 255, 200, 0.05);
+            box-shadow: 0 0 40px rgba(0, 255, 200, 0.03);
+        }
+        .about-page .about-card h3 {
+            color: #6fffe0;
+            margin-bottom: 1.2rem;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
             justify-content: center;
+            gap: 12px;
+            letter-spacing: 0.5px;
         }
+        .about-page .about-card h3 .sticker {
+            font-size: 1.6rem;
+        }
+        .about-page .about-card p {
+            color: #b6c8e0;
+            line-height: 1.9;
+            font-size: 1.05rem;
+        }
+        .about-page .about-card p strong {
+            color: #e0e5f0;
+        }
+        .about-page .about-card .highlight {
+            color: #6fffe0;
+            font-weight: 500;
+        }
+        .about-page .about-list {
+            list-style: none;
+            padding: 0;
+            margin: 0.5rem 0 0 0;
+            text-align: center;
+        }
+        .about-page .about-list li {
+            color: #b6c8e0;
+            padding: 0.4rem 0;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .about-page .about-list li .sticker {
+            font-size: 1.2rem;
+            min-width: 28px;
+        }
+        .about-page .about-list li .sticker.cyan { color: #6fffe0; }
+        .about-page .about-list li .sticker.purple { color: #7c3aed; }
+        .about-page .about-list li .sticker.pink { color: #ff6b9d; }
+        .about-page .about-list li .sticker.green { color: #34d399; }
+        .about-page .about-list li .sticker.orange { color: #fbbf24; }
+        .about-page .about-list li .sticker.blue { color: #60a5fa; }
+
+        .about-page .tech-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-top: 0.5rem;
+        }
+        .about-page .tech-tag {
+            padding: 0.4rem 1.4rem;
+            border-radius: 30px;
+            background: rgba(0, 255, 200, 0.05);
+            border: 1px solid rgba(0, 255, 200, 0.1);
+            color: #b6c8e0;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .about-page .tech-tag i {
+            font-size: 0.9rem;
+        }
+        .about-page .tech-tag:hover {
+            background: rgba(0, 255, 200, 0.15);
+            border-color: #6fffe0;
+            color: #ffffff;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 255, 200, 0.08);
+        }
+        .about-page .tech-tag.cyan { border-color: rgba(0, 255, 200, 0.2); }
+        .about-page .tech-tag.cyan i { color: #6fffe0; }
+        .about-page .tech-tag.purple { border-color: rgba(124, 58, 237, 0.2); }
+        .about-page .tech-tag.purple i { color: #7c3aed; }
+        .about-page .tech-tag.pink { border-color: rgba(255, 107, 157, 0.2); }
+        .about-page .tech-tag.pink i { color: #ff6b9d; }
+        .about-page .tech-tag.orange { border-color: rgba(251, 191, 36, 0.2); }
+        .about-page .tech-tag.orange i { color: #fbbf24; }
+        .about-page .tech-tag.blue { border-color: rgba(96, 165, 250, 0.2); }
+        .about-page .tech-tag.blue i { color: #60a5fa; }
+        .about-page .tech-tag.green { border-color: rgba(52, 211, 153, 0.2); }
+        .about-page .tech-tag.green i { color: #34d399; }
+
         .about-page .achievements-list {
+            list-style: none;
+            color: #b6c8e0;
             text-align: left;
             display: inline-block;
+            padding: 0;
+            margin: 0 auto;
         }
-        .about-page .projects-list {
+        .about-page .achievements-list li {
+            padding: 0.6rem 0;
+            border-bottom: 1px solid rgba(0, 255, 200, 0.05);
+            line-height: 1.6;
+            display: flex;
             align-items: center;
+            gap: 12px;
         }
-        .about-page .project-item {
-            text-align: left;
-            max-width: 500px;
+        .about-page .achievements-list li:last-child {
+            border-bottom: none;
+        }
+        .about-page .achievements-list li .sticker {
+            font-size: 1.2rem;
+            min-width: 28px;
+        }
+
+        .about-page .projects-list {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
             width: 100%;
         }
-        .about-page .github-stats .stats-grid {
+        .about-page .project-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            background: rgba(0, 255, 200, 0.02);
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+            max-width: 500px;
+            width: 100%;
+            text-align: left;
+            border: 1px solid transparent;
+        }
+        .about-page .project-item:hover {
+            background: rgba(0, 255, 200, 0.05);
+            border-color: rgba(0, 255, 200, 0.15);
+        }
+        .about-page .project-item i {
+            font-size: 1.8rem;
+            color: #6fffe0;
+            margin-top: 0.2rem;
+        }
+        .about-page .project-item h4 {
+            color: #e0e5f0;
+            margin-bottom: 0.2rem;
+        }
+        .about-page .project-item p {
+            font-size: 0.9rem;
+            color: #b6c8e0;
+            margin-bottom: 0.3rem;
+        }
+        .about-page .project-item a {
+            color: #6fffe0;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .about-page .project-item a:hover {
+            color: #ffffff;
+        }
+        .about-page .github-stats {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(0, 255, 200, 0.02);
+            border-radius: 1.5rem;
+            border: 1px solid rgba(0, 255, 200, 0.08);
+        }
+        .about-page .github-stats h3 {
+            color: #6fffe0;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
             justify-content: center;
+            gap: 10px;
+        }
+        .about-page .github-stats .stats-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
         }
         .about-page .github-stats .stats-grid img {
             max-width: 400px;
             width: 100%;
+            border-radius: 1rem;
+            border: 1px solid rgba(0, 255, 200, 0.08);
         }
         .ascii-art {
             text-align: center;
-            opacity: 0.3;
+            opacity: 0.2;
             font-size: 0.5rem;
             line-height: 1.2;
             color: #6fffe0;
             overflow-x: auto;
             margin: 1.5rem 0;
         }
-        .ascii-art pre {
-            display: inline-block;
-            text-align: left;
-            background: transparent;
-            border: none;
-            padding: 0;
+        .page-title {
+            text-align: center;
+            justify-content: center;
+        }
+        @media (max-width: 600px) {
+            .about-page .about-card {
+                padding: 1.5rem;
+            }
+            .about-page .project-item {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .about-page .about-list li {
+                font-size: 0.95rem;
+                flex-wrap: wrap;
+            }
         }
     </style>
 </head>
@@ -88,9 +279,8 @@
         </nav>
 
         <section class="about-page">
-            <h1 class="page-title" style="text-align:center;justify-content:center;"><i class="fas fa-user-astronaut"></i> About Me</h1>
+            <h1 class="page-title"><i class="fas fa-user-astronaut"></i> About Me</h1>
             
-            <!-- ASCII Art -->
             <div class="ascii-art">
                 <pre>
      NNNNNNNN        NNNNNNNN  PPPPPPPPPPPPPPPPP      XXXXXXX       XXXXXXX     
@@ -113,51 +303,62 @@
             </div>
 
             <div class="about-content">
-                <div class="about-card">
-                    <h3><i class="fas fa-rocket"></i> Who Am I?</h3>
-                    <p>🔐 <strong>Offensive Security Enthusiast</strong> | CTF Player | Bug Bounty Hunter</p>
-                    <p>🎯 Currently: <strong>OSCP Preparation</strong> & HTB Machines</p>
-                    <p><strong>Learning:</strong></p>
-                 <ul style="list-style: none; padding: 0; text-align: center;">
-                  <li>🔹 Web Application Security</li>
-                  <li>🔹 Active Directory Pentesting</li>
-                  <li>🔹 Cloud Security</li>
-                 </ul>
-                </div>
 
+                <!-- Who Am I? -->
                 <div class="about-card">
-                    <h3><i class="fas fa-code"></i> Tech Stack</h3>
-                    <div class="tech-grid">
-                        <span class="tech-tag">Python</span>
-                        <span class="tech-tag">Bash</span>
-                        <span class="tech-tag">JavaScript</span>
-                        <span class="tech-tag">Go</span>
-                        <span class="tech-tag">Linux</span>
-                        <span class="tech-tag">Windows</span>
-                        <span class="tech-tag">Metasploit</span>
-                        <span class="tech-tag">Burp Suite</span>
-                        <span class="tech-tag">Docker</span>
-                        <span class="tech-tag">Git</span>
-                    </div>
-                </div>
-
-                <div class="about-card">
-                    <h3><i class="fas fa-trophy"></i> Achievements</h3>
-                    <ul class="achievements-list">
-                        <li>📝 <strong>Paperwork</strong> - Complete machine walkthrough</li>
-                        <li>🛠️ <strong>Custom Exploit Scripts</strong> - Collection of exploit scripts</li>
-                        <li>🔍 <strong>Bug Bounty Automation</strong> - Automation tools for bug hunting</li>
-                        <li>📚 <strong>Cybersecurity Content</strong> - Technical articles</li>
+                    <h3><span class="sticker">🦊</span> Who Am I?</h3>
+                    <ul class="about-list">
+                        <li><span class="sticker cyan">🔐</span> <strong>Offensive Security Enthusiast</strong> | CTF Player | Bug Bounty Hunter</li>
+                        <li><span class="sticker purple">🎯</span> Currently: <strong>OSCP Preparation</strong> &amp; HTB Machines</li>
                     </ul>
                 </div>
 
+                <!-- Learning -->
                 <div class="about-card">
-                    <h3><i class="fas fa-project-diagram"></i> Featured Projects</h3>
+                    <h3><span class="sticker">📚</span> Learning</h3>
+                    <ul class="about-list">
+                        <li><span class="sticker blue">🌐</span> Web Application Security</li>
+                        <li><span class="sticker purple">🏰</span> Active Directory Pentesting</li>
+                        <li><span class="sticker cyan">☁️</span> Cloud Security</li>
+                    </ul>
+                </div>
+
+                <!-- Tech Stack -->
+                <div class="about-card">
+                    <h3><span class="sticker">⚡</span> Tech Stack</h3>
+                    <div class="tech-grid">
+                        <span class="tech-tag cyan"><i class="fab fa-python"></i> Python</span>
+                        <span class="tech-tag green"><i class="fas fa-terminal"></i> Bash</span>
+                        <span class="tech-tag orange"><i class="fab fa-js"></i> JavaScript</span>
+                        <span class="tech-tag blue"><i class="fab fa-golang"></i> Go</span>
+                        <span class="tech-tag cyan"><i class="fab fa-linux"></i> Linux</span>
+                        <span class="tech-tag purple"><i class="fab fa-windows"></i> Windows</span>
+                        <span class="tech-tag pink"><i class="fas fa-shield-halved"></i> Metasploit</span>
+                        <span class="tech-tag orange"><i class="fas fa-bug"></i> Burp Suite</span>
+                        <span class="tech-tag blue"><i class="fab fa-docker"></i> Docker</span>
+                        <span class="tech-tag pink"><i class="fab fa-git-alt"></i> Git</span>
+                    </div>
+                </div>
+
+                <!-- Achievements -->
+                <div class="about-card">
+                    <h3><span class="sticker">🏆</span> Achievements</h3>
+                    <ul class="achievements-list">
+                        <li><span class="sticker green">📝</span> <strong>Paperwork</strong> — Complete machine walkthrough</li>
+                        <li><span class="sticker cyan">🛠️</span> <strong>Custom Exploit Scripts</strong> — Collection of exploit scripts</li>
+                        <li><span class="sticker purple">🔍</span> <strong>Bug Bounty Automation</strong> — Automation tools for bug hunting</li>
+                        <li><span class="sticker orange">📚</span> <strong>Cybersecurity Content</strong> — Technical articles</li>
+                    </ul>
+                </div>
+
+                <!-- Projects -->
+                <div class="about-card">
+                    <h3><span class="sticker">🚀</span> Featured Projects</h3>
                     <div class="projects-list">
                         <div class="project-item">
                             <i class="fas fa-robot"></i>
                             <div>
-                                <h4>HTB Writeups - Machines</h4>
+                                <h4>HTB Writeups — Machines</h4>
                                 <p>Complete exploitation guides with all steps</p>
                                 <a href="https://github.com/npx-official/HTB-WRITEUPS-MACHINES" target="_blank">GitHub →</a>
                             </div>
@@ -172,6 +373,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
 
             <!-- GitHub Stats -->
