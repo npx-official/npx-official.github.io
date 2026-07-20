@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Writeups • NIGHT PULSE X</title>
+    <link rel="icon" href="assets/images/favicon.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+    <div id="preloader"><div class="loader-ring"></div><p>Loading...</p></div>
+    <div class="mouse-glow" id="mouseGlow"></div>
+    <canvas id="particlesCanvas"></canvas>
+
+    <div class="container">
+
+        <nav class="navbar">
+            <div class="logo">
+                <img src="assets/images/ninja-logo.svg" alt="Ninja Logo" />
+                <span>NIGHT PULSE X</span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html"><i class="fas fa-house"></i> Home</a></li>
+                <li><a href="about.html"><i class="fas fa-user-astronaut"></i> About</a></li>
+                <li><a href="writeups.html" class="active"><i class="fas fa-pen-fancy"></i> Writeups</a></li>
+                <li><a href="certifications.html"><i class="fas fa-certificate"></i> Certifications</a></li>
+                <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+        </nav>
+
+        <section class="writeups-page">
+            <h1 class="page-title"><i class="fas fa-pen-fancy"></i> All Writeups</h1>
+            
+            <!-- Filters -->
+            <div class="filter-bar">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="linux">🐧 Linux</button>
+                <button class="filter-btn" data-filter="windows">🪟 Windows</button>
+                <button class="filter-btn" data-filter="prolabs">🏆 ProLabs</button>
+                <button class="filter-btn" data-filter="easy">🟢 Easy</button>
+                <button class="filter-btn" data-filter="medium">🟡 Medium</button>
+                <button class="filter-btn" data-filter="hard">🔴 Hard</button>
+            </div>
+
+            <!-- Stats -->
+            <div class="writeups-stats" id="writeupsStats"></div>
+
+            <!-- Grid -->
+            <div class="writeups-grid" id="allWriteups"></div>
+        </section>
+
+        <footer>
+            <div class="footer-content">
+                <p><i class="fas fa-circle" style="color: #6fffe0; font-size: 0.5rem;"></i> 2026 · NIGHT PULSE X</p>
+                <div class="social-links">
+                    <a href="https://github.com/npx-official" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="https://app.hackthebox.com/users/2207141" target="_blank"><i class="fas fa-shield-halved"></i></a>
+                    <a href="https://tryhackme.com/p/npx.off" target="_blank"><i class="fas fa-user-secret"></i></a>
+                    <a href="https://www.linkedin.com/in/night-pulse-x-337a89275" target="_blank"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <script src="js/particles.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/writeups.js"></script>
+    <script>
+        loadAllWriteups();
+    </script>
+</body>
+</html>

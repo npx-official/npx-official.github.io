@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About • TESTING.NINJA</title>
+    <link rel="icon" href="assets/images/favicon.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+    <div id="preloader"><div class="loader-ring"></div><p>Loading...</p></div>
+    <div class="mouse-glow" id="mouseGlow"></div>
+    <canvas id="particlesCanvas"></canvas>
+
+    <div class="container">
+
+        <nav class="navbar">
+            <div class="logo">
+                <img src="assets/images/ninja-logo.svg" alt="Ninja Logo" />
+                <span>TESTING.NINJA</span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html"><i class="fas fa-house"></i> Home</a></li>
+                <li><a href="about.html" class="active"><i class="fas fa-user-astronaut"></i> About</a></li>
+                <li><a href="writeups.html"><i class="fas fa-pen-fancy"></i> Writeups</a></li>
+                <li><a href="certifications.html"><i class="fas fa-certificate"></i> Certifications</a></li>
+                <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+        </nav>
+
+        <section class="about-page">
+            <h1 class="page-title"><i class="fas fa-user-astronaut"></i> About Me</h1>
+            
+            <!-- ASCII Art -->
+            <div class="ascii-art">
+                <pre>
+     NNNNNNNN        NNNNNNNN  PPPPPPPPPPPPPPPPP      XXXXXXX       XXXXXXX     
+     N:::::::N       N::::::N  P::::::::::::::::P     X:::::X       X:::::X     
+     N::::::::N      N::::::N  P::::::PPPPPP:::::P    X:::::X       X:::::X     
+     N:::::::::N     N::::::N  PP:::::P     P:::::P   X::::::X     X::::::X     
+     N::::::::::N    N::::::N   P::::P     P:::::PX   XX:::::X   X:::::XXX     
+     N:::::::::::N   N::::::N   P::::P     P:::::P      X:::::X X:::::X        
+     N:::::::N::::N  N::::::N   P::::PPPPPP:::::P        X:::::X:::::X         
+     N::::::N N::::N N::::::N   P:::::::::::::PP          X:::::::::X          
+     N::::::N  N::::N:::::::N   P::::PPPPPPPPP            X:::::::::X          
+     N::::::N   N:::::::::::N   P::::P                   X:::::X:::::X         
+     N::::::N    N::::::::::N   P::::P                  X:::::X X:::::X        
+     N::::::N     N:::::::::N   P::::P               XXX:::::X   X:::::XXX     
+     N::::::N      N::::::::N  PP::::::PP             X::::::X     X::::::X     
+     N::::::N       N:::::::N  P::::::::P             X:::::X       X:::::X     
+     N::::::N        N::::::N  P::::::::P             X:::::X       X:::::X     
+     NNNNNNNN         NNNNNNN  PPPPPPPPPP             XXXXXXX       XXXXXXX     
+                </pre>
+            </div>
+
+            <div class="about-content">
+                <div class="about-card">
+                    <h3><i class="fas fa-rocket"></i> Who Am I?</h3>
+                    <p>🔐 <strong>Offensive Security Enthusiast</strong> | CTF Player | Bug Bounty Hunter</p>
+                    <p>🎯 Currently: <strong>OSCP Preparation</strong> & HTB Machines</p>
+                    <p>📚 Learning: <strong>Active Directory Pentesting</strong> & <strong>Cloud Security</strong></p>
+                </div>
+
+                <div class="about-card">
+                    <h3><i class="fas fa-code"></i> Tech Stack</h3>
+                    <div class="tech-grid">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">Bash</span>
+                        <span class="tech-tag">JavaScript</span>
+                        <span class="tech-tag">Go</span>
+                        <span class="tech-tag">Linux</span>
+                        <span class="tech-tag">Windows</span>
+                        <span class="tech-tag">Metasploit</span>
+                        <span class="tech-tag">Burp Suite</span>
+                        <span class="tech-tag">Docker</span>
+                        <span class="tech-tag">Git</span>
+                    </div>
+                </div>
+
+                <div class="about-card">
+                    <h3><i class="fas fa-trophy"></i> Achievements</h3>
+                    <ul class="achievements-list">
+                        <li>📝 <strong>Paperwork</strong> - Complete machine walkthrough</li>
+                        <li>🛠️ <strong>Custom Exploit Scripts</strong> - Collection of exploit scripts</li>
+                        <li>🔍 <strong>Bug Bounty Automation</strong> - Automation tools for bug hunting</li>
+                        <li>📚 <strong>Cybersecurity Content</strong> - Technical articles</li>
+                    </ul>
+                </div>
+
+                <div class="about-card">
+                    <h3><i class="fas fa-project-diagram"></i> Featured Projects</h3>
+                    <div class="projects-list">
+                        <div class="project-item">
+                            <i class="fas fa-robot"></i>
+                            <div>
+                                <h4>HTB Writeups - Machines</h4>
+                                <p>Complete exploitation guides with all steps</p>
+                                <a href="https://github.com/npx-official/HTB-WRITEUPS-MACHINES" target="_blank">GitHub →</a>
+                            </div>
+                        </div>
+                        <div class="project-item">
+                            <i class="fas fa-shield-halved"></i>
+                            <div>
+                                <h4>Web Security Cheat Sheet</h4>
+                                <p>Comprehensive web security summary</p>
+                                <a href="https://github.com/npx-official/web-security-cheat-sheet" target="_blank">GitHub →</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GitHub Stats -->
+            <div class="github-stats">
+                <h3><i class="fab fa-github"></i> GitHub Statistics</h3>
+                <div class="stats-grid">
+                    <img src="https://github-readme-stats.vercel.app/api?username=npx-official&show_icons=true&theme=dark" alt="GitHub Stats" />
+                    <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=npx-official&layout=compact&theme=dark" alt="Top Languages" />
+                </div>
+                <div class="stats-grid">
+                    <img src="https://github-readme-streak-stats.herokuapp.com/?user=npx-official&theme=dark" alt="GitHub Streak" />
+                    <img src="https://github-profile-trophy.vercel.app/?username=npx-official&theme=dark&no-frame=true&row=1" alt="Trophies" />
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="footer-content">
+                <p><i class="fas fa-circle" style="color: #6fffe0; font-size: 0.5rem;"></i> 2026 · TESTING.NINJA</p>
+                <div class="social-links">
+                    <a href="https://github.com/npx-official" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="https://app.hackthebox.com/users/2207141" target="_blank"><i class="fas fa-shield-halved"></i></a>
+                    <a href="https://tryhackme.com/p/npx.off" target="_blank"><i class="fas fa-user-secret"></i></a>
+                    <a href="https://www.linkedin.com/in/night-pulse-x-337a89275" target="_blank"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <script src="js/particles.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
