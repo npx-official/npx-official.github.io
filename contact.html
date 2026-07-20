@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact • NIGHT PULSE X</title>
+    <link rel="icon" href="assets/images/favicon.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+    <div id="preloader"><div class="loader-ring"></div><p>Loading...</p></div>
+    <div class="mouse-glow" id="mouseGlow"></div>
+    <canvas id="particlesCanvas"></canvas>
+
+    <div class="container">
+
+        <nav class="navbar">
+            <div class="logo">
+                <img src="assets/images/ninja-logo.svg" alt="Ninja Logo" />
+                <span>TESTING.NINJA</span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html"><i class="fas fa-house"></i> Home</a></li>
+                <li><a href="about.html"><i class="fas fa-user-astronaut"></i> About</a></li>
+                <li><a href="writeups.html"><i class="fas fa-pen-fancy"></i> Writeups</a></li>
+                <li><a href="certifications.html"><i class="fas fa-certificate"></i> Certifications</a></li>
+                <li><a href="contact.html" class="active"><i class="fas fa-envelope"></i> Contact</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+        </nav>
+
+        <section class="contact-page">
+            <h1 class="page-title"><i class="fas fa-envelope"></i> Contact Me</h1>
+            
+            <div class="contact-container">
+                <form id="contactForm" class="contact-form">
+                    <input type="text" placeholder="Full Name" required />
+                    <input type="email" placeholder="Email Address" required />
+                    <input type="text" placeholder="Subject" />
+                    <textarea placeholder="Your message..." rows="5" required></textarea>
+                    <button type="submit" class="btn-primary"><i class="fas fa-paper-plane"></i> Send</button>
+                </form>
+                
+                <div class="contact-info">
+                    <h3>Connect With Me</h3>
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>contact@testing.ninja</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fab fa-github"></i>
+                        <span>github.com/npx-official</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-shield-halved"></i>
+                        <span>HTB: /users/2207141</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-user-secret"></i>
+                        <span>THM: /p/npx.off</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fab fa-linkedin"></i>
+                        <span>linkedin.com/in/night-pulse-x</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fab fa-reddit"></i>
+                        <span>reddit.com/user/0-0-OFF</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="footer-content">
+                <p><i class="fas fa-circle" style="color: #6fffe0; font-size: 0.5rem;"></i> 2026 · NIGHT PULSE X</p>
+                <div class="social-links">
+                    <a href="https://github.com/npx-official" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="https://app.hackthebox.com/users/2207141" target="_blank"><i class="fas fa-shield-halved"></i></a>
+                    <a href="https://tryhackme.com/p/npx.off" target="_blank"><i class="fas fa-user-secret"></i></a>
+                    <a href="https://www.linkedin.com/in/night-pulse-x-337a89275" target="_blank"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <script src="js/particles.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

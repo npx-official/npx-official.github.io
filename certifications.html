@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Certifications • NIGHT PULSE X</title>
+    <link rel="icon" href="assets/images/favicon.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+    <div id="preloader"><div class="loader-ring"></div><p>Loading...</p></div>
+    <div class="mouse-glow" id="mouseGlow"></div>
+    <canvas id="particlesCanvas"></canvas>
+
+    <div class="container">
+
+        <nav class="navbar">
+            <div class="logo">
+                <img src="assets/images/ninja-logo.svg" alt="Ninja Logo" />
+                <span>TESTING.NINJA</span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html"><i class="fas fa-house"></i> Home</a></li>
+                <li><a href="about.html"><i class="fas fa-user-astronaut"></i> About</a></li>
+                <li><a href="writeups.html"><i class="fas fa-pen-fancy"></i> Writeups</a></li>
+                <li><a href="certifications.html" class="active"><i class="fas fa-certificate"></i> Certifications</a></li>
+                <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+        </nav>
+
+        <section class="certifications-page">
+            <h1 class="page-title"><i class="fas fa-certificate"></i> Certifications</h1>
+            
+            <div class="cert-grid">
+                <div class="cert-card">
+                    <i class="fas fa-shield-halved"></i>
+                    <h4>eJPT</h4>
+                    <p>eLearnSecurity Junior Penetration Tester</p>
+                    <span class="cert-status completed">✅ Completed</span>
+                </div>
+                <div class="cert-card">
+                    <i class="fas fa-code"></i>
+                    <h4>CPTS</h4>
+                    <p>Certified Penetration Testing Specialist</p>
+                    <span class="cert-status progress">🔄 In Progress</span>
+                </div>
+                <div class="cert-card">
+                    <i class="fas fa-cloud"></i>
+                    <h4>OSCP</h4>
+                    <p>Offensive Security Certified Professional</p>
+                    <span class="cert-status progress">🎯 Next Target</span>
+                </div>
+                <div class="cert-card">
+                    <i class="fas fa-lock"></i>
+                    <h4>CEH</h4>
+                    <p>Certified Ethical Hacker</p>
+                    <span class="cert-status planned">📝 Planned</span>
+                </div>
+            </div>
+
+            <div class="learning-path">
+                <h3><i class="fas fa-road"></i> Learning Path</h3>
+                <div class="path-timeline">
+                    <div class="path-item completed">
+                        <div class="path-icon"><i class="fas fa-check"></i></div>
+                        <div class="path-content">
+                            <h4>eJPT</h4>
+                            <p>Completed - June 2025</p>
+                        </div>
+                    </div>
+                    <div class="path-item active">
+                        <div class="path-icon"><i class="fas fa-spinner fa-spin"></i></div>
+                        <div class="path-content">
+                            <h4>CPTS</h4>
+                            <p>In Progress - Expected Dec 2026</p>
+                        </div>
+                    </div>
+                    <div class="path-item">
+                        <div class="path-icon"><i class="fas fa-flag"></i></div>
+                        <div class="path-content">
+                            <h4>OSCP</h4>
+                            <p>Main Target - 2027</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="footer-content">
+                <p><i class="fas fa-circle" style="color: #6fffe0; font-size: 0.5rem;"></i> 2026 · NIGHT PULSE X</p>
+                <div class="social-links">
+                    <a href="https://github.com/npx-official" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="https://app.hackthebox.com/users/2207141" target="_blank"><i class="fas fa-shield-halved"></i></a>
+                    <a href="https://tryhackme.com/p/npx.off" target="_blank"><i class="fas fa-user-secret"></i></a>
+                    <a href="https://www.linkedin.com/in/night-pulse-x-337a89275" target="_blank"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <script src="js/particles.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

