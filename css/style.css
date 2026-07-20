@@ -1123,3 +1123,29 @@ footer {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-10px); }
 }
+.hero-avatar {
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
+    animation: float 3s ease-in-out infinite;
+}
+
+.hero-avatar img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 3px solid #6fffe0;
+    box-shadow: 0 0 40px rgba(0, 255, 200, 0.3);
+    object-fit: cover;
+    transition: all 0.3s ease;
+}
+
+.hero-avatar img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 60px rgba(0, 255, 200, 0.5);
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
