@@ -1,27 +1,26 @@
-// ====== LOCAL WRITEUPS DATA ======
-// This list contains all your writeups with their local paths
-
+// ====== ALL WRITEUPS DATA ======
 const writeupsData = [
     // ====== LINUX - EASY ======
-    { name: 'Paperwork', category: 'linux/easy', level: 'easy', os: 'linux', path: 'writeups/linux/easy/Paperwork.html' },
-    { name: 'Enigma', category: 'linux/easy', level: 'easy', os: 'linux', path: 'writeups/linux/easy/Enigma.html' },
+    { name: 'cctv', category: 'linux/easy', level: 'easy', os: 'linux', path: 'writeups/linux/easy/cctv.html' },
     { name: 'Connected', category: 'linux/easy', level: 'easy', os: 'linux', path: 'writeups/linux/easy/Connected.html' },
-    { name: 'CCTV', category: 'linux/easy', level: 'easy', os: 'linux', path: 'writeups/linux/easy/CCTV.html' },
+    { name: 'Enigma', category: 'linux/easy', level: 'easy', os: 'linux', path: 'writeups/linux/easy/Enigma.html' },
     { name: 'Kobold', category: 'linux/easy', level: 'easy', os: 'linux', path: 'writeups/linux/easy/Kobold.html' },
     { name: 'MonitorsFour', category: 'linux/easy', level: 'easy', os: 'linux', path: 'writeups/linux/easy/MonitorsFour.html' },
     { name: 'Orion', category: 'linux/easy', level: 'easy', os: 'linux', path: 'writeups/linux/easy/Orion.html' },
+    { name: 'Paperwork', category: 'linux/easy', level: 'easy', os: 'linux', path: 'writeups/linux/easy/Paperwork.html' },
     { name: 'Reactor', category: 'linux/easy', level: 'easy', os: 'linux', path: 'writeups/linux/easy/Reactor.html' },
     { name: 'Silentium', category: 'linux/easy', level: 'easy', os: 'linux', path: 'writeups/linux/easy/Silentium.html' },
     
     // ====== LINUX - MEDIUM ======
-    { name: 'Fireflow', category: 'linux/medium', level: 'medium', os: 'linux', path: 'writeups/linux/medium/Fireflow.html' },
-    { name: 'MakeSense', category: 'linux/medium', level: 'medium', os: 'linux', path: 'writeups/linux/medium/MakeSense.html' },
+    { name: 'Bedside', category: 'linux/medium', level: 'medium', os: 'linux', path: 'writeups/linux/medium/Bedside.html' },
+    { name: 'Checkpoint', category: 'linux/medium', level: 'medium', os: 'linux', path: 'writeups/linux/medium/Checkpoint.html' },
     { name: 'DevArea', category: 'linux/medium', level: 'medium', os: 'linux', path: 'writeups/linux/medium/DevArea.html' },
     { name: 'DevHub', category: 'linux/medium', level: 'medium', os: 'linux', path: 'writeups/linux/medium/DevHub.html' },
+    { name: 'Fireflow', category: 'linux/medium', level: 'medium', os: 'linux', path: 'writeups/linux/medium/Fireflow.html' },
+    { name: 'Logging', category: 'linux/medium', level: 'medium', os: 'linux', path: 'writeups/linux/medium/Logging.html' },
+    { name: 'MakeSense', category: 'linux/medium', level: 'medium', os: 'linux', path: 'writeups/linux/medium/MakeSense.html' },
     { name: 'Overwatch', category: 'linux/medium', level: 'medium', os: 'linux', path: 'writeups/linux/medium/Overwatch.html' },
     { name: 'VariaType', category: 'linux/medium', level: 'medium', os: 'linux', path: 'writeups/linux/medium/VariaType.html' },
-    { name: 'Logging', category: 'linux/medium', level: 'medium', os: 'linux', path: 'writeups/linux/medium/Logging.html' },
-    { name: 'Checkpoint', category: 'linux/medium', level: 'medium', os: 'linux', path: 'writeups/linux/medium/Checkpoint.html' },
     
     // ====== LINUX - HARD ======
     { name: 'Nimbus', category: 'linux/hard', level: 'hard', os: 'linux', path: 'writeups/linux/hard/Nimbus.html' },
@@ -30,10 +29,12 @@ const writeupsData = [
     { name: 'Garfield', category: 'windows/hard', level: 'hard', os: 'windows', path: 'writeups/windows/hard/Garfield.html' },
     { name: 'Ghostlink', category: 'windows/hard', level: 'hard', os: 'windows', path: 'writeups/windows/hard/Ghostlink.html' },
     
+    // ====== WINDOWS - MEDIUM ======
+    { name: 'logging', category: 'windows/medium', level: 'medium', os: 'windows', path: 'writeups/windows/medium/logging.html' },
+    
     // ====== PROLABS ======
-    { name: 'Mythical', category: 'prolabs', level: 'Advanced', os: 'mini prolabs', path: 'writeups/prolabs/Mythical.html' },
-// ====== PROLABS ======
-    { name: 'Puppet', category: 'prolabs', level: 'Advanced', os: 'mini prolabs', path: 'writeups/prolabs/Puppet.html' },
+    { name: 'Mythical', category: 'prolabs', level: 'prolabs', os: 'prolabs', path: 'writeups/prolabs/Mythical.html' },
+    { name: 'Puppet', category: 'prolabs', level: 'prolabs', os: 'prolabs', path: 'writeups/prolabs/Puppet.html' },
 ];
 
 // ====== CATEGORY INFO ======
@@ -43,6 +44,7 @@ function getCategoryInfo(category) {
         'linux/medium': { label: '🐧 Linux Medium', icon: '🟡' },
         'linux/hard': { label: '🐧 Linux Hard', icon: '🔴' },
         'windows/hard': { label: '🪟 Windows Hard', icon: '🔴' },
+        'windows/medium': { label: '🪟 Windows Medium', icon: '🟡' },
         'prolabs': { label: '🏆 ProLabs', icon: '⭐' }
     };
     return mapping[category] || { label: category, icon: '📄' };
@@ -71,7 +73,7 @@ function createWriteupCard(writeup) {
     return card;
 }
 
-// ====== FILTER FUNCTION ======
+// ====== FILTER ======
 let currentFilter = 'all';
 let filteredData = [...writeupsData];
 
@@ -103,7 +105,6 @@ function loadAllWriteups() {
     const statsContainer = document.getElementById('writeupsStats');
     if (!container) return;
     
-    // Update stats
     if (statsContainer) {
         const total = writeupsData.length;
         const linuxCount = writeupsData.filter(w => w.os === 'linux').length;
@@ -130,10 +131,7 @@ function loadAllWriteups() {
         `;
     }
     
-    // Display all writeups
     applyFilter('all');
-    
-    // Setup filter buttons
     setupFilters();
 }
 
@@ -145,21 +143,17 @@ function setupFilters() {
         btn.addEventListener('click', function() {
             filterButtons.forEach(b => b.classList.remove('active'));
             this.classList.add('active');
-            
-            const filter = this.dataset.filter;
-            applyFilter(filter);
+            applyFilter(this.dataset.filter);
         });
     });
 }
 
-// ====== FEATURED WRITEUPS (for homepage) ======
+// ====== FEATURED (for homepage) ======
 function loadFeaturedWriteups() {
     const container = document.getElementById('featuredWriteups');
     if (!container) return;
     
-    // Show first 6 writeups
     const featured = writeupsData.slice(0, 6);
-    
     container.innerHTML = '';
     featured.forEach(writeup => {
         container.appendChild(createWriteupCard(writeup));
