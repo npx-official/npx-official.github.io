@@ -149,17 +149,30 @@ function setupFilters() {
 }
 
 // ====== FEATURED (for homepage) ======
+// ====== FEATURED (for homepage) ======
 function loadFeaturedWriteups() {
     const container = document.getElementById('featuredWriteups');
     if (!container) return;
     
-    const featured = writeupsData.slice(0, 6);
+    // 🔥 عرض فقط: ProLabs و Hard
+    const featured = writeupsData.filter(w => 
+        w.level === 'hard' || 
+        w.level === 'prolabs' || 
+        w.os === 'prolabs'
+    );
+    
+    // رتبهم (ProLabs أولاً، ثم Hard)
+    featured.sort((a, b) => {
+        if (a.os === 'prolabs' && b.os !== 'prolabs') return -1;
+        if (a.os !== 'prolabs' && b.os === 'prolabs') return 1;
+        return a.name.localeCompare(b.name);
+    });
+    
     container.innerHTML = '';
     featured.forEach(writeup => {
         container.appendChild(createWriteupCard(writeup));
     });
 }
-
 // ====== EXPOSE FUNCTIONS ======
 window.loadAllWriteups = loadAllWriteups;
 window.loadFeaturedWriteups = loadFeaturedWriteups;
