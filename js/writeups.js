@@ -54,7 +54,7 @@ function getCategoryInfo(category) {
         'windows/medium': { label: '🪟 Windows Medium', icon: '🟡' },
         'prolabs': { label: '🏆 ProLabs', icon: '⭐' },
         'hacker101/ctf': { label: '🛡️ Hacker101 CTF', icon: '🛡️' },
-  };
+    };
     return mapping[category] || { label: category, icon: '📄' };
 }
 
@@ -118,7 +118,7 @@ function loadAllWriteups() {
         const linuxCount = writeupsData.filter(w => w.os === 'linux').length;
         const windowsCount = writeupsData.filter(w => w.os === 'windows').length;
         const prolabsCount = writeupsData.filter(w => w.os === 'prolabs').length;
-        const hacker101Count = writeupsData.filter(w => w.os === 'hacker101').lengt>
+        const hacker101Count = writeupsData.filter(w => w.os === 'hacker101').length;
  
         statsContainer.innerHTML = `
             <div class="stat-item">
