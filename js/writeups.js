@@ -35,6 +35,13 @@ const writeupsData = [
     // ====== PROLABS ======
     { name: 'Mythical', category: 'prolabs', level: 'prolabs', os: 'prolabs', path: 'writeups/prolabs/Mythical.html' },
     { name: 'Puppet', category: 'prolabs', level: 'prolabs', os: 'prolabs', path: 'writeups/prolabs/Puppet.html' },
+    // ====== HACKER101 CTF ======
+    { name: 'Photo Gallery', category: 'hacker101/ctf', level: 'easy', os: 'hacker101', path: 'writeups/hacker101/PhotoGallery.html' },
+    { name: 'Micro-CMS v1', category: 'hacker101/ctf', level: 'easy', os: 'hacker101', path: 'writeups/hacker101/MicroCMSv1.html' },
+    { name: 'Micro-CMS v2', category: 'hacker101/ctf', level: 'medium', os: 'hacker101', path: 'writeups/hacker101/MicroCMSv2.html' },
+    { name: 'Templated', category: 'hacker101/ctf', level: 'medium', os: 'hacker101', path: 'writeups/hacker101/Templated.html' },
+    { name: 'H1 2022 CTF', category: 'hacker101/ctf', level: 'hard', os: 'hacker101', path: 'writeups/hacker101/H1-2022-CTF.html' },
+
 ];
 
 // ====== CATEGORY INFO ======
@@ -45,8 +52,9 @@ function getCategoryInfo(category) {
         'linux/hard': { label: '🐧 Linux Hard', icon: '🔴' },
         'windows/hard': { label: '🪟 Windows Hard', icon: '🔴' },
         'windows/medium': { label: '🪟 Windows Medium', icon: '🟡' },
-        'prolabs': { label: '🏆 ProLabs', icon: '⭐' }
-    };
+        'prolabs': { label: '🏆 ProLabs', icon: '⭐' },
+        'hacker101/ctf': { label: '🛡️ Hacker101 CTF', icon: '🛡️' },
+  };
     return mapping[category] || { label: category, icon: '📄' };
 }
 
