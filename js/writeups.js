@@ -118,7 +118,8 @@ function loadAllWriteups() {
         const linuxCount = writeupsData.filter(w => w.os === 'linux').length;
         const windowsCount = writeupsData.filter(w => w.os === 'windows').length;
         const prolabsCount = writeupsData.filter(w => w.os === 'prolabs').length;
-        
+        const hacker101Count = writeupsData.filter(w => w.os === 'hacker101').lengt>
+ 
         statsContainer.innerHTML = `
             <div class="stat-item">
                 <span class="stat-number">${total}</span>
@@ -135,6 +136,10 @@ function loadAllWriteups() {
             <div class="stat-item">
                 <span class="stat-number">${prolabsCount}</span>
                 <span class="stat-label">🏆 ProLabs</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">${hacker101Count}</span>
+                <span class="stat-label">🛡️ Hacker101</span>
             </div>
         `;
     }
@@ -189,3 +194,5 @@ console.log(`📚 Loaded ${writeupsData.length} writeups`);
 console.log(`🐧 Linux: ${writeupsData.filter(w => w.os === 'linux').length}`);
 console.log(`🪟 Windows: ${writeupsData.filter(w => w.os === 'windows').length}`);
 console.log(`🏆 ProLabs: ${writeupsData.filter(w => w.os === 'prolabs').length}`);
+console.log(`🛡️ Hacker101: ${writeupsData.filter(w => w.os === 'hacker101').length}`);
+
