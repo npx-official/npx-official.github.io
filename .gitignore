@@ -12,3 +12,4 @@ Thumbs.db
 # Node (إذا استخدمت)
 node_modules/
 package-lock.json
+writeups/
