@@ -16,7 +16,7 @@ const writeupsData = [
     { name: 'Checkpoint', category: 'linux/medium', level: 'medium', os: 'linux', path: 'writeups/linux/medium/Checkpoint.html' },
     { name: 'DevArea', category: 'linux/medium', level: 'medium', os: 'linux', path: 'writeups/linux/medium/DevArea.html' },
     { name: 'DevHub', category: 'linux/medium', level: 'medium', os: 'linux', path: 'writeups/linux/medium/DevHub.html' },
-    { name: 'Fireflow', category: 'linux/medium', level: 'medium', os: 'linux', path: 'writeups/linux/medium/Fireflow.html' },
+    { name: 'Fireflow', category: 'linux/medium', level: 'medium', os: 'linux', path: 'writeups/linux/medium/Fireflow.html', password: 'F1r3fl0w!M3d1um#X2' },
     { name: 'Logging', category: 'linux/medium', level: 'medium', os: 'linux', path: 'writeups/linux/medium/Logging.html' },
     { name: 'MakeSense', category: 'linux/medium', level: 'medium', os: 'linux', path: 'writeups/linux/medium/MakeSense.html' },
     { name: 'Overwatch', category: 'linux/medium', level: 'medium', os: 'linux', path: 'writeups/linux/medium/Overwatch.html' },
