@@ -74,6 +74,7 @@ function createWriteupCard(writeup) {
             <span class="writeup-level">${writeup.level}</span>
         </div>
         <div class="writeup-category">${categoryInfo.label}</div>
+        ${writeup.password ? `<div class="writeup-password">🔑 ${writeup.password}</div>` : ''}
         <a href="${writeup.path}" class="writeup-link">
             Read Writeup <i class="fas fa-arrow-right"></i>
         </a>
