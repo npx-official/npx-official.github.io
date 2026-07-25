@@ -9,7 +9,7 @@ Thumbs.db
 # Logs
 *.log
 
-# Node (إذا استخدمت)
+# Node 
 node_modules/
 package-lock.json
-writeups/
+# writeups/
