@@ -6,74 +6,341 @@
     <title>Writeups • NIGHT PULSE X</title>
     <link rel="icon" href="assets/images/favicon.ico" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <link rel="stylesheet" href="css/style.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0a0a0f;
+            color: #e0e5f0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: 
+                radial-gradient(ellipse at 20% 50%, rgba(111, 255, 224, 0.05), transparent 50%),
+                radial-gradient(ellipse at 80% 50%, rgba(124, 58, 237, 0.05), transparent 50%);
+            animation: bgMove 10s ease-in-out infinite alternate;
+        }
+        @keyframes bgMove {
+            0% { transform: scale(1) rotate(0deg); }
+            100% { transform: scale(1.1) rotate(3deg); }
+        }
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--d) ease-in-out infinite alternate;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0.1; transform: scale(0.5); }
+            100% { opacity: 1; transform: scale(1.5); }
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 3rem;
+            position: relative;
+            z-index: 1;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+            background: rgba(10, 10, 15, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(111, 255, 224, 0.08);
+            border-radius: 2rem;
+            margin-bottom: 4rem;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #6fffe0, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .logo img { width: 40px; height: 40px; }
+        .nav a {
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            margin-left: 2rem;
+            font-size: 0.95rem;
+            transition: 0.3s;
+            position: relative;
+        }
+        .nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #6fffe0;
+            transition: 0.3s;
+        }
+        .nav a:hover { color: #fff; }
+        .nav a:hover::after { width: 100%; }
+        .nav a.active { color: #fff; }
+        .nav a.active::after { width: 100%; }
+        .nav a i { margin-right: 6px; }
+
+        .page-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 2.5rem;
+            background: linear-gradient(135deg, #6fffe0, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+        .filter-btn {
+            padding: 0.5rem 1.2rem;
+            border-radius: 30px;
+            border: 1px solid rgba(111, 255, 224, 0.1);
+            background: transparent;
+            color: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+        .filter-btn:hover {
+            border-color: #6fffe0;
+            color: #fff;
+        }
+        .filter-btn.active {
+            background: linear-gradient(135deg, #6fffe0, #a78bfa);
+            color: #0a0a0f;
+            border-color: transparent;
+        }
+
+        .stats-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            padding: 1.5rem;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(111, 255, 224, 0.06);
+            border-radius: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #6fffe0;
+            display: block;
+        }
+        .stat-label {
+            color: rgba(255,255,255,0.4);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .writeups-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .writeup-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(111, 255, 224, 0.06);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            transition: 0.3s;
+        }
+        .writeup-card:hover {
+            transform: translateY(-6px);
+            border-color: #6fffe0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            background: rgba(111, 255, 224, 0.02);
+        }
+        .writeup-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 0.5rem;
+        }
+        .writeup-header .icon { font-size: 1.5rem; }
+        .writeup-header h4 { color: #6fffe0; font-size: 1.1rem; }
+        .writeup-meta {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 0.5rem;
+        }
+        .writeup-meta span {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        .writeup-meta .os { background: rgba(0,255,200,0.15); color: #6fffe0; }
+        .writeup-meta .level { background: rgba(124,58,237,0.15); color: #a78bfa; }
+        .writeup-category { color: rgba(255,255,255,0.4); font-size: 0.85rem; margin-bottom: 0.5rem; }
+        .writeup-password {
+            padding: 4px 10px;
+            background: rgba(111, 255, 224, 0.05);
+            border-radius: 6px;
+            font-size: 12px;
+            color: #6fffe0;
+            font-family: monospace;
+            border: 1px dashed rgba(111, 255, 224, 0.1);
+            display: inline-block;
+            margin: 0.5rem 0;
+        }
+        .writeup-link {
+            color: #6fffe0;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+        }
+        .writeup-link:hover { color: #fff; gap: 12px; }
+
+        .footer {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(111, 255, 224, 0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .footer p { color: rgba(255,255,255,0.2); font-size: 0.9rem; }
+        .social a {
+            color: rgba(255,255,255,0.2);
+            font-size: 1.2rem;
+            margin-left: 1.5rem;
+            transition: 0.3s;
+        }
+        .social a:hover { color: #6fffe0; transform: translateY(-3px); }
+
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            .header { flex-direction: column; gap: 1rem; padding: 1rem; }
+            .nav a { margin: 0 0.8rem; font-size: 0.85rem; }
+            .page-title { font-size: 2rem; }
+            .writeups-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 480px) {
+            .page-title { font-size: 1.5rem; }
+            .footer { flex-direction: column; text-align: center; }
+            .social a { margin: 0 0.8rem; }
+        }
+    </style>
 </head>
 <body>
 
-    <div id="preloader"><div class="loader-ring"></div><p>Loading...</p></div>
-    <div class="mouse-glow" id="mouseGlow"></div>
-    <canvas id="particlesCanvas"></canvas>
+    <div class="bg-animation"></div>
+    <div class="stars" id="stars"></div>
 
     <div class="container">
 
-        <nav class="navbar">
+        <header class="header">
             <div class="logo">
-                <img src="assets/images/npx-logo.svg" alt="Ninja Logo" />
+                <img src="assets/images/npx-logo.svg" alt="NPX" />
                 <span>NIGHT PULSE X</span>
             </div>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="index.html"><i class="fas fa-house"></i> Home</a></li>
-                <li><a href="about.html"><i class="fas fa-user-astronaut"></i> About</a></li>
-                <li><a href="writeups.html" class="active"><i class="fas fa-pen-fancy"></i> Writeups</a></li>
-                <li><a href="certifications.html"><i class="fas fa-certificate"></i> Certifications</a></li>
-                <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
-            </ul>
-            <div class="hamburger" id="hamburger">
-                <span></span><span></span><span></span>
-            </div>
-        </nav>
+            <nav class="nav">
+                <a href="index.html"><i class="fas fa-house"></i> Home</a>
+                <a href="about.html"><i class="fas fa-user-astronaut"></i> About</a>
+                <a href="writeups.html" class="active"><i class="fas fa-pen-fancy"></i> Writeups</a>
+                <a href="certifications.html"><i class="fas fa-certificate"></i> Certs</a>
+                <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
+            </nav>
+        </header>
 
-        <section class="writeups-page">
-            <h1 class="page-title"><i class="fas fa-pen-fancy"></i> All Writeups</h1>
-            
-            <!-- Filters -->
-            <div class="filter-bar">
-                <button class="filter-btn active" data-filter="all">All</button>
-                <button class="filter-btn" data-filter="linux">🐧 Linux</button>
-                <button class="filter-btn" data-filter="windows">🪟 Windows</button>
-                <button class="filter-btn" data-filter="prolabs">🏆 ProLabs</button>
-                <button class="filter-btn" data-filter="easy">🟢 Easy</button>
-                <button class="filter-btn" data-filter="medium">🟡 Medium</button>
-                <button class="filter-btn" data-filter="hard">🔴 Hard</button>
-                <button class="filter-btn" data-filter="hacker101">🛡️ Hacker101</button>
-            </div>
+        <h1 class="page-title"><i class="fas fa-pen-fancy"></i> All Writeups</h1>
 
-            <!-- Stats -->
-            <div class="writeups-stats" id="writeupsStats"></div>
+        <div class="filter-bar">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="linux">🐧 Linux</button>
+            <button class="filter-btn" data-filter="windows">🪟 Windows</button>
+            <button class="filter-btn" data-filter="prolabs">🏆 ProLabs</button>
+            <button class="filter-btn" data-filter="easy">🟢 Easy</button>
+            <button class="filter-btn" data-filter="medium">🟡 Medium</button>
+            <button class="filter-btn" data-filter="hard">🔴 Hard</button>
+            <button class="filter-btn" data-filter="hacker101">🛡️ Hacker101</button>
+        </div>
 
-            <!-- Grid -->
-            <div class="writeups-grid" id="allWriteups"></div>
-        </section>
+        <div class="stats-grid" id="writeupsStats"></div>
 
-        <footer>
-            <div class="footer-content">
-                <p><i class="fas fa-circle" style="color: #6fffe0; font-size: 0.5rem;"></i> 2026 · NIGHT PULSE X</p>
-                <div class="social-links">
-                    <a href="https://github.com/npx-official" target="_blank"><i class="fab fa-github"></i></a>
-                    <a href="https://app.hackthebox.com/users/2207141" target="_blank"><i class="fas fa-shield-halved"></i></a>
-                    <a href="https://tryhackme.com/p/npx.off" target="_blank"><i class="fas fa-user-secret"></i></a>
-                    <a href="https://www.linkedin.com/in/night-pulse-x-337a89275" target="_blank"><i class="fab fa-linkedin"></i></a>
-                </div>
+        <div class="writeups-grid" id="allWriteups"></div>
+
+        <footer class="footer">
+            <p><i class="fas fa-circle" style="color: #6fffe0; font-size: 0.5rem;"></i> 2026 · NIGHT PULSE X</p>
+            <div class="social">
+                <a href="https://github.com/npx-official" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://app.hackthebox.com/users/2207141" target="_blank"><i class="fas fa-shield-halved"></i></a>
+                <a href="https://tryhackme.com/p/npx.off" target="_blank"><i class="fas fa-user-secret"></i></a>
+                <a href="https://www.linkedin.com/in/night-pulse-x-337a89275" target="_blank"><i class="fab fa-linkedin"></i></a>
             </div>
         </footer>
 
     </div>
 
-    <script src="js/particles.js"></script>
-    <script src="js/main.js"></script>
+    <script>
+        (function() {
+            const container = document.getElementById('stars');
+            for (let i = 0; i < 80; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 3 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.setProperty('--d', (2 + Math.random() * 4) + 's');
+                star.style.animationDelay = (Math.random() * 5) + 's';
+                star.style.opacity = Math.random() * 0.5 + 0.2;
+                container.appendChild(star);
+            }
+        })();
+    </script>
+
     <script src="js/writeups.js"></script>
     <script>
         loadAllWriteups();
     </script>
+
 </body>
 </html>
