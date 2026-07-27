@@ -7,6 +7,146 @@
     <link rel="icon" href="assets/images/favicon.ico" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="css/style.css" />
+    <style>
+        /* تأثيرات إضافية */
+        .hero-content h1 {
+            animation: neonPulse 2s ease-in-out infinite;
+        }
+        @keyframes neonPulse {
+            0%, 100% { text-shadow: 0 0 20px rgba(111, 255, 224, 0.3), 0 0 40px rgba(111, 255, 224, 0.1); }
+            50% { text-shadow: 0 0 40px rgba(111, 255, 224, 0.6), 0 0 80px rgba(111, 255, 224, 0.2), 0 0 120px rgba(111, 255, 224, 0.1); }
+        }
+        .hero-avatar img {
+            animation: float 3s ease-in-out infinite, glowPulse 4s ease-in-out infinite;
+        }
+        @keyframes glowPulse {
+            0%, 100% { box-shadow: 0 0 40px rgba(111, 255, 224, 0.2), 0 0 80px rgba(111, 255, 224, 0.05); }
+            50% { box-shadow: 0 0 60px rgba(111, 255, 224, 0.4), 0 0 120px rgba(111, 255, 224, 0.1), 0 0 200px rgba(111, 255, 224, 0.05); }
+        }
+        .quick-card {
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+        }
+        .quick-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(111, 255, 224, 0.05), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.6s;
+            animation: rotateBg 10s linear infinite;
+        }
+        .quick-card:hover::before {
+            opacity: 1;
+        }
+        @keyframes rotateBg {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .quick-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: #6fffe0;
+            box-shadow: 0 20px 60px rgba(111, 255, 224, 0.15), 0 0 40px rgba(111, 255, 224, 0.05);
+        }
+        .quick-card i {
+            transition: all 0.4s;
+        }
+        .quick-card:hover i {
+            transform: scale(1.2) rotate(5deg);
+            text-shadow: 0 0 30px rgba(111, 255, 224, 0.3);
+        }
+        .stat-number {
+            animation: countUp 2s ease-out;
+        }
+        @keyframes countUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .btn-primary {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg) translateX(-100%);
+            transition: transform 0.6s;
+        }
+        .btn-primary:hover::after {
+            transform: rotate(45deg) translateX(100%);
+        }
+        .writeup-card {
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .writeup-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            border-color: #6fffe0;
+            box-shadow: 0 20px 60px rgba(111, 255, 224, 0.1);
+        }
+        .social-links a {
+            transition: all 0.4s;
+            position: relative;
+        }
+        .social-links a:hover {
+            transform: translateY(-5px) scale(1.2);
+            color: #6fffe0;
+            text-shadow: 0 0 30px rgba(111, 255, 224, 0.3);
+        }
+        .glitch-text {
+            animation: glitch 3s infinite;
+        }
+        @keyframes glitch {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(2px, -2px); }
+            60% { transform: translate(-1px, -1px); }
+            80% { transform: translate(1px, 1px); }
+        }
+        .glitch-text::before,
+        .glitch-text::after {
+            animation: glitch 3s infinite;
+        }
+        .glitch-text::before {
+            animation-delay: 0.1s;
+        }
+        .glitch-text::after {
+            animation-delay: 0.2s;
+        }
+        /* شريط تقدم متحرك تحت الناف */
+        .navbar::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #6fffe0, transparent);
+            animation: navGlow 3s ease-in-out infinite;
+        }
+        @keyframes navGlow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        .navbar {
+            position: relative;
+        }
+        .container {
+            animation: containerIn 1.2s ease-out;
+        }
+        @keyframes containerIn {
+            from { opacity: 0; transform: scale(0.95) translateY(30px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+    </style>
 </head>
 <body>
 
