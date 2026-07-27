@@ -28,7 +28,8 @@ const writeupsData = [
     { name: 'Garfield', category: 'windows/hard', level: 'hard', os: 'windows', path: 'writeups/windows/hard/Garfield.html' },
     { name: 'Ghostlink', category: 'windows/hard', level: 'hard', os: 'windows', path: 'writeups/windows/hard/Ghostlink.html', password: 'Gh0stl1nk!W1nd0ws#X5' },
     { name: 'DarkZero Returns', category: 'windows/hard', level: 'hard', os: 'windows', path: 'writeups/windows/hard/DarkZeroReturns.html' },
-     
+    { name: 'Fries', category: 'windows/hard', level: 'hard', os: 'windows', path: 'writeups/windows/hard/Fries.html', password: 'Fr13s!H@rd#2026' },
+ 
     // ====== WINDOWS - MEDIUM ======
     { name: 'logging', category: 'windows/medium', level: 'medium', os: 'windows', path: 'writeups/windows/medium/logging.html', password: ''},
     
