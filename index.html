@@ -8,7 +8,38 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="css/style.css" />
     <style>
-        /* تأثيرات إضافية */
+        /* ===== تأثيرات إضافية ===== */
+        body {
+            cursor: none;
+        }
+        .custom-cursor {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            background: #6fffe0;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 0.1s ease;
+            box-shadow: 0 0 20px rgba(111, 255, 224, 0.5), 0 0 60px rgba(111, 255, 224, 0.2);
+            transform: translate(-50%, -50%);
+        }
+        .custom-cursor-trail {
+            position: fixed;
+            width: 30px;
+            height: 30px;
+            border: 2px solid rgba(111, 255, 224, 0.2);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transition: all 0.15s ease;
+            transform: translate(-50%, -50%);
+            animation: pulseTrail 2s ease-in-out infinite;
+        }
+        @keyframes pulseTrail {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+            50% { transform: translate(-50%, -50%) scale(1.5); opacity: 0.6; }
+        }
         .hero-content h1 {
             animation: neonPulse 2s ease-in-out infinite;
         }
@@ -58,13 +89,6 @@
         .quick-card:hover i {
             transform: scale(1.2) rotate(5deg);
             text-shadow: 0 0 30px rgba(111, 255, 224, 0.3);
-        }
-        .stat-number {
-            animation: countUp 2s ease-out;
-        }
-        @keyframes countUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
         }
         .btn-primary {
             position: relative;
@@ -121,7 +145,6 @@
         .glitch-text::after {
             animation-delay: 0.2s;
         }
-        /* شريط تقدم متحرك تحت الناف */
         .navbar::after {
             content: '';
             position: absolute;
@@ -146,9 +169,42 @@
             from { opacity: 0; transform: scale(0.95) translateY(30px); }
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
+        /* نجوم متحركة */
+        .stars-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .star-dot {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: starTwinkle var(--duration) ease-in-out infinite alternate;
+        }
+        @keyframes starTwinkle {
+            0% { opacity: 0.1; transform: scale(0.5); }
+            100% { opacity: 1; transform: scale(1.5); }
+        }
+        /* شريط تمرير مخصص */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0f; }
+        ::-webkit-scrollbar-thumb { background: #6fffe0; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a0f0e0; }
+        ::selection { background: rgba(111, 255, 224, 0.3); color: #0a0a0f; }
     </style>
 </head>
 <body>
+
+    <!-- نجوم خلفية -->
+    <div class="stars-bg" id="starsBg"></div>
+
+    <!-- مؤشر ماوس مخصص -->
+    <div class="custom-cursor" id="cursor"></div>
+    <div class="custom-cursor-trail" id="cursorTrail"></div>
 
     <div id="preloader"><div class="loader-ring"></div><p>Loading...</p></div>
     <div class="mouse-glow" id="mouseGlow"></div>
@@ -243,6 +299,57 @@
         </footer>
 
     </div>
+
+    <script>
+        // ===== نجوم خلفية =====
+        (function createStars() {
+            const container = document.getElementById('starsBg');
+            for (let i = 0; i < 120; i++) {
+                const star = document.createElement('div');
+                star.className = 'star-dot';
+                const size = Math.random() * 3 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.setProperty('--duration', (2 + Math.random() * 4) + 's');
+                star.style.animationDelay = (Math.random() * 5) + 's';
+                star.style.opacity = Math.random() * 0.5 + 0.2;
+                container.appendChild(star);
+            }
+        })();
+
+        // ===== مؤشر ماوس مخصص =====
+        (function customCursor() {
+            const cursor = document.getElementById('cursor');
+            const trail = document.getElementById('cursorTrail');
+            let mouseX = 0, mouseY = 0;
+            let trailX = 0, trailY = 0;
+
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                cursor.style.left = mouseX + 'px';
+                cursor.style.top = mouseY + 'px';
+            });
+
+            setInterval(() => {
+                trailX += (mouseX - trailX) * 0.1;
+                trailY += (mouseY - trailY) * 0.1;
+                trail.style.left = trailX + 'px';
+                trail.style.top = trailY + 'px';
+            }, 16);
+
+            document.addEventListener('mouseleave', () => {
+                cursor.style.opacity = '0';
+                trail.style.opacity = '0';
+            });
+            document.addEventListener('mouseenter', () => {
+                cursor.style.opacity = '1';
+                trail.style.opacity = '1';
+            });
+        })();
+    </script>
 
     <script src="js/particles.js"></script>
     <script src="js/main.js"></script>
