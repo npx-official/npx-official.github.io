@@ -136,9 +136,12 @@
 
         .about-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: 1fr;
             gap: 1.5rem;
             margin-bottom: 3rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
         }
         .about-card {
             background: rgba(255,255,255,0.02);
@@ -221,10 +224,6 @@
             box-shadow: 0 5px 20px rgba(111, 255, 224, 0.05);
         }
 
-        .about-card-wide {
-            grid-column: 1 / -1;
-        }
-
         .footer {
             margin-top: 3rem;
             padding-top: 2rem;
@@ -249,21 +248,15 @@
             text-shadow: 0 0 30px rgba(111, 255, 224, 0.2);
         }
 
-        /* صفحة About */
         .about-page .emoji-big { font-size: 3.5rem; display: block; margin-bottom: 0.5rem; }
         .about-page .bio-text { max-width: 700px; margin: 0 auto 2rem; text-align: center; color: #b6c8e0; font-size: 1.1rem; line-height: 1.8; }
         .about-page .bio-text strong { color: #6fffe0; }
 
-        @media (max-width: 992px) {
-            .about-grid { grid-template-columns: repeat(2, 1fr); }
-        }
         @media (max-width: 768px) {
             .container { padding: 1rem; }
             .header { flex-direction: column; gap: 1rem; padding: 1rem; }
             .nav a { margin: 0 0.8rem; font-size: 0.85rem; }
             .page-title { font-size: 2rem; }
-            .about-grid { grid-template-columns: 1fr; }
-            .about-card-wide { grid-column: 1; }
         }
         @media (max-width: 480px) {
             .page-title { font-size: 1.5rem; }
@@ -305,6 +298,17 @@
 
             <div class="about-grid">
 
+                <!-- Who Am I? -->
+                <div class="about-card">
+                    <span class="emoji">🦊</span>
+                    <h3>Who Am I?</h3>
+                    <ul>
+                        <li><span class="icon">🔐</span> <strong>Offensive Security Enthusiast</strong></li>
+                        <li><span class="icon">🎯</span> Currently: <strong>OSCP Preparation</strong> &amp; HTB Machines</li>
+                    </ul>
+                </div>
+
+                <!-- Learning -->
                 <div class="about-card">
                     <span class="emoji">📚</span>
                     <h3>Learning</h3>
@@ -312,10 +316,10 @@
                         <li><span class="icon">🌐</span> Web Application Security</li>
                         <li><span class="icon">🏰</span> Active Directory Pentesting</li>
                         <li><span class="icon">☁️</span> Cloud Security</li>
-                        <li><span class="icon">🔍</span> Bug Bounty</li>
                     </ul>
                 </div>
 
+                <!-- Tech Stack -->
                 <div class="about-card">
                     <span class="emoji">⚡</span>
                     <h3>Tech Stack</h3>
@@ -328,20 +332,23 @@
                         <span class="tech-tag">🛡️ Metasploit</span>
                         <span class="tech-tag">🐛 Burp Suite</span>
                         <span class="tech-tag">🐳 Docker</span>
+                        <span class="tech-tag">🔧 Git</span>
                     </div>
                 </div>
 
+                <!-- Achievements -->
                 <div class="about-card">
                     <span class="emoji">🏆</span>
                     <h3>Achievements</h3>
                     <ul>
-                        <li><span class="icon">📝</span> <strong>Paperwork</strong> — Machine walkthrough</li>
-                        <li><span class="icon">🛠️</span> <strong>Custom Exploits</strong> — Script collection</li>
+                        <li><span class="icon">📝</span> <strong>Paperwork</strong> — Complete machine walkthrough</li>
+                        <li><span class="icon">🛠️</span> <strong>Custom Exploit Scripts</strong> — Collection of exploits</li>
                         <li><span class="icon">📚</span> <strong>Cybersecurity Content</strong> — Technical articles</li>
                     </ul>
                 </div>
 
-                <div class="about-card about-card-wide">
+                <!-- Goals -->
+                <div class="about-card">
                     <span class="emoji">🎯</span>
                     <h3>Goals</h3>
                     <ul>
@@ -385,19 +392,50 @@
         })();
     </script>
 
-<!-- Mouse effects -->
-<div class="mouse-trail" id="mouseTrail"></div>
-<div class="mouse-glow-effect" id="mouseGlowEffect"></div>
+    <!-- Mouse effects -->
+    <div class="mouse-trail" id="mouseTrail"></div>
+    <div class="mouse-glow-effect" id="mouseGlowEffect"></div>
 
-<style>
-.mouse-trail { position: fixed; width: 8px; height: 8px; background: #6fffe0; border-radius: 50%; pointer-events: none; z-index: 9999; box-shadow: 0 0 20px rgba(111,255,224,0.5), 0 0 60px rgba(111,255,224,0.2); transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s; }
-.mouse-glow-effect { position: fixed; width: 200px; height: 200px; background: radial-gradient(circle, rgba(111,255,224,0.06), transparent 70%); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: width 0.3s, height 0.3s; }
-.mouse-glow-effect.active { width: 350px; height: 350px; background: radial-gradient(circle, rgba(111,255,224,0.12), transparent 70%); }
-</style>
+    <style>
+        .mouse-trail { position: fixed; width: 8px; height: 8px; background: #6fffe0; border-radius: 50%; pointer-events: none; z-index: 9999; box-shadow: 0 0 20px rgba(111,255,224,0.5), 0 0 60px rgba(111,255,224,0.2); transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s; }
+        .mouse-glow-effect { position: fixed; width: 200px; height: 200px; background: radial-gradient(circle, rgba(111,255,224,0.06), transparent 70%); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: width 0.3s, height 0.3s; }
+        .mouse-glow-effect.active { width: 350px; height: 350px; background: radial-gradient(circle, rgba(111,255,224,0.12), transparent 70%); }
+    </style>
 
-<script>
-(function() { const trail = document.getElementById("mouseTrail"); const glow = document.getElementById("mouseGlowEffect"); let x = 0, y = 0; let trailX = 0, trailY = 0; document.addEventListener("mousemove", (e) => { x = e.clientX; y = e.clientY; glow.style.left = x + "px"; glow.style.top = y + "px"; glow.classList.add("active"); clearTimeout(window.glowTimeout); window.glowTimeout = setTimeout(() => glow.classList.remove("active"), 200); }); setInterval(() => { trailX += (x - trailX) * 0.15; trailY += (y - trailY) * 0.15; trail.style.left = trailX + "px"; trail.style.top = trailY + "px"; }, 16); document.addEventListener("mouseleave", () => { trail.style.opacity = "0"; glow.style.opacity = "0"; }); document.addEventListener("mouseenter", () => { trail.style.opacity = "1"; glow.style.opacity = "1"; }); })();
-</script>
+    <script>
+        (function() {
+            const trail = document.getElementById("mouseTrail");
+            const glow = document.getElementById("mouseGlowEffect");
+            let x = 0, y = 0;
+            let trailX = 0, trailY = 0;
+
+            document.addEventListener("mousemove", (e) => {
+                x = e.clientX;
+                y = e.clientY;
+                glow.style.left = x + "px";
+                glow.style.top = y + "px";
+                glow.classList.add("active");
+                clearTimeout(window.glowTimeout);
+                window.glowTimeout = setTimeout(() => glow.classList.remove("active"), 200);
+            });
+
+            setInterval(() => {
+                trailX += (x - trailX) * 0.15;
+                trailY += (y - trailY) * 0.15;
+                trail.style.left = trailX + "px";
+                trail.style.top = trailY + "px";
+            }, 16);
+
+            document.addEventListener("mouseleave", () => {
+                trail.style.opacity = "0";
+                glow.style.opacity = "0";
+            });
+            document.addEventListener("mouseenter", () => {
+                trail.style.opacity = "1";
+                glow.style.opacity = "1";
+            });
+        })();
+    </script>
 
 </body>
 </html>
