@@ -108,13 +108,20 @@
             padding: 2rem 0 4rem;
         }
         .avatar {
-            width: 140px;
-            height: 140px;
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
             border: 3px solid #6fffe0;
-            box-shadow: 0 0 60px rgba(111, 255, 224, 0.15);
+            box-shadow: 0 0 60px rgba(111, 255, 224, 0.3), 0 0 120px rgba(111, 255, 224, 0.1);
             margin-bottom: 1.5rem;
             animation: float 3s ease-in-out infinite;
+            object-fit: cover;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .avatar:hover {
+            transform: scale(1.08) rotate(-3deg);
+            box-shadow: 0 0 100px rgba(111, 255, 224, 0.5), 0 0 200px rgba(111, 255, 224, 0.15);
+            border-color: #a78bfa;
         }
         @keyframes float {
             0%, 100% { transform: translateY(0); }
@@ -123,12 +130,14 @@
         .hero h1 {
             font-size: 4rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #6fffe0, #a78bfa, #6fffe0);
-            background-size: 200% 200%;
+            background: linear-gradient(135deg, #6fffe0, #a78bfa, #6fffe0, #a78bfa);
+            background-size: 300% 300%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: gradientMove 4s ease-in-out infinite;
+            animation: gradientMove 6s ease-in-out infinite;
             margin-bottom: 0.5rem;
+            text-shadow: 0 0 60px rgba(111, 255, 224, 0.15);
+            letter-spacing: 2px;
         }
         @keyframes gradientMove {
             0%, 100% { background-position: 0% 50%; }
@@ -183,8 +192,15 @@
             border-top: 1px solid rgba(111, 255, 224, 0.06);
         }
         .stat h3 {
-            font-size: 2.5rem;
+            font-size: 3rem;
             color: #6fffe0;
+            text-shadow: 0 0 40px rgba(111, 255, 224, 0.3);
+            animation: pulseNumber 2s ease-in-out infinite;
+            display: inline-block;
+        }
+        @keyframes pulseNumber {
+            0%, 100% { transform: scale(1); text-shadow: 0 0 20px rgba(111, 255, 224, 0.1); }
+            50% { transform: scale(1.08); text-shadow: 0 0 50px rgba(111, 255, 224, 0.4); }
         }
         .stat span {
             color: rgba(255,255,255,0.4);
@@ -204,7 +220,6 @@
             gap: 12px;
         }
 
-        /* ====== WRITEUPS GRID (نفس تنسيق writeups.html) ====== */
         .writeups-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -296,7 +311,6 @@
         }
         .writeup-card .writeup-link:hover { color: #fff; gap: 12px; }
 
-        /* ====== QUICK LINKS ====== */
         .quick-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -387,7 +401,6 @@
             .social a { margin: 0 0.8rem; }
         }
 
-        /* ====== Mouse effects ====== */
         .mouse-trail {
             position: fixed;
             width: 8px;
