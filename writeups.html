@@ -15,6 +15,7 @@
             min-height: 100vh;
             overflow-x: hidden;
         }
+        /* خلفية متحركة */
         .bg-animation {
             position: fixed;
             top: 0;
@@ -31,6 +32,7 @@
             0% { transform: scale(1) rotate(0deg); }
             100% { transform: scale(1.1) rotate(3deg); }
         }
+        /* نجوم */
         .stars {
             position: fixed;
             top: 0;
@@ -50,6 +52,7 @@
             0% { opacity: 0.1; transform: scale(0.5); }
             100% { opacity: 1; transform: scale(1.5); }
         }
+        /* الحاوية */
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -57,6 +60,7 @@
             position: relative;
             z-index: 1;
         }
+        /* الهيدر */
         .header {
             display: flex;
             align-items: center;
@@ -127,8 +131,8 @@
         .filter-btn {
             padding: 0.5rem 1.2rem;
             border-radius: 30px;
-            border: 1px solid rgba(111, 255, 224, 0.1);
-            background: transparent;
+            border: 1px solid rgba(111, 255, 224, 0.06);
+            background: rgba(255,255,255,0.02);
             color: rgba(255,255,255,0.5);
             cursor: pointer;
             transition: 0.3s;
@@ -138,14 +142,17 @@
         .filter-btn:hover {
             border-color: #6fffe0;
             color: #fff;
+            transform: translateY(-2px);
+            background: rgba(111,255,224,0.03);
         }
         .filter-btn.active {
             background: linear-gradient(135deg, #6fffe0, #a78bfa);
             color: #0a0a0f;
             border-color: transparent;
+            box-shadow: 0 5px 25px rgba(111, 255, 224, 0.15);
         }
 
-        .stats-grid {
+        .writeups-stats {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
@@ -196,7 +203,7 @@
             gap: 10px;
             margin-bottom: 0.5rem;
         }
-        .writeup-header .icon { font-size: 1.5rem; }
+        .writeup-header .writeup-icon { font-size: 1.5rem; }
         .writeup-header h4 { color: #6fffe0; font-size: 1.1rem; }
         .writeup-meta {
             display: flex;
@@ -210,19 +217,46 @@
             text-transform: uppercase;
             font-weight: 600;
         }
-        .writeup-meta .os { background: rgba(0,255,200,0.15); color: #6fffe0; }
-        .writeup-meta .level { background: rgba(124,58,237,0.15); color: #a78bfa; }
+        .writeup-meta .writeup-os { background: rgba(0,255,200,0.15); color: #6fffe0; }
+        .writeup-meta .writeup-level { background: rgba(124,58,237,0.15); color: #a78bfa; }
         .writeup-category { color: rgba(255,255,255,0.4); font-size: 0.85rem; margin-bottom: 0.5rem; }
         .writeup-password {
-            padding: 4px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin: 8px 0;
+            padding: 6px 12px;
             background: rgba(111, 255, 224, 0.05);
             border-radius: 6px;
-            font-size: 12px;
-            color: #6fffe0;
-            font-family: monospace;
             border: 1px dashed rgba(111, 255, 224, 0.1);
-            display: inline-block;
-            margin: 0.5rem 0;
+        }
+        .writeup-password .password-text {
+            color: #6fffe0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            word-break: break-all;
+            flex: 1;
+        }
+        .copy-btn {
+            background: rgba(111, 255, 224, 0.08);
+            border: 1px solid rgba(111, 255, 224, 0.15);
+            border-radius: 6px;
+            color: #6fffe0;
+            cursor: pointer;
+            padding: 4px 10px;
+            font-size: 14px;
+            transition: 0.3s;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .copy-btn:hover {
+            background: rgba(111, 255, 224, 0.15);
+            border-color: #6fffe0;
+            transform: scale(1.05);
         }
         .writeup-link {
             color: #6fffe0;
@@ -232,6 +266,7 @@
             align-items: center;
             gap: 8px;
             transition: 0.3s;
+            margin-top: 0.5rem;
         }
         .writeup-link:hover { color: #fff; gap: 12px; }
 
@@ -266,12 +301,45 @@
             .footer { flex-direction: column; text-align: center; }
             .social a { margin: 0 0.8rem; }
         }
+
+        /* ====== Mouse effects ====== */
+        .mouse-trail {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: #6fffe0;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            box-shadow: 0 0 20px rgba(111,255,224,0.5), 0 0 60px rgba(111,255,224,0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s;
+        }
+        .mouse-glow-effect {
+            position: fixed;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(111, 255, 224, 0.06), transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+        .mouse-glow-effect.active {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(111, 255, 224, 0.12), transparent 70%);
+        }
     </style>
 </head>
 <body>
 
     <div class="bg-animation"></div>
     <div class="stars" id="stars"></div>
+
+    <div class="mouse-trail" id="mouseTrail"></div>
+    <div class="mouse-glow-effect" id="mouseGlowEffect"></div>
 
     <div class="container">
 
@@ -302,7 +370,7 @@
             <button class="filter-btn" data-filter="hacker101">🛡️ Hacker101</button>
         </div>
 
-        <div class="stats-grid" id="writeupsStats"></div>
+        <div class="writeups-stats" id="writeupsStats"></div>
 
         <div class="writeups-grid" id="allWriteups"></div>
 
@@ -319,6 +387,7 @@
     </div>
 
     <script>
+        // نجوم
         (function() {
             const container = document.getElementById('stars');
             for (let i = 0; i < 80; i++) {
@@ -340,6 +409,40 @@
     <script src="js/writeups.js"></script>
     <script>
         loadAllWriteups();
+
+        // Mouse effects
+        (function() {
+            const trail = document.getElementById("mouseTrail");
+            const glow = document.getElementById("mouseGlowEffect");
+            let x = 0, y = 0;
+            let trailX = 0, trailY = 0;
+
+            document.addEventListener("mousemove", (e) => {
+                x = e.clientX;
+                y = e.clientY;
+                glow.style.left = x + "px";
+                glow.style.top = y + "px";
+                glow.classList.add("active");
+                clearTimeout(window.glowTimeout);
+                window.glowTimeout = setTimeout(() => glow.classList.remove("active"), 200);
+            });
+
+            setInterval(() => {
+                trailX += (x - trailX) * 0.15;
+                trailY += (y - trailY) * 0.15;
+                trail.style.left = trailX + "px";
+                trail.style.top = trailY + "px";
+            }, 16);
+
+            document.addEventListener("mouseleave", () => {
+                trail.style.opacity = "0";
+                glow.style.opacity = "0";
+            });
+            document.addEventListener("mouseenter", () => {
+                trail.style.opacity = "1";
+                glow.style.opacity = "1";
+            });
+        })();
     </script>
 
 </body>

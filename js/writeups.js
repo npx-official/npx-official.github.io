@@ -65,6 +65,18 @@ function createWriteupCard(writeup) {
     const card = document.createElement('div');
     card.className = `writeup-card ${writeup.os} ${writeup.level}`;
     
+    let passwordHTML = '';
+    if (writeup.password) {
+        passwordHTML = `
+            <div class="writeup-password">
+                <span class="password-text">🔑 ${writeup.password}</span>
+                <button class="copy-btn" data-password="${writeup.password}" title="Copy password">
+                    <i class="fas fa-copy"></i>
+                </button>
+            </div>
+        `;
+    }
+    
     card.innerHTML = `
         <div class="writeup-header">
             <span class="writeup-icon">${categoryInfo.icon}</span>
@@ -75,7 +87,7 @@ function createWriteupCard(writeup) {
             <span class="writeup-level">${writeup.level}</span>
         </div>
         <div class="writeup-category">${categoryInfo.label}</div>
-        ${writeup.password ? `<div class="writeup-password">🔑 ${writeup.password}</div>` : ''}
+        ${passwordHTML}
         <a href="${writeup.path}" class="writeup-link">
             Read Writeup <i class="fas fa-arrow-right"></i>
         </a>
@@ -107,6 +119,53 @@ function applyFilter(filter) {
     filteredData.forEach(writeup => {
         container.appendChild(createWriteupCard(writeup));
     });
+    
+    // إضافة حدث النسخ بعد إنشاء البطاقات
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const password = this.getAttribute('data-password');
+            copyPassword(password, this);
+        });
+    });
+}
+
+// ====== COPY PASSWORD ======
+function copyPassword(password, btn) {
+    const originalHTML = btn.innerHTML;
+    
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(password).then(() => {
+            btn.innerHTML = '<i class="fas fa-check" style="color: #00ff88;"></i>';
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+            }, 1500);
+        }).catch(() => {
+            fallbackCopy(password, btn, originalHTML);
+        });
+    } else {
+        fallbackCopy(password, btn, originalHTML);
+    }
+}
+
+function fallbackCopy(password, btn, originalHTML) {
+    const textarea = document.createElement('textarea');
+    textarea.value = password;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+        document.execCommand('copy');
+        btn.innerHTML = '<i class="fas fa-check" style="color: #00ff88;"></i>';
+        setTimeout(() => {
+            btn.innerHTML = originalHTML;
+        }, 1500);
+    } catch (err) {
+        alert('Could not copy password. Please select and copy it manually.');
+    }
+    document.body.removeChild(textarea);
 }
 
 // ====== LOAD ALL WRITEUPS ======
@@ -164,19 +223,16 @@ function setupFilters() {
 }
 
 // ====== FEATURED (for homepage) ======
-// ====== FEATURED (for homepage) ======
 function loadFeaturedWriteups() {
     const container = document.getElementById('featuredWriteups');
     if (!container) return;
     
-    // 🔥 عرض فقط: ProLabs و Hard
     const featured = writeupsData.filter(w => 
         w.level === 'hard' || 
         w.level === 'prolabs' || 
         w.os === 'prolabs'
     );
     
-    // رتبهم (ProLabs أولاً، ثم Hard)
     featured.sort((a, b) => {
         if (a.os === 'prolabs' && b.os !== 'prolabs') return -1;
         if (a.os !== 'prolabs' && b.os === 'prolabs') return 1;
@@ -188,6 +244,7 @@ function loadFeaturedWriteups() {
         container.appendChild(createWriteupCard(writeup));
     });
 }
+
 // ====== EXPOSE FUNCTIONS ======
 window.loadAllWriteups = loadAllWriteups;
 window.loadFeaturedWriteups = loadFeaturedWriteups;
@@ -197,4 +254,3 @@ console.log(`🐧 Linux: ${writeupsData.filter(w => w.os === 'linux').length}`);
 console.log(`🪟 Windows: ${writeupsData.filter(w => w.os === 'windows').length}`);
 console.log(`🏆 ProLabs: ${writeupsData.filter(w => w.os === 'prolabs').length}`);
 console.log(`🛡️ Hacker101: ${writeupsData.filter(w => w.os === 'hacker101').length}`);
-

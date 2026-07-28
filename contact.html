@@ -329,5 +329,19 @@
         });
     </script>
 
+<!-- Mouse effects -->
+<div class="mouse-trail" id="mouseTrail"></div>
+<div class="mouse-glow-effect" id="mouseGlowEffect"></div>
+
+<style>
+.mouse-trail { position: fixed; width: 8px; height: 8px; background: #6fffe0; border-radius: 50%; pointer-events: none; z-index: 9999; box-shadow: 0 0 20px rgba(111,255,224,0.5), 0 0 60px rgba(111,255,224,0.2); transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s; }
+.mouse-glow-effect { position: fixed; width: 200px; height: 200px; background: radial-gradient(circle, rgba(111,255,224,0.06), transparent 70%); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: width 0.3s, height 0.3s; }
+.mouse-glow-effect.active { width: 350px; height: 350px; background: radial-gradient(circle, rgba(111,255,224,0.12), transparent 70%); }
+</style>
+
+<script>
+(function() { const trail = document.getElementById("mouseTrail"); const glow = document.getElementById("mouseGlowEffect"); let x = 0, y = 0; let trailX = 0, trailY = 0; document.addEventListener("mousemove", (e) => { x = e.clientX; y = e.clientY; glow.style.left = x + "px"; glow.style.top = y + "px"; glow.classList.add("active"); clearTimeout(window.glowTimeout); window.glowTimeout = setTimeout(() => glow.classList.remove("active"), 200); }); setInterval(() => { trailX += (x - trailX) * 0.15; trailY += (y - trailY) * 0.15; trail.style.left = trailX + "px"; trail.style.top = trailY + "px"; }, 16); document.addEventListener("mouseleave", () => { trail.style.opacity = "0"; glow.style.opacity = "0"; }); document.addEventListener("mouseenter", () => { trail.style.opacity = "1"; glow.style.opacity = "1"; }); })();
+</script>
+
 </body>
 </html>

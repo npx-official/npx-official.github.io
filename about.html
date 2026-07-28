@@ -56,6 +56,11 @@
             padding: 2rem 3rem;
             position: relative;
             z-index: 1;
+            animation: fadeIn 0.8s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .header {
             display: flex;
@@ -67,6 +72,11 @@
             border: 1px solid rgba(111, 255, 224, 0.08);
             border-radius: 2rem;
             margin-bottom: 4rem;
+            transition: all 0.3s ease;
+        }
+        .header:hover {
+            border-color: rgba(111, 255, 224, 0.2);
+            box-shadow: 0 0 40px rgba(111, 255, 224, 0.03);
         }
         .logo {
             display: flex;
@@ -77,14 +87,16 @@
             background: linear-gradient(135deg, #6fffe0, #a78bfa);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            transition: transform 0.3s ease;
         }
+        .logo:hover { transform: scale(1.03); }
         .logo img { width: 40px; height: 40px; }
         .nav a {
             color: rgba(255,255,255,0.5);
             text-decoration: none;
             margin-left: 2rem;
             font-size: 0.95rem;
-            transition: 0.3s;
+            transition: all 0.3s ease;
             position: relative;
         }
         .nav a::after {
@@ -94,10 +106,10 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: #6fffe0;
-            transition: 0.3s;
+            background: linear-gradient(90deg, #6fffe0, #a78bfa);
+            transition: width 0.3s ease;
         }
-        .nav a:hover { color: #fff; }
+        .nav a:hover { color: #fff; transform: translateY(-2px); }
         .nav a:hover::after { width: 100%; }
         .nav a.active { color: #fff; }
         .nav a.active::after { width: 100%; }
@@ -115,11 +127,16 @@
             align-items: center;
             justify-content: center;
             gap: 15px;
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+        @keyframes titleGlow {
+            0%, 100% { text-shadow: 0 0 20px rgba(111, 255, 224, 0.1); }
+            50% { text-shadow: 0 0 40px rgba(111, 255, 224, 0.2), 0 0 80px rgba(111, 255, 224, 0.05); }
         }
 
         .about-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 1.5rem;
             margin-bottom: 3rem;
         }
@@ -128,23 +145,38 @@
             border: 1px solid rgba(111, 255, 224, 0.06);
             border-radius: 1.5rem;
             padding: 2rem;
-            transition: 0.3s;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
+        .about-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(111, 255, 224, 0.03), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+        .about-card:hover::before { opacity: 1; }
         .about-card:hover {
-            transform: translateY(-6px);
+            transform: translateY(-8px);
             border-color: #6fffe0;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4), 0 0 40px rgba(111, 255, 224, 0.03);
             background: rgba(111, 255, 224, 0.02);
+        }
+        .about-card .emoji {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 0.8rem;
         }
         .about-card h3 {
             color: #6fffe0;
             font-size: 1.4rem;
             margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
         }
         .about-card p, .about-card li {
             color: #b6c8e0;
@@ -156,35 +188,41 @@
             padding: 0;
         }
         .about-card ul li {
-            padding: 0.4rem 0;
+            padding: 0.3rem 0;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
         }
-        .about-card .sticker { font-size: 1.2rem; }
+        .about-card ul li .icon { color: #6fffe0; font-size: 1rem; }
 
         .tech-grid {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 0.8rem;
+            gap: 0.6rem;
             margin-top: 0.5rem;
         }
         .tech-tag {
-            padding: 0.4rem 1.4rem;
+            padding: 0.4rem 1.2rem;
             border-radius: 30px;
-            background: rgba(0, 255, 200, 0.05);
-            border: 1px solid rgba(0, 255, 200, 0.1);
+            background: rgba(0, 255, 200, 0.04);
+            border: 1px solid rgba(0, 255, 200, 0.08);
             color: #b6c8e0;
-            font-size: 0.9rem;
-            transition: 0.3s;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            cursor: default;
         }
         .tech-tag:hover {
-            background: rgba(0, 255, 200, 0.15);
+            background: rgba(0, 255, 200, 0.12);
             border-color: #6fffe0;
             color: #fff;
             transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(111, 255, 224, 0.05);
+        }
+
+        .about-card-wide {
+            grid-column: 1 / -1;
         }
 
         .footer {
@@ -202,16 +240,30 @@
             color: rgba(255,255,255,0.2);
             font-size: 1.2rem;
             margin-left: 1.5rem;
-            transition: 0.3s;
+            transition: all 0.3s ease;
+            display: inline-block;
         }
-        .social a:hover { color: #6fffe0; transform: translateY(-3px); }
+        .social a:hover {
+            color: #6fffe0;
+            transform: translateY(-4px) scale(1.1);
+            text-shadow: 0 0 30px rgba(111, 255, 224, 0.2);
+        }
 
+        /* صفحة About */
+        .about-page .emoji-big { font-size: 3.5rem; display: block; margin-bottom: 0.5rem; }
+        .about-page .bio-text { max-width: 700px; margin: 0 auto 2rem; text-align: center; color: #b6c8e0; font-size: 1.1rem; line-height: 1.8; }
+        .about-page .bio-text strong { color: #6fffe0; }
+
+        @media (max-width: 992px) {
+            .about-grid { grid-template-columns: repeat(2, 1fr); }
+        }
         @media (max-width: 768px) {
             .container { padding: 1rem; }
             .header { flex-direction: column; gap: 1rem; padding: 1rem; }
             .nav a { margin: 0 0.8rem; font-size: 0.85rem; }
             .page-title { font-size: 2rem; }
             .about-grid { grid-template-columns: 1fr; }
+            .about-card-wide { grid-column: 1; }
         }
         @media (max-width: 480px) {
             .page-title { font-size: 1.5rem; }
@@ -243,45 +295,62 @@
 
         <h1 class="page-title"><i class="fas fa-user-astronaut"></i> About Me</h1>
 
-        <div class="about-grid">
-            <div class="about-card">
-                <h3><span class="sticker">🦊</span> Who Am I?</h3>
-                <ul>
-                    <li><span class="sticker">🔐</span> <strong>Offensive Security Enthusiast</strong></li>
-                    <li><span class="sticker">🎯</span> Currently: <strong>OSCP Preparation</strong></li>
-                </ul>
+        <div class="about-page">
+
+            <div class="bio-text">
+                <span class="emoji-big">🦊</span>
+                <p>Passionate <strong>Offensive Security Enthusiast</strong> | CTF Player | Bug Bounty Hunter</p>
+                <p>Currently focused on <strong>OSCP Preparation</strong> &amp; HTB Machines</p>
             </div>
 
-            <div class="about-card">
-                <h3><span class="sticker">📚</span> Learning</h3>
-                <ul>
-                    <li><span class="sticker">🌐</span> Web Application Security</li>
-                    <li><span class="sticker">🏰</span> Active Directory Pentesting</li>
-                    <li><span class="sticker">☁️</span> Cloud Security</li>
-                </ul>
-            </div>
+            <div class="about-grid">
 
-            <div class="about-card">
-                <h3><span class="sticker">⚡</span> Tech Stack</h3>
-                <div class="tech-grid">
-                    <span class="tech-tag">🐍 Python</span>
-                    <span class="tech-tag">💻 Bash</span>
-                    <span class="tech-tag">📜 JavaScript</span>
-                    <span class="tech-tag">🐧 Linux</span>
-                    <span class="tech-tag">🪟 Windows</span>
-                    <span class="tech-tag">🛡️ Metasploit</span>
-                    <span class="tech-tag">🐛 Burp Suite</span>
-                    <span class="tech-tag">🐳 Docker</span>
+                <div class="about-card">
+                    <span class="emoji">📚</span>
+                    <h3>Learning</h3>
+                    <ul>
+                        <li><span class="icon">🌐</span> Web Application Security</li>
+                        <li><span class="icon">🏰</span> Active Directory Pentesting</li>
+                        <li><span class="icon">☁️</span> Cloud Security</li>
+                        <li><span class="icon">🔍</span> Bug Bounty</li>
+                    </ul>
                 </div>
-            </div>
 
-            <div class="about-card">
-                <h3><span class="sticker">🏆</span> Achievements</h3>
-                <ul>
-                    <li><span class="sticker">📝</span> <strong>Paperwork</strong> — Machine walkthrough</li>
-                    <li><span class="sticker">🛠️</span> <strong>Custom Exploits</strong> — Script collection</li>
-                    <li><span class="sticker">📚</span> <strong>Cybersecurity Content</strong> — Technical articles</li>
-                </ul>
+                <div class="about-card">
+                    <span class="emoji">⚡</span>
+                    <h3>Tech Stack</h3>
+                    <div class="tech-grid">
+                        <span class="tech-tag">🐍 Python</span>
+                        <span class="tech-tag">💻 Bash</span>
+                        <span class="tech-tag">📜 JavaScript</span>
+                        <span class="tech-tag">🐧 Linux</span>
+                        <span class="tech-tag">🪟 Windows</span>
+                        <span class="tech-tag">🛡️ Metasploit</span>
+                        <span class="tech-tag">🐛 Burp Suite</span>
+                        <span class="tech-tag">🐳 Docker</span>
+                    </div>
+                </div>
+
+                <div class="about-card">
+                    <span class="emoji">🏆</span>
+                    <h3>Achievements</h3>
+                    <ul>
+                        <li><span class="icon">📝</span> <strong>Paperwork</strong> — Machine walkthrough</li>
+                        <li><span class="icon">🛠️</span> <strong>Custom Exploits</strong> — Script collection</li>
+                        <li><span class="icon">📚</span> <strong>Cybersecurity Content</strong> — Technical articles</li>
+                    </ul>
+                </div>
+
+                <div class="about-card about-card-wide">
+                    <span class="emoji">🎯</span>
+                    <h3>Goals</h3>
+                    <ul>
+                        <li><span class="icon">✅</span> Complete <strong>OSCP</strong> certification</li>
+                        <li><span class="icon">✅</span> Build <strong>50+</strong> HTB writeups</li>
+                        <li><span class="icon">✅</span> Contribute to <strong>open-source</strong> security tools</li>
+                    </ul>
+                </div>
+
             </div>
         </div>
 
@@ -315,6 +384,20 @@
             }
         })();
     </script>
+
+<!-- Mouse effects -->
+<div class="mouse-trail" id="mouseTrail"></div>
+<div class="mouse-glow-effect" id="mouseGlowEffect"></div>
+
+<style>
+.mouse-trail { position: fixed; width: 8px; height: 8px; background: #6fffe0; border-radius: 50%; pointer-events: none; z-index: 9999; box-shadow: 0 0 20px rgba(111,255,224,0.5), 0 0 60px rgba(111,255,224,0.2); transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s; }
+.mouse-glow-effect { position: fixed; width: 200px; height: 200px; background: radial-gradient(circle, rgba(111,255,224,0.06), transparent 70%); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: width 0.3s, height 0.3s; }
+.mouse-glow-effect.active { width: 350px; height: 350px; background: radial-gradient(circle, rgba(111,255,224,0.12), transparent 70%); }
+</style>
+
+<script>
+(function() { const trail = document.getElementById("mouseTrail"); const glow = document.getElementById("mouseGlowEffect"); let x = 0, y = 0; let trailX = 0, trailY = 0; document.addEventListener("mousemove", (e) => { x = e.clientX; y = e.clientY; glow.style.left = x + "px"; glow.style.top = y + "px"; glow.classList.add("active"); clearTimeout(window.glowTimeout); window.glowTimeout = setTimeout(() => glow.classList.remove("active"), 200); }); setInterval(() => { trailX += (x - trailX) * 0.15; trailY += (y - trailY) * 0.15; trail.style.left = trailX + "px"; trail.style.top = trailY + "px"; }, 16); document.addEventListener("mouseleave", () => { trail.style.opacity = "0"; glow.style.opacity = "0"; }); document.addEventListener("mouseenter", () => { trail.style.opacity = "1"; glow.style.opacity = "1"; }); })();
+</script>
 
 </body>
 </html>
