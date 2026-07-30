@@ -249,8 +249,3 @@ function loadFeaturedWriteups() {
 window.loadAllWriteups = loadAllWriteups;
 window.loadFeaturedWriteups = loadFeaturedWriteups;
 
-console.log(`📚 Loaded ${writeupsData.length} writeups`);
-console.log(`🐧 Linux: ${writeupsData.filter(w => w.os === 'linux').length}`);
-console.log(`🪟 Windows: ${writeupsData.filter(w => w.os === 'windows').length}`);
-console.log(`🏆 ProLabs: ${writeupsData.filter(w => w.os === 'prolabs').length}`);
-console.log(`🛡️ Hacker101: ${writeupsData.filter(w => w.os === 'hacker101').length}`);
