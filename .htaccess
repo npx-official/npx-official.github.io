@@ -1,0 +1,8 @@
+RewriteEngine On
+
+# إخفاء .html من الرابط
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^([^\.]+)$ $1.html [L]
+
+# إعادة توجيه 404 إلى الصفحة الرئيسية
+ErrorDocument 404 /index.html
