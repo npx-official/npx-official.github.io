@@ -1,41 +1,7 @@
 <script setup>
-import { onMounted } from 'vue'
 import { RouterView } from 'vue-router'
 import Navbar from './components/Navbar.vue'
 import Effects from './components/Effects.vue'
-
-// 🔐 فك التشفير عند العودة من الصفحة الرئيسية
-onMounted(() => {
-    const encryptedToken = sessionStorage.getItem('npx_secure_route_writeup')
-    if (encryptedToken) {
-        sessionStorage.removeItem('npx_secure_route_writeup')
-        
-        const SECRET_KEY = "NPX2026SECURE_LINK"
-        try {
-            const decoded = atob(encryptedToken)
-            let originalURL = ''
-            for (let i = 0; i < decoded.length; i++) {
-                originalURL += String.fromCharCode(decoded.charCodeAt(i) ^ SECRET_KEY.charCodeAt(i % SECRET_KEY.length))
-            }
-            if (originalURL) {
-                window.location.href = originalURL
-            }
-        } catch (e) {}
-    }
-    
-    // 🛡️ حماية الروابط المباشرة (ضد الفتح المباشر)
-    const currentPath = window.location.pathname
-    if (currentPath.includes('/writeups/') && currentPath.endsWith('.html')) {
-        const SECRET_KEY = "NPX2026SECURE_LINK"
-        let encrypted = ''
-        for (let i = 0; i < currentPath.length; i++) {
-            encrypted += String.fromCharCode(currentPath.charCodeAt(i) ^ SECRET_KEY.charCodeAt(i % SECRET_KEY.length))
-        }
-        const encryptedToken = btoa(encrypted)
-        sessionStorage.setItem('npx_secure_route_writeup', encryptedToken)
-        window.location.href = '/'
-    }
-})
 </script>
 
 <template>
