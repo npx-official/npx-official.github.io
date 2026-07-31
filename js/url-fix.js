@@ -1,5 +1,5 @@
 // ==========================================================
-// 🚀 NIGHT PULSE X - ULTIMATE SMART ROUTER (v3.0)
+// 🚀 NIGHT PULSE X - ULTIMATE SMART ROUTER (FINAL FIX)
 // ==========================================================
 (function() {
     const currentPath = window.location.pathname;
@@ -9,23 +9,28 @@
     const ENCRYPTED_PAGES = ['Odyssey'];
     const isEncrypted = ENCRYPTED_PAGES.some(page => currentPath.includes(page));
 
+    // 1. إخفاء .html
     if (!isEncrypted && /\.html$/i.test(currentPath) && cleanPath !== '/home') {
         window.history.replaceState({}, '', cleanPath + queryString);
     }
 
-    if (!isEncrypted && (cleanPath === '/' || cleanPath === '/index.html')) {
+    // 2. تحويل الصفحة الرئيسية إلى /home (تصحيح شرط index)
+    if (!isEncrypted && (cleanPath === '/' || cleanPath === '/index')) { // <--- التصحيح هنا!
         window.history.replaceState({}, '', '/home' + queryString);
         document.documentElement.style.display = 'none';
         setTimeout(() => { document.documentElement.style.display = ''; }, 10);
     }
 
-    if (!isEncrypted && !currentPath.endsWith('.html')) {
+    // 3. منع تشغيل الـ 404 Checker أثناء فحص الصفحة الرئيسية
+    if (!isEncrypted && !currentPath.endsWith('.html') && cleanPath && cleanPath !== '/home' && cleanPath !== '/index') {
         const possibleHtmlPath = cleanPath + '.html';
         fetch(possibleHtmlPath, { method: 'HEAD' })
             .then(response => {
                 if (response.ok) {
+                    // إذا وجدنا الملف، نوجه إليه
                     window.location.replace(possibleHtmlPath + queryString);
                 } else {
+                    // اعرض صفحة 404 المخصصة
                     showCustom404();
                 }
             })
@@ -49,6 +54,7 @@
         `;
     }
 
+    // 4. تعديل الروابط الداخلية
     document.addEventListener('DOMContentLoaded', function() {
         const links = document.querySelectorAll('a[href$=".html"]');
         links.forEach(link => {
@@ -60,5 +66,5 @@
         });
     });
 
-    console.log('✅ NPX Ultimate Router loaded successfully!');
+    console.log('✅ NPX Ultimate Router (Fixed) loaded successfully!');
 })();
