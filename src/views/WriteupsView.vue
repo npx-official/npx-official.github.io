@@ -58,25 +58,6 @@ function copyPassword(password, event) {
         setTimeout(() => { btn.innerHTML = originalHTML; }, 1500);
     }
 }
-
-// ==========================================================
-// 🔐 تشفير الروابط تلقائياً عند بناء الصفحة
-// ==========================================================
-function encryptURL(url) {
-    const SECRET_KEY = "NPX2026SECURE_LINK";
-    let encrypted = '';
-    for (let i = 0; i < url.length; i++) {
-        encrypted += String.fromCharCode(url.charCodeAt(i) ^ SECRET_KEY.charCodeAt(i % SECRET_KEY.length));
-    }
-    return btoa(encrypted);
-}
-
-function handleEncryptedClick(originalUrl, event) {
-    event.preventDefault();
-    const encrypted = encryptURL(originalUrl);
-    sessionStorage.setItem('npx_secure_route_writeup', encrypted);
-    window.location.href = '/';
-}
 </script>
 
 <template>
@@ -134,8 +115,8 @@ function handleEncryptedClick(originalUrl, event) {
         <button class="copy-btn" @click="copyPassword(writeup.password, $event)"><i class="fas fa-copy"></i></button>
       </div>
       
-      <!-- الرابط المشفر تلقائياً -->
-      <a href="#" class="writeup-link" @click="handleEncryptedClick(writeup.path, $event)">
+      <!-- الرابط المباشر (بدون أي تشفير!) -->
+      <a :href="writeup.path" class="writeup-link">
         Read Writeup <i class="fas fa-arrow-right"></i>
       </a>
     </div>
