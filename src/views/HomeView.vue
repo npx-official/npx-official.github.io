@@ -52,7 +52,7 @@ function copyPassword(password, event) {
 <template>
   <!-- نبدأ مباشرة بالـ Hero بدون أي Header أو Nav -->
   <section class="hero">
-    <img src="@/assets/avatar.png" alt="NIGHT PULSE X" class="avatar" />
+    <img src="/avatar.png" alt="NIGHT PULSE X" class="avatar" />
     <h1>NIGHT PULSE X</h1>
     <p>Penetration Testing • Security Research • Future Ready</p>
     <div class="hero-buttons">
