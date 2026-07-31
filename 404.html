@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Routing Fix</title>
+    <script>
+      // عندما يطلب الخادم مساراً غير موجود، نعطي المتصفح مسار Vue الصحيح
+      (function() {
+        var path = window.location.pathname;
+        // إذا لم يكن الملف موجوداً، نحتفظ بالمسار الحالي تماماً
+        if (!path.endsWith('.html') && !path.includes('.')) {
+          // نعيد كتابة الرابط في المتصفح ليستخدم index.html
+          window.history.replaceState({}, '', '/index.html');
+          // لا نعيد التوجيه، بل نعيد تحميل الصفحة في مكانها
+          window.location.reload();
+        }
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>
