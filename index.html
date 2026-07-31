@@ -1,14 +1,114 @@
 <!DOCTYPE html>
-<html lang="">
-  <head>
-    <meta charset="UTF-8">
-    <link rel="icon" href="/favicon.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NIGHT PULSE X</title>
-    <script type="module" crossorigin src="/assets/index-8kXsAw21.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-P21Je6et.css">
-  </head>
-  <body>
-    <div id="app"></div>
-  </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NIGHT PULSE X • Home</title>
+    <link rel="icon" href="assets/images/favicon.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+    <div id="preloader"><div class="loader-ring"></div><p>Loading...</p></div>
+    <div class="mouse-glow" id="mouseGlow"></div>
+    <canvas id="particlesCanvas"></canvas>
+
+    <div class="container">
+
+        <nav class="navbar">
+            <div class="logo">
+                <img src="assets/images/npx-logo.svg" alt="NPX Logo" />
+                <span>NIGHT PULSE X</span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html" class="active"><i class="fas fa-house"></i> Home</a></li>
+                <li><a href="about.html"><i class="fas fa-user-astronaut"></i> About</a></li>
+                <li><a href="writeups.html"><i class="fas fa-pen-fancy"></i> Writeups</a></li>
+                <li><a href="certifications.html"><i class="fas fa-certificate"></i> Certifications</a></li>
+                <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+        </nav>
+
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <div class="hero-avatar">
+                    <img src="assets/images/avatar.png" alt="NIGHT PULSE X" />
+                </div>
+                <h1 class="glitch-text" data-text="NIGHT PULSE X">NIGHT PULSE X</h1>
+                <p class="hero-subtitle">Penetration Testing • Security Research • Future Ready</p>
+                <div class="hero-buttons">
+                    <a href="writeups.html" class="btn-primary"><i class="fas fa-book"></i> Explore Writeups</a>
+                    <a href="about.html" class="btn-secondary"><i class="fas fa-user"></i> About Me</a>
+                </div>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-number" data-count="29">0</span>
+                    <span class="stat-label">Total Writeups</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-count="0">0</span>
+                    <span class="stat-label">Certifications</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-count="2">2</span>
+                    <span class="stat-label">Months Active</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="featured-section">
+            <h2 class="section-title"><i class="fas fa-star"></i> Featured Writeups</h2>
+            <div class="writeups-grid" id="featuredWriteups"></div>
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="writeups.html" class="btn-primary"><i class="fas fa-arrow-right"></i> View All</a>
+            </div>
+        </section>
+
+        <div class="quick-links">
+            <div class="quick-card">
+                <i class="fas fa-linux"></i>
+                <h4>Linux Machines</h4>
+                <p>18+ Writeups</p>
+                <a href="writeups.html?filter=linux">Explore →</a>
+            </div>
+            <div class="quick-card">
+                <i class="fas fa-windows"></i>
+                <h4>Windows Machines</h4>
+                <p>2 Writeups</p>
+                <a href="writeups.html?filter=windows">Explore →</a>
+            </div>
+            <div class="quick-card">
+                <i class="fas fa-trophy"></i>
+                <h4>ProLabs</h4>
+                <p>1 Writeup</p>
+                <a href="writeups.html?filter=prolabs">Explore →</a>
+            </div>
+       </div>
+
+        <footer>
+            <div class="footer-content">
+                <p><i class="fas fa-circle" style="color: #6fffe0; font-size: 0.5rem;"></i> 2026 · NIGHT PULSE X</p>
+                <div class="social-links">
+                    <a href="https://github.com/npx-official" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="https://app.hackthebox.com/users/2207141" target="_blank"><i class="fas fa-shield-halved"></i></a>
+                    <a href="https://tryhackme.com/p/npx.off" target="_blank"><i class="fas fa-user-secret"></i></a>
+                    <a href="https://www.linkedin.com/in/night-pulse-x-337a89275" target="_blank"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <script src="js/particles.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/writeups.js"></script>
+    <script>
+        loadFeaturedWriteups();
+    </script>
+</body>
 </html>
