@@ -24,15 +24,18 @@ const writeupsData = [
     // ====== LINUX - HARD ======
     { name: 'Nimbus', category: 'linux/hard', level: 'hard', os: 'linux', path: '/writeups/linux/hard/Nimbus.html' },
     
+    // ====== WINDOWS - MEDIUM ======
+    { name: 'logging', category: 'windows/medium', level: 'medium', os: 'windows', path: '/writeups/windows/medium/logging.html', password: ''},
+
     // ====== WINDOWS - HARD ======
     { name: 'Garfield', category: 'windows/hard', level: 'hard', os: 'windows', path: '/writeups/windows/hard/Garfield.html' },
     { name: 'Ghostlink', category: 'windows/hard', level: 'hard', os: 'windows', path: '/writeups/windows/hard/Ghostlink.html', password: 'Gh0stl1nk!W1nd0ws#X5' },
     { name: 'DarkZero Returns', category: 'windows/hard', level: 'hard', os: 'windows', path: '/writeups/windows/hard/DarkZeroReturns.html' },
     { name: 'Fries', category: 'windows/hard', level: 'hard', os: 'windows', path: '/writeups/windows/hard/Fries.html', password: 'Fr13s!H@rd#2026' },
  
-    // ====== WINDOWS - MEDIUM ======
-    { name: 'logging', category: 'windows/medium', level: 'medium', os: 'windows', path: '/writeups/windows/medium/logging.html', password: ''},
-    
+    // ====== WINDOWS - INSANE ======
+    { name: 'Odyssey', category: 'windows/insane', level: 'insane', os: 'windows', path: '/writeups/windows/insane/Odyssey.html', password: '0dys3y!R3turn#Insan3' },
+
     // ====== PROLABS ======
     { name: 'Mythical', category: 'prolabs', level: 'prolabs', os: 'prolabs', path: '/writeups/prolabs/Mythical.html' },
     { name: 'Puppet', category: 'prolabs', level: 'prolabs', os: 'prolabs', path: '/writeups/prolabs/Puppet.html' },
