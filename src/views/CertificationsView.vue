@@ -2,24 +2,28 @@
   <h1 class="page-title"><i class="fas fa-certificate"></i> Certifications</h1>
 
   <div class="cert-grid">
+    <!-- eJPT -->
     <div class="cert-card">
       <span class="icon"><i class="fas fa-shield-halved"></i></span>
       <h4>eJPT</h4>
       <p class="desc">eLearnSecurity Junior Penetration Tester</p>
       <span class="status planned">📝 Planned</span>
     </div>
+    <!-- CPTS -->
     <div class="cert-card">
       <span class="icon"><i class="fas fa-code"></i></span>
       <h4>CPTS</h4>
       <p class="desc">Certified Penetration Testing Specialist</p>
       <span class="status progress">🔄 In Progress</span>
     </div>
+    <!-- OSCP -->
     <div class="cert-card">
       <span class="icon"><i class="fas fa-cloud"></i></span>
       <h4>OSCP</h4>
       <p class="desc">Offensive Security Certified Professional</p>
       <span class="status next">🎯 Next Target</span>
     </div>
+    <!-- CEH -->
     <div class="cert-card">
       <span class="icon"><i class="fas fa-lock"></i></span>
       <h4>CEH</h4>
