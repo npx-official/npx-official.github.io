@@ -11,8 +11,7 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
-  // هذا السطر يخبر Vite بعدم تغيير مسارات الصور
-  build: {
-    assetsInlineLimit: 0
-  }
+  // هذا هو الجزء الذي سيجبر Vite على نسخ ملفات public إلى dist
+  publicDir: 'public'
 })
+
