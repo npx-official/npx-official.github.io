@@ -987,54 +987,5 @@ exports.init = init;
             }
         });
     </script>
-<script>
-    // إيقاف الحلقة اللانهائية والجنون
-    (function() {
-        const currentPath = window.location.pathname;
-        const referrer = document.referrer || '';
-        
-        // إذا كان المستخدم قادماً من الصفحة الرئيسية (Vue)، لا تفعل شيئاً
-        if (referrer.includes('localhost:5173/') || referrer.includes('npx-official.github.io/')) {
-            return; // خروج آمن
-        }
-        
-        // فقط إذا وصل المستخدم مباشرةً (بدون Vue)، نقوم بالتشفير
-        if (currentPath.includes('/writeups/')) {
-            const SECRET_KEY = "NPX2026SECURE_LINK";
-            let encrypted = '';
-            for (let i = 0; i < currentPath.length; i++) {
-                encrypted += String.fromCharCode(currentPath.charCodeAt(i) ^ SECRET_KEY.charCodeAt(i % SECRET_KEY.length));
-            }
-            const encryptedToken = btoa(encrypted);
-            sessionStorage.setItem('npx_secure_route_writeup', encryptedToken);
-            window.location.href = '/';
-        }
-    })();
-</script>
-
-<script>
-// SECURE_LINK_ENCRYPTED - DO NOT REMOVE
-(function() {
-    const currentPath = window.location.pathname;
-    const referrer = document.referrer || '';
-    
-    // إذا كان المستخدم قادماً من الصفحة الرئيسية (Vue)، لا تفعل شيئاً
-    if (referrer.includes('localhost:5173/') || referrer.includes('npx-official.github.io/')) {
-        return;
-    }
-    
-    if (currentPath.includes('/writeups/')) {
-        const SECRET_KEY = "NPX2026SECURE_LINK";
-        let encrypted = '';
-        for (let i = 0; i < currentPath.length; i++) {
-            encrypted += String.fromCharCode(currentPath.charCodeAt(i) ^ SECRET_KEY.charCodeAt(i % SECRET_KEY.length));
-        }
-        const encryptedToken = btoa(encrypted);
-        sessionStorage.setItem('npx_secure_route_writeup', encryptedToken);
-        window.location.href = '/';
-    }
-})();
-</script>
 </body>
-
 </html>

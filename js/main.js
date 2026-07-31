@@ -118,5 +118,3 @@ document.querySelectorAll('.module-card, .quick-card').forEach(card => {
     });
 });
 
-console.log('%c TESTING.NINJA ', 'background: #0b0d15; color: #6fffe0; font-size: 1.5rem; padding: 0.5rem 2rem; border-radius: 30px; border: 2px solid #6fffe0;');
-console.log('%c  🚀 Future Ready • Modular • Multi-Page  ', 'color: #a0d0d0; font-size: 1rem;');

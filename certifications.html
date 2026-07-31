@@ -369,5 +369,6 @@
 (function() { const trail = document.getElementById("mouseTrail"); const glow = document.getElementById("mouseGlowEffect"); let x = 0, y = 0; let trailX = 0, trailY = 0; document.addEventListener("mousemove", (e) => { x = e.clientX; y = e.clientY; glow.style.left = x + "px"; glow.style.top = y + "px"; glow.classList.add("active"); clearTimeout(window.glowTimeout); window.glowTimeout = setTimeout(() => glow.classList.remove("active"), 200); }); setInterval(() => { trailX += (x - trailX) * 0.15; trailY += (y - trailY) * 0.15; trail.style.left = trailX + "px"; trail.style.top = trailY + "px"; }, 16); document.addEventListener("mouseleave", () => { trail.style.opacity = "0"; glow.style.opacity = "0"; }); document.addEventListener("mouseenter", () => { trail.style.opacity = "1"; glow.style.opacity = "1"; }); })();
 </script>
 
+<script src="js/url-fix.js"></script>
 </body>
 </html>
