@@ -4,6 +4,7 @@ import { writeupsData } from '../data/writeupsData'
 
 const currentFilter = ref('all')
 
+// دالة تصنيف الأيقونات
 function getCategoryInfo(category) {
     const mapping = {
         'linux/easy': { label: '🐧 Linux Easy', icon: '🟢' },
@@ -18,6 +19,7 @@ function getCategoryInfo(category) {
     return mapping[category] || { label: category, icon: '📄' };
 }
 
+// الفلترة
 const filteredWriteups = computed(() => {
     if (currentFilter.value === 'all') return writeupsData
     return writeupsData.filter(w => {
@@ -30,6 +32,7 @@ const filteredWriteups = computed(() => {
     })
 })
 
+// الإحصائيات
 const stats = computed(() => {
     const total = writeupsData.length
     const linuxCount = writeupsData.filter(w => w.os === 'linux').length
@@ -39,6 +42,7 @@ const stats = computed(() => {
     return { total, linuxCount, windowsCount, prolabsCount, hacker101Count }
 })
 
+// نسخ كلمة المرور
 function copyPassword(password, event) {
     const btn = event.currentTarget;
     const originalHTML = btn.innerHTML;
@@ -47,15 +51,6 @@ function copyPassword(password, event) {
             btn.innerHTML = '<i class="fas fa-check" style="color: #00ff88;"></i>';
             setTimeout(() => { btn.innerHTML = originalHTML; }, 1500);
         });
-    } else {
-        const textarea = document.createElement('textarea');
-        textarea.value = password;
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textarea);
-        btn.innerHTML = '<i class="fas fa-check" style="color: #00ff88;"></i>';
-        setTimeout(() => { btn.innerHTML = originalHTML; }, 1500);
     }
 }
 </script>
@@ -109,13 +104,10 @@ function copyPassword(password, event) {
         <span class="writeup-level">{{ writeup.level }}</span>
       </div>
       <div class="writeup-category">{{ getCategoryInfo(writeup.category).label }}</div>
-      
       <div v-if="writeup.password" class="writeup-password">
         <span class="password-text">🔑 {{ writeup.password }}</span>
         <button class="copy-btn" @click="copyPassword(writeup.password, $event)"><i class="fas fa-copy"></i></button>
       </div>
-      
-      <!-- الرابط المباشر (بدون أي تشفير!) -->
       <a :href="writeup.path" class="writeup-link">
         Read Writeup <i class="fas fa-arrow-right"></i>
       </a>
@@ -124,17 +116,7 @@ function copyPassword(password, event) {
 </template>
 
 <style scoped>
-/* تنسيقات البطاقات */
-.writeup-password { display: flex; align-items: center; justify-content: space-between; margin: 8px 0; padding: 6px 12px; background: rgba(111, 255, 224, 0.05); border-radius: 8px; border: 1px solid rgba(111, 255, 224, 0.2); transition: all 0.3s ease; }
-.writeup-password:hover { background: rgba(111, 255, 224, 0.1); border-color: #6fffe0; box-shadow: 0 0 15px rgba(111, 255, 224, 0.1); }
-.writeup-password .password-text { color: #6fffe0; font-family: 'Courier New', monospace; font-size: 12px; word-break: break-all; flex: 1; letter-spacing: 0.5px; }
-.copy-btn { background: rgba(111, 255, 224, 0.15); border: 1px solid rgba(111, 255, 224, 0.2); border-radius: 6px; color: #6fffe0; cursor: pointer; padding: 4px 10px; transition: 0.3s; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
-.copy-btn:hover { background: #6fffe0; color: #0a0a0f; transform: scale(1.05); box-shadow: 0 0 20px rgba(111, 255, 224, 0.2); }
-
-.writeup-link { color: #6fffe0; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s; margin-top: 0.5rem; cursor: pointer; }
-.writeup-link:hover { color: #fff; gap: 12px; }
-
-/* باقي التنسيقات */
+/* التنسيقات الخاصة بصفحة Writeups */
 .filter-bar { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 2rem; justify-content: center; }
 .filter-btn { padding: 0.5rem 1.2rem; border-radius: 30px; border: 1px solid rgba(111, 255, 224, 0.06); background: rgba(255,255,255,0.02); color: rgba(255,255,255,0.5); cursor: pointer; transition: 0.3s; }
 .filter-btn:hover { border-color: #6fffe0; color: #fff; }
@@ -154,5 +136,10 @@ function copyPassword(password, event) {
 .writeup-meta .writeup-os { background: rgba(0,255,200,0.15); color: #6fffe0; }
 .writeup-meta .writeup-level { background: rgba(124,58,237,0.15); color: #a78bfa; }
 .writeup-category { color: rgba(255,255,255,0.4); font-size: 0.85rem; margin-bottom: 0.5rem; }
+.writeup-password { display: flex; align-items: center; justify-content: space-between; margin: 8px 0; padding: 6px 12px; background: rgba(111, 255, 224, 0.05); border-radius: 6px; border: 1px dashed rgba(111, 255, 224, 0.1); }
+.writeup-password .password-text { color: #6fffe0; font-family: 'Courier New', monospace; font-size: 12px; word-break: break-all; flex: 1; }
+.copy-btn { background: rgba(111, 255, 224, 0.08); border: 1px solid rgba(111, 255, 224, 0.15); border-radius: 6px; color: #6fffe0; cursor: pointer; padding: 4px 10px; transition: 0.3s; }
+.writeup-link { color: #6fffe0; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s; margin-top: 0.5rem; }
+.writeup-link:hover { color: #fff; gap: 12px; }
 .page-title { font-size: 2.8rem; font-weight: 700; text-align: center; margin-bottom: 2.5rem; background: linear-gradient(135deg, #6fffe0, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; justify-content: center; gap: 15px; }
 </style>
