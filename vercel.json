@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/writeups/:path*", "destination": "/writeups/:path*" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
