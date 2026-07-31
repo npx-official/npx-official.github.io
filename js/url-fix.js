@@ -13,7 +13,7 @@
         window.history.replaceState({}, '', cleanPath + queryString);
     }
 
-    if (!isEncrypted && (cleanPath === '/' || cleanPath === '/index')) {
+    if (!isEncrypted && (cleanPath === '/' || cleanPath === '/index.html')) {
         window.history.replaceState({}, '', '/home' + queryString);
         document.documentElement.style.display = 'none';
         setTimeout(() => { document.documentElement.style.display = ''; }, 10);
