@@ -1,7 +1,6 @@
 <script setup>
 import { onMounted, onUnmounted } from 'vue'
 
-// تعريف المتغيرات لحفظ المؤقتات والاستماعات
 let mouseInterval = null
 let mouseMoveHandler = null
 let mouseLeaveHandler = null
@@ -14,11 +13,7 @@ onMounted(() => {
     function initStars() {
         const container = document.getElementById('stars')
         if (!container) return
-        
-        // تنظيف النجوم السابقة لتجنب التكرار عند التنقل
         container.innerHTML = ''
-        
-        // إنشاء 100 نجمة
         for (let i = 0; i < 100; i++) {
             const star = document.createElement('div')
             star.className = 'star'
@@ -77,39 +72,11 @@ onMounted(() => {
         }, 16)
     }
 
-    // ==============================
-    // 3. فك تشفير الروابط (لـ Writeups)
-    // ==============================
-    function decryptLink() {
-        const encryptedToken = sessionStorage.getItem('npx_secure_route_writeup')
-        if (encryptedToken) {
-            // نمسح الرابط من الذاكرة فوراً (لإخفاء الأثر)
-            sessionStorage.removeItem('npx_secure_route_writeup')
-            
-            const SECRET_KEY = "NPX2026SECURE_LINK"
-            try {
-                const decoded = atob(encryptedToken)
-                let originalURL = ''
-                for (let i = 0; i < decoded.length; i++) {
-                    originalURL += String.fromCharCode(decoded.charCodeAt(i) ^ SECRET_KEY.charCodeAt(i % SECRET_KEY.length))
-                }
-                if (originalURL) {
-                    // التوجيه للصفحة الأصلية
-                    window.location.href = originalURL
-                }
-            } catch (e) {
-                console.error('Decryption error:', e)
-            }
-        }
-    }
-
-    // تنفيذ الدوال
+    // ✅ تشغيل الوظائف فقط (بدون فك تشفير)
     initStars()
     initMouse()
-    decryptLink()
 })
 
-// عند إزالة الصفحة (التنقل بين الصفحات)، نقوم بتنظيف الأحداث
 onUnmounted(() => {
     if (mouseInterval) clearInterval(mouseInterval)
     if (mouseMoveHandler) document.removeEventListener("mousemove", mouseMoveHandler)
@@ -119,5 +86,5 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <!-- هذا المكون ليس له واجهة، بل يقوم بالعمليات في الخلفية -->
+  <!-- هذا المكون ليس له واجهة -->
 </template>
