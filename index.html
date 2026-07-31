@@ -541,8 +541,14 @@
     <script src="js/main.js"></script>
     <script src="js/writeups.js"></script>
     <script>
-        loadFeaturedWriteups();
+        // تحميل العروض المميزة مع تحديد عددها (مثلاً 4)
+        if (typeof loadFeaturedWriteups === 'function') {
+            loadFeaturedWriteups(4);
+        } else {
+            console.warn("⚠️ تحذير: دالة loadFeaturedWriteups غير موجودة. تأكد من وجودها في writeups.js");
+        }
 
+        // تأثير الماوس
         (function() {
             const trail = document.getElementById("mouseTrail");
             const glow = document.getElementById("mouseGlowEffect");
