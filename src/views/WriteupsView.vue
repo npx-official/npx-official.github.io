@@ -58,6 +58,25 @@ function copyPassword(password, event) {
         setTimeout(() => { btn.innerHTML = originalHTML; }, 1500);
     }
 }
+
+// ==========================================================
+// 🔐 تشفير الروابط تلقائياً عند بناء الصفحة
+// ==========================================================
+function encryptURL(url) {
+    const SECRET_KEY = "NPX2026SECURE_LINK";
+    let encrypted = '';
+    for (let i = 0; i < url.length; i++) {
+        encrypted += String.fromCharCode(url.charCodeAt(i) ^ SECRET_KEY.charCodeAt(i % SECRET_KEY.length));
+    }
+    return btoa(encrypted);
+}
+
+function handleEncryptedClick(originalUrl, event) {
+    event.preventDefault();
+    const encrypted = encryptURL(originalUrl);
+    sessionStorage.setItem('npx_secure_route_writeup', encrypted);
+    window.location.href = '/';
+}
 </script>
 
 <template>
@@ -110,13 +129,13 @@ function copyPassword(password, event) {
       </div>
       <div class="writeup-category">{{ getCategoryInfo(writeup.category).label }}</div>
       
-      <!-- زر النسخ يعمل هنا -->
       <div v-if="writeup.password" class="writeup-password">
         <span class="password-text">🔑 {{ writeup.password }}</span>
         <button class="copy-btn" @click="copyPassword(writeup.password, $event)"><i class="fas fa-copy"></i></button>
       </div>
       
-      <a :href="writeup.path" class="writeup-link">
+      <!-- الرابط المشفر تلقائياً -->
+      <a href="#" class="writeup-link" @click="handleEncryptedClick(writeup.path, $event)">
         Read Writeup <i class="fas fa-arrow-right"></i>
       </a>
     </div>
@@ -124,13 +143,17 @@ function copyPassword(password, event) {
 </template>
 
 <style scoped>
+/* تنسيقات البطاقات */
 .writeup-password { display: flex; align-items: center; justify-content: space-between; margin: 8px 0; padding: 6px 12px; background: rgba(111, 255, 224, 0.05); border-radius: 8px; border: 1px solid rgba(111, 255, 224, 0.2); transition: all 0.3s ease; }
 .writeup-password:hover { background: rgba(111, 255, 224, 0.1); border-color: #6fffe0; box-shadow: 0 0 15px rgba(111, 255, 224, 0.1); }
 .writeup-password .password-text { color: #6fffe0; font-family: 'Courier New', monospace; font-size: 12px; word-break: break-all; flex: 1; letter-spacing: 0.5px; }
 .copy-btn { background: rgba(111, 255, 224, 0.15); border: 1px solid rgba(111, 255, 224, 0.2); border-radius: 6px; color: #6fffe0; cursor: pointer; padding: 4px 10px; transition: 0.3s; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
 .copy-btn:hover { background: #6fffe0; color: #0a0a0f; transform: scale(1.05); box-shadow: 0 0 20px rgba(111, 255, 224, 0.2); }
 
-/* باقي التنسيقات كما هي */
+.writeup-link { color: #6fffe0; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s; margin-top: 0.5rem; cursor: pointer; }
+.writeup-link:hover { color: #fff; gap: 12px; }
+
+/* باقي التنسيقات */
 .filter-bar { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 2rem; justify-content: center; }
 .filter-btn { padding: 0.5rem 1.2rem; border-radius: 30px; border: 1px solid rgba(111, 255, 224, 0.06); background: rgba(255,255,255,0.02); color: rgba(255,255,255,0.5); cursor: pointer; transition: 0.3s; }
 .filter-btn:hover { border-color: #6fffe0; color: #fff; }
@@ -150,7 +173,5 @@ function copyPassword(password, event) {
 .writeup-meta .writeup-os { background: rgba(0,255,200,0.15); color: #6fffe0; }
 .writeup-meta .writeup-level { background: rgba(124,58,237,0.15); color: #a78bfa; }
 .writeup-category { color: rgba(255,255,255,0.4); font-size: 0.85rem; margin-bottom: 0.5rem; }
-.writeup-link { color: #6fffe0; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s; margin-top: 0.5rem; }
-.writeup-link:hover { color: #fff; gap: 12px; }
 .page-title { font-size: 2.8rem; font-weight: 700; text-align: center; margin-bottom: 2.5rem; background: linear-gradient(135deg, #6fffe0, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; justify-content: center; gap: 15px; }
 </style>
