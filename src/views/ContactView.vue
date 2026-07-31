@@ -6,26 +6,31 @@
     <a href="https://github.com/npx-official" target="_blank" class="social-card">
       <i class="fab fa-github"></i>
       <h4>GitHub</h4>
+      <p>github.com/npx-official</p>
     </a>
     <!-- Hack The Box -->
     <a href="https://app.hackthebox.com/users/2207141" target="_blank" class="social-card">
       <i class="fas fa-shield-halved"></i>
       <h4>Hack The Box</h4>
+      <p>app.hackthebox.com</p>
     </a>
     <!-- TryHackMe -->
     <a href="https://tryhackme.com/p/npx.off" target="_blank" class="social-card">
       <i class="fas fa-user-secret"></i>
       <h4>TryHackMe</h4>
+      <p>tryhackme.com</p>
     </a>
     <!-- LinkedIn -->
     <a href="https://www.linkedin.com/in/night-pulse-x-337a89275" target="_blank" class="social-card">
       <i class="fab fa-linkedin"></i>
       <h4>LinkedIn</h4>
+      <p>linkedin.com</p>
     </a>
     <!-- Discord -->
     <a href="https://discord.com/users/npx.official" target="_blank" class="social-card">
       <i class="fab fa-discord"></i>
       <h4>Discord</h4>
+      <p>discord.com</p>
     </a>
   </div>
 </template>
