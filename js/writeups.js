@@ -56,6 +56,7 @@ function getCategoryInfo(category) {
         'linux/hard': { label: '🐧 Linux Hard', icon: '🔴' },
         'windows/hard': { label: '🪟 Windows Hard', icon: '🔴' },
         'windows/medium': { label: '🪟 Windows Medium', icon: '🟡' },
+        'windows/insane': { label: '🪟 Windows Insane', icon: '💀' },
         'prolabs': { label: '🏆 ProLabs', icon: '⭐' },
         'hacker101/ctf': { label: '🛡️ Hacker101 CTF', icon: '🛡️' },
     };
