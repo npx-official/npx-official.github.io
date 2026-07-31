@@ -7,19 +7,6 @@
     <title>NIGHT PULSE X</title>
     <script type="module" crossorigin src="/assets/index-DHxMV4g4.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-P21Je6et.css">
-       <!-- إصلاح التوجيه للصفحات المباشرة -->
-    <script>
-        // إذا كان المسار لا ينتهي بـ .html ولا يحتوي على نقطة، أعد التوجيه إلى index.html
-        (function() {
-            const path = window.location.pathname;
-            if (!path.endsWith('.html') && !path.includes('.') && path !== '/') {
-                window.history.replaceState({}, '', '/index.html');
-                setTimeout(() => {
-                    window.location.reload();
-                }, 10);
-            }
-        })();
-    </script>
   </head>
   <body>
     <div id="app"></div>
