@@ -58,25 +58,6 @@ function copyPassword(password, event) {
         setTimeout(() => { btn.innerHTML = originalHTML; }, 1500);
     }
 }
-
-// ==========================================================
-// 🔐 تشفير الروابط تلقائياً عند بناء الصفحة
-// ==========================================================
-function encryptURL(url) {
-    const SECRET_KEY = "NPX2026SECURE_LINK";
-    let encrypted = '';
-    for (let i = 0; i < url.length; i++) {
-        encrypted += String.fromCharCode(url.charCodeAt(i) ^ SECRET_KEY.charCodeAt(i % SECRET_KEY.length));
-    }
-    return btoa(encrypted);
-}
-
-function handleEncryptedClick(originalUrl, event) {
-    event.preventDefault();
-    const encrypted = encryptURL(originalUrl);
-    sessionStorage.setItem('npx_secure_route_writeup', encrypted);
-    window.location.href = '/';
-}
 </script>
 
 <template>
@@ -134,8 +115,8 @@ function handleEncryptedClick(originalUrl, event) {
         <button class="copy-btn" @click="copyPassword(writeup.password, $event)"><i class="fas fa-copy"></i></button>
       </div>
       
-      <!-- الرابط المشفر تلقائياً -->
-      <a href="#" class="writeup-link" @click="handleEncryptedClick(writeup.path, $event)">
+      <!-- الرابط المباشر النهائي (بدون أي تشفير أو دوامة) -->
+      <a :href="writeup.path" class="writeup-link">
         Read Writeup <i class="fas fa-arrow-right"></i>
       </a>
     </div>
@@ -157,7 +138,7 @@ function handleEncryptedClick(originalUrl, event) {
 .filter-bar { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 2rem; justify-content: center; }
 .filter-btn { padding: 0.5rem 1.2rem; border-radius: 30px; border: 1px solid rgba(111, 255, 224, 0.06); background: rgba(255,255,255,0.02); color: rgba(255,255,255,0.5); cursor: pointer; transition: 0.3s; }
 .filter-btn:hover { border-color: #6fffe0; color: #fff; }
-.filter-btn.active { background: linear-gradient(135deg, #6fffe0, #a78bfa); color: #0a0a0f; border-color: transparent; }
+.filter-btn.active { background: linear-gradient(135deg, #6fffe0, #a78bfa); color: #0a0a0f; }
 .writeups-stats { display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; padding: 1.5rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(111, 255, 224, 0.06); border-radius: 1.5rem; margin-bottom: 2rem; }
 .stat-item { text-align: center; }
 .stat-number { font-size: 2rem; font-weight: 700; color: #6fffe0; display: block; }
@@ -168,10 +149,7 @@ function handleEncryptedClick(originalUrl, event) {
 .writeup-header { display: flex; align-items: center; gap: 10px; margin-bottom: 0.5rem; }
 .writeup-header .writeup-icon { font-size: 1.5rem; }
 .writeup-header h4 { color: #6fffe0; font-size: 1.1rem; }
-.writeup-meta { display: flex; gap: 10px; margin-bottom: 0.5rem; }
 .writeup-meta span { font-size: 0.7rem; padding: 0.2rem 0.8rem; border-radius: 20px; text-transform: uppercase; font-weight: 600; }
-.writeup-meta .writeup-os { background: rgba(0,255,200,0.15); color: #6fffe0; }
-.writeup-meta .writeup-level { background: rgba(124,58,237,0.15); color: #a78bfa; }
 .writeup-category { color: rgba(255,255,255,0.4); font-size: 0.85rem; margin-bottom: 0.5rem; }
 .page-title { font-size: 2.8rem; font-weight: 700; text-align: center; margin-bottom: 2.5rem; background: linear-gradient(135deg, #6fffe0, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; justify-content: center; gap: 15px; }
 </style>
