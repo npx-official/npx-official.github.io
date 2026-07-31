@@ -1,9 +1,7 @@
 import { fileURLToPath, URL } from 'node:url'
-
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
@@ -13,8 +11,8 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
-  // هذا السطر هو الحل السحري لإخفاء شعار Vue DevTools
-  define: {
-    '__VUE_PROD_DEVTOOLS__': false
+  // هذا السطر يخبر Vite بعدم تغيير مسارات الصور
+  build: {
+    assetsInlineLimit: 0
   }
 })
