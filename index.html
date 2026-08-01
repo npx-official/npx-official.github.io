@@ -588,5 +588,23 @@
         page('/contact', () => { window.location.href = 'contact.html'; });
         page();
     </script>
+<script>
+    // إصلاح التوجيه للعمل على localhost
+    (function() {
+        const path = window.location.pathname;
+        if (path !== '/' && path !== '/index.html' && !path.includes('.')) {
+            // نحاول إعادة التوجيه إلى الصفحة الصحيحة
+            const pageMap = {
+                '/about': 'about.html',
+                '/writeups': 'writeups.html',
+                '/certifications': 'certifications.html',
+                '/contact': 'contact.html'
+            };
+            if (pageMap[path]) {
+                window.location.href = pageMap[path];
+            }
+        }
+    })();
+</script>
 </body>
 </html>
