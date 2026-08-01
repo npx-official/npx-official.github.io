@@ -10,6 +10,7 @@ const writeupsData = [
     { name: 'Paperwork', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/linux/easy/Paperwork' },
     { name: 'Reactor', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/linux/easy/Reactor' },
     { name: 'Silentium', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/linux/easy/Silentium', password: 'S1l3nt1um!E@sy#2026' },
+    { name: 'Cohort', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/linux/easy/Cohort' },
     
     // ====== LINUX - MEDIUM ======
     { name: 'Bedside', category: 'linux/medium', level: 'medium', os: 'linux', path: '/writeups/linux/medium/Bedside' },
