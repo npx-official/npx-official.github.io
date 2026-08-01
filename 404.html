@@ -1,12 +1,113 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Redirecting...</title>
-    <script>
-        sessionStorage.redirect = location.href;
-    </script>
-    <meta http-equiv="refresh" content="0;URL='/'">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404 • Page Not Found</title>
+    <link rel="icon" href="assets/images/favicon.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0a0a0f;
+            color: #e0e5f0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+        }
+        /* تأثير خلفية نجمية بسيطة */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(ellipse at 20% 50%, rgba(111,255,224,0.03), transparent 50%),
+                        radial-gradient(ellipse at 80% 50%, rgba(124,58,237,0.03), transparent 50%);
+            z-index: 0;
+            animation: bgPulse 8s ease-in-out infinite alternate;
+        }
+        @keyframes bgPulse {
+            0% { opacity: 0.5; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.05); }
+        }
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            padding: 2rem 3rem;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(111, 255, 224, 0.15);
+            border-radius: 2.5rem;
+            box-shadow: 0 0 60px rgba(111, 255, 224, 0.05);
+        }
+        .error-code {
+            font-size: 8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #6fffe0, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+            line-height: 1;
+            letter-spacing: -4px;
+            margin-bottom: 0.5rem;
+            animation: floatText 3s ease-in-out infinite;
+        }
+        @keyframes floatText {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        h1 {
+            color: #6fffe0;
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            font-weight: 300;
+            letter-spacing: 6px;
+        }
+        .subtitle {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+            letter-spacing: 2px;
+        }
+        .btn-return {
+            display: inline-block;
+            padding: 0.8rem 2.5rem;
+            background: linear-gradient(135deg, #6fffe0, #a78bfa);
+            color: #0a0a0f;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 30px rgba(111, 255, 224, 0.1);
+        }
+        .btn-return:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 0 60px rgba(111, 255, 224, 0.2);
+        }
+        .btn-return i {
+            margin-right: 10px;
+        }
+        .footer-note {
+            margin-top: 2rem;
+            color: rgba(255, 255, 255, 0.1);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+        }
+    </style>
 </head>
-<body></body>
+<body>
+    <div class="container">
+        <span class="error-code">404</span>
+        <h1>PAGE NOT FOUND</h1>
+        <p class="subtitle">The signal you are looking for does not exist in this sector.</p>
+        <a href="/" class="btn-return">
+            <i class="fas fa-arrow-left"></i> Return to Home
+        </a>
+        <div class="footer-note">NIGHT PULSE X • 2026</div>
+    </div>
+</body>
 </html>
