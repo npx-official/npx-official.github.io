@@ -447,11 +447,11 @@
                 <span>NIGHT PULSE X</span>
             </div>
             <nav class="nav">
-                <a href="index.html" class="active"><i class="fas fa-house"></i> Home</a>
-                <a href="about.html"><i class="fas fa-user-astronaut"></i> About</a>
-                <a href="writeups.html"><i class="fas fa-pen-fancy"></i> Writeups</a>
-                <a href="certifications.html"><i class="fas fa-certificate"></i> Certs</a>
-                <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
+                <a href="/" class="active"><i class="fas fa-house"></i> Home</a>
+                <a href="/about"><i class="fas fa-user-astronaut"></i> About</a>
+                <a href="/writeups"><i class="fas fa-pen-fancy"></i> Writeups</a>
+                <a href="/certifications"><i class="fas fa-certificate"></i> Certs</a>
+                <a href="/contact"><i class="fas fa-envelope"></i> Contact</a>
             </nav>
         </header>
 
@@ -460,8 +460,8 @@
             <h1>NIGHT PULSE X</h1>
             <p>Penetration Testing • Security Research • Future Ready</p>
             <div class="hero-buttons">
-                <a href="writeups.html" class="btn btn-primary"><i class="fas fa-book"></i> Explore Writeups</a>
-                <a href="about.html" class="btn btn-secondary"><i class="fas fa-user"></i> About Me</a>
+                <a href="/writeups" class="btn btn-primary"><i class="fas fa-book"></i> Explore Writeups</a>
+                <a href="/about" class="btn btn-secondary"><i class="fas fa-user"></i> About Me</a>
             </div>
             <div class="stats">
                 <div class="stat">
@@ -482,7 +482,7 @@
         <h2 class="section-title"><i class="fas fa-star"></i> Featured Writeups</h2>
         <div class="writeups-grid" id="featuredWriteups"></div>
         <div style="text-align: center; margin-top: 2rem;">
-            <a href="writeups.html" class="btn btn-primary"><i class="fas fa-arrow-right"></i> View All</a>
+            <a href="/writeups" class="btn btn-primary"><i class="fas fa-arrow-right"></i> View All</a>
         </div>
 
         <div class="quick-grid">
@@ -490,19 +490,19 @@
                 <i class="fas fa-linux"></i>
                 <h4>Linux Machines</h4>
                 <p>18+ Writeups</p>
-                <a href="writeups.html?filter=linux">Explore →</a>
+                <a href="/writeups">Explore →</a>
             </div>
             <div class="quick-card">
                 <i class="fas fa-windows"></i>
                 <h4>Windows Machines</h4>
                 <p>2 Writeups</p>
-                <a href="writeups.html?filter=windows">Explore →</a>
+                <a href="/writeups">Explore →</a>
             </div>
             <div class="quick-card">
                 <i class="fas fa-trophy"></i>
                 <h4>ProLabs</h4>
                 <p>1 Writeup</p>
-                <a href="writeups.html?filter=prolabs">Explore →</a>
+                <a href="/writeups">Explore →</a>
             </div>
         </div>
 
@@ -536,15 +536,14 @@
             }
         })();
     </script>
+    <script src="page.js"></script>
     <script src="js/particles.js"></script>
     <script src="js/main.js"></script>
     <script src="js/writeups.js"></script>
     <script>
-        // تحميل العروض المميزة مع تحديد عددها (مثلاً 4)
+        // تحميل العروض المميزة
         if (typeof loadFeaturedWriteups === 'function') {
             loadFeaturedWriteups(4);
-        } else {
-            console.warn("⚠️ تحذير: دالة loadFeaturedWriteups غير موجودة. تأكد من وجودها في writeups.js");
         }
 
         // تأثير الماوس
@@ -580,6 +579,14 @@
                 glow.style.opacity = "1";
             });
         })();
+
+        // إعداد page.js لإخفاء .html من الروابط
+        page('/', () => {});
+        page('/about', () => { window.location.href = 'about.html'; });
+        page('/writeups', () => { window.location.href = 'writeups.html'; });
+        page('/certifications', () => { window.location.href = 'certifications.html'; });
+        page('/contact', () => { window.location.href = 'contact.html'; });
+        page();
     </script>
 </body>
 </html>
