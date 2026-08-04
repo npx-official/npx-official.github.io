@@ -41,8 +41,11 @@ const writeupsData = [
     { name: 'Mythical', category: 'prolabs', level: 'prolabs', os: 'prolabs', path: '/writeups/htb/prolabs/Mythical' },
     { name: 'Puppet', category: 'prolabs', level: 'prolabs', os: 'prolabs', path: '/writeups/htb/prolabs/Puppet' },
 
-    // ====== TRYHACKME ======
-    { name: 'Towel on the Sunbed', category: 'tryhackme/medium', level: 'medium', os: 'tryhackme', path: '/writeups/tryhackme/medium/Towel on the Sunbed', password: '' },
+   // ====== TRYHACKME - EASY ======
+    { name: 'Beach Bar', category: 'tryhackme/easy', level: 'easy', os: 'Linux', path: '/writeups/tryhackme/easy/Beach Bar', password: '' },
+
+    // ====== TRYHACKME - medium ======
+    { name: 'Towel on the Sunbed', category: 'tryhackme/medium', level: 'medium', os: 'Linux', path: '/writeups/tryhackme/medium/Towel on the Sunbed', password: '' },
   
     // ====== HACKER101 CTF ======
     { name: 'Photo Gallery', category: 'hacker101/ctf', level: 'easy', os: 'hacker101', path: '/writeups/hacker101/PhotoGallery' },

