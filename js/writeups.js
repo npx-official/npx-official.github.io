@@ -1,76 +1,65 @@
-// ====== ALL WRITEUPS DATA ======
 const writeupsData = [
-    // ====== LINUX - EASY ======
-    { name: 'cctv', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/cctv', password: 'CCTV!E@sy#2026'  },
-    { name: 'Connected', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/Connected' },
-    { name: 'Enigma', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/Enigma' },
-    { name: 'Kobold', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/Kobold', password: 'K0b0ld!E@sy#X5' },
-    { name: 'MonitorsFour', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/MonitorsFour' },
-    { name: 'Orion', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/Orion' },
-    { name: 'Paperwork', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/Paperwork' },
-    { name: 'Reactor', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/Reactor' },
-    { name: 'Silentium', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/Silentium', password: 'S1l3nt1um!E@sy#2026' },
-    { name: 'Cohort', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/Cohort' },
+    { name: 'cctv', category: 'htb/linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/cctv', password: 'CCTV!E@sy#2026', icon: '#a8e06e' },
+    { name: 'Connected', category: 'htb/linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/Connected', icon: '#a8e06e' },
+    { name: 'Enigma', category: 'htb/linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/Enigma', icon: '#a8e06e' },
+    { name: 'Kobold', category: 'htb/linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/Kobold', password: 'K0b0ld!E@sy#X5', icon: '#a8e06e' },
+    { name: 'MonitorsFour', category: 'htb/linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/MonitorsFour', icon: '#a8e06e' },
+    { name: 'Orion', category: 'htb/linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/Orion', icon: '#a8e06e' },
+    { name: 'Paperwork', category: 'htb/linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/Paperwork', icon: '#a8e06e' },
+    { name: 'Reactor', category: 'htb/linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/Reactor', icon: '#a8e06e' },
+    { name: 'Silentium', category: 'htb/linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/Silentium', password: 'S1l3nt1um!E@sy#2026', icon: '#a8e06e' },
+    { name: 'Cohort', category: 'htb/linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/Cohort', icon: '#a8e06e' },
     
-    // ====== LINUX - MEDIUM ======
-    { name: 'Bedside', category: 'linux/medium', level: 'medium', os: 'linux', path: '/writeups/htb/linux/medium/Bedside' },
-    { name: 'Checkpoint', category: 'linux/medium', level: 'medium', os: 'linux', path: '/writeups/htb/linux/medium/Checkpoint' },
-    { name: 'DevArea', category: 'linux/medium', level: 'medium', os: 'linux', path: '/writeups/htb/linux/medium/DevArea' },
-    { name: 'DevHub', category: 'linux/medium', level: 'medium', os: 'linux', path: '/writeups/htb/linux/medium/DevHub' },
-    { name: 'Fireflow', category: 'linux/medium', level: 'medium', os: 'linux', path: '/writeups/htb/linux/medium/Fireflow', password: 'F1r3fl0w!M3d1um#X2' },
-    { name: 'MakeSense', category: 'linux/medium', level: 'medium', os: 'linux', path: '/writeups/htb/linux/medium/MakeSense' },
-    { name: 'Overwatch', category: 'linux/medium', level: 'medium', os: 'linux', path: '/writeups/htb/linux/medium/Overwatch' },
-    { name: 'VariaType', category: 'linux/medium', level: 'medium', os: 'linux', path: '/writeups/htb/linux/medium/VariaType', password: 'V@r1@Typ3!M3d1um#2026' },
+    { name: 'Bedside', category: 'htb/linux/medium', level: 'medium', os: 'linux', path: '/writeups/htb/linux/medium/Bedside', icon: '#eac562' },
+    { name: 'Checkpoint', category: 'htb/linux/medium', level: 'medium', os: 'linux', path: '/writeups/htb/linux/medium/Checkpoint', icon: '#eac562' },
+    { name: 'DevArea', category: 'htb/linux/medium', level: 'medium', os: 'linux', path: '/writeups/htb/linux/medium/DevArea', icon: '#eac562' },
+    { name: 'DevHub', category: 'htb/linux/medium', level: 'medium', os: 'linux', path: '/writeups/htb/linux/medium/DevHub', icon: '#eac562' },
+    { name: 'Fireflow', category: 'htb/linux/medium', level: 'medium', os: 'linux', path: '/writeups/htb/linux/medium/Fireflow', password: 'F1r3fl0w!M3d1um#X2', icon: '#eac562' },
+    { name: 'MakeSense', category: 'htb/linux/medium', level: 'medium', os: 'linux', path: '/writeups/htb/linux/medium/MakeSense', icon: '#eac562' },
+    { name: 'Overwatch', category: 'htb/linux/medium', level: 'medium', os: 'linux', path: '/writeups/htb/linux/medium/Overwatch', icon: '#eac562' },
+    { name: 'VariaType', category: 'htb/linux/medium', level: 'medium', os: 'linux', path: '/writeups/htb/linux/medium/VariaType', password: 'V@r1@Typ3!M3d1um#2026', icon: '#eac562' },
     
-    // ====== LINUX - HARD ======
-    { name: 'Nimbus', category: 'linux/hard', level: 'hard', os: 'linux', path: '/writeups/htb/linux/hard/Nimbus' },
+    { name: 'Nimbus', category: 'htb/linux/hard', level: 'hard', os: 'linux', path: '/writeups/htb/linux/hard/Nimbus', icon: '#e05a5a' },
     
-    // ====== WINDOWS - MEDIUM ======
-    { name: 'logging', category: 'windows/medium', level: 'medium', os: 'windows', path: '/writeups/htb/windows/medium/logging', password: ''},
+    { name: 'logging', category: 'htb/windows/medium', level: 'medium', os: 'windows', path: '/writeups/htb/windows/medium/logging', password: '', icon: '#eac562' },
 
-    // ====== WINDOWS - HARD ======
-    { name: 'Garfield', category: 'windows/hard', level: 'hard', os: 'windows', path: '/writeups/htb/windows/hard/Garfield' },
-    { name: 'Ghostlink', category: 'windows/hard', level: 'hard', os: 'windows', path: '/writeups/htb/windows/hard/Ghostlink', password: 'Gh0stl1nk!W1nd0ws#X5' },
-    { name: 'DarkZero Returns', category: 'windows/hard', level: 'hard', os: 'windows', path: '/writeups/htb/windows/hard/DarkZeroReturns' },
-    { name: 'Fries', category: 'windows/hard', level: 'hard', os: 'windows', path: '/writeups/htb/windows/hard/Fries', password: 'Fr13s!H@rd#2026' },
+    { name: 'Garfield', category: 'htb/windows/hard', level: 'hard', os: 'windows', path: '/writeups/htb/windows/hard/Garfield', icon: '#e05a5a' },
+    { name: 'Ghostlink', category: 'htb/windows/hard', level: 'hard', os: 'windows', path: '/writeups/htb/windows/hard/Ghostlink', password: 'Gh0stl1nk!W1nd0ws#X5', icon: '#e05a5a' },
+    { name: 'DarkZero Returns', category: 'htb/windows/hard', level: 'hard', os: 'windows', path: '/writeups/htb/windows/hard/DarkZeroReturns', icon: '#e05a5a' },
+    { name: 'Fries', category: 'htb/windows/hard', level: 'hard', os: 'windows', path: '/writeups/htb/windows/hard/Fries', password: 'Fr13s!H@rd#2026', icon: '#e05a5a' },
  
-    // ====== WINDOWS - INSANE ======
-    { name: 'Odyssey', category: 'windows/insane', level: 'insane', os: 'windows', path: '/writeups/htb/windows/insane/Odyssey', password: '0dys3y!R3turn#Insan3' },
+    { name: 'Odyssey', category: 'htb/windows/insane', level: 'insane', os: 'windows', path: '/writeups/htb/windows/insane/Odyssey', password: '0dys3y!R3turn#Insan3', icon: '#8c8c8c' },
 
-    // ====== PROLABS ======
-    { name: 'Mythical', category: 'prolabs', level: 'prolabs', os: 'prolabs', path: '/writeups/htb/prolabs/Mythical' },
-    { name: 'Puppet', category: 'prolabs', level: 'prolabs', os: 'prolabs', path: '/writeups/htb/prolabs/Puppet' },
+    { name: 'Mythical', category: 'htb/prolabs', level: 'prolabs', os: 'prolabs', path: '/writeups/htb/prolabs/Mythical', icon: '#f5c542' },
+    { name: 'Puppet', category: 'htb/prolabs', level: 'prolabs', os: 'prolabs', path: '/writeups/htb/prolabs/Puppet', icon: '#f5c542' },
 
-   // ====== TRYHACKME - EASY ======
-    { name: 'Beach Bar', category: 'tryhackme/easy', level: 'easy', os: 'Linux', path: '/writeups/tryhackme/easy/Beach Bar', password: '' },
-
-    // ====== TRYHACKME - medium ======
-    { name: 'Towel on the Sunbed', category: 'tryhackme/medium', level: 'medium', os: 'Linux', path: '/writeups/tryhackme/medium/Towel on the Sunbed', password: '' },
+    { name: 'Beach Bar', category: 'tryhackme/easy', level: 'easy', os: 'Linux', path: '/writeups/tryhackme/easy/Beach Bar', password: '', icon: '#a8e06e' },
+    { name: 'Towel on the Sunbed', category: 'tryhackme/medium', level: 'medium', os: 'Linux', path: '/writeups/tryhackme/medium/Towel on the Sunbed', password: '', icon: '#eac562' },
   
-    // ====== HACKER101 CTF ======
-    { name: 'Photo Gallery', category: 'hacker101/ctf', level: 'easy', os: 'hacker101', path: '/writeups/hacker101/PhotoGallery' },
-    { name: 'Micro-CMS v1', category: 'hacker101/ctf', level: 'easy', os: 'hacker101', path: '/writeups/hacker101/MicroCMSv1' },
-    { name: 'Micro-CMS v2', category: 'hacker101/ctf', level: 'medium', os: 'hacker101', path: '/writeups/hacker101/MicroCMSv2' },
-    { name: 'Templated', category: 'hacker101/ctf', level: 'medium', os: 'hacker101', path: '/writeups/hacker101/Templated' },
-    { name: 'H1 2022 CTF', category: 'hacker101/ctf', level: 'hard', os: 'hacker101', path: '/writeups/hacker101/H1-2022-CTF' },
+    { name: 'Photo Gallery', category: 'hacker101/ctf', level: 'easy', os: 'hacker101', path: '/writeups/hacker101/PhotoGallery', icon: '#a8e06e' },
+    { name: 'Micro-CMS v1', category: 'hacker101/ctf', level: 'easy', os: 'hacker101', path: '/writeups/hacker101/MicroCMSv1', icon: '#a8e06e' },
+    { name: 'Micro-CMS v2', category: 'hacker101/ctf', level: 'medium', os: 'hacker101', path: '/writeups/hacker101/MicroCMSv2', icon: '#eac562' },
+    { name: 'Templated', category: 'hacker101/ctf', level: 'medium', os: 'hacker101', path: '/writeups/hacker101/Templated', icon: '#eac562' },
+    { name: 'H1 2022 CTF', category: 'hacker101/ctf', level: 'hard', os: 'hacker101', path: '/writeups/hacker101/H1-2022-CTF', icon: '#e05a5a' },
 ];
 
-// ====== CATEGORY INFO ======
 function getCategoryInfo(category) {
     const mapping = {
-        'linux/easy': { label: '🐧 Linux Easy', icon: '🟢' },
-        'linux/medium': { label: '🐧 Linux Medium', icon: '🟡' },
-        'linux/hard': { label: '🐧 Linux Hard', icon: '🔴' },
-        'windows/hard': { label: '🪟 Windows Hard', icon: '🔴' },
-        'windows/medium': { label: '🪟 Windows Medium', icon: '🟡' },
-        'windows/insane': { label: '🪟 Windows Insane', icon: '💀' },
-        'prolabs': { label: '🏆 ProLabs', icon: '⭐' },
+        'htb/linux/easy': { label: '🐧 HTB Linux Easy', icon: '🟢' },
+        'htb/linux/medium': { label: '🐧 HTB Linux Medium', icon: '🟡' },
+        'htb/linux/hard': { label: '🐧 HTB Linux Hard', icon: '🔴' },
+        'htb/windows/medium': { label: '🪟 HTB Windows Medium', icon: '🟡' },
+        'htb/windows/hard': { label: '🪟 HTB Windows Hard', icon: '🔴' },
+        'htb/windows/insane': { label: '💀 HTB Windows Insane', icon: '💀' },
+        'htb/prolabs': { label: '🏆 HTB ProLabs', icon: '⭐' },
+        'tryhackme/easy': { label: '🟢 TryHackMe Easy', icon: '🟢' },
+        'tryhackme/medium': { label: '🟡 TryHackMe Medium', icon: '🟡' },
+        'tryhackme/hard': { label: '🔴 TryHackMe Hard', icon: '🔴' },
         'hacker101/ctf': { label: '🛡️ Hacker101 CTF', icon: '🛡️' },
     };
     return mapping[category] || { label: category, icon: '📄' };
 }
 
-// ====== CREATE WRITEUP CARD ======
 function createWriteupCard(writeup) {
     const categoryInfo = getCategoryInfo(writeup.category);
     const card = document.createElement('div');
@@ -88,9 +77,16 @@ function createWriteupCard(writeup) {
         `;
     }
     
+    let iconHTML = '';
+    if (writeup.icon) {
+        iconHTML = `<div class="writeup-dot" style="background-color: ${writeup.icon};"></div>`;
+    } else {
+        iconHTML = `<span class="writeup-icon">${categoryInfo.icon}</span>`;
+    }
+    
     card.innerHTML = `
         <div class="writeup-header">
-            <span class="writeup-icon">${categoryInfo.icon}</span>
+            ${iconHTML}
             <h4>${writeup.name}</h4>
         </div>
         <div class="writeup-meta">
@@ -106,54 +102,117 @@ function createWriteupCard(writeup) {
     return card;
 }
 
-// ====== FILTER ======
+function getFilterIcon(filter) {
+    // أيقونات FontAwesome نظيفة ومطابقة
+    const icons = {
+        'linux': '<i class="fab fa-linux" style="margin-right:6px;"></i>',
+        'windows': '<i class="fab fa-windows" style="margin-right:6px;"></i>',
+        'htb': '<i class="fas fa-shield-halved" style="margin-right:6px;"></i>',
+        'tryhackme': '<i class="fas fa-user-secret" style="margin-right:6px;"></i>',
+        'hacker101': '<i class="fas fa-shield" style="margin-right:6px;"></i>',
+        'prolabs': '<i class="fas fa-trophy" style="margin-right:6px;"></i>',
+        
+        // مطابقة data-filter في ملف HTML
+        'htb-easy': '<i class="fas fa-circle" style="color:#a8e06e;margin-right:6px;font-size:0.6rem;"></i>',
+        'htb-medium': '<i class="fas fa-circle" style="color:#eac562;margin-right:6px;font-size:0.6rem;"></i>',
+        'htb-hard': '<i class="fas fa-circle" style="color:#e05a5a;margin-right:6px;font-size:0.6rem;"></i>',
+        'htb-insane': '<i class="fas fa-skull" style="color:#8c8c8c;margin-right:6px;font-size:0.9rem;"></i>',
+        
+        'tryhackme-easy': '<i class="fas fa-circle" style="color:#a8e06e;margin-right:6px;font-size:0.6rem;"></i>',
+        'tryhackme-medium': '<i class="fas fa-circle" style="color:#eac562;margin-right:6px;font-size:0.6rem;"></i>',
+        'tryhackme-hard': '<i class="fas fa-circle" style="color:#e05a5a;margin-right:6px;font-size:0.6rem;"></i>',
+        'tryhackme-insane': '<i class="fas fa-skull" style="color:#8c8c8c;margin-right:6px;font-size:0.9rem;"></i>',
+        
+        'hacker101-easy': '<i class="fas fa-circle" style="color:#a8e06e;margin-right:6px;font-size:0.6rem;"></i>',
+        'hacker101-medium': '<i class="fas fa-circle" style="color:#eac562;margin-right:6px;font-size:0.6rem;"></i>',
+        'hacker101-hard': '<i class="fas fa-circle" style="color:#e05a5a;margin-right:6px;font-size:0.6rem;"></i>',
+    };
+    return icons[filter] || '';
+}
+
 let currentFilter = 'all';
-let filteredData = [...writeupsData];
+
+function ensureSubmenuOpen(btn) {
+    const subMenu = btn.closest('.sub-filters');
+    if (subMenu && !subMenu.classList.contains('show')) {
+        document.querySelectorAll('.sub-filters').forEach(el => el.classList.remove('show'));
+        subMenu.classList.add('show');
+    }
+}
 
 function applyFilter(filter) {
     currentFilter = filter;
     const container = document.getElementById('allWriteups');
     if (!container) return;
     
+    let filteredData = [];
+    
     if (filter === 'all') {
         filteredData = [...writeupsData];
     } else {
         filteredData = writeupsData.filter(w => {
-            const category = w.category || '';
+            const cat = w.category || '';
             const level = w.level || '';
             const os = w.os || '';
-            return category.includes(filter) || level.includes(filter) || os.includes(filter);
+            
+            switch(filter) {
+                case 'htb': return cat.startsWith('htb/');
+                case 'htb-hard': return cat.startsWith('htb/') && level === 'hard';
+                case 'htb-insane': return cat.startsWith('htb/') && level === 'insane';
+                case 'htb-easy': return cat.startsWith('htb/') && level === 'easy';
+                case 'htb-medium': return cat.startsWith('htb/') && level === 'medium';
+                case 'windows': return os === 'windows';
+                case 'linux': return os === 'linux';
+                case 'prolabs': return os === 'prolabs';
+                
+                case 'tryhackme': return cat.startsWith('tryhackme/');
+                case 'tryhackme-easy': return cat === 'tryhackme/easy';
+                case 'tryhackme-medium': return cat === 'tryhackme/medium';
+                case 'tryhackme-hard': return cat === 'tryhackme/hard';
+                case 'tryhackme-insane': return cat === 'tryhackme/insane';
+                
+                case 'hacker101': return os === 'hacker101';
+                case 'hacker101-easy': return os === 'hacker101' && level === 'easy';
+                case 'hacker101-medium': return os === 'hacker101' && level === 'medium';
+                case 'hacker101-hard': return os === 'hacker101' && level === 'hard';
+                
+                default: return cat.includes(filter) || level.includes(filter) || os.includes(filter);
+            }
         });
     }
     
     container.innerHTML = '';
-    filteredData.forEach(writeup => {
-        container.appendChild(createWriteupCard(writeup));
-    });
+    filteredData.forEach(writeup => container.appendChild(createWriteupCard(writeup)));
     
-    // إضافة حدث النسخ بعد إنشاء البطاقات
+    // تحديث الأيقونات بشكل صحيح
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        const plainText = btn.textContent.trim(); // استخراج النص النقي
+        
+        if (btn.dataset.filter === filter) {
+            const icon = getFilterIcon(filter);
+            btn.innerHTML = icon + plainText;
+            btn.classList.add('active');
+        } else {
+            btn.innerHTML = plainText; // إعادة النص النقي فقط للأزرار الأخرى
+            btn.classList.remove('active');
+        }
+    });
+
     document.querySelectorAll('.copy-btn').forEach(btn => {
         btn.addEventListener('click', function(e) {
             e.stopPropagation();
-            const password = this.getAttribute('data-password');
-            copyPassword(password, this);
+            copyPassword(this.getAttribute('data-password'), this);
         });
     });
 }
 
-// ====== COPY PASSWORD ======
 function copyPassword(password, btn) {
     const originalHTML = btn.innerHTML;
-    
     if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(password).then(() => {
             btn.innerHTML = '<i class="fas fa-check" style="color: #00ff88;"></i>';
-            setTimeout(() => {
-                btn.innerHTML = originalHTML;
-            }, 1500);
-        }).catch(() => {
-            fallbackCopy(password, btn, originalHTML);
-        });
+            setTimeout(() => btn.innerHTML = originalHTML, 1500);
+        }).catch(() => fallbackCopy(password, btn, originalHTML));
     } else {
         fallbackCopy(password, btn, originalHTML);
     }
@@ -162,107 +221,49 @@ function copyPassword(password, btn) {
 function fallbackCopy(password, btn, originalHTML) {
     const textarea = document.createElement('textarea');
     textarea.value = password;
-    textarea.style.position = 'fixed';
-    textarea.style.opacity = '0';
-    textarea.style.left = '-9999px';
+    textarea.style.position = 'fixed'; textarea.style.opacity = '0'; textarea.style.left = '-9999px';
     document.body.appendChild(textarea);
     textarea.select();
     try {
         document.execCommand('copy');
         btn.innerHTML = '<i class="fas fa-check" style="color: #00ff88;"></i>';
-        setTimeout(() => {
-            btn.innerHTML = originalHTML;
-        }, 1500);
-    } catch (err) {
-        alert('Could not copy password. Please select and copy it manually.');
-    }
+        setTimeout(() => btn.innerHTML = originalHTML, 1500);
+    } catch { alert('Could not copy password.'); }
     document.body.removeChild(textarea);
 }
 
-// ====== LOAD ALL WRITEUPS ======
 function loadAllWriteups() {
     const container = document.getElementById('allWriteups');
-    const statsContainer = document.getElementById('writeupsStats');
     if (!container) return;
-    
-    if (statsContainer) {
-        const total = writeupsData.length;
-        const linuxCount = writeupsData.filter(w => w.os === 'linux').length;
-        const windowsCount = writeupsData.filter(w => w.os === 'windows').length;
-        const prolabsCount = writeupsData.filter(w => w.os === 'prolabs').length;
-        const hacker101Count = writeupsData.filter(w => w.os === 'hacker101').length;
- 
-        statsContainer.innerHTML = `
-            <div class="stat-item">
-                <span class="stat-number">${total}</span>
-                <span class="stat-label">Total</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">${linuxCount}</span>
-                <span class="stat-label">🐧 Linux</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">${windowsCount}</span>
-                <span class="stat-label">🪟 Windows</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">${prolabsCount}</span>
-                <span class="stat-label">🏆 ProLabs</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">${hacker101Count}</span>
-                <span class="stat-label">🛡️ Hacker101</span>
-            </div>
-        `;
-    }
-    
     applyFilter('all');
     setupFilters();
 }
 
-// ====== SETUP FILTERS ======
 function setupFilters() {
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    
-    filterButtons.forEach(btn => {
+    document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', function() {
-            filterButtons.forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             this.classList.add('active');
+            ensureSubmenuOpen(this);
             applyFilter(this.dataset.filter);
         });
     });
 }
 
-// ====== FEATURED (for homepage) ======
 function loadFeaturedWriteups() {
     const container = document.getElementById('featuredWriteups');
     if (!container) return;
-    
-    const featured = writeupsData.filter(w => 
-        w.level === 'hard' || 
-        w.level === 'prolabs' || 
-        w.os === 'prolabs'
-    );
-    
+    const featured = writeupsData.filter(w => w.level === 'hard' || w.level === 'insane' || w.level === 'prolabs' || w.os === 'prolabs');
     featured.sort((a, b) => {
         if (a.os === 'prolabs' && b.os !== 'prolabs') return -1;
         if (a.os !== 'prolabs' && b.os === 'prolabs') return 1;
         return a.name.localeCompare(b.name);
     });
-    
     container.innerHTML = '';
-    featured.forEach(writeup => {
-        container.appendChild(createWriteupCard(writeup));
-    });
+    featured.forEach(writeup => container.appendChild(createWriteupCard(writeup)));
 }
 
-// ====== EXPOSE FUNCTIONS ======
 window.loadAllWriteups = loadAllWriteups;
 window.loadFeaturedWriteups = loadFeaturedWriteups;
 
 console.log(`📚 Loaded ${writeupsData.length} writeups`);
-console.log(`🐧 Linux: ${writeupsData.filter(w => w.os === 'linux').length}`);
-console.log(`🪟 Windows: ${writeupsData.filter(w => w.os === 'windows').length}`);
-console.log(`🏆 ProLabs: ${writeupsData.filter(w => w.os === 'prolabs').length}`);
-console.log(`▶ TryHackMe: ${writeupsData.filter(w => w.os === 'tryhackme').length}`);
-console.log(`🛡️ Hacker101: ${writeupsData.filter(w => w.os === 'hacker101').length}`);

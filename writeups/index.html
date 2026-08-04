@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Writeups • NIGHT PULSE X</title>
     <link rel="icon" href="/assets/images/favicon.ico" />
+    <!-- تم إعادة رابط FontAwesome هنا -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -15,339 +16,92 @@
             min-height: 100vh;
             overflow-x: hidden;
         }
-        /* خلفية متحركة */
         .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            background: 
-                radial-gradient(ellipse at 20% 50%, rgba(111, 255, 224, 0.05), transparent 50%),
-                radial-gradient(ellipse at 80% 50%, rgba(124, 58, 237, 0.05), transparent 50%);
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;
+            background: radial-gradient(ellipse at 20% 50%, rgba(111, 255, 224, 0.05), transparent 50%), radial-gradient(ellipse at 80% 50%, rgba(124, 58, 237, 0.05), transparent 50%);
             animation: bgMove 10s ease-in-out infinite alternate;
         }
-        @keyframes bgMove {
-            0% { transform: scale(1) rotate(0deg); }
-            100% { transform: scale(1.1) rotate(3deg); }
-        }
-        /* نجوم */
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-        }
-        .star {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            animation: twinkle var(--d) ease-in-out infinite alternate;
-        }
-        @keyframes twinkle {
-            0% { opacity: 0.1; transform: scale(0.5); }
-            100% { opacity: 1; transform: scale(1.5); }
-        }
-        /* الحاوية */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 3rem;
-            position: relative;
-            z-index: 1;
-        }
-        /* الهيدر */
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1rem 2rem;
-            background: rgba(10, 10, 15, 0.6);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(111, 255, 224, 0.08);
-            border-radius: 2rem;
-            margin-bottom: 4rem;
-        }
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #6fffe0, #a78bfa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        @keyframes bgMove { 0% { transform: scale(1) rotate(0deg); } 100% { transform: scale(1.1) rotate(3deg); } }
+        .stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        .star { position: absolute; background: white; border-radius: 50%; animation: twinkle var(--d) ease-in-out infinite alternate; }
+        @keyframes twinkle { 0% { opacity: 0.1; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1.5); } }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem 3rem; position: relative; z-index: 1; }
+        .header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 2rem; background: rgba(10, 10, 15, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(111, 255, 224, 0.08); border-radius: 2rem; margin-bottom: 4rem; }
+        .logo { display: flex; align-items: center; gap: 12px; font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, #6fffe0, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .logo img { width: 40px; height: 40px; }
-        .nav a {
-            color: rgba(255,255,255,0.5);
-            text-decoration: none;
-            margin-left: 2rem;
-            font-size: 0.95rem;
-            transition: 0.3s;
-            position: relative;
-        }
-        .nav a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: #6fffe0;
-            transition: 0.3s;
-        }
-        .nav a:hover { color: #fff; }
-        .nav a:hover::after { width: 100%; }
-        .nav a.active { color: #fff; }
-        .nav a.active::after { width: 100%; }
+        .nav a { color: rgba(255,255,255,0.5); text-decoration: none; margin-left: 2rem; font-size: 0.95rem; transition: 0.3s; position: relative; }
+        .nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: #6fffe0; transition: 0.3s; }
+        .nav a:hover { color: #fff; } .nav a:hover::after { width: 100%; }
+        .nav a.active { color: #fff; } .nav a.active::after { width: 100%; }
         .nav a i { margin-right: 6px; }
 
-        .page-title {
-            font-size: 2.8rem;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 2.5rem;
-            background: linear-gradient(135deg, #6fffe0, #a78bfa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-        }
+        .page-title { font-size: 2.8rem; font-weight: 700; text-align: center; margin-bottom: 2.5rem; background: linear-gradient(135deg, #6fffe0, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; justify-content: center; gap: 15px; }
 
-        .filter-bar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.8rem;
-            margin-bottom: 2rem;
-            justify-content: center;
-        }
-        .filter-btn {
-            padding: 0.5rem 1.2rem;
-            border-radius: 30px;
-            border: 1px solid rgba(111, 255, 224, 0.06);
-            background: rgba(255,255,255,0.02);
-            color: rgba(255,255,255,0.5);
-            cursor: pointer;
-            transition: 0.3s;
-            font-family: inherit;
-            font-size: 0.9rem;
-        }
-        .filter-btn:hover {
-            border-color: #6fffe0;
-            color: #fff;
-            transform: translateY(-2px);
-            background: rgba(111,255,224,0.03);
-        }
-        .filter-btn.active {
-            background: linear-gradient(135deg, #6fffe0, #a78bfa);
-            color: #0a0a0f;
-            border-color: transparent;
-            box-shadow: 0 5px 25px rgba(111, 255, 224, 0.15);
-        }
+        .filters-container { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; margin-bottom: 2.5rem; }
+        .filter-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; }
+        .filter-btn { padding: 0.6rem 1.8rem; border-radius: 30px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.02); color: rgba(255,255,255,0.6); cursor: pointer; transition: 0.3s; font-family: inherit; font-size: 0.95rem; }
+        .filter-btn:hover { border-color: rgba(255,255,255,0.3); color: #fff; transform: translateY(-2px); }
+        .filter-btn.active { background: linear-gradient(135deg, #6fffe0, #a78bfa); color: #0a0a0f; border-color: transparent; box-shadow: 0 5px 25px rgba(111, 255, 224, 0.15); }
 
-        .writeups-stats {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 2rem;
-            padding: 1.5rem;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(111, 255, 224, 0.06);
-            border-radius: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        .stat-item {
-            text-align: center;
-        }
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #6fffe0;
-            display: block;
-        }
-        .stat-label {
-            color: rgba(255,255,255,0.4);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+        .sub-filters { display: none; flex-wrap: wrap; justify-content: center; gap: 0.8rem; margin-top: 0.5rem; padding: 0.8rem 1.5rem; background: rgba(255,255,255,0.02); border-radius: 40px; border: 1px solid rgba(255,255,255,0.04); animation: fadeIn 0.3s ease-in-out; }
+        .sub-filters.show { display: flex; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .writeups-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
-        }
-        .writeup-card {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(111, 255, 224, 0.06);
-            border-radius: 1.5rem;
-            padding: 1.5rem;
-            transition: 0.3s;
-        }
-        .writeup-card:hover {
-            transform: translateY(-6px);
-            border-color: #6fffe0;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-            background: rgba(111, 255, 224, 0.02);
-        }
-        .writeup-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 0.5rem;
-        }
-        .writeup-header .writeup-icon { font-size: 1.5rem; }
+        .filter-btn.easy { border-color: rgba(168, 224, 110, 0.2); color: #a8e06e; }
+        .filter-btn.easy:hover, .filter-btn.easy.active { background: #a8e06e; color: #0a0a0f; border-color: #a8e06e; box-shadow: 0 0 15px rgba(168, 224, 110, 0.2); }
+        .filter-btn.medium { border-color: rgba(234, 197, 98, 0.2); color: #eac562; }
+        .filter-btn.medium:hover, .filter-btn.medium.active { background: #eac562; color: #0a0a0f; border-color: #eac562; box-shadow: 0 0 15px rgba(234, 197, 98, 0.2); }
+        .filter-btn.hard { border-color: rgba(224, 90, 90, 0.2); color: #e05a5a; }
+        .filter-btn.hard:hover, .filter-btn.hard.active { background: #e05a5a; color: #0a0a0f; border-color: #e05a5a; box-shadow: 0 0 15px rgba(224, 90, 90, 0.2); }
+        .filter-btn.insane { border-color: rgba(140, 140, 140, 0.2); color: #8c8c8c; }
+        .filter-btn.insane:hover, .filter-btn.insane.active { background: #8c8c8c; color: #0a0a0f; border-color: #8c8c8c; box-shadow: 0 0 15px rgba(140, 140, 140, 0.2); }
+        .filter-btn.prolabs { border-color: rgba(245, 197, 66, 0.2); color: #f5c542; }
+        .filter-btn.prolabs:hover, .filter-btn.prolabs.active { background: #f5c542; color: #0a0a0f; border-color: #f5c542; box-shadow: 0 0 15px rgba(245, 197, 66, 0.2); }
+
+        .writeups-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+        .writeup-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(111, 255, 224, 0.06); border-radius: 1.5rem; padding: 1.5rem; transition: 0.3s; }
+        .writeup-card:hover { transform: translateY(-6px); border-color: #6fffe0; box-shadow: 0 10px 40px rgba(0,0,0,0.4); background: rgba(111, 255, 224, 0.02); }
+        .writeup-header { display: flex; align-items: center; gap: 10px; margin-bottom: 0.5rem; }
+        .writeup-dot { width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0; box-shadow: 0 0 10px currentColor; }
         .writeup-header h4 { color: #6fffe0; font-size: 1.1rem; }
-        .writeup-meta {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 0.5rem;
-        }
-        .writeup-meta span {
-            font-size: 0.7rem;
-            padding: 0.2rem 0.8rem;
-            border-radius: 20px;
-            text-transform: uppercase;
-            font-weight: 600;
-        }
+        .writeup-meta { display: flex; gap: 10px; margin-bottom: 0.5rem; }
+        .writeup-meta span { font-size: 0.7rem; padding: 0.2rem 0.8rem; border-radius: 20px; text-transform: uppercase; font-weight: 600; }
         .writeup-meta .writeup-os { background: rgba(0,255,200,0.15); color: #6fffe0; }
         .writeup-meta .writeup-level { background: rgba(124,58,237,0.15); color: #a78bfa; }
         .writeup-category { color: rgba(255,255,255,0.4); font-size: 0.85rem; margin-bottom: 0.5rem; }
-        .writeup-password {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            margin: 8px 0;
-            padding: 6px 12px;
-            background: rgba(111, 255, 224, 0.05);
-            border-radius: 6px;
-            border: 1px dashed rgba(111, 255, 224, 0.1);
-        }
-        .writeup-password .password-text {
-            color: #6fffe0;
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            letter-spacing: 0.5px;
-            word-break: break-all;
-            flex: 1;
-        }
-        .copy-btn {
-            background: rgba(111, 255, 224, 0.08);
-            border: 1px solid rgba(111, 255, 224, 0.15);
-            border-radius: 6px;
-            color: #6fffe0;
-            cursor: pointer;
-            padding: 4px 10px;
-            font-size: 14px;
-            transition: 0.3s;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .copy-btn:hover {
-            background: rgba(111, 255, 224, 0.15);
-            border-color: #6fffe0;
-            transform: scale(1.05);
-        }
-        .writeup-link {
-            color: #6fffe0;
-            text-decoration: none;
-            font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: 0.3s;
-            margin-top: 0.5rem;
-        }
+        .writeup-password { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 8px 0; padding: 6px 12px; background: rgba(111, 255, 224, 0.05); border-radius: 6px; border: 1px dashed rgba(111, 255, 224, 0.1); }
+        .writeup-password .password-text { color: #6fffe0; font-family: 'Courier New', monospace; font-size: 12px; letter-spacing: 0.5px; word-break: break-all; flex: 1; }
+        .copy-btn { background: rgba(111, 255, 224, 0.08); border: 1px solid rgba(111, 255, 224, 0.15); border-radius: 6px; color: #6fffe0; cursor: pointer; padding: 4px 10px; font-size: 14px; transition: 0.3s; flex-shrink: 0; }
+        .copy-btn:hover { background: rgba(111, 255, 224, 0.15); border-color: #6fffe0; transform: scale(1.05); }
+        .writeup-link { color: #6fffe0; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s; margin-top: 0.5rem; }
         .writeup-link:hover { color: #fff; gap: 12px; }
 
-        .footer {
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(111, 255, 224, 0.06);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
+        .footer { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(111, 255, 224, 0.06); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
         .footer p { color: rgba(255,255,255,0.2); font-size: 0.9rem; }
-        .social a {
-            color: rgba(255,255,255,0.2);
-            font-size: 1.2rem;
-            margin-left: 1.5rem;
-            transition: 0.3s;
-        }
+        .social a { color: rgba(255,255,255,0.2); font-size: 1.2rem; margin-left: 1.5rem; transition: 0.3s; }
         .social a:hover { color: #6fffe0; transform: translateY(-3px); }
 
         @media (max-width: 768px) {
-            .container { padding: 1rem; }
-            .header { flex-direction: column; gap: 1rem; padding: 1rem; }
-            .nav a { margin: 0 0.8rem; font-size: 0.85rem; }
-            .page-title { font-size: 2rem; }
-            .writeups-grid { grid-template-columns: 1fr; }
-        }
-        @media (max-width: 480px) {
-            .page-title { font-size: 1.5rem; }
-            .footer { flex-direction: column; text-align: center; }
-            .social a { margin: 0 0.8rem; }
+            .container { padding: 1rem; } .header { flex-direction: column; gap: 1rem; padding: 1rem; }
+            .nav a { margin: 0 0.8rem; font-size: 0.85rem; } .page-title { font-size: 2rem; }
+            .writeups-grid { grid-template-columns: 1fr; } .sub-filters.show { gap: 0.5rem; }
         }
 
-        /* ====== Mouse effects ====== */
-        .mouse-trail {
-            position: fixed;
-            width: 8px;
-            height: 8px;
-            background: #6fffe0;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            box-shadow: 0 0 20px rgba(111,255,224,0.5), 0 0 60px rgba(111,255,224,0.2);
-            transform: translate(-50%, -50%);
-            transition: width 0.2s, height 0.2s;
-        }
-        .mouse-glow-effect {
-            position: fixed;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(111, 255, 224, 0.06), transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9998;
-            transform: translate(-50%, -50%);
-            transition: width 0.3s, height 0.3s;
-        }
-        .mouse-glow-effect.active {
-            width: 350px;
-            height: 350px;
-            background: radial-gradient(circle, rgba(111, 255, 224, 0.12), transparent 70%);
-        }
+        .mouse-trail { position: fixed; width: 8px; height: 8px; background: #6fffe0; border-radius: 50%; pointer-events: none; z-index: 9999; box-shadow: 0 0 20px rgba(111,255,224,0.5), 0 0 60px rgba(111,255,224,0.2); transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s; }
+        .mouse-glow-effect { position: fixed; width: 200px; height: 200px; background: radial-gradient(circle, rgba(111, 255, 224, 0.06), transparent 70%); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: width 0.3s, height 0.3s; }
+        .mouse-glow-effect.active { width: 350px; height: 350px; background: radial-gradient(circle, rgba(111, 255, 224, 0.12), transparent 70%); }
     </style>
 </head>
 <body>
-
     <div class="bg-animation"></div>
     <div class="stars" id="stars"></div>
-
     <div class="mouse-trail" id="mouseTrail"></div>
     <div class="mouse-glow-effect" id="mouseGlowEffect"></div>
 
     <div class="container">
-
         <header class="header">
-            <div class="logo">
-                <img src="/assets/images/npx-logo.svg" alt="NPX" />
-                <span>NIGHT PULSE X</span>
-            </div>
+            <div class="logo"><img src="/assets/images/npx-logo.svg" alt="NPX" /><span>NIGHT PULSE X</span></div>
             <nav class="nav">
                 <a href="/index"><i class="fas fa-house"></i> Home</a>
                 <a href="/about"><i class="fas fa-user-astronaut"></i> About</a>
@@ -359,32 +113,40 @@
 
         <h1 class="page-title"><i class="fas fa-pen-fancy"></i> All Writeups</h1>
 
-        <div class="filter-bar">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="linux">🐧 Linux</button>
-            <button class="filter-btn" data-filter="windows">🪟 Windows</button>
-            <button class="filter-btn" data-filter="prolabs">🏆 ProLabs</button>
-            <button class="filter-btn" data-filter="easy">🟢 Easy</button>
-            <button class="filter-btn" data-filter="medium">🟡 Medium</button>
-            <button class="filter-btn" data-filter="hard">🔴 Hard</button>
-            <button class="filter-btn" data-filter="insane">💀 Insane</button>
-                <!-- TryHackMe -->
-    <button class="filter-btn" data-filter="tryhackme" style="padding: 6px 14px; border-radius: 20px; font-family: 'Courier New', monospace; background: #0d0d0d; color: #ff6b35; border: 1px solid #ff6b35; cursor: pointer;">
-        <span style="display: flex; align-items: center; gap: 6px;">
-            <span style="font-size: 0.5rem; line-height: 1.2; opacity: 0.5; text-align: right;">
-                10 10<br>1110
-            </span>
-            <span style="display: flex; flex-direction: column; line-height: 1.2; font-weight: 800; font-size: 0.8rem;">
-                <span style="color: #ff6b35;">Try</span>
-                <span style="color: #ff4500;">Hac</span>
-                <span style="color: #ff6b35;">Me</span>
-            </span>
-            <span style="font-size: 0.5rem; line-height: 1.2; opacity: 0.5; text-align: left;">
-                01 01<br>0101
-            </span>
-        </span>
-    </button>
-            <button class="filter-btn" data-filter="hacker101">🛡️  Hacker101</button>
+        <div class="filters-container">
+            <div class="filter-row">
+                <button class="filter-btn active" data-filter="all" onclick="closeAllSubs()">All</button>
+                
+                <button class="filter-btn" data-filter="htb" onclick="toggleSub('htbSub')"><i class="fas fa-shield-halved"></i> Hack The Box</button>
+                <button class="filter-btn" data-filter="tryhackme" onclick="toggleSub('thmSub')"><i class="fas fa-user-secret"></i> TryHackMe</button>
+                <button class="filter-btn" data-filter="hacker101" onclick="toggleSub('h101Sub')"><i class="fas fa-shield"></i> Hacker101</button>
+            </div>
+
+            <!-- HTB Sub Filters -->
+            <div id="htbSub" class="sub-filters">
+                <button class="filter-btn" data-filter="linux">Linux</button>
+                <button class="filter-btn" data-filter="windows">Windows</button>
+                <button class="filter-btn easy" data-filter="htb-easy">Easy</button>
+                <button class="filter-btn medium" data-filter="htb-medium">Medium</button>
+                <button class="filter-btn hard" data-filter="htb-hard">Hard</button>
+                <button class="filter-btn insane" data-filter="htb-insane">Insane</button>
+                <button class="filter-btn prolabs" data-filter="prolabs">ProLabs</button>
+            </div>
+
+            <!-- THM Sub Filters -->
+            <div id="thmSub" class="sub-filters">
+                <button class="filter-btn easy" data-filter="tryhackme-easy">Easy</button>
+                <button class="filter-btn medium" data-filter="tryhackme-medium">Medium</button>
+                <button class="filter-btn hard" data-filter="tryhackme-hard">Hard</button>
+                <button class="filter-btn insane" data-filter="tryhackme-insane">Insane</button>
+            </div>
+
+            <!-- H101 Sub Filters -->
+            <div id="h101Sub" class="sub-filters">
+                <button class="filter-btn easy" data-filter="hacker101-easy">Easy</button>
+                <button class="filter-btn medium" data-filter="hacker101-medium">Medium</button>
+                <button class="filter-btn hard" data-filter="hacker101-hard">Hard</button>
+            </div>
         </div>
 
         <div class="writeups-grid" id="allWriteups"></div>
@@ -398,74 +160,65 @@
                 <a href="https://www.linkedin.com/in/night-pulse-x-337a89275" target="_blank"><i class="fab fa-linkedin"></i></a>
             </div>
         </footer>
-
     </div>
 
     <script>
-        // نجوم
         (function() {
             const container = document.getElementById('stars');
             for (let i = 0; i < 80; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
+                const star = document.createElement('div'); star.className = 'star';
                 const size = Math.random() * 3 + 1;
-                star.style.width = size + 'px';
-                star.style.height = size + 'px';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
+                star.style.width = size + 'px'; star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%'; star.style.top = Math.random() * 100 + '%';
                 star.style.setProperty('--d', (2 + Math.random() * 4) + 's');
                 star.style.animationDelay = (Math.random() * 5) + 's';
                 star.style.opacity = Math.random() * 0.5 + 0.2;
                 container.appendChild(star);
             }
         })();
+
+        function toggleSub(id) {
+            const el = document.getElementById(id);
+            const isVisible = el.classList.contains('show');
+            closeAllSubs();
+            if (!isVisible) {
+                el.classList.add('show');
+                applyFilterFromBtn(el.parentElement.querySelector(`[onclick*="${id}"]`));
+            }
+        }
+
+        function closeAllSubs() { document.querySelectorAll('.sub-filters').forEach(el => el.classList.remove('show')); }
+
+        function applyFilterFromBtn(btn) {
+            if (btn) {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                if (typeof applyFilter === 'function') applyFilter(btn.dataset.filter);
+            }
+        }
     </script>
 
     <script src="/js/writeups.js"></script>
     <script>
         loadAllWriteups();
-
-        // Mouse effects
         (function() {
-            const trail = document.getElementById("mouseTrail");
-            const glow = document.getElementById("mouseGlowEffect");
-            let x = 0, y = 0;
-            let trailX = 0, trailY = 0;
-
+            const trail = document.getElementById("mouseTrail"); const glow = document.getElementById("mouseGlowEffect");
+            let x = 0, y = 0, trailX = 0, trailY = 0;
             document.addEventListener("mousemove", (e) => {
-                x = e.clientX;
-                y = e.clientY;
-                glow.style.left = x + "px";
-                glow.style.top = y + "px";
+                x = e.clientX; y = e.clientY;
+                glow.style.left = x + "px"; glow.style.top = y + "px";
                 glow.classList.add("active");
                 clearTimeout(window.glowTimeout);
                 window.glowTimeout = setTimeout(() => glow.classList.remove("active"), 200);
             });
-
             setInterval(() => {
-                trailX += (x - trailX) * 0.15;
-                trailY += (y - trailY) * 0.15;
-                trail.style.left = trailX + "px";
-                trail.style.top = trailY + "px";
+                trailX += (x - trailX) * 0.15; trailY += (y - trailY) * 0.15;
+                trail.style.left = trailX + "px"; trail.style.top = trailY + "px";
             }, 16);
-
-            document.addEventListener("mouseleave", () => {
-                trail.style.opacity = "0";
-                glow.style.opacity = "0";
-            });
-            document.addEventListener("mouseenter", () => {
-                trail.style.opacity = "1";
-                glow.style.opacity = "1";
-            });
+            document.addEventListener("mouseleave", () => { trail.style.opacity = "0"; glow.style.opacity = "0"; });
+            document.addEventListener("mouseenter", () => { trail.style.opacity = "1"; glow.style.opacity = "1"; });
         })();
     </script>
-<script>
-    page('/', () => { window.location.href = 'index.html'; });
-    page('/about', () => { window.location.href = 'about.html'; });
-    page('/writeups', () => { window.location.href = 'writeups.html'; });
-    page('/certifications', () => { window.location.href = 'certifications.html'; });
-    page('/contact', () => { window.location.href = 'contact.html'; });
-    page();
-</script>
+    <script> page('/', () => { window.location.href = 'index.html'; }); page('/about', () => { window.location.href = 'about.html'; }); page('/writeups', () => { window.location.href = 'writeups.html'; }); page('/certifications', () => { window.location.href = 'certifications.html'; }); page('/contact', () => { window.location.href = 'contact.html'; }); page(); </script>
 </body>
 </html>
