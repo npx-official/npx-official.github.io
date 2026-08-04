@@ -1,45 +1,49 @@
 // ====== ALL WRITEUPS DATA ======
 const writeupsData = [
     // ====== LINUX - EASY ======
-    { name: 'cctv', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/linux/easy/cctv', password: 'CCTV!E@sy#2026'  },
-    { name: 'Connected', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/linux/easy/Connected' },
-    { name: 'Enigma', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/linux/easy/Enigma' },
-    { name: 'Kobold', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/linux/easy/Kobold', password: 'K0b0ld!E@sy#X5' },
-    { name: 'MonitorsFour', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/linux/easy/MonitorsFour' },
-    { name: 'Orion', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/linux/easy/Orion' },
-    { name: 'Paperwork', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/linux/easy/Paperwork' },
-    { name: 'Reactor', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/linux/easy/Reactor' },
-    { name: 'Silentium', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/linux/easy/Silentium', password: 'S1l3nt1um!E@sy#2026' },
-    { name: 'Cohort', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/linux/easy/Cohort' },
+    { name: 'cctv', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/cctv', password: 'CCTV!E@sy#2026'  },
+    { name: 'Connected', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/Connected' },
+    { name: 'Enigma', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/Enigma' },
+    { name: 'Kobold', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/Kobold', password: 'K0b0ld!E@sy#X5' },
+    { name: 'MonitorsFour', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/MonitorsFour' },
+    { name: 'Orion', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/Orion' },
+    { name: 'Paperwork', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/Paperwork' },
+    { name: 'Reactor', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/Reactor' },
+    { name: 'Silentium', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/Silentium', password: 'S1l3nt1um!E@sy#2026' },
+    { name: 'Cohort', category: 'linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/Cohort' },
     
     // ====== LINUX - MEDIUM ======
-    { name: 'Bedside', category: 'linux/medium', level: 'medium', os: 'linux', path: '/writeups/linux/medium/Bedside' },
-    { name: 'Checkpoint', category: 'linux/medium', level: 'medium', os: 'linux', path: '/writeups/linux/medium/Checkpoint' },
-    { name: 'DevArea', category: 'linux/medium', level: 'medium', os: 'linux', path: '/writeups/linux/medium/DevArea' },
-    { name: 'DevHub', category: 'linux/medium', level: 'medium', os: 'linux', path: '/writeups/linux/medium/DevHub' },
-    { name: 'Fireflow', category: 'linux/medium', level: 'medium', os: 'linux', path: '/writeups/linux/medium/Fireflow', password: 'F1r3fl0w!M3d1um#X2' },
-    { name: 'MakeSense', category: 'linux/medium', level: 'medium', os: 'linux', path: '/writeups/linux/medium/MakeSense' },
-    { name: 'Overwatch', category: 'linux/medium', level: 'medium', os: 'linux', path: '/writeups/linux/medium/Overwatch' },
-    { name: 'VariaType', category: 'linux/medium', level: 'medium', os: 'linux', path: '/writeups/linux/medium/VariaType', password: 'V@r1@Typ3!M3d1um#2026' },
+    { name: 'Bedside', category: 'linux/medium', level: 'medium', os: 'linux', path: '/writeups/htb/linux/medium/Bedside' },
+    { name: 'Checkpoint', category: 'linux/medium', level: 'medium', os: 'linux', path: '/writeups/htb/linux/medium/Checkpoint' },
+    { name: 'DevArea', category: 'linux/medium', level: 'medium', os: 'linux', path: '/writeups/htb/linux/medium/DevArea' },
+    { name: 'DevHub', category: 'linux/medium', level: 'medium', os: 'linux', path: '/writeups/htb/linux/medium/DevHub' },
+    { name: 'Fireflow', category: 'linux/medium', level: 'medium', os: 'linux', path: '/writeups/htb/linux/medium/Fireflow', password: 'F1r3fl0w!M3d1um#X2' },
+    { name: 'MakeSense', category: 'linux/medium', level: 'medium', os: 'linux', path: '/writeups/htb/linux/medium/MakeSense' },
+    { name: 'Overwatch', category: 'linux/medium', level: 'medium', os: 'linux', path: '/writeups/htb/linux/medium/Overwatch' },
+    { name: 'VariaType', category: 'linux/medium', level: 'medium', os: 'linux', path: '/writeups/htb/linux/medium/VariaType', password: 'V@r1@Typ3!M3d1um#2026' },
     
     // ====== LINUX - HARD ======
-    { name: 'Nimbus', category: 'linux/hard', level: 'hard', os: 'linux', path: '/writeups/linux/hard/Nimbus' },
+    { name: 'Nimbus', category: 'linux/hard', level: 'hard', os: 'linux', path: '/writeups/htb/linux/hard/Nimbus' },
     
     // ====== WINDOWS - MEDIUM ======
-    { name: 'logging', category: 'windows/medium', level: 'medium', os: 'windows', path: '/writeups/windows/medium/logging', password: ''},
+    { name: 'logging', category: 'windows/medium', level: 'medium', os: 'windows', path: '/writeups/htb/windows/medium/logging', password: ''},
 
     // ====== WINDOWS - HARD ======
-    { name: 'Garfield', category: 'windows/hard', level: 'hard', os: 'windows', path: '/writeups/windows/hard/Garfield' },
-    { name: 'Ghostlink', category: 'windows/hard', level: 'hard', os: 'windows', path: '/writeups/windows/hard/Ghostlink', password: 'Gh0stl1nk!W1nd0ws#X5' },
-    { name: 'DarkZero Returns', category: 'windows/hard', level: 'hard', os: 'windows', path: '/writeups/windows/hard/DarkZeroReturns' },
-    { name: 'Fries', category: 'windows/hard', level: 'hard', os: 'windows', path: '/writeups/windows/hard/Fries', password: 'Fr13s!H@rd#2026' },
+    { name: 'Garfield', category: 'windows/hard', level: 'hard', os: 'windows', path: '/writeups/htb/windows/hard/Garfield' },
+    { name: 'Ghostlink', category: 'windows/hard', level: 'hard', os: 'windows', path: '/writeups/htb/windows/hard/Ghostlink', password: 'Gh0stl1nk!W1nd0ws#X5' },
+    { name: 'DarkZero Returns', category: 'windows/hard', level: 'hard', os: 'windows', path: '/writeups/htb/windows/hard/DarkZeroReturns' },
+    { name: 'Fries', category: 'windows/hard', level: 'hard', os: 'windows', path: '/writeups/htb/windows/hard/Fries', password: 'Fr13s!H@rd#2026' },
  
     // ====== WINDOWS - INSANE ======
-    { name: 'Odyssey', category: 'windows/insane', level: 'insane', os: 'windows', path: '/writeups/windows/insane/Odyssey', password: '0dys3y!R3turn#Insan3' },
+    { name: 'Odyssey', category: 'windows/insane', level: 'insane', os: 'windows', path: '/writeups/htb/windows/insane/Odyssey', password: '0dys3y!R3turn#Insan3' },
 
     // ====== PROLABS ======
-    { name: 'Mythical', category: 'prolabs', level: 'prolabs', os: 'prolabs', path: '/writeups/prolabs/Mythical' },
-    { name: 'Puppet', category: 'prolabs', level: 'prolabs', os: 'prolabs', path: '/writeups/prolabs/Puppet' },
+    { name: 'Mythical', category: 'prolabs', level: 'prolabs', os: 'prolabs', path: '/writeups/htb/prolabs/Mythical' },
+    { name: 'Puppet', category: 'prolabs', level: 'prolabs', os: 'prolabs', path: '/writeups/htb/prolabs/Puppet' },
+
+    // ====== TRYHACKME ======
+    { name: 'Towel on the Sunbed', category: 'tryhackme/medium', level: 'medium', os: 'tryhackme', path: '/writeups/tryhackme/medium/Towel on the Sunbed', password: '' },
+  
     // ====== HACKER101 CTF ======
     { name: 'Photo Gallery', category: 'hacker101/ctf', level: 'easy', os: 'hacker101', path: '/writeups/hacker101/PhotoGallery' },
     { name: 'Micro-CMS v1', category: 'hacker101/ctf', level: 'easy', os: 'hacker101', path: '/writeups/hacker101/MicroCMSv1' },
@@ -257,4 +261,5 @@ console.log(`📚 Loaded ${writeupsData.length} writeups`);
 console.log(`🐧 Linux: ${writeupsData.filter(w => w.os === 'linux').length}`);
 console.log(`🪟 Windows: ${writeupsData.filter(w => w.os === 'windows').length}`);
 console.log(`🏆 ProLabs: ${writeupsData.filter(w => w.os === 'prolabs').length}`);
+console.log(`▶ TryHackMe: ${writeupsData.filter(w => w.os === 'tryhackme').length}`);
 console.log(`🛡️ Hacker101: ${writeupsData.filter(w => w.os === 'hacker101').length}`);
