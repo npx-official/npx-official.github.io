@@ -1,1 +1,132 @@
-<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0; url=/writeups"></head><body></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TryHackMe • Towel on the Sunbed</title>
+    <link rel="icon" href="/assets/images/favicon.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0a0a0f;
+            color: #e0e5f0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+        }
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(ellipse at 20% 50%, rgba(111,255,224,0.03), transparent 50%),
+                        radial-gradient(ellipse at 80% 50%, rgba(124,58,237,0.03), transparent 50%);
+            z-index: 0;
+            animation: bgPulse 8s ease-in-out infinite alternate;
+        }
+        @keyframes bgPulse {
+            0% { opacity: 0.5; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.05); }
+        }
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            padding: 2rem 3rem;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(111, 255, 224, 0.15);
+            border-radius: 2.5rem;
+            box-shadow: 0 0 60px rgba(111, 255, 224, 0.05);
+        }
+        .icon {
+            font-size: 4rem;
+            margin-bottom: 0.5rem;
+        }
+        h1 {
+            color: #6fffe0;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 300;
+            letter-spacing: 4px;
+        }
+        .subtitle {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+            letter-spacing: 2px;
+        }
+        .badge {
+            display: inline-block;
+            background: rgba(111, 255, 224, 0.1);
+            border: 1px solid rgba(111, 255, 224, 0.2);
+            color: #6fffe0;
+            padding: 4px 18px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        .coming-soon {
+            margin: 2rem 0 1.5rem;
+            color: rgba(255, 255, 255, 0.15);
+            font-size: 0.9rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+        .coming-soon span {
+            display: inline-block;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+        .btn-return {
+            display: inline-block;
+            padding: 0.8rem 2.5rem;
+            background: linear-gradient(135deg, #6fffe0, #a78bfa);
+            color: #0a0a0f;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 30px rgba(111, 255, 224, 0.1);
+        }
+        .btn-return:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 0 60px rgba(111, 255, 224, 0.2);
+        }
+        .btn-return i {
+            margin-right: 10px;
+        }
+        .footer-note {
+            margin-top: 2rem;
+            color: rgba(255, 255, 255, 0.1);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">🛏️</div>
+        <h1>Towel on the Sunbed</h1>
+        <p class="subtitle">TryHackMe — Medium</p>
+        <span class="badge">⏱️ 45 min • 🪙 1,986</span>
+
+        <div class="coming-soon">
+            <span>✦ Writeup coming soon ✦</span>
+        </div>
+
+        <a href="/writeups/tryhackme/medium/index.html" class="btn-return">
+            <i class="fas fa-arrow-left"></i> Back to Medium
+        </a>
+        <div class="footer-note">NIGHT PULSE X • 2026</div>
+    </div>
+</body>
+</html>
