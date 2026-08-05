@@ -26,7 +26,7 @@
         .star { position: absolute; background: white; border-radius: 50%; animation: twinkle var(--d) ease-in-out infinite alternate; }
         @keyframes twinkle { 0% { opacity: 0.1; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1.5); } }
         
-        .container { max-width: 1200px; margin: 0 auto; padding: 2rem 3rem; position: relative; z-index: 1; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem 2rem; position: relative; z-index: 1; }
         .header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 2rem; background: rgba(10, 10, 15, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(111, 255, 224, 0.08); border-radius: 2rem; margin-bottom: 4rem; }
         .logo { display: flex; align-items: center; gap: 12px; font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, #6fffe0, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .logo img { width: 40px; height: 40px; }
@@ -106,7 +106,7 @@
                 <a href="/index"><i class="fas fa-house"></i> Home</a>
                 <a href="/about"><i class="fas fa-user-astronaut"></i> About</a>
                 <a href="/writeups" class="active"><i class="fas fa-pen-fancy"></i> Writeups</a>
-                <a href="/projects"<i class="fas fa-code"></i> Projects</a>
+                <a href="/projects"><i class="fas fa-code"></i> Projects</a>
                 <a href="/certifications"><i class="fas fa-certificate"></i> Certs</a>
                 <a href="/contact"><i class="fas fa-envelope"></i> Contact</a>
             </nav>
@@ -220,6 +220,6 @@
             document.addEventListener("mouseenter", () => { trail.style.opacity = "1"; glow.style.opacity = "1"; });
         })();
     </script>
-    <script> page('/', () => { window.location.href = 'index.html'; }); page('/about', () => { window.location.href = 'about.html'; }); page('/writeups', () => { window.location.href = 'writeups.html'; }); page('/certifications', () => { window.location.href = 'certifications.html'; }); page('/contact', () => { window.location.href = 'contact.html'; }); page(); </script>
+    <script> page('/', () => { window.location.href = 'index.html'; }); page('/about', () => { window.location.href = 'about.html'; }); page('/writeups', () => { window.location.href = 'writeups.html'; }); page('/projects', () => { window.location.href = 'projects.html'; }); page('/certifications', () => { window.location.href = 'certifications.html'; }); page('/contact', () => { window.location.href = 'contact.html'; }); page(); </script>
 </body>
 </html>

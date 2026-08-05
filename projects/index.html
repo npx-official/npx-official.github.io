@@ -149,9 +149,6 @@
             <button class="filter-btn active" data-filter="all">All</button>
             <button class="filter-btn" data-filter="exploit">Exploits</button>
             <button class="filter-btn" data-filter="tool">Tools</button>
-            <button class="filter-btn" data-filter="writeup">Writeups</button>
-            <button class="filter-btn" data-filter="linux">🐧 Linux</button>
-            <button class="filter-btn" data-filter="windows">🪟 Windows</button>
             <button class="filter-btn" data-filter="privesc">🔓 Privilege Escalation</button>
             <button class="filter-btn" data-filter="poc">📌 PoC</button>
             <button class="filter-btn" data-filter="cve">🛡️ CVE</button>
@@ -211,69 +208,84 @@
             document.addEventListener("mouseleave", () => { trail.style.opacity = "0"; glow.style.opacity = "0"; });
             document.addEventListener("mouseenter", () => { trail.style.opacity = "1"; glow.style.opacity = "1"; });
         })();
-
-        // ====== PROJECTS DATA ======
-        const projects = [
-           {
-            name: 'NPX Framework — Pentesting Automation Suite',
-            desc: 'Modular Python framework for automating penetration testing workflows. Includes modules for reconnaissance, exploitation, and reporting.',
-           icon: '🌐',
-            category: 'Framework',
-            tags: ['Python', 'Automation', 'Pentesting', 'Framework', 'Recon', 'Exploitation'],
-            link: 'https://github.com/npx-official/npx-framework'
-        },
-        ];
-
-        // ====== RENDER ======
-        function renderProjects(filter = 'all') {
-            const container = document.getElementById('projectsGrid');
-            container.innerHTML = '';
-
-            const filtered = projects.filter(p => {
-                if (filter === 'all') return true;
-                return p.category.toLowerCase() === filter ||
-                       p.tags.some(t => t.toLowerCase().includes(filter)) ||
-                       p.name.toLowerCase().includes(filter);
-            });
-
-            if (filtered.length === 0) {
-                container.innerHTML = `
-                    <div style="text-align: center; padding: 4rem 0; color: rgba(255,255,255,0.15); grid-column: 1 / -1;">
-                        <i class="fas fa-search" style="font-size: 3rem; display: block; margin-bottom: 1rem;"></i>
-                        No projects found for "<strong style="color: #6fffe0;">${filter}</strong>"
-                    </div>
-                `;
-                return;
+    </script>
+    
+    <!-- ====== PROJECTS.JS ====== -->
+    <script src="/js/projects.js"></script>
+    <script>
+        // ====== تحميل المشاريع من ملف projects.js ======
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof loadProjects === 'function') {
+                // استخدام الدالة من projects.js
+                loadProjects('all');
+                console.log('[✓] Projects loaded from projects.js');
+            } else {
+                console.warn('[!] loadProjects function not found. Using fallback data.');
+                renderFallbackProjects();
             }
-
-            filtered.forEach(p => {
-                const card = document.createElement('div');
-                card.className = 'project-card';
-                const tagsHTML = p.tags.map(tag => `<span>${tag}</span>`).join('');
-                card.innerHTML = `
-                    <div class="project-category">${p.category}</div>
-                    <div class="project-icon">${p.icon}</div>
-                    <h4>${p.name}</h4>
-                    <div class="project-desc">${p.desc}</div>
-                    <div class="project-tags">${tagsHTML}</div>
-                    <a href="${p.link}" class="project-link" target="_blank" rel="noopener noreferrer">
-                        View Project <i class="fas fa-arrow-right"></i>
-                    </a>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        // ====== FILTER ======
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                renderProjects(this.dataset.filter);
-            });
         });
 
-        renderProjects('all');
+        // ====== FALLBACK (في حالة عدم تحميل projects.js) ======
+        function renderFallbackProjects() {
+            const container = document.getElementById('projectsGrid');
+            if (!container) return;
+
+            const fallbackProjects = [
+                   {
+        name: 'NPX Framework — Pentesting Automation Suite',
+        desc: 'Modular Python framework for automating penetration testing workflows. Includes modules for reconnaissance, exploitation, and reporting.',
+        icon:  '🌐' ,
+        category: 'Framework',
+        tags: ['Python', 'Automation', 'Pentesting', 'Framework', 'Recon', 'Exploitation'],
+        link: 'https://github.com/npx-official/npx-framework'
+    },
+            ];
+
+            function render(filter) {
+                container.innerHTML = '';
+                const filtered = filter === 'all' ? fallbackProjects : fallbackProjects.filter(p =>
+                    p.category.toLowerCase() === filter ||
+                    p.tags.some(t => t.toLowerCase().includes(filter))
+                );
+
+                if (filtered.length === 0) {
+                    container.innerHTML = `<div style="text-align:center;padding:4rem 0;color:rgba(255,255,255,0.15);grid-column:1/-1;">
+                        <i class="fas fa-search" style="font-size:3rem;display:block;margin-bottom:1rem;"></i>
+                        No projects found for "<strong style="color:#6fffe0;">${filter}</strong>"
+                    </div>`;
+                    return;
+                }
+
+                filtered.forEach(p => {
+                    const card = document.createElement('div');
+                    card.className = 'project-card';
+                    const tagsHTML = p.tags.map(t => `<span>${t}</span>`).join('');
+                    card.innerHTML = `
+                        <div class="project-category">${p.category}</div>
+                        <div class="project-icon">${p.icon}</div>
+                        <h4>${p.name}</h4>
+                        <div class="project-desc">${p.desc}</div>
+                        <div class="project-tags">${tagsHTML}</div>
+                        <a href="${p.link}" class="project-link" target="_blank" rel="noopener noreferrer">
+                            View Project <i class="fas fa-arrow-right"></i>
+                        </a>
+                    `;
+                    container.appendChild(card);
+                });
+            }
+
+            // تشغيل الفلتر
+            render('all');
+
+            // إضافة مستمعي الأزرار
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    render(this.dataset.filter);
+                });
+            });
+        }
     </script>
 </body>
 </html>

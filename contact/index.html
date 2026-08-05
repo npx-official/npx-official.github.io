@@ -53,7 +53,7 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 2rem 3rem;
+            padding: 2rem 2rem;
             position: relative;
             z-index: 1;
         }
@@ -207,7 +207,7 @@
                 <a href="/index"><i class="fas fa-house"></i> Home</a>
                 <a href="/about"><i class="fas fa-user-astronaut"></i> About</a>
                 <a href="/writeups"><i class="fas fa-pen-fancy"></i> Writeups</a>
-                <a href="/projects"<i class="fas fa-code"></i> Projects</a>
+                <a href="/projects"><i class="fas fa-code"></i> Projects</a>
                 <a href="/certifications"><i class="fas fa-certificate"></i> Certs</a>
                 <a href="/contact" class="active"><i class="fas fa-envelope"></i> Contact</a>
             </nav>
@@ -219,7 +219,6 @@
     <a href="https://github.com/npx-official" target="_blank" class="social-card">
         <i class="fab fa-github"></i>
         <h4>GitHub</h4>
-        <p>github.com/npx-official</p>
     </a>
     <a href="https://app.hackthebox.com/users/2207141" target="_blank" class="social-card">
         <i class="fas fa-shield-halved"></i>
@@ -319,6 +318,7 @@
     page('/', () => { window.location.href = 'index.html'; });
     page('/about', () => { window.location.href = 'about.html'; });
     page('/writeups', () => { window.location.href = 'writeups.html'; });
+    page('/projects', () => { window.location.href = 'projects.html'; });
     page('/certifications', () => { window.location.href = 'certifications.html'; });
     page('/contact', () => { window.location.href = 'contact.html'; });
     page();

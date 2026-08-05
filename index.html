@@ -53,7 +53,7 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 2rem 3rem;
+            padding: 2rem 2rem;
             position: relative;
             z-index: 1;
         }
@@ -450,7 +450,7 @@
                 <a href="/" class="active"><i class="fas fa-house"></i> Home</a>
                 <a href="/about"><i class="fas fa-user-astronaut"></i> About</a>
                 <a href="/writeups"><i class="fas fa-pen-fancy"></i> Writeups</a>
-                <a href="/projects"<i class="fas fa-code"></i> Projects</a>
+                <a href="/projects"><i class="fas fa-code"></i> Projects</a>
                 <a href="/certifications"><i class="fas fa-certificate"></i> Certs</a>
                 <a href="/contact"><i class="fas fa-envelope"></i> Contact</a>
             </nav>
@@ -485,14 +485,14 @@
         <div style="text-align: center; margin-top: 2rem;">
             <a href="/writeups" class="btn btn-primary"><i class="fas fa-arrow-right"></i> View All</a>
         </div>
-     <!-- ====== PROJECTS SECTION ====== -->
-<h2 class="section-title"><i class="fas fa-code"></i> Featured Projects</h2>
-<div class="projects-grid" id="projectsGrid">
-    <!-- سيتم إضافة المشاريع عبر JavaScript -->
-</div>
-<div style="text-align: center; margin-top: 2rem;">
-    <a href="/projects" class="btn btn-primary"><i class="fas fa-arrow-right"></i> View All Projects</a>
-</div>
+
+        <!-- ====== PROJECTS SECTION ====== -->
+        <h2 class="section-title"><i class="fas fa-code"></i> Featured Projects</h2>
+        <div class="writeups-grid" id="projectsGrid"></div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="/projects" class="btn btn-primary"><i class="fas fa-arrow-right"></i> View All Projects</a>
+        </div>
+
         <div class="quick-grid">
             <div class="quick-card">
                 <i class="fas fa-linux"></i>
@@ -547,10 +547,16 @@
     <script src="js/particles.js"></script>
     <script src="js/main.js"></script>
     <script src="js/writeups.js"></script>
+    <script src="js/projects.js"></script>
     <script>
-        // تحميل العروض المميزة
+        // تحميل العروض المميزة (Writeups)
         if (typeof loadFeaturedWriteups === 'function') {
             loadFeaturedWriteups(4);
+        }
+
+        // تحميل المشاريع المميزة (Projects)
+        if (typeof loadProjects === 'function') {
+            loadProjects(4);
         }
 
         // تأثير الماوس
@@ -591,6 +597,7 @@
         page('/', () => {});
         page('/about', () => { window.location.href = 'about.html'; });
         page('/writeups', () => { window.location.href = 'writeups.html'; });
+        page('/projects', () => { window.location.href = 'projects.html'; });
         page('/certifications', () => { window.location.href = 'certifications.html'; });
         page('/contact', () => { window.location.href = 'contact.html'; });
         page();
@@ -604,6 +611,7 @@
             const pageMap = {
                 '/about': 'about.html',
                 '/writeups': 'writeups.html',
+                '/projects': 'projects.html',
                 '/certifications': 'certifications.html',
                 '/contact': 'contact.html'
             };

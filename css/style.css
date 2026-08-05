@@ -1069,3 +1069,10 @@ footer {
     color: #fff;
     gap: 12px;
 }
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 2rem;  /* ← غيّر من 3rem إلى 2rem */
+    position: relative;
+    z-index: 1;
+}
