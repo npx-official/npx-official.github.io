@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NIGHT PULSE X • Projects</title>
-    <link rel="icon" href="/assets/images/favicon.ico" />
+    <link rel="icon" href="../assets/images/favicon.ico" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -26,17 +26,72 @@
         @keyframes twinkle { 0% { opacity: 0.1; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1.5); } }
         
         .container { max-width: 1200px; margin: 0 auto; padding: 2rem 3rem; position: relative; z-index: 1; }
-        .header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 2rem; background: rgba(10, 10, 15, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(111, 255, 224, 0.08); border-radius: 2rem; margin-bottom: 3rem; }
-        .logo { display: flex; align-items: center; gap: 12px; font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, #6fffe0, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+            background: rgba(10, 10, 15, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(111, 255, 224, 0.08);
+            border-radius: 2rem;
+            margin-bottom: 3rem;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #6fffe0, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
         .logo img { width: 40px; height: 40px; }
-        .nav a { color: rgba(255,255,255,0.5); text-decoration: none; margin-left: 2rem; font-size: 0.95rem; transition: 0.3s; position: relative; }
-        .nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: #6fffe0; transition: 0.3s; }
-        .nav a:hover { color: #fff; } .nav a:hover::after { width: 100%; }
-        .nav a.active { color: #fff; } .nav a.active::after { width: 100%; }
+        .nav a {
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            margin-left: 2rem;
+            font-size: 0.95rem;
+            transition: 0.3s;
+            position: relative;
+        }
+        .nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #6fffe0;
+            transition: 0.3s;
+        }
+        .nav a:hover { color: #fff; }
+        .nav a:hover::after { width: 100%; }
+        .nav a.active { color: #fff; }
+        .nav a.active::after { width: 100%; }
         .nav a i { margin-right: 6px; }
 
-        .page-title { font-size: 2.8rem; font-weight: 700; text-align: center; margin-bottom: 0.5rem; background: linear-gradient(135deg, #6fffe0, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; justify-content: center; gap: 15px; }
-        .page-subtitle { text-align: center; color: rgba(255,255,255,0.4); font-size: 1.1rem; margin-bottom: 2rem; letter-spacing: 1px; }
+        .page-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #6fffe0, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        .page-subtitle {
+            text-align: center;
+            color: rgba(255,255,255,0.4);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            letter-spacing: 1px;
+        }
 
         /* ====== FILTER BAR ====== */
         .filter-bar {
@@ -71,16 +126,75 @@
             box-shadow: 0 0 20px rgba(111, 255, 224, 0.05);
         }
 
-        .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.8rem; margin-top: 1.5rem; }
-        .project-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(111, 255, 224, 0.06); border-radius: 1.5rem; padding: 1.8rem; transition: 0.4s; position: relative; overflow: hidden; display: flex; flex-direction: column; }
-        .project-card:hover { transform: translateY(-8px); border-color: #6fffe0; box-shadow: 0 10px 40px rgba(0,0,0,0.4), 0 0 50px rgba(111, 255, 224, 0.05); }
-        .project-card .project-icon { font-size: 2.5rem; margin-bottom: 0.8rem; display: inline-block; transition: transform 0.4s ease; }
-        .project-card:hover .project-icon { transform: scale(1.2) rotate(5deg); }
-        .project-card .project-category { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.3); margin-bottom: 0.3rem; font-weight: 600; }
-        .project-card h4 { color: #f0f4ff; font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 600; }
-        .project-card .project-desc { color: rgba(255,255,255,0.4); font-size: 0.9rem; line-height: 1.6; margin-bottom: 0.8rem; flex: 1; }
-        .project-card .project-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1rem; }
-        .project-card .project-tags span { font-size: 0.6rem; padding: 0.2rem 0.8rem; border-radius: 20px; background: rgba(111, 255, 224, 0.08); border: 1px solid rgba(111, 255, 224, 0.08); color: rgba(255,255,255,0.5); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.8rem;
+            margin-top: 1.5rem;
+        }
+        .project-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(111, 255, 224, 0.06);
+            border-radius: 1.5rem;
+            padding: 1.8rem;
+            transition: 0.4s;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .project-card:hover {
+            transform: translateY(-8px);
+            border-color: #6fffe0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4), 0 0 50px rgba(111, 255, 224, 0.05);
+        }
+        .project-card .project-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+            display: inline-block;
+            transition: transform 0.4s ease;
+        }
+        .project-card:hover .project-icon {
+            transform: scale(1.2) rotate(5deg);
+        }
+        .project-card .project-category {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(255,255,255,0.3);
+            margin-bottom: 0.3rem;
+            font-weight: 600;
+        }
+        .project-card h4 {
+            color: #f0f4ff;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        .project-card .project-desc {
+            color: rgba(255,255,255,0.4);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 0.8rem;
+            flex: 1;
+        }
+        .project-card .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 1rem;
+        }
+        .project-card .project-tags span {
+            font-size: 0.6rem;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            background: rgba(111, 255, 224, 0.08);
+            border: 1px solid rgba(111, 255, 224, 0.08);
+            color: rgba(255,255,255,0.5);
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
 
         .project-card .project-link {
             color: #6fffe0;
@@ -99,27 +213,81 @@
             font-family: inherit;
             padding: 0;
         }
-        .project-card .project-link:hover { color: #fff; gap: 12px; }
+        .project-card .project-link:hover {
+            color: #fff;
+            gap: 12px;
+        }
         .project-card .project-link i { transition: 0.3s; }
         .project-card .project-link:hover i { transform: translateX(4px); }
 
-        .footer { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(111, 255, 224, 0.06); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-        .footer p { color: rgba(255,255,255,0.2); font-size: 0.9rem; }
-        .social a { color: rgba(255,255,255,0.2); font-size: 1.2rem; margin-left: 1.5rem; transition: 0.3s; }
-        .social a:hover { color: #6fffe0; transform: translateY(-3px); }
+        .footer {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(111, 255, 224, 0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .footer p {
+            color: rgba(255,255,255,0.2);
+            font-size: 0.9rem;
+        }
+        .social a {
+            color: rgba(255,255,255,0.2);
+            font-size: 1.2rem;
+            margin-left: 1.5rem;
+            transition: 0.3s;
+        }
+        .social a:hover {
+            color: #6fffe0;
+            transform: translateY(-3px);
+        }
 
         @media (max-width: 768px) {
-            .container { padding: 1rem; } .header { flex-direction: column; gap: 1rem; padding: 1rem; }
-            .nav a { margin: 0 0.8rem; font-size: 0.85rem; } .page-title { font-size: 2rem; }
-            .projects-grid { grid-template-columns: 1fr; } .footer { flex-direction: column; text-align: center; }
-            .social a { margin: 0 0.8rem; } .filter-bar { gap: 0.5rem; }
+            .container { padding: 1rem; }
+            .header { flex-direction: column; gap: 1rem; padding: 1rem; }
+            .nav a { margin: 0 0.8rem; font-size: 0.85rem; }
+            .page-title { font-size: 2rem; }
+            .projects-grid { grid-template-columns: 1fr; }
+            .footer { flex-direction: column; text-align: center; }
+            .social a { margin: 0 0.8rem; }
+            .filter-bar { gap: 0.5rem; }
             .filter-btn { font-size: 0.75rem; padding: 0.4rem 1rem; }
         }
-        @media (max-width: 480px) { .page-title { font-size: 1.8rem; } }
+        @media (max-width: 480px) {
+            .page-title { font-size: 1.8rem; }
+        }
 
-        .mouse-trail { position: fixed; width: 8px; height: 8px; background: #6fffe0; border-radius: 50%; pointer-events: none; z-index: 9999; box-shadow: 0 0 20px rgba(111,255,224,0.5), 0 0 60px rgba(111,255,224,0.2); transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s; }
-        .mouse-glow-effect { position: fixed; width: 200px; height: 200px; background: radial-gradient(circle, rgba(111, 255, 224, 0.06), transparent 70%); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: width 0.3s, height 0.3s; }
-        .mouse-glow-effect.active { width: 350px; height: 350px; background: radial-gradient(circle, rgba(111, 255, 224, 0.12), transparent 70%); }
+        .mouse-trail {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: #6fffe0;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            box-shadow: 0 0 20px rgba(111,255,224,0.5), 0 0 60px rgba(111,255,224,0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s;
+        }
+        .mouse-glow-effect {
+            position: fixed;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(111, 255, 224, 0.06), transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+        .mouse-glow-effect.active {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(111, 255, 224, 0.12), transparent 70%);
+        }
     </style>
 </head>
 <body>
@@ -130,14 +298,17 @@
 
     <div class="container">
         <header class="header">
-            <div class="logo"><img src="/assets/images/npx-logo.svg" alt="NPX" /><span>NIGHT PULSE X</span></div>
+            <div class="logo">
+                <img src="../assets/images/npx-logo.svg" alt="NPX" />
+                <span>NIGHT PULSE X</span>
+            </div>
             <nav class="nav">
-                <a href="index.html"><i class="fas fa-house"></i> Home</a>
-                <a href="about.html"><i class="fas fa-user-astronaut"></i> About</a>
-                <a href="writeups.html"><i class="fas fa-pen-fancy"></i> Writeups</a>
-                <a href="projects.html" class="active"><i class="fas fa-code"></i> Projects</a>
-                <a href="certifications.html"><i class="fas fa-certificate"></i> Certs</a>
-                <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
+                <a href="../index.html"><i class="fas fa-house"></i> Home</a>
+                <a href="../about/index.html"><i class="fas fa-user-astronaut"></i> About</a>
+                <a href="../writeups/index.html"><i class="fas fa-pen-fancy"></i> Writeups</a>
+                <a href="index.html" class="active"><i class="fas fa-code"></i> Projects</a>
+                <a href="../certifications/index.html"><i class="fas fa-certificate"></i> Certs</a>
+                <a href="../contact/index.html"><i class="fas fa-envelope"></i> Contact</a>
             </nav>
         </header>
 
@@ -180,10 +351,13 @@
         (function() {
             const container = document.getElementById('stars');
             for (let i = 0; i < 80; i++) {
-                const star = document.createElement('div'); star.className = 'star';
+                const star = document.createElement('div');
+                star.className = 'star';
                 const size = Math.random() * 3 + 1;
-                star.style.width = size + 'px'; star.style.height = size + 'px';
-                star.style.left = Math.random() * 100 + '%'; star.style.top = Math.random() * 100 + '%';
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
                 star.style.setProperty('--d', (2 + Math.random() * 4) + 's');
                 star.style.animationDelay = (Math.random() * 5) + 's';
                 star.style.opacity = Math.random() * 0.5 + 0.2;
@@ -192,100 +366,111 @@
         })();
 
         (function() {
-            const trail = document.getElementById("mouseTrail"); const glow = document.getElementById("mouseGlowEffect");
+            const trail = document.getElementById("mouseTrail");
+            const glow = document.getElementById("mouseGlowEffect");
             let x = 0, y = 0, trailX = 0, trailY = 0;
             document.addEventListener("mousemove", (e) => {
-                x = e.clientX; y = e.clientY;
-                glow.style.left = x + "px"; glow.style.top = y + "px";
+                x = e.clientX;
+                y = e.clientY;
+                glow.style.left = x + "px";
+                glow.style.top = y + "px";
                 glow.classList.add("active");
                 clearTimeout(window.glowTimeout);
                 window.glowTimeout = setTimeout(() => glow.classList.remove("active"), 200);
             });
             setInterval(() => {
-                trailX += (x - trailX) * 0.15; trailY += (y - trailY) * 0.15;
-                trail.style.left = trailX + "px"; trail.style.top = trailY + "px";
+                trailX += (x - trailX) * 0.15;
+                trailY += (y - trailY) * 0.15;
+                trail.style.left = trailX + "px";
+                trail.style.top = trailY + "px";
             }, 16);
-            document.addEventListener("mouseleave", () => { trail.style.opacity = "0"; glow.style.opacity = "0"; });
-            document.addEventListener("mouseenter", () => { trail.style.opacity = "1"; glow.style.opacity = "1"; });
+            document.addEventListener("mouseleave", () => {
+                trail.style.opacity = "0";
+                glow.style.opacity = "0";
+            });
+            document.addEventListener("mouseenter", () => {
+                trail.style.opacity = "1";
+                glow.style.opacity = "1";
+            });
         })();
     </script>
-    
-    <!-- ====== PROJECTS.JS ====== -->
-    <script src="/js/projects.js"></script>
+
+    <!-- ====== PROJECT DATA (مشروع واحد فقط) ====== -->
     <script>
-        // ====== تحميل المشاريع من ملف projects.js ======
-        document.addEventListener('DOMContentLoaded', function() {
-            if (typeof loadProjects === 'function') {
-                // استخدام الدالة من projects.js
-                loadProjects('all');
-                console.log('[✓] Projects loaded from projects.js');
-            } else {
-                console.warn('[!] loadProjects function not found. Using fallback data.');
-                renderFallbackProjects();
-            }
-        });
-
-        // ====== FALLBACK (في حالة عدم تحميل projects.js) ======
-        function renderFallbackProjects() {
-            const container = document.getElementById('projectsGrid');
-            if (!container) return;
-
-            const fallbackProjects = [
-                   {
-        name: 'NPX Framework — Pentesting Automation Suite',
-        desc: 'Modular Python framework for automating penetration testing workflows. Includes modules for reconnaissance, exploitation, and reporting.',
-        icon:  '🌐' ,
-        category: 'Framework',
-        tags: ['Python', 'Automation', 'Pentesting', 'Framework', 'Recon', 'Exploitation'],
-        link: 'https://github.com/npx-official/npx-framework'
-    },
+        (function() {
+            // ====== قائمة المشاريع (مشروع واحد) ======
+            const projects = [
+                {
+                    name: 'NPX Framework — Pentesting Automation Suite',
+                    desc: 'Modular Python framework for automating penetration testing workflows. Includes modules for reconnaissance, exploitation, and reporting.',
+                    icon: '🛠️',
+                    category: 'Framework',
+                    tags: ['Python', 'Automation', 'Pentesting', 'Recon', 'Exploitation'],
+                    link: 'https://github.com/npx-official/npx-framework'
+                }
             ];
 
-            function render(filter) {
-                container.innerHTML = '';
-                const filtered = filter === 'all' ? fallbackProjects : fallbackProjects.filter(p =>
-                    p.category.toLowerCase() === filter ||
-                    p.tags.some(t => t.toLowerCase().includes(filter))
-                );
+            // ====== دالة التصفية والعرض ======
+            function renderProjects(filter) {
+                const container = document.getElementById('projectsGrid');
+                if (!container) return;
 
+                // تصفية المشاريع
+                const filtered = filter === 'all'
+                    ? projects
+                    : projects.filter(p =>
+                        p.category.toLowerCase() === filter.toLowerCase() ||
+                        p.tags.some(t => t.toLowerCase().includes(filter.toLowerCase()))
+                    );
+
+                // عرض رسالة إذا لم يتم العثور على مشاريع
                 if (filtered.length === 0) {
-                    container.innerHTML = `<div style="text-align:center;padding:4rem 0;color:rgba(255,255,255,0.15);grid-column:1/-1;">
-                        <i class="fas fa-search" style="font-size:3rem;display:block;margin-bottom:1rem;"></i>
-                        No projects found for "<strong style="color:#6fffe0;">${filter}</strong>"
-                    </div>`;
+                    container.innerHTML = `
+                        <div style="text-align:center;padding:4rem 0;color:rgba(255,255,255,0.15);grid-column:1/-1;">
+                            <i class="fas fa-search" style="font-size:3rem;display:block;margin-bottom:1rem;"></i>
+                            No projects found for "<strong style="color:#6fffe0;">${filter}</strong>"
+                        </div>
+                    `;
                     return;
                 }
 
-                filtered.forEach(p => {
-                    const card = document.createElement('div');
-                    card.className = 'project-card';
-                    const tagsHTML = p.tags.map(t => `<span>${t}</span>`).join('');
-                    card.innerHTML = `
+                // عرض المشاريع المصفاة
+                container.innerHTML = filtered.map(p => `
+                    <div class="project-card">
                         <div class="project-category">${p.category}</div>
                         <div class="project-icon">${p.icon}</div>
                         <h4>${p.name}</h4>
                         <div class="project-desc">${p.desc}</div>
-                        <div class="project-tags">${tagsHTML}</div>
+                        <div class="project-tags">
+                            ${p.tags.map(t => `<span>${t}</span>`).join('')}
+                        </div>
                         <a href="${p.link}" class="project-link" target="_blank" rel="noopener noreferrer">
                             View Project <i class="fas fa-arrow-right"></i>
                         </a>
-                    `;
-                    container.appendChild(card);
+                    </div>
+                `).join('');
+            }
+
+            // ====== ربط أزرار التصفية ======
+            function setupFilters() {
+                const buttons = document.querySelectorAll('.filter-btn');
+                buttons.forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        buttons.forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+                        renderProjects(this.dataset.filter);
+                    });
                 });
             }
 
-            // تشغيل الفلتر
-            render('all');
-
-            // إضافة مستمعي الأزرار
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    render(this.dataset.filter);
-                });
+            // ====== تشغيل الصفحة ======
+            document.addEventListener('DOMContentLoaded', function() {
+                renderProjects('all');
+                setupFilters();
+                console.log('[✓] Projects loaded successfully!');
             });
-        }
+
+        })();
     </script>
 </body>
 </html>
