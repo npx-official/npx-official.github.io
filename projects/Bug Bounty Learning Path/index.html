@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bug Bounty Learning Path • NIGHT PULSE X</title>
+    <link rel="icon" href="../../assets/images/favicon.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        /* ====== نفس الـ Style مع إضافة مؤثرات الماوس ====== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0a0a0f;
+            color: #e0e5f0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: 
+                radial-gradient(ellipse at 20% 50%, rgba(111, 255, 224, 0.05), transparent 50%),
+                radial-gradient(ellipse at 80% 50%, rgba(124, 58, 237, 0.05), transparent 50%);
+            animation: bgMove 10s ease-in-out infinite alternate;
+        }
+        @keyframes bgMove {
+            0% { transform: scale(1) rotate(0deg); }
+            100% { transform: scale(1.1) rotate(3deg); }
+        }
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--d) ease-in-out infinite alternate;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0.1; transform: scale(0.5); }
+            100% { opacity: 1; transform: scale(1.5); }
+        }
+
+        /* ====== مؤثرات الماوس ====== */
+        .mouse-trail {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: #6fffe0;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            box-shadow: 0 0 20px rgba(111,255,224,0.5), 0 0 60px rgba(111,255,224,0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s;
+        }
+        .mouse-glow-effect {
+            position: fixed;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(111, 255, 224, 0.06), transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+        .mouse-glow-effect.active {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(111, 255, 224, 0.12), transparent 70%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+            background: rgba(10, 10, 15, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(111, 255, 224, 0.08);
+            border-radius: 2rem;
+            margin-bottom: 4rem;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #6fffe0, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .logo img { width: 40px; height: 40px; }
+        .nav a {
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            margin-left: 2rem;
+            font-size: 0.95rem;
+            transition: 0.3s;
+            position: relative;
+        }
+        .nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #6fffe0;
+            transition: 0.3s;
+        }
+        .nav a:hover { color: #fff; }
+        .nav a:hover::after { width: 100%; }
+        .nav a.active { color: #fff; }
+        .nav a.active::after { width: 100%; }
+        .nav a i { margin-right: 6px; }
+
+        /* ====== أنماط خاصة بالمحتوى ====== */
+        .page-header {
+            text-align: center;
+            padding: 2rem 0 3rem;
+        }
+        .page-header h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #6fffe0, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        .page-header .subtitle {
+            color: rgba(255,255,255,0.5);
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+        }
+        .page-header .badges {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+        }
+        .page-header .badges a {
+            display: inline-block;
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: 0.3s;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(111, 255, 224, 0.1);
+            color: #e0e5f0;
+        }
+        .page-header .badges a:hover {
+            transform: translateY(-3px);
+            border-color: #6fffe0;
+            background: rgba(111, 255, 224, 0.05);
+        }
+
+        .typing-text {
+            text-align: center;
+            font-size: 1.5rem;
+            color: #6fffe0;
+            margin: 1.5rem 0 3rem;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .warning-box {
+            background: rgba(255, 100, 100, 0.05);
+            border: 1px solid rgba(255, 100, 100, 0.15);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        .warning-box h2 {
+            color: #ff6b6b;
+            margin-bottom: 0.5rem;
+        }
+        .warning-box p {
+            color: rgba(255,255,255,0.6);
+            line-height: 1.8;
+        }
+        .warning-box ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 1rem;
+            text-align: left;
+            display: inline-block;
+        }
+        .warning-box ul li {
+            color: rgba(255,255,255,0.5);
+            padding: 0.3rem 0;
+            font-size: 0.95rem;
+        }
+        .warning-box ul li::before {
+            content: '⚠️ ';
+        }
+
+        .phase-section {
+            margin: 3rem 0;
+            padding: 2rem;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(111, 255, 224, 0.06);
+            border-radius: 1.5rem;
+            transition: 0.3s;
+        }
+        .phase-section:hover {
+            border-color: rgba(111, 255, 224, 0.15);
+        }
+        .phase-section h2 {
+            font-size: 1.8rem;
+            color: #6fffe0;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .phase-section h2 .phase-icon {
+            font-size: 2rem;
+        }
+        .phase-section .phase-meta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+        .phase-section .phase-meta span {
+            font-size: 0.8rem;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            background: rgba(111, 255, 224, 0.05);
+            border: 1px solid rgba(111, 255, 224, 0.08);
+            color: rgba(255,255,255,0.4);
+        }
+        .phase-section .phase-meta .goal {
+            color: #6fffe0;
+            border-color: rgba(111, 255, 224, 0.15);
+        }
+
+        .phase-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        .phase-grid .item {
+            background: rgba(255,255,255,0.02);
+            padding: 1.2rem 1.5rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255,255,255,0.04);
+            transition: 0.3s;
+        }
+        .phase-grid .item:hover {
+            border-color: rgba(111, 255, 224, 0.1);
+        }
+        .phase-grid .item strong {
+            color: #e0e5f0;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+        .phase-grid .item span {
+            color: rgba(255,255,255,0.4);
+            font-size: 0.9rem;
+        }
+        .phase-grid .item .detail {
+            color: rgba(255,255,255,0.3);
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
+            display: block;
+        }
+
+        .phase-grid-full {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .phase-grid-full .item {
+            background: rgba(255,255,255,0.02);
+            padding: 1.2rem 1.5rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255,255,255,0.04);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            transition: 0.3s;
+        }
+        .phase-grid-full .item:hover {
+            border-color: rgba(111, 255, 224, 0.1);
+        }
+        .phase-grid-full .item .left strong {
+            color: #e0e5f0;
+        }
+        .phase-grid-full .item .left span {
+            color: rgba(255,255,255,0.4);
+            font-size: 0.9rem;
+            display: block;
+        }
+        .phase-grid-full .item .right {
+            color: rgba(255,255,255,0.2);
+            font-size: 0.8rem;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            text-align: right;
+            max-width: 60%;
+        }
+        .phase-grid-full .item .right .cmd {
+            color: #6fffe0;
+            background: rgba(111, 255, 224, 0.05);
+            padding: 0.2rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            display: inline-block;
+            margin-top: 0.2rem;
+        }
+
+        .mistakes-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        .mistakes-grid .mistake {
+            background: rgba(255,255,255,0.02);
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            border-left: 3px solid #ff6b6b;
+        }
+        .mistakes-grid .mistake strong {
+            color: #ff6b6b;
+        }
+        .mistakes-grid .mistake span {
+            color: rgba(255,255,255,0.4);
+            font-size: 0.9rem;
+        }
+
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        .summary-table th,
+        .summary-table td {
+            padding: 0.8rem 1.2rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .summary-table th {
+            color: #6fffe0;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .summary-table td {
+            color: rgba(255,255,255,0.5);
+        }
+        .summary-table tr:hover td {
+            background: rgba(255,255,255,0.02);
+        }
+        .summary-table .total {
+            border-top: 2px solid rgba(111, 255, 224, 0.1);
+            font-weight: 600;
+            color: #6fffe0;
+        }
+
+        .typing-footer {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #6fffe0;
+            margin: 3rem 0 2rem;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .footer {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(111, 255, 224, 0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .footer p { color: rgba(255,255,255,0.2); font-size: 0.9rem; }
+        .social a {
+            color: rgba(255,255,255,0.2);
+            font-size: 1.2rem;
+            margin-left: 1.5rem;
+            transition: 0.3s;
+        }
+        .social a:hover { color: #6fffe0; transform: translateY(-3px); }
+
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            .header { flex-direction: column; gap: 1rem; padding: 1rem; }
+            .nav a { margin: 0 0.8rem; font-size: 0.85rem; }
+            .page-header h1 { font-size: 2.2rem; }
+            .phase-grid { grid-template-columns: 1fr; }
+            .mistakes-grid { grid-template-columns: 1fr; }
+            .phase-grid-full .item { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+            .phase-grid-full .item .right { max-width: 100%; text-align: left; }
+            .summary-table { font-size: 0.85rem; }
+            .summary-table th, .summary-table td { padding: 0.5rem 0.8rem; }
+        }
+        @media (max-width: 480px) {
+            .page-header h1 { font-size: 1.8rem; }
+            .page-header .badges a { font-size: 0.7rem; padding: 0.3rem 0.8rem; }
+            .typing-text { font-size: 1rem; }
+            .phase-section { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ====== الخلفية والنجوم ====== -->
+    <div class="bg-animation"></div>
+    <div class="stars" id="stars"></div>
+
+    <!-- ====== مؤثرات الماوس ====== -->
+    <div class="mouse-trail" id="mouseTrail"></div>
+    <div class="mouse-glow-effect" id="mouseGlowEffect"></div>
+
+    <div class="container">
+
+        <!-- ====== HEADER ====== -->
+        <header class="header">
+            <div class="logo">
+                <img src="../../assets/images/npx-logo.svg" alt="NPX" />
+                <span>NIGHT PULSE X</span>
+            </div>
+            <nav class="nav">
+                <a href="../../index.html"><i class="fas fa-house"></i> Home</a>
+                <a href="../../about/index.html"><i class="fas fa-user-astronaut"></i> About</a>
+                <a href="../../writeups/index.html"><i class="fas fa-pen-fancy"></i> Writeups</a>
+                <a href="../index.html" class="active"><i class="fas fa-code"></i> Projects</a>
+                <a href="../../certifications/index.html"><i class="fas fa-certificate"></i> Certs</a>
+                <a href="../../contact/index.html"><i class="fas fa-envelope"></i> Contact</a>
+            </nav>
+        </header>
+
+        <!-- ====== PAGE HEADER ====== -->
+        <div class="page-header">
+            <h1>🎯 Bug Bounty Learning Path</h1>
+            <p class="subtitle">Penetration Testing · Security Research · Future Ready</p>
+            <div class="badges">
+                <a href="https://npx-official.github.io/">🌐 Website</a>
+                <a href="https://github.com/npx-official">🐙 GitHub</a>
+                <a href="https://www.linkedin.com/in/night-pulse-x-337a89275">🔗 LinkedIn</a>
+            </div>
+        </div>
+
+        <div class="typing-text">
+            Learn &amp; Hack Ethically · Master Web Security · From Zero to Bug Bounty
+        </div>
+
+        <!-- ====== باقي المحتوى (نفسه) ====== -->
+        <!-- ====== WARNING ====== -->
+        <div class="warning-box">
+            <h2>⚠️ Warning</h2>
+            <p><strong>This path alone is not enough to become a professional Bug Bounty Hunter.</strong><br>It's just a <strong>roadmap</strong> — success requires:</p>
+            <ul>
+                <li>Deep understanding of <strong>HTTP, JavaScript, APIs, Linux</strong></li>
+                <li><strong>Daily practice</strong> (6–8 months minimum)</li>
+                <li>Strong <strong>reconnaissance methodology</strong></li>
+                <li>Reading and analyzing <strong>others' reports</strong></li>
+                <li><strong>Patience and persistence</strong> (success doesn't happen overnight)</li>
+            </ul>
+        </div>
+
+        <!-- ====== PHASE 1 ====== -->
+        <div class="phase-section">
+            <h2><span class="phase-icon">📚</span> Phase 1: Foundations</h2>
+            <div class="phase-meta">
+                <span class="goal">🎯 Goal: Understand how web apps work before breaking them</span>
+                <span>⏱️ 1–2 months</span>
+            </div>
+            <div class="phase-grid">
+                <div class="item"><strong>DVWA</strong><span>Learn basics (XSS, SQLi, LFI, CSRF)</span></div>
+                <div class="item"><strong>Mutillidae</strong><span>Practice OWASP Top 10</span></div>
+                <div class="item"><strong>HTTP/HTTPS</strong><span>Protocol, headers, cookies, sessions</span></div>
+                <div class="item"><strong>JavaScript</strong><span>Language fundamentals &amp; modern web apps</span></div>
+                <div class="item"><strong>Linux Basics</strong><span>Command line, file management, permissions</span></div>
+            </div>
+        </div>
+
+        <!-- ====== PHASE 2 ====== -->
+        <div class="phase-section">
+            <h2><span class="phase-icon">🚀</span> Phase 2: Modern Web</h2>
+            <div class="phase-meta">
+                <span class="goal">🎯 Goal: Handle modern web apps and their complexities</span>
+                <span>⏱️ 1–2 months</span>
+            </div>
+            <div class="phase-grid">
+                <div class="item"><strong>OWASP Juice Shop</strong><span>Realistic app with modern vulns (JWT, GraphQL, NoSQL)</span></div>
+                <div class="item"><strong>WebGoat</strong><span>Comprehensive OWASP training platform</span></div>
+                <div class="item"><strong>PortSwigger Academy</strong><span>Interactive labs covering most vulnerabilities</span><span class="detail">🔗 <a href="https://portswigger.net/web-security/all-labs" style="color:#6fffe0;" target="_blank">portswigger.net/web-security/all-labs</a></span></div>
+                <div class="item"><strong>API Security Basics</strong><span>Understand REST APIs &amp; GraphQL</span></div>
+            </div>
+        </div>
+
+        <!-- ====== PHASE 3 ====== -->
+        <div class="phase-section">
+            <h2><span class="phase-icon">🔌</span> Phase 3: API Security</h2>
+            <div class="phase-meta">
+                <span class="goal">🎯 Goal: Master API security — critical in today's bounty programs</span>
+                <span>⏱️ 1–2 months</span>
+            </div>
+            <div class="phase-grid">
+                <div class="item"><strong>VAmPI</strong><span>Vulnerable API (IDOR, BOLA, Mass Assignment)</span></div>
+                <div class="item"><strong>crAPI</strong><span>Complete API security training (OWASP API Top 10)</span></div>
+                <div class="item"><strong>Postman</strong><span>API testing tool</span></div>
+                <div class="item"><strong>GraphQL Introspection</strong><span>Learn to exploit GraphQL endpoints</span></div>
+            </div>
+        </div>
+
+        <!-- ====== PHASE 4 ====== -->
+        <div class="phase-section">
+            <h2><span class="phase-icon">🛠️</span> Phase 4: Tools &amp; Practice</h2>
+            <div class="phase-meta">
+                <span class="goal">🎯 Goal: Master the essential tools you'll use daily</span>
+                <span>⏱️ 2–3 months</span>
+            </div>
+            <div class="phase-grid">
+                <div class="item"><strong>Burp Suite</strong><span>Intercept and modify requests (master it)</span></div>
+                <div class="item"><strong>Nmap</strong><span>Network scanning and service discovery</span></div>
+                <div class="item"><strong>Subfinder / Amass</strong><span>Subdomain discovery</span></div>
+                <div class="item"><strong>httpx / nuclei</strong><span>Fast scanning for known vulnerabilities</span></div>
+                <div class="item"><strong>TryHackMe</strong><span>Guided labs for learning tools</span></div>
+                <div class="item"><strong>Hack The Box</strong><span>Realistic challenges to test skills</span></div>
+            </div>
+        </div>
+
+        <!-- ====== PHASE 5 ====== -->
+        <div class="phase-section">
+            <h2><span class="phase-icon">🧠</span> Phase 5: Real World</h2>
+            <div class="phase-meta">
+                <span class="goal">🎯 Goal: Transition from learning to real-world application</span>
+                <span>⏱️ Ongoing</span>
+            </div>
+            <div class="phase-grid">
+                <div class="item"><strong>Read Bug Bounty Reports</strong><span>Analyze reports from professional hunters</span></div>
+                <div class="item"><strong>Practice on Private Programs</strong><span>Join VDP (Vulnerability Disclosure Programs)</span></div>
+                <div class="item"><strong>Join HackerOne / Bugcrowd</strong><span>Start with open programs</span></div>
+                <div class="item"><strong>Write Professional Reports</strong><span>Learn to write convincing reports</span></div>
+                <div class="item"><strong>Be Patient &amp; Persistent</strong><span>First bounty may take months</span></div>
+            </div>
+        </div>
+
+        <!-- ====== LABS DOWNLOAD ====== -->
+        <div class="phase-section">
+            <h2><span class="phase-icon">📦</span> Labs Download</h2>
+            <div class="phase-grid-full">
+                <div class="item">
+                    <div class="left"><strong>DVWA</strong><span>~210 MB</span></div>
+                    <div class="right">
+                        <span class="cmd">git clone https://github.com/digininja/DVWA.git</span>
+                        <span class="cmd">docker pull vulnerables/web-dvwa</span>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="left"><strong>OWASP Juice Shop</strong><span>~240 MB</span></div>
+                    <div class="right">
+                        <span class="cmd">git clone https://github.com/juice-shop/juice-shop.git</span>
+                        <span class="cmd">docker pull bkimminich/juice-shop</span>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="left"><strong>OWASP Mutillidae II</strong><span>~4.2 MB</span></div>
+                    <div class="right">
+                        <span class="cmd">git clone https://github.com/webpwnized/mutillidae.git</span>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="left"><strong>WebGoat</strong><span>~100 MB</span></div>
+                    <div class="right">
+                        <span class="cmd">git clone https://github.com/WebGoat/WebGoat.git</span>
+                        <span class="cmd">docker pull webgoat/goatandwolf</span>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="left"><strong>VAmPI</strong><span>~66 KB</span></div>
+                    <div class="right">
+                        <span class="cmd">git clone https://github.com/erev0s/vampi.git</span>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="left"><strong>crAPI</strong><span>~8.8 MB</span></div>
+                    <div class="right">
+                        <span class="cmd">git clone https://github.com/OWASP/crAPI.git</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ====== COMMON MISTAKES ====== -->
+        <div class="phase-section">
+            <h2><span class="phase-icon">🚨</span> Common Mistakes to Avoid</h2>
+            <div class="mistakes-grid">
+                <div class="mistake"><strong>Rushing into bounty programs</strong><span>Master the fundamentals first</span></div>
+                <div class="mistake"><strong>Ignoring reconnaissance</strong><span>Recon = 70% of success</span></div>
+                <div class="mistake"><strong>Over-relying on tools</strong><span>Understand what the tools do</span></div>
+                <div class="mistake"><strong>Writing unclear reports</strong><span>Good report = Better payout</span></div>
+                <div class="mistake"><strong>Giving up after rejection</strong><span>Rejection is part of the journey</span></div>
+            </div>
+        </div>
+
+        <!-- ====== SUMMARY ====== -->
+        <div class="phase-section">
+            <h2><span class="phase-icon">📋</span> Summary</h2>
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th>Phase</th>
+                        <th>Focus</th>
+                        <th>Estimated Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>Foundations</td><td>1–2 months</td></tr>
+                    <tr><td>2</td><td>Modern Web</td><td>1–2 months</td></tr>
+                    <tr><td>3</td><td>API Security</td><td>1–2 months</td></tr>
+                    <tr><td>4</td><td>Tools &amp; Practice</td><td>2–3 months</td></tr>
+                    <tr><td>5</td><td>Real World</td><td>Ongoing</td></tr>
+                    <tr class="total"><td colspan="2"><strong>Total</strong></td><td><strong>6–8 months</strong></td></tr>
+                </tbody>
+            </table>
+            <p style="color: rgba(255,255,255,0.4); text-align: center; margin-top: 0.5rem;">6–8 months of consistent practice to reach your first bounty.</p>
+        </div>
+
+        <!-- ====== FOOTER TYPING ====== -->
+        <div class="typing-footer">
+            ⭐ Practice consistently and stay ethical · 🛡️ Happy Hacking!
+        </div>
+
+        <!-- ====== FOOTER ====== -->
+        <footer class="footer">
+            <p><i class="fas fa-circle" style="color: #6fffe0; font-size: 0.5rem;"></i> 2026 · NIGHT PULSE X</p>
+            <div class="social">
+                <a href="https://github.com/npx-official" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://app.hackthebox.com/users/2207141" target="_blank"><i class="fas fa-shield-halved"></i></a>
+                <a href="https://tryhackme.com/p/npx.off" target="_blank"><i class="fas fa-user-secret"></i></a>
+                <a href="https://www.linkedin.com/in/night-pulse-x-337a89275" target="_blank"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- ====== STARS SCRIPT ====== -->
+    <script>
+        (function() {
+            const container = document.getElementById('stars');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 3 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.setProperty('--d', (2 + Math.random() * 4) + 's');
+                star.style.animationDelay = (Math.random() * 5) + 's';
+                star.style.opacity = Math.random() * 0.5 + 0.2;
+                container.appendChild(star);
+            }
+        })();
+    </script>
+
+    <!-- ====== مؤثرات الماوس SCRIPT ====== -->
+    <script>
+        (function() {
+            const trail = document.getElementById("mouseTrail");
+            const glow = document.getElementById("mouseGlowEffect");
+            let x = 0, y = 0;
+            let trailX = 0, trailY = 0;
+
+            document.addEventListener("mousemove", (e) => {
+                x = e.clientX;
+                y = e.clientY;
+                glow.style.left = x + "px";
+                glow.style.top = y + "px";
+                glow.classList.add("active");
+                clearTimeout(window.glowTimeout);
+                window.glowTimeout = setTimeout(() => glow.classList.remove("active"), 200);
+            });
+
+            setInterval(() => {
+                trailX += (x - trailX) * 0.15;
+                trailY += (y - trailY) * 0.15;
+                trail.style.left = trailX + "px";
+                trail.style.top = trailY + "px";
+            }, 16);
+
+            document.addEventListener("mouseleave", () => {
+                trail.style.opacity = "0";
+                glow.style.opacity = "0";
+            });
+            document.addEventListener("mouseenter", () => {
+                trail.style.opacity = "1";
+                glow.style.opacity = "1";
+            });
+        })();
+    </script>
+
+</body>
+</html>
