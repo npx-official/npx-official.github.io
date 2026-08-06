@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🛡️ Bug Bounty Hunters' Atlas • NIGHT PULSE X</title>
+    <link rel="icon" href="../../assets/images/favicon.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        /* ====== الأساسيات ====== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0a0a0f;
+            color: #e0e5f0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: 
+                radial-gradient(ellipse at 20% 50%, rgba(111, 255, 224, 0.05), transparent 50%),
+                radial-gradient(ellipse at 80% 50%, rgba(124, 58, 237, 0.05), transparent 50%);
+            animation: bgMove 10s ease-in-out infinite alternate;
+        }
+        @keyframes bgMove {
+            0% { transform: scale(1) rotate(0deg); }
+            100% { transform: scale(1.1) rotate(3deg); }
+        }
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--d) ease-in-out infinite alternate;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0.1; transform: scale(0.5); }
+            100% { opacity: 1; transform: scale(1.5); }
+        }
+
+        /* ====== مؤثرات الماوس ====== */
+        .mouse-trail {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: #6fffe0;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            box-shadow: 0 0 20px rgba(111,255,224,0.5), 0 0 60px rgba(111,255,224,0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s;
+        }
+        .mouse-glow-effect {
+            position: fixed;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(111, 255, 224, 0.06), transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+        .mouse-glow-effect.active {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(111, 255, 224, 0.12), transparent 70%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ====== HEADER ====== */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+            background: rgba(10, 10, 15, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(111, 255, 224, 0.08);
+            border-radius: 2rem;
+            margin-bottom: 4rem;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #6fffe0, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .logo img { width: 40px; height: 40px; }
+        .nav a {
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            margin-left: 2rem;
+            font-size: 0.95rem;
+            transition: 0.3s;
+            position: relative;
+        }
+        .nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #6fffe0;
+            transition: 0.3s;
+        }
+        .nav a:hover { color: #fff; }
+        .nav a:hover::after { width: 100%; }
+        .nav a.active { color: #fff; }
+        .nav a.active::after { width: 100%; }
+        .nav a i { margin-right: 6px; }
+
+        /* ====== PAGE HEADER ====== */
+        .page-header {
+            text-align: center;
+            padding: 2rem 0 3rem;
+        }
+        .page-header h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #6fffe0, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        .page-header .subtitle {
+            color: rgba(255,255,255,0.5);
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+        }
+        .page-header .badges {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+        }
+        .page-header .badges a {
+            display: inline-block;
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: 0.3s;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(111, 255, 224, 0.1);
+            color: #e0e5f0;
+        }
+        .page-header .badges a:hover {
+            transform: translateY(-3px);
+            border-color: #6fffe0;
+            background: rgba(111, 255, 224, 0.05);
+        }
+
+        .typing-text {
+            text-align: center;
+            font-size: 1.5rem;
+            color: #6fffe0;
+            margin: 1.5rem 0 3rem;
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* ====== القسم المميز: استراتيجية NPX ====== */
+        .strategy-box {
+            background: rgba(111, 255, 224, 0.03);
+            border: 1px solid rgba(111, 255, 224, 0.15);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: left;
+        }
+        .strategy-box h2 {
+            color: #6fffe0;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .strategy-box ul {
+            list-style: none;
+            padding: 0;
+        }
+        .strategy-box ul li {
+            padding: 0.3rem 0;
+            color: rgba(255,255,255,0.6);
+            font-size: 1.05rem;
+        }
+        .strategy-box ul li::before {
+            content: '🔑 ';
+            color: #6fffe0;
+        }
+        .strategy-box .highlight {
+            color: #6fffe0;
+            font-weight: 600;
+        }
+
+        /* ====== الأقسام الرئيسية ====== */
+        .section-title {
+            font-size: 2rem;
+            margin: 3rem 0 2rem;
+            background: linear-gradient(135deg, #6fffe0, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .registry-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .registry-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(111, 255, 224, 0.06);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            transition: 0.3s;
+        }
+        .registry-card:hover {
+            transform: translateY(-6px);
+            border-color: #6fffe0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            background: rgba(111, 255, 224, 0.02);
+        }
+        .registry-card .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 0.5rem;
+        }
+        .registry-card .card-header h4 { color: #6fffe0; font-size: 1.1rem; }
+        .registry-card p {
+            color: rgba(255,255,255,0.4);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        .registry-card a {
+            color: #6fffe0;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+            font-size: 0.9rem;
+        }
+        .registry-card a:hover { color: #fff; gap: 12px; }
+
+        /* ====== جدول الملخص ====== */
+        .summary-section {
+            margin: 3rem 0;
+        }
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        .summary-table th,
+        .summary-table td {
+            padding: 0.8rem 1.2rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .summary-table th {
+            color: #6fffe0;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .summary-table td {
+            color: rgba(255,255,255,0.5);
+        }
+        .summary-table tr:hover td {
+            background: rgba(255,255,255,0.02);
+        }
+
+        /* ====== FOOTER ====== */
+        .footer {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(111, 255, 224, 0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .footer p { color: rgba(255,255,255,0.2); font-size: 0.9rem; }
+        .social a {
+            color: rgba(255,255,255,0.2);
+            font-size: 1.2rem;
+            margin-left: 1.5rem;
+            transition: 0.3s;
+        }
+        .social a:hover { color: #6fffe0; transform: translateY(-3px); }
+
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            .header { flex-direction: column; gap: 1rem; padding: 1rem; }
+            .nav a { margin: 0 0.8rem; font-size: 0.85rem; }
+            .page-header h1 { font-size: 2.2rem; }
+            .registry-grid { grid-template-columns: 1fr; }
+            .summary-table { font-size: 0.85rem; }
+            .summary-table th, .summary-table td { padding: 0.5rem 0.8rem; }
+        }
+        @media (max-width: 480px) {
+            .page-header h1 { font-size: 1.8rem; }
+            .page-header .badges a { font-size: 0.7rem; padding: 0.3rem 0.8rem; }
+            .typing-text { font-size: 1rem; }
+            .footer { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ====== الخلفية والنجوم ====== -->
+    <div class="bg-animation"></div>
+    <div class="stars" id="stars"></div>
+
+    <!-- ====== مؤثرات الماوس ====== -->
+    <div class="mouse-trail" id="mouseTrail"></div>
+    <div class="mouse-glow-effect" id="mouseGlowEffect"></div>
+
+    <div class="container">
+
+        <!-- ====== HEADER ====== -->
+        <header class="header">
+            <div class="logo">
+                <img src="../../assets/images/npx-logo.svg" alt="NPX" />
+                <span>NIGHT PULSE X</span>
+            </div>
+            <nav class="nav">
+                <a href="../../index.html"><i class="fas fa-house"></i> Home</a>
+                <a href="../../about/index.html"><i class="fas fa-user-astronaut"></i> About</a>
+                <a href="../../writeups/index.html"><i class="fas fa-pen-fancy"></i> Writeups</a>
+                <a href="../index.html" class="active"><i class="fas fa-code"></i> Projects</a>
+                <a href="../../certifications/index.html"><i class="fas fa-certificate"></i> Certs</a>
+                <a href="../../contact/index.html"><i class="fas fa-envelope"></i> Contact</a>
+            </nav>
+        </header>
+
+        <!-- ====== PAGE HEADER ====== -->
+        <div class="page-header">
+            <h1>🛡️ Bug Bounty Hunters' Atlas</h1>
+            <p class="subtitle">The Ultimate Hunting Guide by NIGHT PULSE X</p>
+            <div class="badges">
+                <a href="https://npx-official.github.io/">🌐 Website</a>
+                <a href="https://github.com/npx-official">🐙 GitHub</a>
+                <a href="https://www.linkedin.com/in/night-pulse-x-337a89275">🔗 LinkedIn</a>
+            </div>
+        </div>
+
+        <div class="typing-text">
+            "Pick one stack, get good at it, the bugs start showing up fast."
+        </div>
+
+        <!-- ====== STRATEGY SECTION ====== -->
+        <div class="strategy-box">
+            <h2><i class="fas fa-chess-queen"></i> NPX's Hunting Strategy</h2>
+            <p style="color: rgba(255,255,255,0.6); margin-bottom: 1rem;">
+                When picking a package to audit, I look for this specific combination:
+            </p>
+            <ul>
+                <li><span class="highlight">Decent install numbers</span> (popular enough to be used).</li>
+                <li><span class="highlight">Last commit two or three years ago</span> (abandoned by the original author).</li>
+                <li><span class="highlight">It does something scary</span> like file uploads, auth, deserialization or shelling out.</li>
+            </ul>
+            <p style="color: #6fffe0; margin-top: 1rem; font-weight: 600;">
+                "That combo hits more often than it has any right to."
+            </p>
+        </div>
+
+        <!-- ====== SECTION 1: LANGUAGE REGISTRIES ====== -->
+        <h2 class="section-title"><i class="fas fa-code"></i> 1. Language Registries</h2>
+        <div class="registry-grid">
+            <!-- JS/TS -->
+            <div class="registry-card">
+                <div class="card-header"><h4>npm</h4></div>
+                <p>JS / TS · The largest package registry in the world.</p>
+                <a href="https://www.npmjs.com/" target="_blank">Explore →</a>
+            </div>
+            <!-- Python -->
+            <div class="registry-card">
+                <div class="card-header"><h4>PyPI</h4></div>
+                <p>Python · The official repository for Python packages.</p>
+                <a href="https://pypi.org/" target="_blank">Explore →</a>
+            </div>
+            <!-- PHP -->
+            <div class="registry-card">
+                <div class="card-header"><h4>Packagist</h4></div>
+                <p>PHP · The main repository for Composer packages.</p>
+                <a href="https://packagist.org/" target="_blank">Explore →</a>
+            </div>
+            <!-- Ruby -->
+            <div class="registry-card">
+                <div class="card-header"><h4>RubyGems</h4></div>
+                <p>Ruby · The official gem repository for Ruby libraries.</p>
+                <a href="https://rubygems.org/" target="_blank">Explore →</a>
+            </div>
+            <!-- Rust -->
+            <div class="registry-card">
+                <div class="card-header"><h4>crates.io</h4></div>
+                <p>Rust · The official package registry for the Rust language.</p>
+                <a href="https://crates.io/" target="_blank">Explore →</a>
+            </div>
+            <!-- Go -->
+            <div class="registry-card">
+                <div class="card-header"><h4>pkg.go.dev</h4></div>
+                <p>Go · The official package discovery site for Go.</p>
+                <a href="https://pkg.go.dev/" target="_blank">Explore →</a>
+            </div>
+            <!-- Java -->
+            <div class="registry-card">
+                <div class="card-header"><h4>Maven Central</h4></div>
+                <p>Java, Kotlin, Scala · The central repository for Java artifacts.</p>
+                <a href="https://central.sonatype.com/" target="_blank">Explore →</a>
+            </div>
+            <!-- .NET -->
+            <div class="registry-card">
+                <div class="card-header"><h4>NuGet</h4></div>
+                <p>C# / .NET · The package manager for the Microsoft development platform.</p>
+                <a href="https://www.nuget.org/" target="_blank">Explore →</a>
+            </div>
+        </div>
+
+        <!-- ====== SECTION 2: CMS & WEB PLUGINS ====== -->
+        <h2 class="section-title"><i class="fas fa-globe"></i> 2. CMS & Web App Plugins</h2>
+        <div class="registry-grid">
+            <div class="registry-card">
+                <div class="card-header"><h4>WordPress</h4></div>
+                <p>PHP · Plugins & Themes. The most popular target for first CVEs.</p>
+                <a href="https://wordpress.org/plugins/" target="_blank">Explore →</a>
+            </div>
+            <div class="registry-card">
+                <div class="card-header"><h4>Joomla</h4></div>
+                <p>PHP · Extensions. A rich ecosystem with a history of vulnerabilities.</p>
+                <a href="https://extensions.joomla.org/" target="_blank">Explore →</a>
+            </div>
+            <div class="registry-card">
+                <div class="card-header"><h4>TYPO3</h4></div>
+                <p>PHP · Extensions. Big in German and Dutch corporate land.</p>
+                <a href="https://extensions.typo3.org/" target="_blank">Explore →</a>
+            </div>
+            <div class="registry-card">
+                <div class="card-header"><h4>WHMCS</h4></div>
+                <p>PHP · Marketplace. Hosting billing panels.</p>
+                <a href="https://marketplace.whmcs.com/" target="_blank">Explore →</a>
+            </div>
+            <div class="registry-card">
+                <div class="card-header"><h4>Magento</h4></div>
+                <p>PHP · Adobe Commerce Marketplace. Huge e-commerce platform.</p>
+                <a href="https://commercemarketplace.adobe.com/" target="_blank">Explore →</a>
+            </div>
+        </div>
+
+        <!-- ====== SECTION 3: CI/CD & DEVOPS ====== -->
+        <h2 class="section-title"><i class="fas fa-cogs"></i> 3. CI/CD, DevOps & Infrastructure</h2>
+        <div class="registry-grid">
+            <div class="registry-card">
+                <div class="card-header"><h4>GitHub Actions</h4></div>
+                <p>YAML, Node, Docker · A bug here can mean code exec on build machines.</p>
+                <a href="https://github.com/marketplace?type=actions" target="_blank">Explore →</a>
+            </div>
+            <div class="registry-card">
+                <div class="card-header"><h4>Jenkins</h4></div>
+                <p>Java · Plugins. Still ridiculously productive after all these years.</p>
+                <a href="https://plugins.jenkins.io/" target="_blank">Explore →</a>
+            </div>
+            <div class="registry-card">
+                <div class="card-header"><h4>Ansible Galaxy</h4></div>
+                <p>Python, YAML · Roles and collections for automation.</p>
+                <a href="https://galaxy.ansible.com/" target="_blank">Explore →</a>
+            </div>
+            <div class="registry-card">
+                <div class="card-header"><h4>Docker Hub</h4></div>
+                <p>Images · Leaked secrets in layers, everything running as root.</p>
+                <a href="https://hub.docker.com/" target="_blank">Explore →</a>
+            </div>
+        </div>
+
+        <!-- ====== SECTION 4: BROWSER & EDITOR ====== -->
+        <h2 class="section-title"><i class="fas fa-laptop"></i> 4. Browser, Editor & Desktop Extensions</h2>
+        <div class="registry-grid">
+            <div class="registry-card">
+                <div class="card-header"><h4>Chrome Web Store</h4></div>
+                <p>JS · Extensions that run in millions of browsers.</p>
+                <a href="https://chromewebstore.google.com/" target="_blank">Explore →</a>
+            </div>
+            <div class="registry-card">
+                <div class="card-header"><h4>VS Code Marketplace</h4></div>
+                <p>TypeScript · Plugins for the most popular code editor.</p>
+                <a href="https://marketplace.visualstudio.com/vscode" target="_blank">Explore →</a>
+            </div>
+        </div>
+
+        <!-- ====== SUMMARY TABLE ====== -->
+        <div class="summary-section">
+            <h2 class="section-title"><i class="fas fa-route"></i> Quick Start: Pick Your Stack</h2>
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th>Language / Tech</th>
+                        <th>Where to Start</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>PHP</td><td>WordPress, Joomla, TYPO3, WHMCS, Magento</td></tr>
+                    <tr><td>Python</td><td>PyPI, Odoo, Splunkbase, HACS, Ansible</td></tr>
+                    <tr><td>JS / TS</td><td>npm, Browser Extensions, VS Code, Backstage</td></tr>
+                    <tr><td>Java</td><td>Jenkins, Maven Central, Atlassian, JetBrains</td></tr>
+                    <tr><td>Rust / C</td><td>crates.io, Conan, PECL, OpenWrt</td></tr>
+                    <tr><td>.NET</td><td>NuGet, Umbraco</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ====== FOOTER ====== -->
+        <footer class="footer">
+            <p><i class="fas fa-circle" style="color: #6fffe0; font-size: 0.5rem;"></i> 2026 · NIGHT PULSE X</p>
+            <div class="social">
+                <a href="https://github.com/npx-official" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://app.hackthebox.com/users/2207141" target="_blank"><i class="fas fa-shield-halved"></i></a>
+                <a href="https://tryhackme.com/p/npx.off" target="_blank"><i class="fas fa-user-secret"></i></a>
+                <a href="https://www.linkedin.com/in/night-pulse-x-337a89275" target="_blank"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- ====== SCRIPT: STARS ====== -->
+    <script>
+        (function() {
+            const container = document.getElementById('stars');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 3 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.setProperty('--d', (2 + Math.random() * 4) + 's');
+                star.style.animationDelay = (Math.random() * 5) + 's';
+                star.style.opacity = Math.random() * 0.5 + 0.2;
+                container.appendChild(star);
+            }
+        })();
+    </script>
+
+    <!-- ====== SCRIPT: MOUSE EFFECTS ====== -->
+    <script>
+        (function() {
+            const trail = document.getElementById("mouseTrail");
+            const glow = document.getElementById("mouseGlowEffect");
+            let x = 0, y = 0;
+            let trailX = 0, trailY = 0;
+
+            document.addEventListener("mousemove", (e) => {
+                x = e.clientX;
+                y = e.clientY;
+                glow.style.left = x + "px";
+                glow.style.top = y + "px";
+                glow.classList.add("active");
+                clearTimeout(window.glowTimeout);
+                window.glowTimeout = setTimeout(() => glow.classList.remove("active"), 200);
+            });
+
+            setInterval(() => {
+                trailX += (x - trailX) * 0.15;
+                trailY += (y - trailY) * 0.15;
+                trail.style.left = trailX + "px";
+                trail.style.top = trailY + "px";
+            }, 16);
+
+            document.addEventListener("mouseleave", () => {
+                trail.style.opacity = "0";
+                glow.style.opacity = "0";
+            });
+            document.addEventListener("mouseenter", () => {
+                trail.style.opacity = "1";
+                glow.style.opacity = "1";
+            });
+        })();
+    </script>
+
+</body>
+</html>
