@@ -245,6 +245,7 @@ HCfAGplRWUmHtAeMjUjoXHcpQWnG3YokLj5EzqhZs6n/ixfOSbSNXg4lV4H0DxKN
             gap: 12px;
         }
 
+        /* ====== WRITEUPS GRID (مخصص للعروض) ====== */
         .writeups-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -336,6 +337,95 @@ HCfAGplRWUmHtAeMjUjoXHcpQWnG3YokLj5EzqhZs6n/ixfOSbSNXg4lV4H0DxKN
         }
         .writeup-card .writeup-link:hover { color: #fff; gap: 12px; }
 
+        /* ====== PROJECTS GRID (مخصص للمشاريع – نفس تنسيق صفحة Projects) ====== */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .project-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(111, 255, 224, 0.06);
+            border-radius: 1.5rem;
+            padding: 1.8rem;
+            transition: 0.4s;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .project-card:hover {
+            transform: translateY(-8px);
+            border-color: #6fffe0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4), 0 0 50px rgba(111, 255, 224, 0.05);
+        }
+        .project-card .project-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+            display: inline-block;
+            transition: transform 0.4s ease;
+        }
+        .project-card:hover .project-icon {
+            transform: scale(1.2) rotate(5deg);
+        }
+        .project-card .project-category {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(255,255,255,0.3);
+            margin-bottom: 0.3rem;
+            font-weight: 600;
+        }
+        .project-card h4 {
+            color: #f0f4ff;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        .project-card .project-desc {
+            color: rgba(255,255,255,0.4);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 0.8rem;
+            flex: 1;
+        }
+        .project-card .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 1rem;
+        }
+        .project-card .project-tags span {
+            font-size: 0.6rem;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            background: rgba(111, 255, 224, 0.08);
+            border: 1px solid rgba(111, 255, 224, 0.08);
+            color: rgba(255,255,255,0.5);
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .project-card .project-link {
+            color: #6fffe0;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+            font-size: 0.9rem;
+            margin-top: auto;
+            align-self: flex-start;
+        }
+        .project-card .project-link:hover {
+            color: #fff;
+            gap: 12px;
+        }
+        .project-card .project-link i { transition: 0.3s; }
+        .project-card .project-link:hover i { transform: translateX(4px); }
+
         .quick-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -416,6 +506,7 @@ HCfAGplRWUmHtAeMjUjoXHcpQWnG3YokLj5EzqhZs6n/ixfOSbSNXg4lV4H0DxKN
             .stats { gap: 2rem; flex-wrap: wrap; }
             .stat h3 { font-size: 2rem; }
             .writeups-grid { grid-template-columns: 1fr; }
+            .projects-grid { grid-template-columns: 1fr; }
             .quick-grid { grid-template-columns: 1fr; }
         }
         @media (max-width: 480px) {
@@ -511,9 +602,9 @@ HCfAGplRWUmHtAeMjUjoXHcpQWnG3YokLj5EzqhZs6n/ixfOSbSNXg4lV4H0DxKN
             <a href="/writeups" class="btn btn-primary"><i class="fas fa-arrow-right"></i> View All</a>
         </div>
 
-        <!-- ====== PROJECTS SECTION ====== -->
+        <!-- ====== PROJECTS SECTION (محدثة) ====== -->
         <h2 class="section-title"><i class="fas fa-code"></i> Featured Projects</h2>
-        <div class="writeups-grid" id="projectsGrid"></div>
+        <div class="projects-grid" id="projectsGrid"></div>
         <div style="text-align: center; margin-top: 2rem;">
             <a href="/projects" class="btn btn-primary"><i class="fas fa-arrow-right"></i> View All Projects</a>
         </div>

@@ -51,23 +51,23 @@ function createProjectCard(project) {
     
     let statusHTML = '';
     if (project.status === 'live') {
-        statusHTML = `<span style="color:#a8e06e;font-size:0.8rem;">🟢 Live</span>`;
+        statusHTML = `<span style="background: rgba(168, 224, 110, 0.12); color: #a8e06e; font-size: 0.6rem; padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(168, 224, 110, 0.15); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">● Live</span>`;
     } else if (project.status === 'coming') {
-        statusHTML = `<span style="color:#eac562;font-size:0.8rem;">🟡 Coming Soon</span>`;
+        statusHTML = `<span style="background: rgba(234, 197, 98, 0.12); color: #eac562; font-size: 0.6rem; padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(234, 197, 98, 0.15); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">● Coming Soon</span>`;
     }
     
     card.innerHTML = `
         <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.5rem;">
-            <div class="project-icon">${project.icon}</div>
+            <div class="project-icon" style="font-size: 2.5rem; display: inline-block; transition: transform 0.4s ease;">${project.icon}</div>
             ${statusHTML}
         </div>
-        <h4>${project.name}</h4>
-        <p>${project.desc}</p>
-        <div class="project-tags">
-            ${project.tags.map(t => `<span>${t}</span>`).join('')}
+        <h4 style="color: #f0f4ff; font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 600; word-break: keep-all; white-space: nowrap;">${project.name}</h4>
+        <p style="color: rgba(255,255,255,0.6); font-size: 0.9rem; line-height: 1.6; margin-bottom: 0.8rem; flex: 1;">${project.desc}</p>
+        <div class="project-tags" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1rem;">
+            ${project.tags.map(t => `<span style="font-size: 0.6rem; padding: 0.2rem 0.8rem; border-radius: 20px; background: rgba(111, 255, 224, 0.08); border: 1px solid rgba(111, 255, 224, 0.08); color: rgba(255,255,255,0.5); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">${t}</span>`).join('')}
         </div>
-        <a href="${project.link}" class="project-link" target="_blank" rel="noopener noreferrer">
-            View Project <i class="fas fa-arrow-right"></i>
+        <a href="${project.link}" class="project-link" style="color: #6fffe0; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s; font-size: 0.9rem; margin-top: auto; align-self: flex-start;">
+            View Project <i class="fas fa-arrow-right" style="transition: 0.3s;"></i>
         </a>
     `;
     return card;

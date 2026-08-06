@@ -1076,3 +1076,32 @@ footer {
     position: relative;
     z-index: 1;
 }
+/* إصلاح تداخل الـ Tags */
+.project-tags {
+    display: flex;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    margin-bottom: 12px !important;
+    align-items: center;
+}
+
+/* تصغير حجم الخط في الـ Tags لتناسب الشاشات الصغيرة */
+.project-tags span {
+    font-size: 0.6rem !important;
+    padding: 3px 10px !important;
+    white-space: nowrap; /* منع النص من الالتفاف */
+}
+
+/* تحسين تخطيط البطاقة */
+.project-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%; /* جعل البطاقات بنفس الارتفاع */
+}
+
+/* إصلاح مكان زر View Project */
+.project-link {
+    margin-top: auto !important; /* دفعه إلى أسفل البطاقة */
+    padding-top: 10px;
+}
