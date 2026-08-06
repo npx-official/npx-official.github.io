@@ -9,7 +9,7 @@ const writeupsData = [
     { name: 'Reactor', category: 'htb/linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/Reactor', icon: '#a8e06e' },
     { name: 'Silentium', category: 'htb/linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/Silentium', password: 'S1l3nt1um!E@sy#2026', icon: '#a8e06e' },
     { name: 'Cohort', category: 'htb/linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/Cohort', icon: '#a8e06e' },
-   { name: 'TwoMillion', category: 'htb/linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/TwoMillion', icon: '#a8e06e' },
+   { name: 'TwoMillion', category: 'htb/linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/TwoMillion', password: ''Tw0M1ll10n!E@sy#2026, icon: '#a8e06e' },
 
     { name: 'Bedside', category: 'htb/linux/medium', level: 'medium', os: 'linux', path: '/writeups/htb/linux/medium/Bedside', icon: '#eac562' },
     { name: 'Checkpoint', category: 'htb/linux/medium', level: 'medium', os: 'linux', path: '/writeups/htb/linux/medium/Checkpoint', icon: '#eac562' },
