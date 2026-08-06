@@ -9,7 +9,7 @@ const writeupsData = [
     { name: 'Reactor', category: 'htb/linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/Reactor', icon: '#a8e06e' },
     { name: 'Silentium', category: 'htb/linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/Silentium', password: 'S1l3nt1um!E@sy#2026', icon: '#a8e06e' },
     { name: 'Cohort', category: 'htb/linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/Cohort', icon: '#a8e06e' },
-   { name: 'TwoMillion', category: 'htb/linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/TwoMillion',password:'Tw0M1ll10n!E@sy#2026', icon: '#a8e06e' },
+    { name: 'TwoMillion', category: 'htb/linux/easy', level: 'easy', os: 'linux', path: '/writeups/htb/linux/easy/TwoMillion', password: 'Tw0M1ll10n!E@sy#2026', icon: '#a8e06e' },
 
     { name: 'Bedside', category: 'htb/linux/medium', level: 'medium', os: 'linux', path: '/writeups/htb/linux/medium/Bedside', icon: '#eac562' },
     { name: 'Checkpoint', category: 'htb/linux/medium', level: 'medium', os: 'linux', path: '/writeups/htb/linux/medium/Checkpoint', icon: '#eac562' },
@@ -104,7 +104,6 @@ function createWriteupCard(writeup) {
 }
 
 function getFilterIcon(filter) {
-    // أيقونات FontAwesome نظيفة ومطابقة
     const icons = {
         'linux': '<i class="fab fa-linux" style="margin-right:6px;"></i>',
         'windows': '<i class="fab fa-windows" style="margin-right:6px;"></i>',
@@ -112,18 +111,14 @@ function getFilterIcon(filter) {
         'tryhackme': '<i class="fas fa-user-secret" style="margin-right:6px;"></i>',
         'hacker101': '<i class="fas fa-shield" style="margin-right:6px;"></i>',
         'prolabs': '<i class="fas fa-trophy" style="margin-right:6px;"></i>',
-        
-        // مطابقة data-filter في ملف HTML
         'htb-easy': '<i class="fas fa-circle" style="color:#a8e06e;margin-right:6px;font-size:0.6rem;"></i>',
         'htb-medium': '<i class="fas fa-circle" style="color:#eac562;margin-right:6px;font-size:0.6rem;"></i>',
         'htb-hard': '<i class="fas fa-circle" style="color:#e05a5a;margin-right:6px;font-size:0.6rem;"></i>',
         'htb-insane': '<i class="fas fa-skull" style="color:#8c8c8c;margin-right:6px;font-size:0.9rem;"></i>',
-        
         'tryhackme-easy': '<i class="fas fa-circle" style="color:#a8e06e;margin-right:6px;font-size:0.6rem;"></i>',
         'tryhackme-medium': '<i class="fas fa-circle" style="color:#eac562;margin-right:6px;font-size:0.6rem;"></i>',
         'tryhackme-hard': '<i class="fas fa-circle" style="color:#e05a5a;margin-right:6px;font-size:0.6rem;"></i>',
         'tryhackme-insane': '<i class="fas fa-skull" style="color:#8c8c8c;margin-right:6px;font-size:0.9rem;"></i>',
-        
         'hacker101-easy': '<i class="fas fa-circle" style="color:#a8e06e;margin-right:6px;font-size:0.6rem;"></i>',
         'hacker101-medium': '<i class="fas fa-circle" style="color:#eac562;margin-right:6px;font-size:0.6rem;"></i>',
         'hacker101-hard': '<i class="fas fa-circle" style="color:#e05a5a;margin-right:6px;font-size:0.6rem;"></i>',
@@ -165,18 +160,15 @@ function applyFilter(filter) {
                 case 'windows': return os === 'windows';
                 case 'linux': return os === 'linux';
                 case 'prolabs': return os === 'prolabs';
-                
                 case 'tryhackme': return cat.startsWith('tryhackme/');
                 case 'tryhackme-easy': return cat === 'tryhackme/easy';
                 case 'tryhackme-medium': return cat === 'tryhackme/medium';
                 case 'tryhackme-hard': return cat === 'tryhackme/hard';
                 case 'tryhackme-insane': return cat === 'tryhackme/insane';
-                
                 case 'hacker101': return os === 'hacker101';
                 case 'hacker101-easy': return os === 'hacker101' && level === 'easy';
                 case 'hacker101-medium': return os === 'hacker101' && level === 'medium';
                 case 'hacker101-hard': return os === 'hacker101' && level === 'hard';
-                
                 default: return cat.includes(filter) || level.includes(filter) || os.includes(filter);
             }
         });
@@ -185,16 +177,14 @@ function applyFilter(filter) {
     container.innerHTML = '';
     filteredData.forEach(writeup => container.appendChild(createWriteupCard(writeup)));
     
-    // تحديث الأيقونات بشكل صحيح
     document.querySelectorAll('.filter-btn').forEach(btn => {
-        const plainText = btn.textContent.trim(); // استخراج النص النقي
-        
+        const plainText = btn.textContent.trim();
         if (btn.dataset.filter === filter) {
             const icon = getFilterIcon(filter);
             btn.innerHTML = icon + plainText;
             btn.classList.add('active');
         } else {
-            btn.innerHTML = plainText; // إعادة النص النقي فقط للأزرار الأخرى
+            btn.innerHTML = plainText;
             btn.classList.remove('active');
         }
     });
@@ -251,6 +241,25 @@ function setupFilters() {
     });
 }
 
+// ✅ إضافة دالة لمعالجة الأزرار الفرعية بشكل صحيح
+function setupSubFilters() {
+    document.querySelectorAll('.sub-filters .filter-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation(); // منع انتشار الحدث للأزرار الرئيسية
+            
+            // إزالة active من جميع الأزرار
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            // إغلاق جميع القوائم الفرعية
+            document.querySelectorAll('.sub-filters').forEach(el => el.classList.remove('show'));
+            
+            // تطبيق التصفية
+            applyFilter(this.dataset.filter);
+        });
+    });
+}
+
 function loadFeaturedWriteups() {
     const container = document.getElementById('featuredWriteups');
     if (!container) return;
@@ -266,5 +275,6 @@ function loadFeaturedWriteups() {
 
 window.loadAllWriteups = loadAllWriteups;
 window.loadFeaturedWriteups = loadFeaturedWriteups;
+window.setupSubFilters = setupSubFilters;
 
 console.log(`📚 Loaded ${writeupsData.length} writeups`);
