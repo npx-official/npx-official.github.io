@@ -28,7 +28,8 @@ const writeupsData = [
     { name: 'Ghostlink', category: 'htb/windows/hard', level: 'hard', os: 'windows', path: '/writeups/htb/windows/hard/Ghostlink', password: 'Gh0stl1nk!W1nd0ws#X5', icon: '#e05a5a' },
     { name: 'DarkZero Returns', category: 'htb/windows/hard', level: 'hard', os: 'windows', path: '/writeups/htb/windows/hard/DarkZeroReturns', icon: '#e05a5a' },
     { name: 'Fries', category: 'htb/windows/hard', level: 'hard', os: 'windows', path: '/writeups/htb/windows/hard/Fries', password: 'Fr13s!H@rd#2026', icon: '#e05a5a' },
- 
+    { name: 'DanglingTree', category: 'htb/windows/hard', level: 'hard', os: 'windows', path: '/writeups/htb/windows/hard/DanglingTree', icon: '#e05a5a' },
+
     { name: 'Odyssey', category: 'htb/windows/insane', level: 'insane', os: 'windows', path: '/writeups/htb/windows/insane/Odyssey', password: '0dys3y!R3turn#Insan3', icon: '#8c8c8c' },
 
     { name: 'Mythical', category: 'htb/prolabs', level: 'prolabs', os: 'prolabs', path: '/writeups/htb/prolabs/Mythical', icon: '#f5c542' },
