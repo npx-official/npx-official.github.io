@@ -1355,6 +1355,14 @@ html[dir="rtl"] .header-search{direction:rtl}
 html[dir="rtl"] .v22-search input,html[dir="rtl"] input{direction:rtl}
 @media(max-width:900px){.npx27-lang{margin-left:4px}.npx27-lang select{min-width:105px;padding:7px 25px 7px 8px}.npx27-lang:after{right:8px}html[dir="rtl"] .main{margin-right:0!important}}
 </style>
+
+<style id="npx-filter-stability">
+#filterEmpty,
+.filter-empty {
+    display: none;
+}
+</style>
+
 </head>
 <body>
 <div class="v81-progress" id="v81Progress"></div>
@@ -1554,8 +1562,8 @@ html[dir="rtl"] .v22-search input,html[dir="rtl"] input{direction:rtl}
   <div class="npx26-hero">
     <div class="npx26-kicker" data-npx27-key="rcKicker">NIGHT PULSE X / RESEARCH & CAREER COMMAND CENTER</div>
     <h2 data-npx27-key="rcTitle">From First Bug to Professional Research</h2>
-    <p data-npx27-key="rcIntro">هذه الطبقة الجديدة تجعل NIGHT PULSE X نقطة انطلاق عملية: تعلّم → مختبر → اكتشاف → تحقق آمن → تقرير → شهادات → بحث متقدم. لا تعتبر أي نطاق عامًا أو قابلًا للاختبار إلا إذا كانت سياسة البرنامج تسمح بذلك صراحة.</p>
-    <div class="npx26-alert"><strong data-npx27-key="authGate">AUTHORIZATION GATE:</strong> قبل أي اختبار خارج المختبر، اقرأ النطاق، الـsafe harbor، المعدل المسموح، الأصول المستثناة، طرق التواصل، ومتطلبات الإفصاح. وجود ثغرة محتملة لا يعني وجود إذن لاختبارها.</div>
+    <p data-npx27-key="rcIntro">This layer turns NIGHT PULSE X into a practical starting point: learn → lab → discover → validate safely → report → certify → advanced research. Never treat a public target as testable unless the program policy explicitly allows it.</p>
+    <div class="npx26-alert"><strong data-npx27-key="authGate">AUTHORIZATION GATE:</strong> Before any testing outside a lab, read the scope, safe harbor, rate limits, excluded assets, contact methods, and disclosure requirements. A potential vulnerability does not mean you have permission to test it.</div>
     <div class="npx26-path" aria-label="Research path" data-npx27-key="researchPath">
       <div class="npx26-step"><b>01</b><span data-npx27-key="pScope">SCOPE</span></div><div class="npx26-step"><b>02</b><span data-npx27-key="pRecon">RECON</span></div><div class="npx26-step"><b>03</b><span data-npx27-key="pEnum">ENUM</span></div><div class="npx26-step"><b>04</b><span data-npx27-key="pHypothesis">HYPOTHESIS</span></div><div class="npx26-step"><b>05</b><span data-npx27-key="pValidate">VALIDATE</span></div><div class="npx26-step"><b>06</b><span data-npx27-key="pEvidence">EVIDENCE</span></div><div class="npx26-step"><b>07</b><span data-npx27-key="pReport">REPORT</span></div><div class="npx26-step"><b>08</b><span data-npx27-key="pRetest">RETEST</span></div>
     </div>
@@ -1572,52 +1580,69 @@ html[dir="rtl"] .v22-search input,html[dir="rtl"] input{direction:rtl}
   </div>
 
   <div class="npx26-grid" id="npx26Cards">
-    <article class="npx26-card" data-npx26-kind="bugbounty"><span class="tag">01 / BUG BOUNTY</span><h3>برنامج فحص قبل إرسال أي Report</h3><ul><li>هل الأصل In-Scope؟</li><li>هل الثغرة قابلة لإعادة الإنتاج؟</li><li>هل يوجد impact أمني واضح؟</li><li>هل الاختبار تجاوز rate limit أو تسبب في ضرر؟</li><li>هل الدليل أقل قدر ممكن ويخفي البيانات الحساسة؟</li></ul><a href="#npx26-reporting">افتح Report Workflow →</a></article>
-    <article class="npx26-card" data-npx26-kind="bugbounty"><span class="tag">02 / PROGRAM INTELLIGENCE</span><h3>Program Triage</h3><p>أنشئ بطاقة لكل برنامج: scope، exclusions، authentication requirements، rate limits، bounty tiers، disclosure rules، safe harbor، duplicate policy، وأفضل نقطة اتصال أمنية.</p><a href="https://hackerone.com/" target="_blank" rel="noopener">HackerOne ↗</a> · <a href="https://www.bugcrowd.com/" target="_blank" rel="noopener">Bugcrowd ↗</a></article>
-    <article class="npx26-card" data-npx26-kind="labs"><span class="tag">03 / LAB-FIRST</span><h3>مختبر قبل الإنتاج</h3><p>PortSwigger Academy، TryHackMe، HTB Academy، OWASP labs، WebGoat، Juice Shop، وبيئة VM محلية. الهدف أن تتحول كل فكرة إلى ملاحظة قابلة لإعادة الإنتاج قبل لمس برنامج حقيقي.</p><a href="https://portswigger.net/web-security" target="_blank" rel="noopener">PortSwigger Academy ↗</a></article>
-    <article class="npx26-card" data-npx26-kind="labs"><span class="tag">04 / LEARNING LOOP</span><h3>Read → Lab → Reproduce → Explain</h3><p>لا تجمع payloads فقط. لكل فئة: افهم trust boundary، حدد preconditions، نفّذها في lab، اكتب سبب النجاح والفشل، ثم أنشئ regression test أو remediation note.</p><a href="#npx25-attack-tree">عودة إلى Discovery Tree →</a></article>
-    <article class="npx26-card" data-npx26-kind="certs"><span class="tag">05 / CERTIFICATION MAP</span><h3>خارطة الشهادات</h3><p><b>Foundation:</b> ISC2 CC → <b>Hands-on:</b> eJPT → <b>Web:</b> BSCP / HTB CWES → <b>Pentest:</b> HTB CPTS / eCPPT / GPEN → <b>Advanced:</b> OSCP وأدوار متخصصة.</p><a href="#npx26-certifications">قارن المسارات →</a></article>
-    <article class="npx26-card" data-npx26-kind="research"><span class="tag">06 / RESEARCH PIPELINE</span><h3>من CVE إلى Hypothesis</h3><p>تابع CVE/CWE، vendor advisories، changelogs، patches، security research، ثم اسأل: ما security property التي تغيرت؟ ما parser أو boundary المتأثر؟ وما أفضل lab لإثبات الفكرة؟</p><a href="#npx26-research">Research Desk →</a></article>
-    <article class="npx26-card" data-npx26-kind="research"><span class="tag">07 / MODERN WEB</span><h3>Modern Web Watch</h3><p>HTTP/2 وHTTP/3، request desync، cache behavior، parser differentials، WebSockets، GraphQL، API authorization، prototype pollution، Web LLM attacks، وclient-side trust boundaries.</p><a href="https://portswigger.net/web-security/all-topics" target="_blank" rel="noopener">Topic index ↗</a></article>
-    <article class="npx26-card" data-npx26-kind="university"><span class="tag">08 / UNIVERSITY TRACK</span><h3>MIT / Berkeley Security Foundations</h3><p>MIT 6.858 يغطي threat models، OS security، capabilities، information flow، network protocols، hardware وweb security. Berkeley CS161 يركز على memory safety، OS security، injection، access control وsecure software.</p><a href="https://ocw.mit.edu/courses/6-858-computer-systems-security-fall-2014/" target="_blank" rel="noopener">MIT 6.858 ↗</a> · <a href="https://www-inst.cs.berkeley.edu/~cs161/sp18/" target="_blank" rel="noopener">Berkeley CS161 ↗</a></article>
-    <article class="npx26-card" data-npx26-kind="university"><span class="tag">09 / SECURITY ENGINEERING</span><h3>WSTG + API Security</h3><p>استخدم OWASP WSTG كإطار اختبار، ثم اربطه بـOWASP API Security Top 10. لا تجعل القائمة Checklist آلية؛ استخدمها لتكوين فرضيات واختبارات أمنية قابلة للإثبات.</p><a href="https://owasp.org/www-project-web-security-testing-guide/" target="_blank" rel="noopener">OWASP WSTG ↗</a> · <a href="https://owasp.org/API-Security/editions/2023/en/0x00-toc/" target="_blank" rel="noopener">OWASP API Top 10 ↗</a></article>
-    <article class="npx26-card" data-npx26-kind="privacy"><span class="tag">10 / TOR & ONION</span><h3>Onion Services — Research, not permission</h3><p>أضفنا هنا مسارًا لفهم Onion Services: architecture، authentication، location hiding، threat modeling وoperational security. لا تستخدم قوائم onion مجهولة كأهداف، ولا تعتبر وجود خدمة onion تفويضًا للاختبار.</p><a href="https://community.torproject.org/onion-services/overview/" target="_blank" rel="noopener">Tor Onion Services ↗</a></article>
-    <article class="npx26-card" data-npx26-kind="privacy"><span class="tag">11 / PRIVACY RESEARCH</span><h3>Tor Safety Gate</h3><ul><li>تحقق من المصدر الأصلي للخدمة.</li><li>لا تنفذ ملفات أو تتبع روابط مجهولة.</li><li>لا تختبر خدمة onion بدون إذن.</li><li>استخدم Tor كموضوع دراسة للخصوصية والبنية، لا كطريقة لتجاوز قواعد برنامج.</li></ul><a href="https://community.torproject.org/onion-services/setup/" target="_blank" rel="noopener">Tor setup & security ↗</a></article>
-    <article class="npx26-card" data-npx26-kind="bugbounty"><span class="tag">12 / DISCLOSURE</span><h3>RFC 9116 / security.txt</h3><p>قبل البحث عن نقطة اتصال عشوائية، افحص قناة الإفصاح المنشورة رسميًا. اجعل report قابلًا للتوجيه: asset، vulnerability class، impact، reproduction، evidence، remediation.</p><a href="https://www.rfc-editor.org/rfc/rfc9116" target="_blank" rel="noopener">RFC 9116 ↗</a></article>
+    <article class="npx26-card" data-npx26-kind="bugbounty"><span class="tag">01 / BUG BOUNTY</span><h3>Pre-Submission Bug Bounty Review</h3><ul><li>Is the asset in scope?</li><li>Is the vulnerability reproducible?</li><li>Is there a clear security impact?</li><li>Did the test exceed the rate limit or cause harm?</li><li>Is the evidence minimal and does it hide sensitive data?</li></ul><a href="#npx26-reporting">Open Report Workflow →</a></article>
+    <article class="npx26-card" data-npx26-kind="bugbounty"><span class="tag">02 / PROGRAM INTELLIGENCE</span><h3>Program Triage</h3><p>Create a profile for each program: scope, exclusions, authentication requirements, rate limits, bounty tiers, disclosure rules, safe harbor, duplicate policy, and the best security contact.</p><a href="https://hackerone.com/" target="_blank" rel="noopener">HackerOne ↗</a> · <a href="https://www.bugcrowd.com/" target="_blank" rel="noopener">Bugcrowd ↗</a></article>
+    <article class="npx26-card" data-npx26-kind="labs"><span class="tag">03 / LAB-FIRST</span><h3>Lab Before Production</h3><p>PortSwigger Academy, TryHackMe, HTB Academy, OWASP labs, WebGoat, Juice Shop, and a local VM environment. Turn every idea into a reproducible finding before touching a real program.</p><a href="https://portswigger.net/web-security" target="_blank" rel="noopener">PortSwigger Academy ↗</a></article>
+    <article class="npx26-card" data-npx26-kind="labs"><span class="tag">04 / LEARNING LOOP</span><h3>Read → Lab → Reproduce → Explain</h3><p>Do not just collect payloads. For each category: understand the trust boundary, identify preconditions, reproduce it in a lab, explain success and failure, then create a regression test or remediation note.</p><a href="#npx25-attack-tree">Back to Discovery Tree →</a></article>
+    <article class="npx26-card" data-npx26-kind="certs"><span class="tag">05 / CERTIFICATION MAP</span><h3>Certification Roadmap</h3><p><b>Foundation:</b> ISC2 CC → <b>Hands-on:</b> eJPT → <b>Web:</b> BSCP / HTB CWES → <b>Pentest:</b> HTB CPTS / eCPPT / GPEN → <b>Advanced:</b> OSCP and specialized roles.</p><a href="#npx26-certifications">Compare Tracks →</a></article>
+    <article class="npx26-card" data-npx26-kind="research"><span class="tag">06 / RESEARCH PIPELINE</span><h3>From CVE to Hypothesis</h3><p>Track CVE/CWE, vendor advisories, changelogs, patches, and security research. Then ask: what security property changed, which parser or boundary is affected, and what is the best lab to demonstrate the idea?</p><a href="#npx26-research">Research Desk →</a></article>
+    <article class="npx26-card" data-npx26-kind="research"><span class="tag">07 / MODERN WEB</span><h3>Modern Web Watch</h3><p>HTTP/2 and HTTP/3, request desync, cache behavior, parser differentials, WebSockets, GraphQL, API authorization, prototype pollution, Web LLM attacks, and client-side trust boundaries.</p><a href="https://portswigger.net/web-security/all-topics" target="_blank" rel="noopener">Topic index ↗</a></article>
+    <article class="npx26-card" data-npx26-kind="university"><span class="tag">08 / UNIVERSITY TRACK</span><h3>MIT / Berkeley Security Foundations</h3><p>MIT 6.858 covers threat models, OS security, capabilities, information flow, network protocols, hardware, and web security. Berkeley CS161 focuses on memory safety, OS security, injection, access control, and secure software.</p><a href="https://ocw.mit.edu/courses/6-858-computer-systems-security-fall-2014/" target="_blank" rel="noopener">MIT 6.858 ↗</a> · <a href="https://www-inst.cs.berkeley.edu/~cs161/sp18/" target="_blank" rel="noopener">Berkeley CS161 ↗</a></article>
+    <article class="npx26-card" data-npx26-kind="university"><span class="tag">09 / SECURITY ENGINEERING</span><h3>WSTG + API Security</h3><p>Use OWASP WSTG as a testing framework, then connect it with the OWASP API Security Top 10. Do not turn the list into an automated checklist; use it to form testable security hypotheses.</p><a href="https://owasp.org/www-project-web-security-testing-guide/" target="_blank" rel="noopener">OWASP WSTG ↗</a> · <a href="https://owasp.org/API-Security/editions/2023/en/0x00-toc/" target="_blank" rel="noopener">OWASP API Top 10 ↗</a></article>
+    <article class="npx26-card" data-npx26-kind="privacy"><span class="tag">10 / TOR & ONION</span><h3>Onion Services — Research, not permission</h3><p>This track covers Onion Services: architecture, authentication, location hiding, threat modeling, and operational security. Do not use anonymous onion lists as targets, and do not treat the existence of an onion service as authorization to test it.</p><a href="https://community.torproject.org/onion-services/overview/" target="_blank" rel="noopener">Tor Onion Services ↗</a></article>
+    <article class="npx26-card" data-npx26-kind="privacy"><span class="tag">11 / PRIVACY RESEARCH</span><h3>Tor Safety Gate</h3><ul><li>Verify the original source of the service.</li><li>Do not execute files or follow unknown links.</li><li>Do not test an onion service without authorization.</li><li>Use Tor as a subject for studying privacy and architecture, not as a way to bypass program rules.</li></ul><a href="https://community.torproject.org/onion-services/setup/" target="_blank" rel="noopener">Tor setup & security ↗</a></article>
+    <article class="npx26-card" data-npx26-kind="bugbounty"><span class="tag">12 / DISCLOSURE</span><h3>RFC 9116 / security.txt</h3><p>Before looking for a random contact, check the officially published disclosure channel. Make the report actionable: asset, vulnerability class, impact, reproduction, evidence, and remediation.</p><a href="https://www.rfc-editor.org/rfc/rfc9116" target="_blank" rel="noopener">RFC 9116 ↗</a></article>
   </div>
 
-  <section class="npx26-card" id="npx26-reporting" style="margin-top:12px">
-    <span class="tag">REPORT ENGINE</span><h3>Report Blueprint</h3>
-    <table class="npx26-table"><thead><tr><th>Field</th><th>What to record</th><th>Quality gate</th></tr></thead><tbody>
-      <tr><td>Title</td><td>نوع الثغرة + الأصل + security property</td><td>قصير وقابل للفرز</td></tr>
-      <tr><td>Scope</td><td>Host / app / API / account context</td><td>In-scope ومحدد</td></tr>
-      <tr><td>Preconditions</td><td>Role، account state، feature، configuration</td><td>لا تخفِ أي شرط مهم</td></tr>
-      <tr><td>Reproduction</td><td>أقل خطوات لازمة لإعادة المشكلة</td><td>قابلة لإعادة الإنتاج بدون ضرر</td></tr>
-      <tr><td>Impact</td><td>Confidentiality / Integrity / Availability + business impact</td><td>لا تبالغ؛ اربطها بدليل</td></tr>
-      <tr><td>Evidence</td><td>Requests/responses، screenshots، timestamps، IDs منزوعة الحساسية</td><td>لا ترفع أسرارًا أو PII غير ضرورية</td></tr>
-      <tr><td>Remediation</td><td>Control، owner، monitoring، retest criteria</td><td>اقتراح قابل للتنفيذ</td></tr>
-    </tbody></table>
-  </section>
+<section class="npx26-card" id="npx26-reporting" style="margin-top:12px">
+  <span class="tag">REPORT ENGINE</span>
+  <h3>Report Blueprint</h3>
+  <table class="npx26-table">
+    <thead>
+      <tr>
+        <th>Field</th>
+        <th>What to record</th>
+        <th>Quality gate</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Title</td><td>Vulnerability type + asset + security property</td><td>Short and sortable</td></tr>
+      <tr><td>Scope</td><td>Host / app / API / account context</td><td>In-scope and clearly defined</td></tr>
+      <tr><td>Preconditions</td><td>Role, account state, feature, configuration</td><td>Do not hide any important prerequisite</td></tr>
+      <tr><td>Reproduction</td><td>Minimum steps required to reproduce the issue</td><td>Reproducible without causing harm</td></tr>
+      <tr><td>Impact</td><td>Confidentiality / Integrity / Availability + business impact</td><td>Do not exaggerate; connect it to evidence</td></tr>
+      <tr><td>Evidence</td><td>Requests/responses, screenshots, timestamps, and sanitized IDs</td><td>Do not upload secrets or unnecessary PII</td></tr>
+      <tr><td>Remediation</td><td>Control, owner, monitoring, retest criteria</td><td>Actionable recommendation</td></tr>
+    </tbody>
+  </table>
 
-  <section class="npx26-card" id="npx26-certifications" style="margin-top:12px">
-    <span class="tag">CERTIFICATION ROADMAP / 2026</span><h3>اختر الشهادة حسب الهدف، لا حسب الاسم</h3>
-    <div class="npx26-score"><div><b>CC</b><span>Foundation / newcomer</span></div><div><b>eJPT</b><span>Junior practical pentest</span></div><div><b>BSCP</b><span>Deep web testing</span></div><div><b>CPTS</b><span>Hands-on pentest</span></div></div>
-    <table class="npx26-table"><thead><tr><th>Target</th><th>Best-fit track</th><th>Build before exam</th></tr></thead><tbody>
+  <!-- ✅ الجدول الجديد هنا -->
+  <h3 style="margin-top:24px;">Career Paths</h3>
+  <table class="npx26-table">
+    <thead>
+      <tr>
+        <th>Target</th>
+        <th>Best-fit track</th>
+        <th>Build before exam</th>
+      </tr>
+    </thead>
+    <tbody>
       <tr><td>Begin cybersecurity</td><td>ISC2 CC + networking/Linux fundamentals</td><td>Labs + notes + basic reporting</td></tr>
       <tr><td>Bug bounty / Web</td><td>PortSwigger Academy → BSCP / HTB CWES</td><td>Auth, access control, API, advanced HTTP, business logic</td></tr>
       <tr><td>General pentest</td><td>eJPT → HTB CPTS / eCPPT → advanced cert</td><td>Recon, enumeration, web, Windows/Linux, AD, reporting</td></tr>
       <tr><td>Cloud</td><td>Cloud fundamentals → CCSP / cloud-specialist path</td><td>IAM, storage, network, workload identity, logging</td></tr>
       <tr><td>Leadership / broad security</td><td>Experience → CISSP</td><td>Security architecture, risk, IAM, assessment, operations</td></tr>
-    </tbody></table>
-  </section>
+    </tbody>
+  </table>
+</section>
 
   <section class="npx26-card" id="npx26-research" style="margin-top:12px">
     <span class="tag">RESEARCH DESK</span><h3>Research Queue — what deserves attention</h3>
     <div class="npx26-grid" style="margin-top:10px">
-      <article class="npx26-card"><span class="tag">HIGH VALUE</span><h3>Authorization as a graph</h3><p>حوّل العلاقات بين users → roles → objects → functions → tenants إلى graph. ابحث عن edge مفقود بدل البحث عن payload واحد.</p></article>
-      <article class="npx26-card"><span class="tag">MODERN</span><h3>Parser / protocol differentials</h3><p>قارن كيف يفسر proxy، CDN، WAF، application server والbackend نفس الرسالة. الهدف فهم اختلاف التفسير في المختبر.</p></article>
-      <article class="npx26-card"><span class="tag">API</span><h3>Inventory drift</h3><p>قارن OpenAPI/docs/mobile clients/JS/routes والنسخ القديمة. API inventory غير المحدث قد يخفي سطحًا غير مقصود.</p></article>
-      <article class="npx26-card"><span class="tag">AI</span><h3>Agent trust boundaries</h3><p>ارسم model → prompt → retrieval → tools → external services → secrets → user. قيّم prompt injection، excessive agency، data leakage وsupply-chain trust داخل lab.</p></article>
+<article class="npx26-card"><span class="tag">HIGH VALUE</span><h3>Authorization as a graph</h3><p>Convert relationships between users → roles → objects → functions → tenants to a graph. Search for a missing edge instead of searching for a single payload.</p></article>
+      <article class="npx26-card"><span class="tag">MODERN</span><h3>Parser / protocol differentials</h3><p>Compare how a proxy, CDN, WAF, application server and backend interpret the same message. The goal is to understand the difference in interpretation in the laboratory.</p></article>
+      <article class="npx26-card"><span class="tag">API</span><h3>Inventory drift</h3><p>Compare OpenAPI/docs/mobile clients/JS/routes and legacy versions. An out-of-date API inventory may be hiding an unintended surface.</p></article>
+      <article class="npx26-card"><span class="tag">AI</span><h3>Agent trust boundaries</h3><p>Draw model → prompt → retrieval → tools → external services → secrets → user. Rate prompt injection, excessive agency, data leakage and supply-chain trust within lab.</p></article>
     </div>
   </section>
 
@@ -11384,9 +11409,9 @@ navItems.forEach(item => {
       cards:[
         ['01 / مكافآت الثغرات','فحص أمني قبل إرسال التقرير',['هل الأصل داخل النطاق؟','هل المشكلة قابلة لإعادة الإنتاج؟','هل يوجد أثر أمني واضح؟','هل تجاوز الاختبار حدود المعدل أو تسبب في ضرر؟','هل الدليل بالحد الأدنى وخالٍ من البيانات الحساسة؟'],'فتح مسار التقرير →'],
         ['02 / معلومات البرنامج','فرز البرنامج','أنشئ بطاقة لكل برنامج: النطاق، الاستثناءات، متطلبات المصادقة، حدود المعدل، مستويات المكافآت، قواعد الإفصاح، safe harbor، سياسة التكرار، وأفضل جهة اتصال أمنية.','HackerOne ↗ · Bugcrowd ↗'],
-        ['03 / المختبر أولاً','المختبر قبل الإنتاج','استخدم PortSwigger Academy وTryHackMe وHTB Academy ومختبرات OWASP وWebGoat وJuice Shop أو آلة افتراضية محلية. حوّل كل فكرة إلى ملاحظة قابلة لإعادة الإنتاج قبل لمس برنامج حقيقي.','PortSwigger Academy ↗'],
+        ['03 / المختبر أولاً','الLab Before Production','استخدم PortSwigger Academy وTryHackMe وHTB Academy ومختبرات OWASP وWebGoat وJuice Shop أو آلة افتراضية محلية. حوّل كل فكرة إلى ملاحظة قابلة لإعادة الإنتاج قبل لمس برنامج حقيقي.','PortSwigger Academy ↗'],
         ['04 / حلقة التعلم','اقرأ → مختبر → أعد الإنتاج → اشرح','لكل فئة: افهم حدود الثقة، حدد الشروط المسبقة، أعدها في مختبر، اشرح النجاح والفشل، ثم أنشئ اختبار تراجع أو ملاحظة معالجة.','العودة إلى شجرة الاكتشاف →'],
-        ['05 / خارطة الشهادات','خارطة الشهادات','Foundation: ISC2 CC → عملي: eJPT → Web: BSCP / HTB CWES → Pentest: HTB CPTS / eCPPT / GPEN → متقدم: OSCP ومسارات متخصصة.','قارن المسارات →'],
+        ['05 / Certification Roadmap','Certification Roadmap','Foundation: ISC2 CC → عملي: eJPT → Web: BSCP / HTB CWES → Pentest: HTB CPTS / eCPPT / GPEN → متقدم: OSCP ومسارات متخصصة.','Compare Tracks →'],
         ['06 / مسار البحث','من CVE إلى فرضية','تابع CVE/CWE وتنبيهات المورّدين وسجلات التغيير والتصحيحات والبحوث الأمنية. اسأل: ما الخاصية الأمنية التي تغيرت؟ ما الـparser أو الحد المتأثر؟ وما المختبر الذي يثبت الفكرة؟','مكتب البحث →'],
         ['07 / الويب الحديث','مراقبة الويب الحديث','HTTP/2 وHTTP/3، request desync، سلوك التخزين المؤقت، اختلافات المحللات، WebSockets، GraphQL، صلاحيات API، prototype pollution، هجمات Web LLM وحدود الثقة في جهة العميل.','فهرس المواضيع ↗'],
         ['08 / المسار الجامعي','أسس الأمن — MIT / Berkeley','يغطي MIT 6.858 نماذج التهديد وأمن أنظمة التشغيل والصلاحيات وتدفق المعلومات والبروتوكولات وأمن العتاد والويب. ويركز Berkeley CS161 على سلامة الذاكرة وأمن النظام والحقن والتحكم بالوصول والبرمجيات الآمنة.','MIT 6.858 ↗ · Berkeley CS161 ↗'],
@@ -11395,8 +11420,8 @@ navItems.forEach(item => {
         ['11 / بحث الخصوصية','بوابة أمان Tor',['تحقق من مصدر الخدمة.','لا تشغل ملفات أو تتبع روابط مجهولة.','لا تختبر خدمة onion بدون إذن.','استخدم Tor كموضوع لدراسة الخصوصية والبنية، لا لتجاوز قواعد البرامج.'],'إعداد Tor والأمان ↗'],
         ['12 / الإفصاح','RFC 9116 / security.txt','قبل البحث عن جهة اتصال عشوائية، افحص قناة الإفصاح المنشورة رسمياً. اجعل التقرير قابلاً للتوجيه: الأصل، فئة الثغرة، الأثر، إعادة الإنتاج، الدليل والمعالجة.','RFC 9116 ↗']
       ],
-      reporting:['محرك التقارير','مخطط التقرير',[['الحقل','ما الذي تسجله','بوابة الجودة'],['العنوان','نوع الثغرة + الأصل + الخاصية الأمنية','قصير وقابل للفرز'],['النطاق','المضيف / التطبيق / API / سياق الحساب','داخل النطاق ومحدد'],['الشروط المسبقة','الدور، حالة الحساب، الميزة، الإعداد','لا تخفِ الشروط المهمة'],['إعادة الإنتاج','أقل خطوات لازمة لإعادة المشكلة','قابلة للإعادة دون ضرر'],['الأثر','السرية / السلامة / التوافر + أثر الأعمال','لا تبالغ؛ اربطها بالدليل'],['الدليل','طلبات/استجابات، لقطات، أوقات، معرفات منزوعة الحساسية','لا أسرار أو PII غير ضرورية'],['المعالجة','الضابط، المالك، المراقبة، شروط إعادة الاختبار','اقتراح قابل للتنفيذ']]],
-      cert:['خارطة الشهادات / 2026','اختر الشهادة حسب الهدف، لا حسب الاسم.'],
+      reporting:['محرك التقارير','مخطط التقرير',[['الحقل','ما الذي تسجله','بوابة الجودة'],['العنوان','نوع الثغرة + الأصل + الخاصية الأمنية','Short and sortable'],['النطاق','المضيف / التطبيق / API / سياق الحساب','داخل النطاق ومحدد'],['الشروط المسبقة','الدور، حالة الحساب، الميزة، الإعداد','لا تخفِ الشروط المهمة'],['إعادة الإنتاج','أقل خطوات لازمة لإعادة المشكلة','قابلة للإعادة دون ضرر'],['الأثر','السرية / السلامة / التوافر + أثر الأعمال','لا تبالغ؛ اربطها بالدليل'],['الدليل','طلبات/استجابات، لقطات، أوقات، معرفات منزوعة الحساسية','لا أسرار أو PII غير ضرورية'],['المعالجة','الضابط، المالك، المراقبة، شروط إعادة الاختبار','اقتراح قابل للتنفيذ']]],
+      cert:['Certification Roadmap / 2026','اختر الشهادة حسب الهدف، لا حسب الاسم.'],
       research:['مكتب البحث','قائمة البحث — ما الذي يستحق الانتباه؟'],
       vault:['خزنة المصادر','مصادر تستحق أن تبقى في الموقع']
     },
@@ -11820,6 +11845,46 @@ if(select){
 }
 
 })();
+</script>
+
+
+<script id="npx-filter-stability-js">
+(function () {
+    function updateFilterEmpty() {
+        const empty =
+            document.getElementById("filterEmpty") ||
+            document.querySelector(".filter-empty");
+
+        if (!empty) return;
+
+        const cards = document.querySelectorAll(
+            ".knowledge-card, .knowledge-item, [data-category]"
+        );
+
+        let visible = 0;
+
+        cards.forEach(card => {
+            const style = window.getComputedStyle(card);
+            if (style.display !== "none" && style.visibility !== "hidden") {
+                visible++;
+            }
+        });
+
+        empty.style.display = visible === 0 ? "block" : "none";
+    }
+
+    window.NPX_updateFilterEmpty = updateFilterEmpty;
+
+    document.addEventListener("DOMContentLoaded", () => {
+        requestAnimationFrame(updateFilterEmpty);
+    });
+})();
+</script>
+
+
+<script id="npx-content-policy">
+window.NPX_CONTENT_LANGUAGE = "en";
+window.NPX_CONTENT_TRANSLATION_DISABLED = true;
 </script>
 
 </body>
