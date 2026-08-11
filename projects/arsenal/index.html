@@ -11733,41 +11733,182 @@ function applyMainFilter(){
 filterPills.forEach(p=>p.addEventListener('click',()=>setTimeout(applyMainFilter,0)));
 kbSearch?.addEventListener('input',applyMainFilter);
 
-/* ---------- 4) Replace generic V20 filler with topic-specific, high-signal descriptions. ---------- */
-const sectionGuides={
-'Reconnaissance':{inspect:'Map ownership, exposure and trust boundaries before active testing.',validate:'Correlate independent passive/active signals and record source, timestamp and scope.',def:'Keep an authoritative asset inventory and remove stale or unintended exposure.'},
-'Enumeration':{inspect:'Identify the service, protocol, version, authentication surface and exposed functionality.',validate:'Compare responses across safe requests and record the minimum evidence needed to classify the service.',def:'Minimize exposed services, versions and anonymous functionality; monitor unusual enumeration.'},
-'Web Attacks':{inspect:'Map input, parser, output, trust boundary and authorization context for the feature.',validate:'Use a controlled lab or authorized target and compare baseline versus altered behavior.',def:'Validate inputs server-side, enforce output encoding and authorization, and log security-relevant failures.'},
-'Access & Identity':{inspect:'Model identity, role, object, tenant, session and authorization decision points.',validate:'Compare dedicated test identities and expected versus observed access decisions.',def:'Enforce authorization server-side at object, function and property boundaries.'},
-'API Security':{inspect:'Inventory routes, schemas, authentication, object ownership, properties and resource limits.',validate:'Compare authorized and unauthorized requests with controlled test accounts and bounded data.',def:'Apply server-side authorization, schema validation, rate/resource controls and accurate API inventory.'},
-'Cloud & Containers':{inspect:'Map identities, roles, metadata boundaries, storage, network controls and workload trust.',validate:'Review effective permissions and isolated metadata/storage behavior without exposing real secrets.',def:'Use least privilege, workload identity, secret management and monitored network boundaries.'},
-'Linux':{inspect:'Map privilege boundaries, service accounts, filesystem permissions, capabilities and execution paths.',validate:'Confirm effective permissions in a lab or approved environment and preserve minimal evidence.',def:'Reduce standing privilege, harden services and monitor privileged execution paths.'},
-'Windows & AD':{inspect:'Map identities, groups, services, ACLs, authentication protocols and administrative paths.',validate:'Use dedicated lab identities to compare effective rights and security controls.',def:'Harden privileged groups, authentication, services and directory permissions; monitor abuse paths.'},
-'Network Security':{inspect:'Map protocols, segmentation, routing, trust zones, exposed management planes and cryptographic boundaries.',validate:'Compare expected network policy with observed behavior using authorized traffic.',def:'Enforce segmentation, secure management protocols and actionable network telemetry.'},
-'Mobile & IoT':{inspect:'Map app permissions, local storage, IPC/deep links, transport security and backend trust.',validate:'Test only controlled devices/apps and compare expected versus observed data/control flow.',def:'Minimize permissions, protect secrets, validate input and enforce backend authorization.'},
-'Binary & Vulnerability Research':{inspect:'Define the memory/parser/security property and identify the relevant input boundary.',validate:'Reproduce crashes or parser differences in an isolated lab and preserve deterministic evidence.',def:'Use memory-safe design where possible, hardening, fuzzing and regression tests.'},
-'DevSecOps & Supply Chain':{inspect:'Map source, dependencies, CI runners, credentials, artifacts, signing and deployment trust.',validate:'Verify controls in an isolated pipeline and trace provenance from source to artifact.',def:'Use least privilege, protected secrets, dependency controls, signed artifacts and provenance.'},
-'AI & Agent Security':{inspect:'Map model, prompt, retrieval, tools, identity, memory and approval boundaries.',validate:'Use benign adversarial tests in an isolated environment and inspect tool authorization.',def:'Constrain tools, isolate sensitive data, require approvals and log agent actions.'},
-'Blue Team & Detection':{inspect:'Define the security signal, expected telemetry, owner and detection boundary.',validate:'Generate controlled benign activity and compare observed telemetry with expected signals.',def:'Document control ownership, monitoring quality, alert routing and remediation acceptance.'},
-'Pentest Workflow':{inspect:'Define scope, security property, trust boundary and expected secure behavior.',validate:'Compare baseline and controlled test behavior; preserve only evidence needed to prove impact.',def:'Document control owner, monitoring signal and remediation/retest acceptance criteria.'},
-'CTF & Labs':{inspect:'Identify the lab objective, exposed surface, constraints and intended learning outcome.',validate:'Keep reproduction isolated, deterministic and reversible; record the smallest useful proof.',def:'Reset lab state, isolate credentials and avoid carrying test artifacts into real systems.'},
-'Operations & Reporting':{inspect:'Define the finding, affected asset, evidence, impact and remediation owner.',validate:'Reproduce minimally and verify severity against observed evidence and scope.',def:'Minimize sensitive evidence, preserve chain of context and retest the remediation.'}
-};
-function improveV20(){
-  document.querySelectorAll('#npx20-expansion .npx20-section[data-v20-section]').forEach(sec=>{
-    const guide=sectionGuides[sec.dataset.v20Section]; if(!guide)return;
-    sec.querySelectorAll('.npx20-card').forEach(card=>{
-      const dd=[...card.querySelectorAll('dd')]; if(dd.length<3)return;
-      const title=(card.querySelector('h4')?.textContent||'').trim();
-      /* Preserve already-specific entries. Only replace the repeated filler pattern. */
-      const text=dd.map(x=>x.textContent.trim()).join(' | ');
-      if(text.includes('Define the security property, trust boundary and expected secure behavior.')||text.includes('Compare baseline and controlled test behavior; preserve only the evidence needed to prove impact.')){
-        const inspect=guide.inspect+' Focus: '+title+'.';
-        dd[0].textContent=inspect; dd[1].textContent=guide.validate; dd[2].textContent=guide.def;
-      }
-    });
-  });
-}
+// ================================================================
+//  V20 KNOWLEDGE ENHANCER — Replace generic filler with topic-specific content
+// ================================================================
+(function enhanceV20Knowledge() {
+    'use strict';
+
+    // --- 1. Define the knowledge guides for each section ---
+    const sectionGuides = {
+        'Reconnaissance': {
+            inspect: 'Map ownership, exposure and trust boundaries before active testing.',
+            validate: 'Correlate independent passive/active signals and record source, timestamp and scope.',
+            def: 'Keep an authoritative asset inventory and remove stale or unintended exposure.'
+        },
+        'Enumeration': {
+            inspect: 'Identify the service, protocol, version, authentication surface and exposed functionality.',
+            validate: 'Compare responses across safe requests and record the minimum evidence needed to classify the service.',
+            def: 'Minimize exposed services, versions and anonymous functionality; monitor unusual enumeration.'
+        },
+        'Web Attacks': {
+            inspect: 'Map input, parser, output, trust boundary and authorization context for the feature.',
+            validate: 'Use a controlled lab or authorized target and compare baseline versus altered behavior.',
+            def: 'Validate inputs server-side, enforce output encoding and authorization, and log security-relevant failures.'
+        },
+        'Access & Identity': {
+            inspect: 'Model identity, role, object, tenant, session and authorization decision points.',
+            validate: 'Compare dedicated test identities and expected versus observed access decisions.',
+            def: 'Enforce authorization server-side at object, function and property boundaries.'
+        },
+        'API Security': {
+            inspect: 'Inventory routes, schemas, authentication, object ownership, properties and resource limits.',
+            validate: 'Compare authorized and unauthorized requests with controlled test accounts and bounded data.',
+            def: 'Apply server-side authorization, schema validation, rate/resource controls and accurate API inventory.'
+        },
+        'Cloud & Containers': {
+            inspect: 'Map identities, roles, metadata boundaries, storage, network controls and workload trust.',
+            validate: 'Review effective permissions and isolated metadata/storage behavior without exposing real secrets.',
+            def: 'Use least privilege, workload identity, secret management and monitored network boundaries.'
+        },
+        'Linux': {
+            inspect: 'Map privilege boundaries, service accounts, filesystem permissions, capabilities and execution paths.',
+            validate: 'Confirm effective permissions in a lab or approved environment and preserve minimal evidence.',
+            def: 'Reduce standing privilege, harden services and monitor privileged execution paths.'
+        },
+        'Windows & AD': {
+            inspect: 'Map identities, groups, services, ACLs, authentication protocols and administrative paths.',
+            validate: 'Use dedicated lab identities to compare effective rights and security controls.',
+            def: 'Harden privileged groups, authentication, services and directory permissions; monitor abuse paths.'
+        },
+        'Network Security': {
+            inspect: 'Map protocols, segmentation, routing, trust zones, exposed management planes and cryptographic boundaries.',
+            validate: 'Compare expected network policy with observed behavior using authorized traffic.',
+            def: 'Enforce segmentation, secure management protocols and actionable network telemetry.'
+        },
+        'Mobile & IoT': {
+            inspect: 'Map app permissions, local storage, IPC/deep links, transport security and backend trust.',
+            validate: 'Test only controlled devices/apps and compare expected versus observed data/control flow.',
+            def: 'Minimize permissions, protect secrets, validate input and enforce backend authorization.'
+        },
+        'Binary & Vulnerability Research': {
+            inspect: 'Define the memory/parser/security property and identify the relevant input boundary.',
+            validate: 'Reproduce crashes or parser differences in an isolated lab and preserve deterministic evidence.',
+            def: 'Use memory-safe design where possible, hardening, fuzzing and regression tests.'
+        },
+        'DevSecOps & Supply Chain': {
+            inspect: 'Map source, dependencies, CI runners, credentials, artifacts, signing and deployment trust.',
+            validate: 'Verify controls in an isolated pipeline and trace provenance from source to artifact.',
+            def: 'Use least privilege, protected secrets, dependency controls, signed artifacts and provenance.'
+        },
+        'AI & Agent Security': {
+            inspect: 'Map model, prompt, retrieval, tools, identity, memory and approval boundaries.',
+            validate: 'Use benign adversarial tests in an isolated environment and inspect tool authorization.',
+            def: 'Constrain tools, isolate sensitive data, require approvals and log agent actions.'
+        },
+        'Blue Team & Detection': {
+            inspect: 'Define the security signal, expected telemetry, owner and detection boundary.',
+            validate: 'Generate controlled benign activity and compare observed telemetry with expected signals.',
+            def: 'Document control ownership, monitoring quality, alert routing and remediation acceptance.'
+        },
+        'Pentest Workflow': {
+            inspect: 'Define scope, security property, trust boundary and expected secure behavior.',
+            validate: 'Compare baseline and controlled test behavior; preserve only evidence needed to prove impact.',
+            def: 'Document control owner, monitoring signal and remediation/retest acceptance criteria.'
+        },
+        'CTF & Labs': {
+            inspect: 'Identify the lab objective, exposed surface, constraints and intended learning outcome.',
+            validate: 'Keep reproduction isolated, deterministic and reversible; record the smallest useful proof.',
+            def: 'Reset lab state, isolate credentials and avoid carrying test artifacts into real systems.'
+        },
+        'Operations & Reporting': {
+            inspect: 'Define the finding, affected asset, evidence, impact and remediation owner.',
+            validate: 'Reproduce minimally and verify severity against observed evidence and scope.',
+            def: 'Minimize sensitive evidence, preserve chain of context and retest the remediation.'
+        }
+    };
+
+    // --- 2. Identify the generic patterns to replace ---
+    const GENERIC_PATTERNS = [
+        'Define the security property, trust boundary and expected secure behavior.',
+        'Compare baseline and controlled test behavior; preserve only the evidence needed to prove impact.',
+        'Document the control, owner, monitoring signal and remediation acceptance criteria.',
+        'Define the security property',
+        'Compare baseline and controlled test behavior'
+    ];
+
+    // --- 3. The enhancement function ---
+    function enhanceCards() {
+        const sections = document.querySelectorAll('#npx20-expansion .npx20-section[data-v20-section]');
+        let enhancedCount = 0;
+
+        sections.forEach(sec => {
+            const sectionKey = sec.dataset.v20Section;
+            const guide = sectionGuides[sectionKey];
+
+            if (!guide) {
+                console.warn(`[V20 Enhancer] No guide found for section: ${sectionKey}`);
+                return;
+            }
+
+            const cards = sec.querySelectorAll('.npx20-card');
+            cards.forEach(card => {
+                const ddElements = card.querySelectorAll('dd');
+                if (ddElements.length < 3) return;
+
+                // Get current text content of each dd
+                const inspectText = ddElements[0]?.textContent?.trim() || '';
+                const validateText = ddElements[1]?.textContent?.trim() || '';
+                const defText = ddElements[2]?.textContent?.trim() || '';
+
+                // Check if this card contains generic text (any of the fields)
+                const allText = [inspectText, validateText, defText].join(' | ');
+                const isGeneric = GENERIC_PATTERNS.some(pattern => allText.includes(pattern));
+
+                if (isGeneric) {
+                    // Get the card title
+                    const title = card.querySelector('h4')?.textContent?.trim() || '';
+
+                    // Build the new content
+                    const newInspect = `${guide.inspect} Focus: ${title}.`;
+                    const newValidate = guide.validate;
+                    const newDef = guide.def;
+
+                    // Only update if content is different
+                    if (inspectText !== newInspect) {
+                        ddElements[0].textContent = newInspect;
+                    }
+                    if (validateText !== newValidate) {
+                        ddElements[1].textContent = newValidate;
+                    }
+                    if (defText !== newDef) {
+                        ddElements[2].textContent = newDef;
+                    }
+
+                    enhancedCount++;
+                }
+            });
+        });
+
+        console.log(`[V20 Enhancer] Enhanced ${enhancedCount} cards across ${sections.length} sections.`);
+        return enhancedCount;
+    }
+
+    // --- 4. Run the enhancement ---
+    // Run immediately
+    const result = enhanceCards();
+
+    // Also run after a short delay to catch dynamically loaded content
+    if (document.readyState === 'complete') {
+        // Already loaded
+    } else {
+        setTimeout(enhanceCards, 500);
+    }
+
+    // Expose for manual re-run if needed
+    window.enhanceV20Knowledge = enhanceCards;
+
+})();
 improveV20();
 
 /* ---------- 5) V20 search/navigation reliability. ---------- */
