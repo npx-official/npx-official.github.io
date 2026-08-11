@@ -320,19 +320,20 @@
             <button class="filter-btn active" data-filter="all">All</button>
             <button class="filter-btn" data-filter="exploit">Exploits</button>
             <button class="filter-btn" data-filter="tool">Tools</button>
-            <button class="filter-btn" data-filter="hunting">🎯 Bug Hunting</button>
-            <button class="filter-btn" data-filter="privesc">🔓 Privilege Escalation</button>
-            <button class="filter-btn" data-filter="poc">📌 PoC</button>
-            <button class="filter-btn" data-filter="cve">🛡️ CVE</button>
-            <button class="filter-btn" data-filter="web">🌐 Web</button>
-            <button class="filter-btn" data-filter="network">📡 Network</button>
-            <button class="filter-btn" data-filter="forensics">🔍 Forensics</button>
-            <button class="filter-btn" data-filter="mobile">📱 Mobile</button>
-            <button class="filter-btn" data-filter="cloud">☁️ Cloud</button>
-            <button class="filter-btn" data-filter="reverse">⚙️ Reverse Engineering</button>
-            <button class="filter-btn" data-filter="osint">🕵️ OSINT</button>
-            <button class="filter-btn" data-filter="steganography">🖼️ Steganography</button>
-            <button class="filter-btn" data-filter="crypto">🔐 Cryptography</button>
+            <button class="filter-btn" data-filter="hunting">Bug Hunting</button>
+            <button class="filter-btn" data-filter="privesc">Privilege Escalation</button>
+            <button class="filter-btn" data-filter="poc">PoC</button>
+            <button class="filter-btn" data-filter="cve">CVE</button>
+            <button class="filter-btn" data-filter="web">Web</button>
+            <button class="filter-btn" data-filter="network">Network</button>
+            <button class="filter-btn" data-filter="forensics">Forensics</button>
+            <button class="filter-btn" data-filter="mobile">Mobile</button>
+            <button class="filter-btn" data-filter="cloud">Cloud</button>
+            <button class="filter-btn" data-filter="reverse">Reverse Engineering</button>
+            <button class="filter-btn" data-filter="osint">OSINT</button>
+            <button class="filter-btn" data-filter="steganography">Steganography</button>
+            <button class="filter-btn" data-filter="crypto">Cryptography</button>
+            <button class="filter-btn" data-filter="red-team">Red Team</button>
         </div>
 
         <div class="projects-grid" id="projectsGrid"></div>
@@ -396,89 +397,96 @@
         })();
     </script>
 
-    <!-- ====== PROJECT DATA (مشروع واحد فقط) ====== -->
+    <!-- ====== PROJECT DATA ====== -->
     <script>
         (function() {
-            // ====== قائمة المشاريع (مشروع واحد) ======
-         const projects = [
-            {
-                name: 'NPX Framework — Pentesting Automation Suite',
-                desc: 'Modular Python framework for automating penetration testing workflows. Includes modules for reconnaissance, exploitation, and reporting.',
-                icon: '🛠️',
-                category: 'framework',
-                tags: ['Python', 'Automation', 'Pentesting', 'Recon', 'Exploitation'],
-                link: 'https://github.com/npx-official/npx-framework',
-                status: 'live'
-            },
-            {
-                name: 'Bug Bounty Learning Path',
-                desc: 'A structured roadmap for bug bounty beginners covering methodology, reconnaissance, vulnerability identification, and reporting.',
-                icon: '🎯',
-                category: 'web',
-                tags: ['Bug Bounty', 'Learning', 'Roadmap', 'Web Security'],
-                link: '/projects/Bug%20Bounty%20Learning%20Path',
-                status: 'live'
-            },
-            {
-                name: 'Custom Exploit Scripts',
-                desc: 'Collection of custom exploit scripts for various CVEs and common vulnerabilities found in CTF challenges and real-world penetration tests.',
-                icon: '⚡',
-                category: 'exploit',
-                tags: ['Exploit', 'CVE', 'Python', 'Security'],
-                link: '#',
-                status: 'coming'
-            },
-            {
-                name: 'Bug Bounty Hunters Atlas',
-                desc: 'The ultimate guide to where to hunt for vulnerabilities. A curated list of language registries, CMS plugins, and CI/CD tools for security researchers.',
-                icon: '🛡️',
-                category: 'web',
-                tags: ['Bug Bounty', 'Recon', 'Research', 'CVE', 'Hunting'],
-                link: '/projects/Bug%20Bounty%20Hunters%20Atlas',
-                status: 'live'
-            },
-            {
-                name: 'Security Research Blog',
-                desc: 'Technical articles, research findings, and writeups covering Active Directory security, cloud penetration testing, and advanced attack techniques.',
-                icon: '📖',
-                category: 'web',
-                tags: ['Blog', 'Research', 'AD Security', 'Cloud Security'],
-                link: '#',
-                status: 'coming'
-            },
-            {
-                name: 'CloudScout — AWS Security Auditing Tool',
-                desc: 'CLI tool that scans AWS environments for security misconfigurations including public S3 buckets, IAM users without MFA, and open security groups.',
-                icon: '☁️',
-                category: 'cloud',
-                tags: ['AWS', 'Security', 'Auditing', 'Python', 'Cloud'],
-                link: 'https://github.com/npx-official/cloudscout',
-                status: 'live'
-            },
-{
-    name: 'Arsenal',
-    desc: 'A structured offensive security knowledge base covering reconnaissance, enumeration, vulnerability analysis, web attacks, exploitation, Active Directory, privilege escalation, post-exploitation, tools, payloads, and red team methodology.',
-    icon: '⚔️',
-    category: 'red-team',
-    tags: [
-        'Reconnaissance',
-        'Enumeration',
-        'Web Security',
-        'API Security',
-        'Exploitation',
-        'Active Directory',
-        'Privilege Escalation',
-        'Post-Exploitation',
-        'Red Team',
-        'Bug Bounty',
-        'CTF',
-        'Tools',
-        'Payloads'
-    ],
-    link: '/projects/arsenal/',
-    status: 'live'
-},
-        ];
+            // ====== قائمة المشاريع ======
+            const projects = [
+                {
+                    name: 'NPX Framework — Pentesting Automation Suite',
+                    desc: 'Modular Python framework for automating penetration testing workflows. Includes modules for reconnaissance, exploitation, and reporting.',
+                    icon: '🛠️',
+                    category: 'tool',
+                    tags: ['Python', 'Automation', 'Pentesting', 'Recon', 'Exploitation'],
+                    link: 'https://github.com/npx-official/npx-framework',
+                    status: 'live',
+                    featured: true
+                },
+                {
+                    name: 'Bug Bounty Learning Path',
+                    desc: 'A structured roadmap for bug bounty beginners covering methodology, reconnaissance, vulnerability identification, and reporting.',
+                    icon: '🎯',
+                    category: 'web',
+                    tags: ['Bug Bounty', 'Learning', 'Roadmap', 'Web Security'],
+                    link: '/projects/Bug%20Bounty%20Learning%20Path',
+                    status: 'live',
+                    featured: true
+                },
+                {
+                    name: 'Custom Exploit Scripts',
+                    desc: 'Collection of custom exploit scripts for various CVEs and common vulnerabilities found in CTF challenges and real-world penetration tests.',
+                    icon: '⚡',
+                    category: 'exploit',
+                    tags: ['Exploit', 'CVE', 'Python', 'Security'],
+                    link: '#',
+                    status: 'coming',
+                    featured: false
+                },
+                {
+                    name: 'Bug Bounty Hunters Atlas',
+                    desc: 'The ultimate guide to where to hunt for vulnerabilities. A curated list of language registries, CMS plugins, and CI/CD tools for security researchers.',
+                    icon: '🛡️',
+                    category: 'web',
+                    tags: ['Bug Bounty', 'Recon', 'Research', 'CVE', 'Hunting'],
+                    link: '/projects/Bug%20Bounty%20Hunters%20Atlas',
+                    status: 'live',
+                    featured: true
+                },
+                {
+                    name: 'Security Research Blog',
+                    desc: 'Technical articles, research findings, and writeups covering Active Directory security, cloud penetration testing, and advanced attack techniques.',
+                    icon: '📖',
+                    category: 'web',
+                    tags: ['Blog', 'Research', 'AD Security', 'Cloud Security'],
+                    link: '#',
+                    status: 'coming',
+                    featured: false
+                },
+                {
+                    name: 'CloudScout — AWS Security Auditing Tool',
+                    desc: 'CLI tool that scans AWS environments for security misconfigurations including public S3 buckets, IAM users without MFA, and open security groups.',
+                    icon: '☁️',
+                    category: 'cloud',
+                    tags: ['AWS', 'Security', 'Auditing', 'Python', 'Cloud'],
+                    link: 'https://github.com/npx-official/cloudscout',
+                    status: 'live',
+                    featured: false
+                },
+                {
+                    name: 'Arsenal — Red Team Encyclopedia',
+                    desc: 'A structured offensive security knowledge base covering reconnaissance, enumeration, vulnerability analysis, web attacks, exploitation, Active Directory, privilege escalation, post-exploitation, tools, payloads, and red team methodology.',
+                    icon: '⚔️',
+                    category: 'red-team',
+                    tags: [
+                        'Reconnaissance',
+                        'Enumeration',
+                        'Web Security',
+                        'API Security',
+                        'Exploitation',
+                        'Active Directory',
+                        'Privilege Escalation',
+                        'Post-Exploitation',
+                        'Red Team',
+                        'Bug Bounty',
+                        'CTF',
+                        'Tools',
+                        'Payloads'
+                    ],
+                    link: '/projects/arsenal/',
+                    status: 'live',
+                    featured: true
+                }
+            ];
 
             // ====== دالة التصفية والعرض ======
             function renderProjects(filter) {
@@ -521,6 +529,15 @@
                 `).join('');
             }
 
+            // ====== دالة للحصول على المشاريع المميزة ======
+            function getFeaturedProjects(limit) {
+                const featured = projects.filter(p => p.featured === true);
+                if (limit && limit > 0) {
+                    return featured.slice(0, limit);
+                }
+                return featured;
+            }
+
             // ====== ربط أزرار التصفية ======
             function setupFilters() {
                 const buttons = document.querySelectorAll('.filter-btn');
@@ -539,6 +556,11 @@
                 setupFilters();
                 console.log('[✓] Projects loaded successfully!');
             });
+
+            // ====== تصدير الدوال للاستخدام في صفحات أخرى ======
+            window.projects = projects;
+            window.getFeaturedProjects = getFeaturedProjects;
+            window.renderProjects = renderProjects;
 
         })();
     </script>
