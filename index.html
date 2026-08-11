@@ -6,32 +6,8 @@
     <title>NIGHT PULSE X • Home</title>
     <link rel="icon" href="assets/images/favicon.ico" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <!-- PGP Signature Verification -->
-<script type="text/rsakey">228164D7B08ABCBF48147E9AE32E1B69D15C30FB</script>
-
-<script type="text/mirrsig">
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA512
-
-https://npx-official.github.io/
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEIoFk17CKvL9IFH6a4y4badFcMPsFAmpz/98ACgkQ4y4badFc
-MPtPvw//ZaSxFzaLkinj61D+w7EXkZUpZeBZjqrdAlOAUvoFlDrqf5VXiSLmJLKY
-EQZCmnJaCl6yMku0Q3NIRM8C8kaelZQsqAysNKcSaHsYxBa/bFpYuExjAeMXx6PL
-QWgRi5G/fY0ZTCq+2SlWLxkNKRNWr00lpTbSrTJRz3GkvPnVkoZz7kwbthmcW6oJ
-dzSfn/gda5gnDZb2uy2016DizCzC9nqymESq1ZmPE0+P48UEIYPomTOkoik0LK4F
-UFnvdFQ9e9vZ3SDtWc0li+R44T/M2yYXD8Js1K0EU2lG62VpjkJxhG01KxQ900eO
-Qd7Bd+qP29ufwcSekFq8KBTRzMPSiTXm7wT6HdQFmvO3vgYjALPSz3wpz3hKjYN5
-pdOYqxYRw57t68tNdqOHEyM+uK1tCeW5Yuw3L+HXkhat06Q93bBVpwSOQ9jB/SE8
-Ml+XLUUFW41VbhrkdcAdk2gDBRnlbpYI8Xxbe2UjxeUDcm9N5chA7u824IfyyWcy
-qgTcXCoJ0n4NO1gFvatRcettvqaptVAiSs3enxjLeBdBKrxNZfCF0GwjTr84O1wx
-HCfAGplRWUmHtAeMjUjoXHcpQWnG3YokLj5EzqhZs6n/ixfOSbSNXg4lV4H0DxKN
-0g1CwO9yi+fSqF/JDnpmolpW2YzAGrAMsaMzidbwkQ6bpYGDamw=
-=l5Pa
------END PGP SIGNATURE-----
-</script>
     <style>
+        /* ====== كل الـ CSS الموجود ====== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background: #0a0a0f;
@@ -245,7 +221,7 @@ HCfAGplRWUmHtAeMjUjoXHcpQWnG3YokLj5EzqhZs6n/ixfOSbSNXg4lV4H0DxKN
             gap: 12px;
         }
 
-        /* ====== WRITEUPS GRID (مخصص للعروض) ====== */
+        /* ====== WRITEUPS GRID ====== */
         .writeups-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -337,7 +313,7 @@ HCfAGplRWUmHtAeMjUjoXHcpQWnG3YokLj5EzqhZs6n/ixfOSbSNXg4lV4H0DxKN
         }
         .writeup-card .writeup-link:hover { color: #fff; gap: 12px; }
 
-        /* ====== PROJECTS GRID (مخصص للمشاريع – نفس تنسيق صفحة Projects) ====== */
+        /* ====== PROJECTS GRID ====== */
         .projects-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -551,7 +527,6 @@ HCfAGplRWUmHtAeMjUjoXHcpQWnG3YokLj5EzqhZs6n/ixfOSbSNXg4lV4H0DxKN
 
     <div class="bg-animation"></div>
     <div class="stars" id="stars"></div>
-
     <div class="mouse-trail" id="mouseTrail"></div>
     <div class="mouse-glow-effect" id="mouseGlowEffect"></div>
 
@@ -582,7 +557,7 @@ HCfAGplRWUmHtAeMjUjoXHcpQWnG3YokLj5EzqhZs6n/ixfOSbSNXg4lV4H0DxKN
             </div>
             <div class="stats">
                 <div class="stat">
-                    <h3 id="totalWriteups">31</h3>
+                    <h3 id="totalWriteups">36</h3>
                     <span>Total Writeups</span>
                 </div>
                 <div class="stat">
@@ -596,13 +571,14 @@ HCfAGplRWUmHtAeMjUjoXHcpQWnG3YokLj5EzqhZs6n/ixfOSbSNXg4lV4H0DxKN
             </div>
         </section>
 
+        <!-- ====== WRITEUPS SECTION ====== -->
         <h2 class="section-title"><i class="fas fa-star"></i> Featured Writeups</h2>
         <div class="writeups-grid" id="featuredWriteups"></div>
         <div style="text-align: center; margin-top: 2rem;">
             <a href="/writeups" class="btn btn-primary"><i class="fas fa-arrow-right"></i> View All</a>
         </div>
 
-        <!-- ====== PROJECTS SECTION (محدثة) ====== -->
+        <!-- ====== PROJECTS SECTION ====== -->
         <h2 class="section-title"><i class="fas fa-code"></i> Featured Projects</h2>
         <div class="projects-grid" id="projectsGrid"></div>
         <div style="text-align: center; margin-top: 2rem;">
@@ -619,13 +595,13 @@ HCfAGplRWUmHtAeMjUjoXHcpQWnG3YokLj5EzqhZs6n/ixfOSbSNXg4lV4H0DxKN
             <div class="quick-card">
                 <i class="fas fa-windows"></i>
                 <h4>Windows Machines</h4>
-                <p>2 Writeups</p>
+                <p>8+ Writeups</p>
                 <a href="/writeups">Explore →</a>
             </div>
             <div class="quick-card">
                 <i class="fas fa-trophy"></i>
                 <h4>ProLabs</h4>
-                <p>1 Writeup</p>
+                <p>2 Writeups</p>
                 <a href="/writeups">Explore →</a>
             </div>
         </div>
@@ -643,6 +619,7 @@ HCfAGplRWUmHtAeMjUjoXHcpQWnG3YokLj5EzqhZs6n/ixfOSbSNXg4lV4H0DxKN
     </div>
 
     <script>
+        // ====== STARS ======
         (function() {
             const container = document.getElementById('stars');
             for (let i = 0; i < 100; i++) {
@@ -659,28 +636,12 @@ HCfAGplRWUmHtAeMjUjoXHcpQWnG3YokLj5EzqhZs6n/ixfOSbSNXg4lV4H0DxKN
                 container.appendChild(star);
             }
         })();
-    </script>
-    <script src="js/particles.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/writeups.js"></script>
-    <script src="js/projects.js"></script>
-    <script>
-        // تحميل العروض المميزة (Writeups)
-        if (typeof loadFeaturedWriteups === 'function') {
-            loadFeaturedWriteups(4);
-        }
 
-        // تحميل المشاريع المميزة (Projects)
-        if (typeof loadProjects === 'function') {
-            loadProjects(4);
-        }
-
-        // تأثير الماوس
+        // ====== MOUSE EFFECT ======
         (function() {
             const trail = document.getElementById("mouseTrail");
             const glow = document.getElementById("mouseGlowEffect");
-            let x = 0, y = 0;
-            let trailX = 0, trailY = 0;
+            let x = 0, y = 0, trailX = 0, trailY = 0;
 
             document.addEventListener("mousemove", (e) => {
                 x = e.clientX;
@@ -699,43 +660,196 @@ HCfAGplRWUmHtAeMjUjoXHcpQWnG3YokLj5EzqhZs6n/ixfOSbSNXg4lV4H0DxKN
                 trail.style.top = trailY + "px";
             }, 16);
 
-            document.addEventListener("mouseleave", () => {
-                trail.style.opacity = "0";
-                glow.style.opacity = "0";
-            });
-            document.addEventListener("mouseenter", () => {
-                trail.style.opacity = "1";
-                glow.style.opacity = "1";
-            });
+            document.addEventListener("mouseleave", () => { trail.style.opacity = "0"; glow.style.opacity = "0"; });
+            document.addEventListener("mouseenter", () => { trail.style.opacity = "1"; glow.style.opacity = "1"; });
         })();
 
-        // إعداد page.js لإخفاء .html من الروابط
-        page('/', () => {});
-        page('/about', () => { window.location.href = 'about.html'; });
-        page('/writeups', () => { window.location.href = 'writeups.html'; });
-        page('/projects', () => { window.location.href = 'projects.html'; });
-        page('/certifications', () => { window.location.href = 'certifications.html'; });
-        page('/contact', () => { window.location.href = 'contact.html'; });
-        page();
-    </script>
-<script>
-    // إصلاح التوجيه للعمل على localhost
-    (function() {
-        const path = window.location.pathname;
-        if (path !== '/' && path !== '/index.html' && !path.includes('.')) {
-            // نحاول إعادة التوجيه إلى الصفحة الصحيحة
-            const pageMap = {
-                '/about': 'about.html',
-                '/writeups': 'writeups.html',
-                '/projects': 'projects.html',
-                '/certifications': 'certifications.html',
-                '/contact': 'contact.html'
-            };
-            if (pageMap[path]) {
-                window.location.href = pageMap[path];
+        // ====== FEATURED WRITEUPS (مختارة بعناية من قاعدة البيانات) ======
+        (function() {
+            // 🔹 قائمة الـ Writeups المميزة - مختارة من قاعدة البيانات
+            const featuredWriteups = [
+                // ====== HTB ProLabs (الأفضل) ======
+                {
+                    name: 'Mythical',
+                    icon: '🏆',
+                    os: 'prolabs',
+                    level: 'prolabs',
+                    category: '🏆 HTB ProLabs',
+                    password: '',
+                    link: '/writeups/htb/prolabs/Mythical'
+                },
+                {
+                    name: 'Puppet',
+                    icon: '🏆',
+                    os: 'prolabs',
+                    level: 'prolabs',
+                    category: '🏆 HTB ProLabs',
+                    password: '',
+                    link: '/writeups/htb/prolabs/Puppet'
+                },
+                
+                // ====== HTB Windows Insane ======
+                {
+                    name: 'Odyssey',
+                    icon: '💀',
+                    os: 'Windows',
+                    level: 'insane',
+                    category: '💀 HTB Windows Insane',
+                    password: '0dys3y!R3turn#Insan3',
+                    link: '/writeups/htb/windows/insane/Odyssey'
+                },
+                
+                // ====== HTB Windows Hard ======
+                {
+                    name: 'DarkZero Returns',
+                    icon: '🪟',
+                    os: 'Windows',
+                    level: 'hard',
+                    category: '🔴 HTB Windows Hard',
+                    password: '',
+                    link: '/writeups/htb/windows/hard/DarkZeroReturns'
+                },
+                {
+                    name: 'Ghostlink',
+                    icon: '🪟',
+                    os: 'Windows',
+                    level: 'hard',
+                    category: '🔴 HTB Windows Hard',
+                    password: 'Gh0stl1nk!W1nd0ws#X5',
+                    link: '/writeups/htb/windows/hard/Ghostlink'
+                },
+                
+                // ====== HTB Linux Hard ======
+                {
+                    name: 'Nimbus',
+                    icon: '🐧',
+                    os: 'Linux',
+                    level: 'hard',
+                    category: '🔴 HTB Linux Hard',
+                    password: '',
+                    link: '/writeups/htb/linux/hard/Nimbus'
+                }
+                
+            ];
+
+            const container = document.getElementById('featuredWriteups');
+            if (!container) return;
+
+            // بناء بطاقات الـ Writeups
+            featuredWriteups.forEach(writeup => {
+                const card = document.createElement('div');
+                card.className = 'writeup-card';
+
+                const passwordHTML = writeup.password ? `
+                    <div class="writeup-password">
+                        <span class="password-text">🔑  ${writeup.password}</span>
+                        <button class="copy-btn">📋</button>
+                    </div>
+                ` : '';
+
+                card.innerHTML = `
+                    <div class="writeup-header">
+                        <span class="writeup-icon">${writeup.icon}</span>
+                        <h4>${writeup.name}</h4>
+                    </div>
+                    <div class="writeup-meta">
+                        <span class="writeup-os">${writeup.os.toUpperCase()}</span>
+                        <span class="writeup-level">${writeup.level}</span>
+                    </div>
+                    <div class="writeup-category">${writeup.category}</div>
+                    ${passwordHTML}
+                    <a href="${writeup.link}" class="writeup-link">Read Writeup →</a>
+                `;
+
+                container.appendChild(card);
+            });
+
+            console.log(`[✓] Loaded ${featuredWriteups.length} featured writeups!`);
+        })();
+
+        // ====== COPY BUTTONS ======
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('.copy-btn');
+            if (btn) {
+                const passwordText = btn.closest('.writeup-password').querySelector('.password-text');
+                if (passwordText) {
+                    const text = passwordText.textContent.replace('🔑  ', '');
+                    navigator.clipboard.writeText(text).then(() => {
+                        btn.textContent = '✅';
+                        setTimeout(() => { btn.textContent = '📋'; }, 1500);
+                    });
+                }
             }
-        }
-    })();
-</script>
+        });
+
+        // ====== FEATURED PROJECTS ======
+        (function() {
+            // 🔹 قائمة المشاريع المميزة
+            const featuredProjects = [
+                {
+                    name: 'CloudScout — AWS Security Auditing Tool',
+                    desc: 'CLI tool that scans AWS environments for security misconfigurations including public S3 buckets, IAM users without MFA, and open security groups.',
+                    icon: '☁️',
+                    category: 'Cloud',
+                    tags: ['AWS', 'Security', 'Auditing', 'Python', 'Cloud'],
+                    link: 'https://github.com/npx-official/cloudscout'
+                },
+                {
+                    name: 'Arsenal — Red Team Encyclopedia',
+                    desc: 'A structured offensive security knowledge base covering reconnaissance, enumeration, vulnerability analysis, web attacks, exploitation, Active Directory, privilege escalation, post-exploitation, tools, payloads, and red team methodology.',
+                    icon: '⚔️',
+                    category: 'Red Team',
+                    tags: ['Reconnaissance', 'Enumeration', 'Web Security', 'Active Directory', 'Privilege Escalation', 'Red Team', 'CTF', 'Tools', 'Payloads'],
+                    link: '/projects/arsenal/'
+                }
+            ];
+
+            const container = document.getElementById('projectsGrid');
+            if (!container) return;
+
+            featuredProjects.forEach(project => {
+                const card = document.createElement('div');
+                card.className = 'project-card';
+
+                const tagsHtml = project.tags.map(tag =>
+                    `<span>${tag}</span>`
+                ).join('');
+
+                const linkTarget = project.link && project.link.startsWith('#') ? '' : 'target="_blank"';
+
+                card.innerHTML = `
+                    <div class="project-icon">${project.icon}</div>
+                    <div class="project-category">${project.category}</div>
+                    <h4>${project.name}</h4>
+                    <div class="project-desc">${project.desc}</div>
+                    <div class="project-tags">${tagsHtml}</div>
+                    <a href="${project.link}" class="project-link" ${linkTarget} rel="noopener noreferrer">
+                        View Project <i class="fas fa-arrow-right"></i>
+                    </a>
+                `;
+
+                container.appendChild(card);
+            });
+
+            console.log(`[✓] Loaded ${featuredProjects.length} featured projects!`);
+        })();
+
+        // ====== PAGE ROUTING ======
+        (function() {
+            const path = window.location.pathname;
+            if (path !== '/' && path !== '/index.html' && !path.includes('.')) {
+                const pageMap = {
+                    '/about': 'about.html',
+                    '/writeups': 'writeups.html',
+                    '/projects': 'projects.html',
+                    '/certifications': 'certifications.html',
+                    '/contact': 'contact.html'
+                };
+                if (pageMap[path]) {
+                    window.location.href = pageMap[path];
+                }
+            }
+        })();
+    </script>
 </body>
 </html>
