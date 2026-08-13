@@ -179,13 +179,16 @@ function applyFilter(filter) {
     filteredData.forEach(writeup => container.appendChild(createWriteupCard(writeup)));
     
     document.querySelectorAll('.filter-btn').forEach(btn => {
-        const plainText = btn.textContent.trim();
-        if (btn.dataset.filter === filter) {
+        const label = btn.dataset.label || btn.textContent.trim();
+        const isActive = btn.dataset.filter === filter;
+
+        if (isActive) {
             const icon = getFilterIcon(filter);
-            btn.innerHTML = icon + plainText;
+            btn.innerHTML = icon + label;
             btn.classList.add('active');
         } else {
-            btn.innerHTML = plainText;
+            btn.dataset.label = label;
+            btn.innerHTML = label;
             btn.classList.remove('active');
         }
     });
@@ -227,8 +230,19 @@ function fallbackCopy(password, btn, originalHTML) {
 function loadAllWriteups() {
     const container = document.getElementById('allWriteups');
     if (!container) return;
-    applyFilter('all');
+
+    const params = new URLSearchParams(window.location.search);
+    const requestedFilter = params.get('filter');
+    const initialFilter = requestedFilter && document.querySelector(`.filter-btn[data-filter="${requestedFilter}"]`) ? requestedFilter : 'all';
+
+    applyFilter(initialFilter);
     setupFilters();
+
+    const activeBtn = document.querySelector(`.filter-btn[data-filter="${initialFilter}"]`);
+    if (activeBtn) {
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        activeBtn.classList.add('active');
+    }
 }
 
 function setupFilters() {

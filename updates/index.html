@@ -54,29 +54,62 @@
             align-items: center;
             justify-content: space-between;
             gap: 1rem;
-            padding: 1rem 1.5rem;
-            border: 1px solid rgba(111,255,224,0.12);
-            border-radius: 1.5rem;
-            background: rgba(10,10,15,0.7);
-            backdrop-filter: blur(16px);
-            margin-bottom: 2rem;
+            padding: 1rem 2rem;
+            background: rgba(10, 10, 15, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(111, 255, 224, 0.08);
+            border-radius: 2rem;
+            margin-bottom: 4rem;
+            transition: all 0.3s ease;
+        }
+        .header:hover {
+            border-color: rgba(111, 255, 224, 0.2);
+            box-shadow: 0 0 40px rgba(111, 255, 224, 0.03);
+        }
+        .nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            align-items: center;
+            flex: 1;
+            min-width: 0;
         }
         .logo {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 12px;
+            font-size: 1.5rem;
             font-weight: 700;
-            letter-spacing: 0.08em;
-            color: #6fffe0;
+            background: linear-gradient(135deg, #6fffe0, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: transform 0.3s ease;
         }
-        .logo img { width: 38px; height: 38px; }
+        .logo:hover { transform: scale(1.03); }
+        .logo img { width: 40px; height: 40px; }
         .nav a {
-            color: rgba(255,255,255,0.62);
+            color: rgba(255,255,255,0.5);
             text-decoration: none;
-            margin-left: 1rem;
-            font-size: 0.92rem;
+            margin-left: 2rem;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            position: relative;
+            white-space: nowrap;
         }
-        .nav a:hover { color: #6fffe0; }
+        .nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #6fffe0, #a78bfa);
+            transition: width 0.3s ease;
+        }
+        .nav a:hover { color: #fff; transform: translateY(-2px); }
+        .nav a:hover::after { width: 100%; }
+        .nav a.active { color: #fff; }
+        .nav a.active::after { width: 100%; }
         .hero {
             text-align: center;
             padding: 2rem 0 1rem;
@@ -100,38 +133,82 @@
             gap: 1.25rem;
             margin-top: 2rem;
         }
+
+        /* ====== توحيد تصميم البطاقات مع الصفحة الرئيسية ====== */
         .card {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(111,255,224,0.1);
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(111, 255, 224, 0.06);
             border-radius: 1.5rem;
-            padding: 1.3rem;
-            transition: 0.3s ease;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
         }
+
         .card:hover {
             transform: translateY(-6px);
-            border-color: rgba(111,255,224,0.32);
-            box-shadow: 0 18px 36px rgba(0,0,0,0.24);
+            border-color: #6fffe0;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), 0 0 50px rgba(111, 255, 224, 0.05);
+            background: rgba(111, 255, 224, 0.02);
         }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+        .card:nth-child(4) { animation-delay: 0.4s; }
+        .card:nth-child(5) { animation-delay: 0.5s; }
+        .card:nth-child(6) { animation-delay: 0.6s; }
+
+        /* ====== توحيد شكل البادجات ====== */
         .badge {
             display: inline-block;
-            padding: 0.45rem 0.8rem;
-            border-radius: 999px;
-            background: rgba(111,255,224,0.08);
-            border: 1px solid rgba(111,255,224,0.15);
-            color: #6fffe0;
-            font-size: 0.72rem;
-            letter-spacing: 0.08em;
+            padding: 0.25rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
             text-transform: uppercase;
-            margin-bottom: 0.8rem;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.5rem;
+            background: rgba(111, 255, 224, 0.08);
+            border: 1px solid rgba(111, 255, 224, 0.12);
+            color: #6fffe0;
         }
-        .card h3 { margin: 0 0 0.7rem; color: #fff; }
-        .card p { margin: 0; color: rgba(255,255,255,0.65); line-height: 1.7; }
+
+        /* ====== توحيد العناوين والنصوص ====== */
+        .card h3 {
+            color: #f0f4ff;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .card p {
+            color: rgba(255, 255, 255, 0.55);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
         .stack {
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
             margin-top: 1rem;
         }
+
         .stack span {
             font-size: 0.75rem;
             border-radius: 999px;
@@ -140,6 +217,7 @@
             border: 1px solid rgba(167,139,250,0.2);
             color: #d8c7ff;
         }
+
         .cta {
             margin-top: 2.5rem;
             display: flex;
@@ -281,8 +359,8 @@
         }
         @media (max-width: 720px) {
             .header { flex-direction: column; }
-            .nav { display: flex; flex-wrap: wrap; justify-content: center; }
-            .nav a { margin: 0.4rem; }
+            .nav { justify-content: center; }
+            .nav a { margin: 0.3rem 0.5rem; }
         }
     </style>
 </head>
@@ -300,10 +378,10 @@
             <nav class="nav">
                 <a href="/">Home</a>
                 <a href="/about">About</a>
-                <a href="/writeups">Writeups</a>
+                <a href="/updates" class="active">Updates</a>
                 <a href="/projects">Projects</a>
-                <a href="/updates">Updates</a>
-                <a href="/roadmaps">Roadmaps</a>
+                <a href="/writeups">Writeups</a>
+                <a href="/contact">Contact</a>
             </nav>
         </header>
 

@@ -484,7 +484,7 @@
 
         .quick-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 1.5rem;
             margin: 3rem 0;
             align-items: stretch;
@@ -610,9 +610,25 @@
             border-radius: 1.5rem;
             padding: 2rem 1.5rem;
             text-align: center;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             transition: 0.3s;
             position: relative;
             overflow: hidden;
+        }
+        .quick-card.linux {
+            border-color: rgba(125, 211, 252, 0.22);
+            box-shadow: inset 0 0 0 1px rgba(125, 211, 252, 0.06);
+        }
+        .quick-card.windows {
+            border-color: rgba(96, 165, 250, 0.22);
+            box-shadow: inset 0 0 0 1px rgba(96, 165, 250, 0.06);
+        }
+        .quick-card.prolabs {
+            border-color: rgba(245, 197, 66, 0.24);
+            box-shadow: inset 0 0 0 1px rgba(245, 197, 66, 0.08);
         }
         .quick-card::before {
             content: '';
@@ -637,6 +653,9 @@
             margin-bottom: 1rem;
             transition: all 0.4s ease;
         }
+        .quick-card.linux i { color: #7dd3fc; }
+        .quick-card.windows i { color: #7cc4ff; }
+        .quick-card.prolabs i { color: #f5c542; }
         .quick-card:hover i {
             transform: scale(1.2) rotate(5deg);
             text-shadow: 0 0 30px rgba(111, 255, 224, 0.3);
@@ -649,37 +668,93 @@
             font-size: 0.9rem;
             transition: 0.3s;
         }
+        .quick-card.linux a { color: #7dd3fc; }
+        .quick-card.windows a { color: #7cc4ff; }
+        .quick-card.prolabs a { color: #f5c542; }
         .quick-card a:hover { color: #fff; }
 
         .footer {
             margin-top: 3rem;
-            padding: 2rem 0 0.5rem;
-            border-top: 1px solid rgba(111, 255, 224, 0.06);
-            display: flex;
-            justify-content: space-between;
+            padding: 1.75rem 1.4rem 1.1rem;
+            border: 1px solid rgba(111, 255, 224, 0.08);
+            border-radius: 1.5rem;
+            background: linear-gradient(180deg, rgba(11, 16, 25, 0.7), rgba(9, 12, 18, 0.9));
+            display: grid;
+            grid-template-columns: minmax(0, 1.8fr) minmax(180px, 0.9fr) auto;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
+            gap: 1.5rem;
+            box-shadow: 0 18px 40px rgba(0,0,0,0.14);
         }
-        .footer p { color: rgba(255,255,255,0.2); font-size: 0.9rem; }
-        .footer-links {
+        .footer-brand {
+            flex: 1.4;
+            min-width: 240px;
+        }
+        .footer-logo {
             display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
+            align-items: center;
+            gap: 0.7rem;
+            margin-bottom: 0.7rem;
+            color: #6fffe0;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+        }
+        .footer-logo img { width: 34px; height: 34px; }
+        .footer-brand p {
+            margin: 0;
+            color: rgba(255,255,255,0.62);
+            line-height: 1.7;
+            max-width: 420px;
+        }
+        .footer-links {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(120px, 1fr));
+            gap: 1rem 1.5rem;
+        }
+        .footer-links h4 {
+            margin: 0 0 0.55rem;
+            color: #eaf4ff;
+            font-size: 0.8rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
         }
         .footer-links a {
-            color: rgba(255,255,255,0.5);
+            display: block;
+            color: rgba(255,255,255,0.66);
             text-decoration: none;
-            font-size: 0.85rem;
+            margin: 0.35rem 0;
+            transition: 0.2s ease;
         }
-        .footer-links a:hover { color: #6fffe0; }
-        .social a {
-            color: rgba(255,255,255,0.2);
-            font-size: 1.2rem;
-            margin-left: 1.5rem;
-            transition: 0.3s;
+        .footer-links a:hover {
+            color: #6fffe0;
+            transform: translateX(2px);
         }
-        .social a:hover { color: #6fffe0; transform: translateY(-3px); }
+        .footer-social {
+            flex: 0 0 auto;
+            display: flex;
+            gap: 0.9rem;
+            padding-top: 0.35rem;
+        }
+        .footer-social a {
+            color: rgba(255,255,255,0.72);
+            font-size: 1.1rem;
+            width: 2.2rem;
+            height: 2.2rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 1px solid rgba(111,255,224,0.08);
+            background: rgba(255,255,255,0.02);
+            transition: all 0.3s ease;
+        }
+        .footer-social a:hover {
+            color: #6fffe0;
+            border-color: rgba(111, 255, 224, 0.22);
+            background: rgba(111,255,224,0.04);
+            transform: translateY(-3px);
+            box-shadow: 0 0 24px rgba(111,255,224,0.08);
+        }
 
         @media (max-width: 768px) {
             .container { padding: 1rem; }
@@ -696,6 +771,9 @@
             .writeups-grid { grid-template-columns: 1fr; }
             .projects-grid { grid-template-columns: 1fr; }
             .quick-grid { grid-template-columns: 1fr; }
+            .footer { grid-template-columns: 1fr; text-align: center; }
+            .footer-links { justify-items: center; }
+            .footer-social { justify-content: center; }
         }
         @media (max-width: 480px) {
             .header { padding: 0.9rem 1rem; }
@@ -756,9 +834,9 @@
                 <a href="/" class="active"><i class="fas fa-house"></i> Home</a>
                 <a href="/about"><i class="fas fa-user-astronaut"></i> About</a>
                 <a href="/updates"><i class="fas fa-bolt"></i> Updates</a>
-                <a href="/certifications"><i class="fas fa-certificate"></i> Certs</a>
                 <a href="/projects"><i class="fas fa-code"></i> Projects</a>
                 <a href="/writeups"><i class="fas fa-pen-fancy"></i> Writeups</a>
+                <a href="/contact"><i class="fas fa-envelope"></i> Contact</a>
             </nav>
         </header>
 
@@ -806,23 +884,23 @@
         </div>
 
         <div class="quick-grid">
-            <div class="quick-card">
+            <div class="quick-card linux">
                 <i class="fas fa-linux"></i>
                 <h4>Linux Machines</h4>
                 <p>18+ Writeups</p>
-                <a href="/writeups">Explore →</a>
+                <a href="/writeups?filter=linux">Explore →</a>
             </div>
-            <div class="quick-card">
+            <div class="quick-card windows">
                 <i class="fas fa-windows"></i>
                 <h4>Windows Machines</h4>
                 <p>8+ Writeups</p>
-                <a href="/writeups">Explore →</a>
+                <a href="/writeups?filter=windows">Explore →</a>
             </div>
-            <div class="quick-card">
+            <div class="quick-card prolabs">
                 <i class="fas fa-trophy"></i>
                 <h4>ProLabs</h4>
                 <p>2 Writeups</p>
-                <a href="/writeups">Explore →</a>
+                <a href="/writeups?filter=prolabs">Explore →</a>
             </div>
         </div>
 
