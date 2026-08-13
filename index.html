@@ -9,7 +9,7 @@
     <link rel="icon" href="assets/images/favicon.ico" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <style>
-        /* ====== كل الـ CSS الموجود ====== */
+        /* ====== RESET & BASE ====== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background: #0a0a0f;
@@ -18,6 +18,8 @@
             min-height: 100vh;
             overflow-x: hidden;
         }
+        
+        /* ====== BACKGROUND ====== */
         .bg-animation {
             position: fixed;
             top: 0;
@@ -53,6 +55,8 @@
             0% { opacity: 0.1; transform: scale(0.5); }
             100% { opacity: 1; transform: scale(1.5); }
         }
+        
+        /* ====== CONTAINER ====== */
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -60,6 +64,8 @@
             position: relative;
             z-index: 1;
         }
+        
+        /* ====== HEADER ====== */
         .header {
             display: flex;
             align-items: center;
@@ -77,14 +83,6 @@
             border-color: rgba(111, 255, 224, 0.2);
             box-shadow: 0 0 40px rgba(111, 255, 224, 0.03);
         }
-        .nav {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: flex-end;
-            align-items: center;
-            flex: 1;
-            min-width: 0;
-        }
         .logo {
             display: flex;
             align-items: center;
@@ -95,34 +93,46 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             transition: transform 0.3s ease;
+            flex-shrink: 0;
         }
         .logo:hover { transform: scale(1.03); }
         .logo img { width: 40px; height: 40px; }
+        .nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            align-items: center;
+            flex: 1;
+            gap: 0.3rem;
+        }
         .nav a {
             color: rgba(255,255,255,0.5);
             text-decoration: none;
-            margin-left: 2rem;
-            font-size: 0.95rem;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
             transition: all 0.3s ease;
             position: relative;
             white-space: nowrap;
+            border-radius: 0.5rem;
         }
         .nav a::after {
             content: '';
             position: absolute;
-            bottom: -4px;
-            left: 0;
+            bottom: 2px;
+            left: 50%;
             width: 0;
             height: 2px;
             background: linear-gradient(90deg, #6fffe0, #a78bfa);
-            transition: width 0.3s ease;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
         }
-        .nav a:hover { color: #fff; transform: translateY(-2px); }
-        .nav a:hover::after { width: 100%; }
-        .nav a.active { color: #fff; }
-        .nav a.active::after { width: 100%; }
-        .nav a i { margin-right: 6px; }
+        .nav a:hover { color: #fff; background: rgba(255,255,255,0.03); }
+        .nav a:hover::after { width: 60%; }
+        .nav a.active { color: #fff; background: rgba(111,255,224,0.05); }
+        .nav a.active::after { width: 60%; }
+        .nav a i { margin-right: 4px; font-size: 0.8rem; }
 
+        /* ====== HERO ====== */
         .hero {
             text-align: center;
             padding: 2rem 0 4rem;
@@ -175,6 +185,35 @@
             justify-content: center;
             flex-wrap: wrap;
         }
+        .btn {
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #6fffe0, #a78bfa);
+            color: #0a0a0f;
+            box-shadow: 0 0 30px rgba(111, 255, 224, 0.15);
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 50px rgba(111, 255, 224, 0.25);
+        }
+        .btn-secondary {
+            border: 2px solid #6fffe0;
+            color: #6fffe0;
+        }
+        .btn-secondary:hover {
+            background: rgba(111, 255, 224, 0.05);
+            transform: translateY(-3px);
+        }
+
+        /* ====== SEARCH ====== */
         .search-wrap {
             max-width: 760px;
             margin: 1.5rem auto 0;
@@ -232,34 +271,8 @@
             letter-spacing: 0.1em;
             text-transform: uppercase;
         }
-        .btn {
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #6fffe0, #a78bfa);
-            color: #0a0a0f;
-            box-shadow: 0 0 30px rgba(111, 255, 224, 0.15);
-        }
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 0 50px rgba(111, 255, 224, 0.25);
-        }
-        .btn-secondary {
-            border: 2px solid #6fffe0;
-            color: #6fffe0;
-        }
-        .btn-secondary:hover {
-            background: rgba(111, 255, 224, 0.05);
-            transform: translateY(-3px);
-        }
 
+        /* ====== STATS ====== */
         .stats {
             display: flex;
             justify-content: center;
@@ -284,8 +297,10 @@
             font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 1px;
+            display: block;
         }
 
+        /* ====== SECTION TITLE ====== */
         .section-title {
             font-size: 2rem;
             margin: 3rem 0 2rem;
@@ -482,127 +497,14 @@
         .project-card .project-link i { transition: 0.3s; }
         .project-card .project-link:hover i { transform: translateX(4px); }
 
+        /* ====== QUICK GRID ====== */
         .quick-grid {
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 1.5rem;
             margin: 3rem 0;
             align-items: stretch;
-        }
-        .feature-section {
-            margin-top: 4rem;
-        }
-        #learningPathsSection .section-title {
-            display: none;
-        }
-        #learningPathsSection .path-grid {
-            display: none !important;
-        }
-        #toolsSection,
-        #resourcesSection,
-        #timelineSection {
-            display: none !important;
-        }
-        .filter-bar {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.7rem;
-            margin: 1.25rem 0 1.5rem;
-            padding-top: 0.25rem;
-        }
-        .filter-btn {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(111, 255, 224, 0.12);
-            color: rgba(255,255,255,0.7);
-            padding: 0.85rem 1.5rem;
-            border-radius: 999px;
-            cursor: pointer;
-            transition: 0.3s;
-            font-weight: 700;
-            font-size: 0.8rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            min-width: 140px;
-        }
-        .filter-btn:hover, .filter-btn.active {
-            background: rgba(111, 255, 224, 0.08);
-            border-color: rgba(111, 255, 224, 0.35);
-            color: #6fffe0;
-            transform: translateY(-2px);
-            box-shadow: 0 0 20px rgba(111,255,224,0.12);
-        }
-        .path-grid, .timeline-grid, .resource-grid, .tool-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.25rem;
-        }
-        .path-card, .tool-card, .resource-card, .timeline-card {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(111, 255, 224, 0.08);
-            border-radius: 1.25rem;
-            padding: 1.25rem;
-            transition: 0.3s;
-        }
-        .path-card:hover, .tool-card:hover, .resource-card:hover, .timeline-card:hover {
-            transform: translateY(-6px);
-            border-color: rgba(111, 255, 224, 0.35);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-        }
-        .path-card .path-tag, .tool-card .tool-tag {
-            display: inline-block;
-            padding: 0.35rem 0.7rem;
-            border-radius: 999px;
-            font-size: 0.7rem;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-            background: rgba(111, 255, 224, 0.08);
-            color: #6fffe0;
-            margin-bottom: 0.7rem;
-            border: 1px solid rgba(111, 255, 224, 0.12);
-        }
-        .path-card h4, .tool-card h4, .resource-card h4, .timeline-card h4 {
-            margin: 0 0 0.5rem;
-            color: #fff;
-        }
-        .path-card p, .tool-card p, .resource-card p, .timeline-card p {
-            color: rgba(255,255,255,0.55);
-            font-size: 0.92rem;
-            line-height: 1.6;
-        }
-        .path-card ul, .resource-card ul {
-            margin: 0.8rem 0 0;
-            padding-left: 1rem;
-            color: rgba(255,255,255,0.7);
-            list-style: disc;
-        }
-        .tool-card .tool-icon {
-            font-size: 2rem;
-            margin-bottom: 0.75rem;
-            display: block;
-        }
-        .timeline-card {
-            position: relative;
-            padding-left: 1rem;
-        }
-        .timeline-card::before {
-            content: "";
-            position: absolute;
-            left: -0.15rem;
-            top: 1.2rem;
-            width: 0.5rem;
-            height: 0.5rem;
-            border-radius: 50%;
-            background: #6fffe0;
-            box-shadow: 0 0 12px rgba(111,255,224,0.5);
-        }
-        .timeline-card .timeline-year {
-            font-size: 0.72rem;
-            color: #6fffe0;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            margin-bottom: 0.5rem;
-            display: block;
+            width: 100%;
         }
         .quick-card {
             background: rgba(255,255,255,0.02);
@@ -610,11 +512,12 @@
             border-radius: 1.5rem;
             padding: 2rem 1.5rem;
             text-align: center;
-            min-height: 150px;
+            min-height: 180px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            transition: 0.3s;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
         }
@@ -649,7 +552,6 @@
         }
         .quick-card i {
             font-size: 2.5rem;
-            color: #6fffe0;
             margin-bottom: 1rem;
             transition: all 0.4s ease;
         }
@@ -660,19 +562,35 @@
             transform: scale(1.2) rotate(5deg);
             text-shadow: 0 0 30px rgba(111, 255, 224, 0.3);
         }
-        .quick-card h4 { color: #fff; }
-        .quick-card p { color: rgba(255,255,255,0.3); font-size: 0.9rem; }
+        .quick-card h4 {
+            color: #fff;
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+        .quick-card p {
+            color: rgba(255,255,255,0.4);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
         .quick-card a {
             color: #6fffe0;
             text-decoration: none;
             font-size: 0.9rem;
+            font-weight: 600;
             transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
         }
         .quick-card.linux a { color: #7dd3fc; }
         .quick-card.windows a { color: #7cc4ff; }
         .quick-card.prolabs a { color: #f5c542; }
-        .quick-card a:hover { color: #fff; }
+        .quick-card a:hover {
+            color: #fff;
+            gap: 0.6rem;
+        }
 
+        /* ====== FOOTER ====== */
         .footer {
             margin-top: 3rem;
             padding: 1.75rem 1.4rem 1.1rem;
@@ -680,7 +598,7 @@
             border-radius: 1.5rem;
             background: linear-gradient(180deg, rgba(11, 16, 25, 0.7), rgba(9, 12, 18, 0.9));
             display: grid;
-            grid-template-columns: minmax(0, 1.8fr) minmax(180px, 0.9fr) auto;
+            grid-template-columns: 1.8fr 0.9fr auto;
             align-items: center;
             gap: 1.5rem;
             box-shadow: 0 18px 40px rgba(0,0,0,0.14);
@@ -756,36 +674,7 @@
             box-shadow: 0 0 24px rgba(111,255,224,0.08);
         }
 
-        @media (max-width: 768px) {
-            .container { padding: 1rem; }
-            .header { flex-direction: column; gap: 1rem; padding: 1rem; }
-            .nav {
-                width: 100%;
-                justify-content: center;
-                gap: 0.5rem 0.8rem;
-            }
-            .nav a { font-size: 0.82rem; }
-            .hero h1 { font-size: 2.5rem; }
-            .stats { gap: 2rem; flex-wrap: wrap; }
-            .stat h3 { font-size: 2rem; }
-            .writeups-grid { grid-template-columns: 1fr; }
-            .projects-grid { grid-template-columns: 1fr; }
-            .quick-grid { grid-template-columns: 1fr; }
-            .footer { grid-template-columns: 1fr; text-align: center; }
-            .footer-links { justify-items: center; }
-            .footer-social { justify-content: center; }
-        }
-        @media (max-width: 480px) {
-            .header { padding: 0.9rem 1rem; }
-            .nav { gap: 0.45rem 0.7rem; }
-            .nav a { font-size: 0.75rem; }
-            .hero h1 { font-size: 2rem; }
-            .btn { padding: 0.6rem 1.2rem; font-size: 0.9rem; }
-            .quick-grid { grid-template-columns: 1fr; }
-            .footer { flex-direction: column; text-align: center; }
-            .social a { margin: 0 0.8rem; }
-        }
-
+        /* ====== MOUSE EFFECTS ====== */
         .mouse-trail {
             position: fixed;
             width: 8px;
@@ -814,17 +703,121 @@
             height: 350px;
             background: radial-gradient(circle, rgba(111, 255, 224, 0.12), transparent 70%);
         }
+
+        /* ====== RESPONSIVE ====== */
+        @media (max-width: 992px) {
+            .quick-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1rem;
+            }
+            .quick-card {
+                padding: 1.5rem 1rem;
+                min-height: 160px;
+            }
+            .quick-card i {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            .header { 
+                flex-direction: column; 
+                gap: 1rem; 
+                padding: 1rem;
+                border-radius: 1.5rem;
+            }
+            .nav {
+                width: 100%;
+                justify-content: center;
+                gap: 0.3rem;
+            }
+            .nav a {
+                font-size: 0.7rem;
+                padding: 0.3rem 0.5rem;
+            }
+            .nav a i { display: none; }
+            .hero h1 { font-size: 2.5rem; }
+            .stats { gap: 2rem; flex-wrap: wrap; }
+            .stat h3 { font-size: 2rem; }
+            .writeups-grid { grid-template-columns: 1fr; }
+            .projects-grid { grid-template-columns: 1fr; }
+            .quick-grid { 
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+            .quick-card {
+                padding: 1.5rem 1rem;
+                min-height: 150px;
+            }
+            .footer { 
+                grid-template-columns: 1fr; 
+                text-align: center; 
+            }
+            .footer-links { justify-items: center; }
+            .footer-social { justify-content: center; }
+        }
+
+        @media (max-width: 480px) {
+            .header { padding: 0.8rem; }
+            .nav a {
+                font-size: 0.6rem;
+                padding: 0.2rem 0.4rem;
+            }
+            .hero h1 { font-size: 2rem; }
+            .btn { 
+                padding: 0.6rem 1.2rem; 
+                font-size: 0.85rem; 
+            }
+            .quick-grid { 
+                grid-template-columns: 1fr;
+                gap: 0.8rem;
+            }
+            .quick-card {
+                padding: 1.2rem;
+                min-height: 120px;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.3rem 1rem;
+            }
+            .quick-card i {
+                font-size: 1.5rem;
+                margin-bottom: 0;
+            }
+            .quick-card h4 {
+                font-size: 1rem;
+                margin-bottom: 0;
+            }
+            .quick-card p {
+                font-size: 0.8rem;
+                margin-bottom: 0;
+                width: 100%;
+            }
+            .quick-card a {
+                font-size: 0.8rem;
+            }
+            .footer { 
+                flex-direction: column; 
+                text-align: center;
+                padding: 1.5rem 1rem;
+            }
+            .footer-social a { margin: 0 0.4rem; }
+        }
     </style>
 </head>
 <body>
 
+    <!-- ====== BACKGROUNDS ====== -->
     <div class="bg-animation"></div>
     <div class="stars" id="stars"></div>
     <div class="mouse-trail" id="mouseTrail"></div>
     <div class="mouse-glow-effect" id="mouseGlowEffect"></div>
 
+    <!-- ====== CONTAINER ====== -->
     <div class="container">
 
+        <!-- ====== HEADER ====== -->
         <header class="header">
             <div class="logo">
                 <img src="assets/images/npx-logo.svg" alt="NPX" />
@@ -840,6 +833,7 @@
             </nav>
         </header>
 
+        <!-- ====== HERO ====== -->
         <section class="hero">
             <img src="assets/images/avatar.png" alt="NIGHT PULSE X" class="avatar" />
             <h1>NIGHT PULSE X</h1>
@@ -869,29 +863,30 @@
             </div>
         </section>
 
-        <!-- ====== WRITEUPS SECTION ====== -->
+        <!-- ====== WRITEUPS ====== -->
         <h2 class="section-title"><i class="fas fa-star"></i> Featured Writeups</h2>
         <div class="writeups-grid" id="featuredWriteups"></div>
         <div style="text-align: center; margin-top: 2rem;">
             <a href="/writeups" class="btn btn-primary"><i class="fas fa-arrow-right"></i> View All</a>
         </div>
 
-        <!-- ====== PROJECTS SECTION ====== -->
+        <!-- ====== PROJECTS ====== -->
         <h2 class="section-title"><i class="fas fa-code"></i> Featured Projects</h2>
         <div class="projects-grid" id="projectsGrid"></div>
         <div style="text-align: center; margin-top: 2rem;">
             <a href="/projects" class="btn btn-primary"><i class="fas fa-arrow-right"></i> View All Projects</a>
         </div>
 
+        <!-- ====== QUICK GRID ====== -->
         <div class="quick-grid">
             <div class="quick-card linux">
-                <i class="fas fa-linux"></i>
+                <i class="fab fa-linux"></i>
                 <h4>Linux Machines</h4>
                 <p>18+ Writeups</p>
                 <a href="/writeups?filter=linux">Explore →</a>
             </div>
             <div class="quick-card windows">
-                <i class="fas fa-windows"></i>
+                <i class="fab fa-windows"></i>
                 <h4>Windows Machines</h4>
                 <p>8+ Writeups</p>
                 <a href="/writeups?filter=windows">Explore →</a>
@@ -904,67 +899,7 @@
             </div>
         </div>
 
-        <section class="feature-section" id="learningPathsSection">
-            <h2 class="section-title"><i class="fas fa-route"></i> Learning Paths</h2>
-            <div class="filter-bar">
-                <button class="filter-btn active" data-filter="all">All</button>
-                <button class="filter-btn" data-filter="web">Web</button>
-            </div>
-            <div class="path-grid" id="learningPaths"></div>
-        </section>
-
-        <section class="feature-section" id="toolsSection">
-            <h2 class="section-title"><i class="fas fa-tools"></i> Tools & Stack</h2>
-            <div class="tool-grid">
-                <div class="tool-card">
-                    <span class="tool-icon">🔎</span>
-                    <span class="tool-tag">Recon</span>
-                    <h4>Nmap</h4>
-                    <p>Port discovery, service detection, and enumeration with structured scanning workflows.</p>
-                </div>
-                <div class="tool-card">
-                    <span class="tool-icon">🧪</span>
-                    <span class="tool-tag">Web</span>
-                    <h4>Burp Suite</h4>
-                    <p>Intercepting proxy and traffic inspection for web testing and API analysis.</p>
-                </div>
-                <div class="tool-card">
-                    <span class="tool-icon">⚡</span>
-                    <span class="tool-tag">Discovery</span>
-                    <h4>FFUF</h4>
-                    <p>Fast fuzzing for directories, subdomains, and hidden application endpoints.</p>
-                </div>
-                <div class="tool-card">
-                    <span class="tool-icon">📦</span>
-                    <span class="tool-tag">Cloud</span>
-                    <h4>AWS / Azure</h4>
-                    <p>Identity review, public exposure testing, and security posture checks.</p>
-                </div>
-                <div class="tool-card">
-                    <span class="tool-icon">🖥️</span>
-                    <span class="tool-tag">Ops</span>
-                    <h4>Linux / Bash</h4>
-                    <p>Automation, scripting, enumeration, and task execution in real-world labs.</p>
-                </div>
-                <div class="tool-card">
-                    <span class="tool-icon">🔐</span>
-                    <span class="tool-tag">Defense</span>
-                    <h4>Security Mindset</h4>
-                    <p>Threat modeling, validation, forensic thinking, and careful exploitation boundaries.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="feature-section" id="resourcesSection">
-            <h2 class="section-title"><i class="fas fa-book"></i> Security Resources</h2>
-            <div class="resource-grid" id="resourceGrid"></div>
-        </section>
-
-        <section class="feature-section" id="timelineSection">
-            <h2 class="section-title"><i class="fas fa-chart-line"></i> Journey Timeline</h2>
-            <div class="timeline-grid" id="timelineGrid"></div>
-        </section>
-
+        <!-- ====== FOOTER ====== -->
         <footer class="footer">
             <div class="footer-brand">
                 <div class="footer-logo">
@@ -976,15 +911,13 @@
             <div class="footer-links">
                 <div>
                     <h4>Explore</h4>
-                    <a href="/about">About</a>
-                    <a href="/projects">Projects</a>
-                    <a href="/writeups">Writeups</a>
+                    <a href="/tools">Tools</a>
+                    <a href="/roadmaps">Roadmaps</a>
                 </div>
                 <div>
                     <h4>More</h4>
-                    <a href="/updates">Updates</a>
-                    <a href="/roadmaps">Roadmaps</a>
-                    <a href="/contact">Contact</a>
+                    <a href="/timeline">Timeline</a>
+                    <a href="/research">Research</a>
                 </div>
             </div>
             <div class="footer-social">
@@ -997,6 +930,7 @@
 
     </div>
 
+    <!-- ====== SCRIPTS ====== -->
     <script>
         // ====== STARS ======
         (function() {
@@ -1043,78 +977,20 @@
             document.addEventListener("mouseenter", () => { trail.style.opacity = "1"; glow.style.opacity = "1"; });
         })();
 
-        // ====== FEATURED WRITEUPS (مختارة بعناية من قاعدة البيانات) ======
+        // ====== FEATURED WRITEUPS ======
         (function() {
-            // 🔹 قائمة الـ Writeups المميزة - مختارة من قاعدة البيانات
             const featuredWriteups = [
-                // ====== HTB ProLabs (الأفضل) ======
-                {
-                    name: 'Mythical',
-                    icon: '🏆',
-                    os: 'prolabs',
-                    level: 'prolabs',
-                    category: '🏆 HTB ProLabs',
-                    password: '',
-                    link: '/writeups/htb/prolabs/Mythical'
-                },
-                {
-                    name: 'Puppet',
-                    icon: '🏆',
-                    os: 'prolabs',
-                    level: 'prolabs',
-                    category: '🏆 HTB ProLabs',
-                    password: '',
-                    link: '/writeups/htb/prolabs/Puppet'
-                },
-                
-                // ====== HTB Windows Insane ======
-                {
-                    name: 'Odyssey',
-                    icon: '💀',
-                    os: 'Windows',
-                    level: 'insane',
-                    category: '💀 HTB Windows Insane',
-                    password: '0dys3y!R3turn#Insan3',
-                    link: '/writeups/htb/windows/insane/Odyssey'
-                },
-                
-                // ====== HTB Windows Hard ======
-                {
-                    name: 'DarkZero Returns',
-                    icon: '🪟',
-                    os: 'Windows',
-                    level: 'hard',
-                    category: '🔴 HTB Windows Hard',
-                    password: '',
-                    link: '/writeups/htb/windows/hard/DarkZeroReturns'
-                },
-                {
-                    name: 'Ghostlink',
-                    icon: '🪟',
-                    os: 'Windows',
-                    level: 'hard',
-                    category: '🔴 HTB Windows Hard',
-                    password: 'Gh0stl1nk!W1nd0ws#X5',
-                    link: '/writeups/htb/windows/hard/Ghostlink'
-                },
-                
-                // ====== HTB Linux Hard ======
-                {
-                    name: 'Nimbus',
-                    icon: '🐧',
-                    os: 'Linux',
-                    level: 'hard',
-                    category: '🔴 HTB Linux Hard',
-                    password: '',
-                    link: '/writeups/htb/linux/hard/Nimbus'
-                }
-                
+                { name: 'Mythical', icon: '🏆', os: 'prolabs', level: 'prolabs', category: '🏆 HTB ProLabs', password: '', link: '/writeups/htb/prolabs/Mythical' },
+                { name: 'Puppet', icon: '🏆', os: 'prolabs', level: 'prolabs', category: '🏆 HTB ProLabs', password: '', link: '/writeups/htb/prolabs/Puppet' },
+                { name: 'Odyssey', icon: '💀', os: 'Windows', level: 'insane', category: '💀 HTB Windows Insane', password: '0dys3y!R3turn#Insan3', link: '/writeups/htb/windows/insane/Odyssey' },
+                { name: 'DarkZero Returns', icon: '🪟', os: 'Windows', level: 'hard', category: '🔴 HTB Windows Hard', password: '', link: '/writeups/htb/windows/hard/DarkZeroReturns' },
+                { name: 'Ghostlink', icon: '🪟', os: 'Windows', level: 'hard', category: '🔴 HTB Windows Hard', password: 'Gh0stl1nk!W1nd0ws#X5', link: '/writeups/htb/windows/hard/Ghostlink' },
+                { name: 'Nimbus', icon: '🐧', os: 'Linux', level: 'hard', category: '🔴 HTB Linux Hard', password: '', link: '/writeups/htb/linux/hard/Nimbus' }
             ];
 
             const container = document.getElementById('featuredWriteups');
             if (!container) return;
 
-            // بناء بطاقات الـ Writeups
             featuredWriteups.forEach(writeup => {
                 const card = document.createElement('div');
                 card.className = 'writeup-card';
@@ -1142,8 +1018,6 @@
 
                 container.appendChild(card);
             });
-
-            console.log(`[✓] Loaded ${featuredWriteups.length} featured writeups!`);
         })();
 
         // ====== COPY BUTTONS ======
@@ -1163,7 +1037,6 @@
 
         // ====== FEATURED PROJECTS ======
         (function() {
-            // 🔹 قائمة المشاريع المميزة
             const featuredProjects = [
                 {
                     name: 'CloudScout — AWS Security Auditing Tool',
@@ -1209,10 +1082,9 @@
 
                 container.appendChild(card);
             });
-
-            console.log(`[✓] Loaded ${featuredProjects.length} featured projects!`);
         })();
 
+        // ====== SEARCH ======
         const sitePages = [
             { label: 'Home', url: '/', kind: 'Main' },
             { label: 'About', url: '/about', kind: 'Profile' },
@@ -1261,100 +1133,6 @@
                 }
             });
         }
-
-        const learningPaths = [
-            {
-                title: 'Web Security Track',
-                tag: 'Web',
-                filter: 'web',
-                description: 'From recon and enumeration to XSS, auth bypass, SSRF, and business logic flaws.',
-                items: ['HTTP fundamentals', 'Burp workflow', 'Parameter tampering', 'API testing', 'Auth & authz']
-            },
-            {
-                title: 'Bug Bounty Workflow',
-                tag: 'Web',
-                filter: 'web',
-                description: 'Program triage, recon flow, impact validation, and responsible disclosure mindset.',
-                items: ['Target selection', 'Scope review', 'Manual testing', 'Evidence gathering', 'Responsible disclosure']
-            }
-        ];
-
-        const resourceData = [
-            { title: 'OWASP', text: 'Web security principles and major risk coverage.', url: 'https://owasp.org/' },
-            { title: 'PortSwigger', text: 'Advanced web security labs and practical learning.', url: 'https://portswigger.net/' },
-            { title: 'HTB Academy', text: 'Realistic training paths with guided labs.', url: 'https://academy.hackthebox.com/' },
-            { title: 'TryHackMe', text: 'Hands-on security rooms and structured progression.', url: 'https://tryhackme.com/' },
-            { title: 'CISA KEV', text: 'Known exploited vulnerabilities and active risk catalog.', url: 'https://www.cisa.gov/known-exploited-vulnerabilities-catalog' },
-            { title: 'NVD', text: 'Vulnerability references and security advisories.', url: 'https://nvd.nist.gov/vuln' }
-        ];
-
-        const timelineData = [
-            { year: '2024', title: 'Foundation', text: 'Built the base security portfolio and started consolidating writeups and learning notes.' },
-            { year: '2025', title: 'Expansion', text: 'Expanded into more machines, labs, and research documentation across web and infrastructure topics.' },
-            { year: '2026', title: 'Knowledge Hub', text: 'Transformed the site into a richer security knowledge base with structured learning and project showcases.' }
-        ];
-
-        const pathRoot = document.getElementById('learningPaths');
-        if (pathRoot) {
-            pathRoot.innerHTML = learningPaths.map(path => `
-                <div class="path-card" data-filter="${path.filter}">
-                    <span class="path-tag">${path.tag}</span>
-                    <h4>${path.title}</h4>
-                    <p>${path.description}</p>
-                    <ul>${path.items.map(item => `<li>${item}</li>`).join('')}</ul>
-                </div>
-            `).join('');
-        }
-
-        const resourceRoot = document.getElementById('resourceGrid');
-        if (resourceRoot) {
-            resourceRoot.innerHTML = resourceData.map(item => `
-                <div class="resource-card">
-                    <h4>${item.title}</h4>
-                    <p>${item.text}</p>
-                    <ul><li><a href="${item.url}" target="_blank" rel="noopener noreferrer">Open resource</a></li></ul>
-                </div>
-            `).join('');
-        }
-
-        const timelineRoot = document.getElementById('timelineGrid');
-        if (timelineRoot) {
-            timelineRoot.innerHTML = timelineData.map(item => `
-                <div class="timeline-card">
-                    <span class="timeline-year">${item.year}</span>
-                    <h4>${item.title}</h4>
-                    <p>${item.text}</p>
-                </div>
-            `).join('');
-        }
-
-        document.querySelectorAll('.filter-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                const selected = button.dataset.filter;
-                document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.toggle('active', btn === button));
-                document.querySelectorAll('.path-card').forEach(card => {
-                    const show = selected === 'all' || card.dataset.filter === selected;
-                    card.style.display = show ? 'block' : 'none';
-                });
-            });
-        });
-
-        // ====== PAGE ROUTING ======
-        (function() {
-            const path = window.location.pathname;
-            if (path !== '/' && path !== '/index.html' && !path.includes('.')) {
-                const pageMap = {
-                    '/about': 'about.html',
-                    '/writeups': 'writeups.html',
-                    '/projects': 'projects.html',
-                    '/certifications': 'certifications.html',
-                    '/contact': 'contact.html'
-                };
-                if (pageMap[path]) {
-                    window.location.href = pageMap[path];
-                }
-            }
-        })();
     </script>
 </body>
 </html>
