@@ -388,6 +388,10 @@
                 <a href="../updates/index.html"><i class="fas fa-bolt"></i> Updates</a>
                 <a href="../writeups/index.html"><i class="fas fa-pen-fancy"></i> Writeups</a>
                 <a href="index.html" class="active"><i class="fas fa-code"></i> Projects</a>
+                <a href="../research/index.html"><i class="fas fa-book-open"></i> Research</a>
+                <a href="../tools/index.html"><i class="fas fa-tools"></i> Tools</a>
+                <a href="../roadmaps/index.html"><i class="fas fa-map"></i> Roadmaps</a>
+                <a href="../timeline/index.html"><i class="fas fa-clock"></i> Timeline</a>
                 <a href="../contact/index.html"><i class="fas fa-envelope"></i> Contact</a>
             </nav>
         </header>
@@ -496,16 +500,24 @@
 
         // ====== PROJECTS DATA ======
         (function() {
-            // ====== قائمة المشاريع (مشروع واحد) ======
             const projects = [
- 
                 {
                     name: 'NPX Framework — Pentesting Automation Suite',
                     desc: 'Modular Python framework for automating penetration testing workflows. Includes modules for reconnaissance, exploitation, and reporting.',
                     icon: '🛠️',
-                    category: 'Framework',
+                    category: 'framework',
                     tags: ['Python', 'Automation', 'Pentesting', 'Recon', 'Exploitation'],
-                    link: 'https://github.com/npx-official/npx-framework'
+                    link: 'https://github.com/npx-official/npx-framework',
+                    status: 'live'
+                },
+                {
+                    name: 'CloudScout — AWS Security Auditing Tool',
+                    desc: 'CLI tool that scans AWS environments for security misconfigurations including public S3 buckets, IAM users without MFA, and open security groups.',
+                    icon: '☁️',
+                    category: 'cloud',
+                    tags: ['AWS', 'Security', 'Auditing', 'Python', 'Cloud'],
+                    link: 'https://github.com/npx-official/cloudscout',
+                    status: 'live'
                 },
                 {
                     name: 'Arsenal — Red Team Encyclopedia',
@@ -522,11 +534,11 @@
                     icon: '🎯',
                     category: 'web',
                     tags: ['Bug Bounty', 'Learning', 'Roadmap', 'Web Security'],
-                    link: '/projects/Bug Bounty Learning Path',
-                    status: 'live'
+                    link: '/projects/bug-bounty-learning-path',
+                    status: 'coming'
                 },
                 {
-                    name: 'Custom Exploit Scripts',
+                    name: 'Custom Exploit Scripts Collection',
                     desc: 'Collection of custom exploit scripts for various CVEs and common vulnerabilities found in CTF challenges and real-world penetration tests.',
                     icon: '⚡',
                     category: 'exploit',
@@ -535,23 +547,14 @@
                     status: 'coming'
                 },
                 {
-                    name: 'Security Research Blog',
+                    name: 'Security Research Blog — AD & Cloud',
                     desc: 'Technical articles, research findings, and writeups covering Active Directory security, cloud penetration testing, and advanced attack techniques.',
                     icon: '📖',
                     category: 'web',
-                    tags: ['Blog', 'Research', 'AD Security', 'Cloud Security'],
+                    tags: ['Blog', 'Research', 'AD Security', 'Cloud Security', 'Writeups'],
                     link: '#',
                     status: 'coming'
-                },
-{
-    name: 'CloudScout — AWS Security Auditing Tool',
-    desc: 'CLI tool that scans AWS environments for security misconfigurations including public S3 buckets, IAM users without MFA, and open security groups.',
-    icon: '☁️',
-    category: 'cloud',
-    tags: ['AWS', 'Security', 'Auditing', 'Python', 'Cloud'],
-    link: 'https://github.com/npx-official/cloudscout',
-    status: 'live'
-}
+                }
             ];
 
             // ====== RENDER FUNCTION ======
