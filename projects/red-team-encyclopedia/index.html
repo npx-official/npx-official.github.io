@@ -849,12 +849,11 @@ body{background:var(--npx-bg)!important}
 
 <style id="v12-filter-style">
 /* V13 — stable knowledge filter */
-.npx-filter{position:sticky;top:78px;z-index:900;margin:18px 0 30px;padding:18px 18px 15px;border:1px solid rgba(39,230,255,.12);border-radius:16px;background:linear-gradient(180deg,rgba(11,18,31,.96),rgba(8,13,24,.94));backdrop-filter:blur(18px);box-shadow:0 16px 45px rgba(0,0,0,.28)}
-.npx-filter:before{content:"";display:block;height:2px;width:48px;background:var(--cyan);margin:-18px 0 15px;border-radius:2px;opacity:.9}
-.filter-head{margin-bottom:12px}.filter-kicker{font-size:8px;letter-spacing:2.2px}.filter-head h2{font-size:18px;font-weight:700;letter-spacing:-.2px}
-.filter-row{display:flex;gap:7px;overflow-x:auto;flex-wrap:nowrap;padding:2px 1px 5px;scrollbar-width:none}.filter-row::-webkit-scrollbar{display:none}
-.filter-pill{flex:0 0 auto;white-space:nowrap;min-height:31px;padding:7px 12px;border-radius:9px;border-color:rgba(255,255,255,.075);background:#0c1422}.filter-pill.active{background:rgba(39,230,255,.11);border-color:rgba(39,230,255,.5);box-shadow:inset 0 0 0 1px rgba(39,230,255,.04),0 0 16px rgba(39,230,255,.05)}
-.filter-bottom{border-top:1px solid rgba(255,255,255,.055);padding-top:12px}.filter-search{min-height:38px}.filter-search input{font-size:11px}.filter-select{min-height:38px}.filter-count{font-family:var(--mono);color:#728097}
+.npx-filter{position:relative;z-index:20;margin:0 0 30px;padding:18px 18px 15px;border:1px solid rgba(111,255,224,.08);border-radius:18px;background:rgba(10,16,25,.72);backdrop-filter:blur(18px);box-shadow:0 18px 40px rgba(0,0,0,.12)}
+.npx-filter:before{content:"";display:block;height:2px;width:48px;background:linear-gradient(90deg,#6fffe0,#a78bfa);margin:-18px 0 15px;border-radius:2px;opacity:.9}
+.filter-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.filter-kicker{font-size:8px;letter-spacing:2.4px;color:#6fffe0;font-weight:800}.filter-head h2{font-size:18px;font-weight:700;letter-spacing:-.2px;color:#eaf4ff}
+.filter-row{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;padding:2px 1px 5px}.filter-pill{flex:0 0 auto;white-space:nowrap;min-height:34px;padding:8px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02);color:rgba(255,255,255,.62);font:inherit;font-size:11px;cursor:pointer;transition:.25s ease}.filter-pill:hover{border-color:rgba(111,255,224,.25);color:#fff;transform:translateY(-2px);background:rgba(111,255,224,.04)}.filter-pill.active{background:linear-gradient(135deg,rgba(111,255,224,.12),rgba(167,139,250,.12));border-color:rgba(111,255,224,.35);color:#6fffe0;box-shadow:0 0 22px rgba(111,255,224,.08)}
+.filter-bottom{display:flex;align-items:center;gap:9px;border-top:1px solid rgba(255,255,255,.055);padding-top:12px}.filter-search{display:flex;align-items:center;gap:8px;flex:1;min-height:38px;border:1px solid rgba(255,255,255,.06);background:rgba(8,13,24,.4);border-radius:10px;padding:0 12px}.filter-search span{color:#6fffe0;font-size:18px}.filter-search input{width:100%;border:0;outline:0;background:transparent;color:#eaf4ff;padding:11px 0;font:inherit;font-size:11px}.filter-select{min-height:38px;border:1px solid rgba(255,255,255,.06);background:rgba(8,13,24,.4);color:#9da7ba;border-radius:10px;padding:10px 11px;font:inherit;font-size:10px}.filter-count{white-space:nowrap;color:#7d8899;font-size:10px}
 .section .cards-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .section .card{min-width:0}
 @media(min-width:1250px){.section .cards-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
@@ -1436,8 +1435,6 @@ body{overflow-x:hidden!important}
     <button class="filter-pill" data-filter="windows" type="button">WINDOWS</button>
     <button class="filter-pill" data-filter="cloud" type="button">CLOUD</button>
     <button class="filter-pill" data-filter="ai" type="button">AI</button>
-    <button class="filter-pill" data-filter="binary" type="button">BINARY</button>
-    <button class="filter-pill" data-filter="mobile" type="button">MOBILE / IoT</button>
     <button class="filter-pill" data-filter="vuln" type="button">VULNERABILITIES</button>
   </div>
   <div class="filter-bottom">

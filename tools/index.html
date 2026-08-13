@@ -26,6 +26,22 @@
                 #0a0a0f;
             z-index: 0;
         }
+        .stars {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .star {
+            position: absolute;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            animation: twinkle var(--d) ease-in-out infinite alternate;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0.15; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.5); }
+        }
         .container {
             position: relative;
             z-index: 1;
@@ -141,6 +157,117 @@
             color: #fff;
         }
         .btn:hover { transform: translateY(-2px); }
+        .footer {
+            margin-top: 3rem;
+            padding: 1.75rem 1.4rem 1.1rem;
+            border: 1px solid rgba(111, 255, 224, 0.08);
+            border-radius: 1.5rem;
+            background: linear-gradient(180deg, rgba(11, 16, 25, 0.7), rgba(9, 12, 18, 0.9));
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            box-shadow: 0 18px 40px rgba(0,0,0,0.14);
+        }
+        .footer-brand {
+            flex: 1.4;
+            min-width: 240px;
+        }
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            margin-bottom: 0.7rem;
+            color: #6fffe0;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+        }
+        .footer-logo img { width: 34px; height: 34px; }
+        .footer-brand p {
+            margin: 0;
+            color: rgba(255,255,255,0.62);
+            line-height: 1.7;
+            max-width: 420px;
+        }
+        .footer-links {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(120px, 1fr));
+            gap: 1rem 1.5rem;
+        }
+        .footer-links h4 {
+            margin: 0 0 0.55rem;
+            color: #eaf4ff;
+            font-size: 0.8rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+        .footer-links a {
+            display: block;
+            color: rgba(255,255,255,0.66);
+            text-decoration: none;
+            margin: 0.35rem 0;
+            transition: 0.2s ease;
+        }
+        .footer-links a:hover {
+            color: #6fffe0;
+            transform: translateX(2px);
+        }
+        .footer-social {
+            flex: 0 0 auto;
+            display: flex;
+            gap: 0.9rem;
+            padding-top: 0.35rem;
+        }
+        .footer-social a {
+            color: rgba(255,255,255,0.72);
+            font-size: 1.1rem;
+            width: 2.2rem;
+            height: 2.2rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 1px solid rgba(111,255,224,0.08);
+            background: rgba(255,255,255,0.02);
+            transition: all 0.3s ease;
+        }
+        .footer-social a:hover {
+            color: #6fffe0;
+            border-color: rgba(111, 255, 224, 0.22);
+            background: rgba(111,255,224,0.04);
+            transform: translateY(-3px);
+            box-shadow: 0 0 24px rgba(111,255,224,0.08);
+        }
+        .mouse-trail {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: #6fffe0;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            box-shadow: 0 0 20px rgba(111,255,224,0.5), 0 0 60px rgba(111,255,224,0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s;
+        }
+        .mouse-glow-effect {
+            position: fixed;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(111,255,224,0.06), transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+        .mouse-glow-effect.active {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(111,255,224,0.12), transparent 70%);
+        }
         @media (max-width: 720px) {
             .header { flex-direction: column; }
             .nav { display: flex; flex-wrap: wrap; justify-content: center; }
@@ -150,6 +277,9 @@
 </head>
 <body>
     <div class="bg"></div>
+    <div class="stars" id="stars"></div>
+    <div class="mouse-trail" id="mouseTrail"></div>
+    <div class="mouse-glow-effect" id="mouseGlowEffect"></div>
     <div class="container">
         <header class="header">
             <div class="logo">
@@ -251,22 +381,88 @@
             <a href="/research" class="btn btn-secondary"><i class="fas fa-book-open"></i> Research Notes</a>
         </div>
 
-        <footer class="footer" style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(111,255,224,0.12); display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
-            <p style="margin: 0; color: rgba(255,255,255,0.5);">© 2026 · NIGHT PULSE X</p>
-            <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
-                <a href="/about" style="color: rgba(255,255,255,0.6); text-decoration: none;">About</a>
-                <a href="/projects" style="color: rgba(255,255,255,0.6); text-decoration: none;">Projects</a>
-                <a href="/writeups" style="color: rgba(255,255,255,0.6); text-decoration: none;">Writeups</a>
-                <a href="/updates" style="color: rgba(255,255,255,0.6); text-decoration: none;">Updates</a>
-                <a href="/timeline" style="color: rgba(255,255,255,0.6); text-decoration: none;">Timeline</a>
-                <a href="/contact" style="color: rgba(255,255,255,0.6); text-decoration: none;">Contact</a>
+        <footer class="footer">
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <img src="../assets/images/npx-logo.svg" alt="NPX" />
+                    <span>NIGHT PULSE X</span>
+                </div>
+                <p>Tools and workflows selected for utility and clarity, not for collecting noise or decoration.</p>
             </div>
-            <div style="display: flex; gap: 1rem; font-size: 1.1rem;">
-                <a href="https://github.com/npx-official" target="_blank" rel="noopener noreferrer" style="color: rgba(255,255,255,0.7);"><i class="fab fa-github"></i></a>
-                <a href="https://app.hackthebox.com/users/2207141" target="_blank" rel="noopener noreferrer" style="color: rgba(255,255,255,0.7);"><i class="fas fa-shield-halved"></i></a>
-                <a href="https://tryhackme.com/p/npx.off" target="_blank" rel="noopener noreferrer" style="color: rgba(255,255,255,0.7);"><i class="fas fa-user-secret"></i></a>
+            <div class="footer-links">
+                <div>
+                    <h4>Explore</h4>
+                    <a href="/about">About</a>
+                    <a href="/projects">Projects</a>
+                    <a href="/writeups">Writeups</a>
+                </div>
+                <div>
+                    <h4>More</h4>
+                    <a href="/roadmaps">Roadmaps</a>
+                    <a href="/research">Research</a>
+                    <a href="/contact">Contact</a>
+                </div>
+            </div>
+            <div class="footer-social">
+                <a href="https://github.com/npx-official" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
+                <a href="https://app.hackthebox.com/users/2207141" target="_blank" rel="noopener noreferrer"><i class="fas fa-shield-halved"></i></a>
+                <a href="https://tryhackme.com/p/npx.off" target="_blank" rel="noopener noreferrer"><i class="fas fa-user-secret"></i></a>
+                <a href="https://www.linkedin.com/in/night-pulse-x-337a89275" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
             </div>
         </footer>
     </div>
+    <script>
+        (function() {
+            const container = document.getElementById('stars');
+            if (!container) return;
+            for (let i = 0; i < 80; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 3 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.setProperty('--d', (2 + Math.random() * 4) + 's');
+                star.style.animationDelay = (Math.random() * 5) + 's';
+                star.style.opacity = Math.random() * 0.5 + 0.2;
+                container.appendChild(star);
+            }
+        })();
+
+        (function() {
+            const trail = document.getElementById('mouseTrail');
+            const glow = document.getElementById('mouseGlowEffect');
+            if (!trail || !glow) return;
+            let x = 0, y = 0;
+            let trailX = 0, trailY = 0;
+
+            document.addEventListener('mousemove', (e) => {
+                x = e.clientX;
+                y = e.clientY;
+                glow.style.left = x + 'px';
+                glow.style.top = y + 'px';
+                glow.classList.add('active');
+                clearTimeout(window.glowTimeout);
+                window.glowTimeout = setTimeout(() => glow.classList.remove('active'), 200);
+            });
+
+            setInterval(() => {
+                trailX += (x - trailX) * 0.15;
+                trailY += (y - trailY) * 0.15;
+                trail.style.left = trailX + 'px';
+                trail.style.top = trailY + 'px';
+            }, 16);
+
+            document.addEventListener('mouseleave', () => {
+                trail.style.opacity = '0';
+                glow.style.opacity = '0';
+            });
+            document.addEventListener('mouseenter', () => {
+                trail.style.opacity = '1';
+                glow.style.opacity = '1';
+            });
+        })();
+    </script>
 </body>
 </html>
