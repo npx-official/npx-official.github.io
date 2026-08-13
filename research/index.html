@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Security research, writeups, tools, and practical learning resources from NIGHT PULSE X." />
     <meta name="referrer" content="no-referrer" />
     <title>Research Notes • NIGHT PULSE X</title>
     <link rel="icon" href="../assets/images/favicon.ico" />
@@ -347,19 +348,45 @@
             .nav a { margin: 0.3rem 0.5rem; }
         }
     </style>
+    <meta property="og:title" content="NIGHT PULSE X" />
+    <meta property="og:description" content="Security research, writeups, tools, and practical learning resources from NIGHT PULSE X." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://npx-official.github.io/" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <style>
+        .skip-link {
+            position: absolute;
+            left: 1rem;
+            top: -3rem;
+            z-index: 2000;
+            background: #6fffe0;
+            color: #0a0a0f;
+            padding: 0.75rem 1rem;
+            border-radius: 999px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: top 0.2s ease;
+        }
+        .skip-link:focus {
+            top: 1rem;
+        }
+    </style>
+
 </head>
 <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <div class="bg"></div>
     <div class="stars" id="stars"></div>
     <div class="mouse-trail" id="mouseTrail"></div>
     <div class="mouse-glow-effect" id="mouseGlowEffect"></div>
-    <div class="container">
+    <div class="container" id="main-content">
         <header class="header">
             <div class="logo">
                 <img src="../assets/images/npx-logo.svg" alt="NPX" />
                 <span>NIGHT PULSE X</span>
             </div>
-            <nav class="nav">
+            <nav aria-label="Main navigation" class="nav">
                 <a href="/" ><i class="fas fa-house"></i> Home</a>
                 <a href="/about"><i class="fas fa-user-astronaut"></i> About</a>
                 <a href="/updates"><i class="fas fa-bolt"></i> Updates</a>

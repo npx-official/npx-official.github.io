@@ -1362,8 +1362,35 @@ html[dir="rtl"] .v22-search input,html[dir="rtl"] input{direction:rtl}
 }
 </style>
 
+    <meta property="og:title" content="NIGHT PULSE X" />
+    <meta property="og:description" content="Security research, writeups, tools, and practical learning resources from NIGHT PULSE X." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://npx-official.github.io/" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <style>
+        .skip-link {
+            position: absolute;
+            left: 1rem;
+            top: -3rem;
+            z-index: 2000;
+            background: #6fffe0;
+            color: #0a0a0f;
+            padding: 0.75rem 1rem;
+            border-radius: 999px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: top 0.2s ease;
+        }
+        .skip-link:focus {
+            top: 1rem;
+        }
+    </style>
+
 </head>
 <body>
+    <div id="main-content"></div>
+    <a class="skip-link" href="#main-content">Skip to content</a>
 <div class="v81-progress" id="v81Progress"></div>
 <!-- ═══════════════════════ HEADER ═══════════════════════ -->
 <header class="header">
@@ -1390,7 +1417,7 @@ html[dir="rtl"] .v22-search input,html[dir="rtl"] input{direction:rtl}
 </div>
 </header>
 <!-- ═══════════════════════ SIDEBAR ═══════════════════════ -->
-<nav class="sidebar">
+<nav aria-label="Main navigation" class="sidebar">
 <div class="nav-section-label">Navigation</div>
 <a class="nav-item active" href="#overview"><span class="nav-icon">◈</span> Overview</a><a class="nav-item npx26-nav" href="#npx26-command-center"><span class="nav-icon">⚡</span> Research & Career <span class="nav-count">NEW</span></a><a class="nav-item" href="#npx25-attack-tree"><span class="nav-icon">⌁</span> Discovery Tree</a>
 <a class="nav-item" href="#v18-guided-path"><span class="nav-icon">→</span> Guided Path</a>
@@ -7735,7 +7762,7 @@ html[dir="rtl"] .v22-search input,html[dir="rtl"] input{direction:rtl}
 <h2>Security Research Expansion</h2>
 <p>Expanded coverage inspired by the current HackTricks repository structure and Cloud/AD research areas. This layer is organized for authorized assessments, CTFs and defensive validation.</p>
 </div>
-<nav class="npx-v24-nav"><a href="#v24-network-services">Network Services</a><a href="#v24-active-directory">Active Directory</a><a href="#v24-cloud-security">Cloud Security</a><a href="#v24-containers-kubernetes">Containers &amp; Kubernetes</a><a href="#v24-ci-cd-supply-chain">CI/CD &amp; Supply Chain</a><a href="#v24-mobile-iot-firmware">Mobile / IoT / Firmware</a><a href="#v24-binary-reverse-engineering">Binary &amp; Reverse Engineering</a><a href="#v24-macos-unix-security">MacOS / Unix Security</a><a href="#v24-ai-llm-security">AI / LLM Security</a><a href="#v24-research-workflow">Research Workflow</a></nav>
+<nav aria-label="Main navigation" class="npx-v24-nav"><a href="#v24-network-services">Network Services</a><a href="#v24-active-directory">Active Directory</a><a href="#v24-cloud-security">Cloud Security</a><a href="#v24-containers-kubernetes">Containers &amp; Kubernetes</a><a href="#v24-ci-cd-supply-chain">CI/CD &amp; Supply Chain</a><a href="#v24-mobile-iot-firmware">Mobile / IoT / Firmware</a><a href="#v24-binary-reverse-engineering">Binary &amp; Reverse Engineering</a><a href="#v24-macos-unix-security">MacOS / Unix Security</a><a href="#v24-ai-llm-security">AI / LLM Security</a><a href="#v24-research-workflow">Research Workflow</a></nav>
 <section class="npx-v24-section" id="v24-network-services"><header><span>14 MODULES</span><h3>Network Services</h3></header><article class="npx-v24-card">
 <h4>RPC / MS-RPC</h4>
 <p><strong>Focus:</strong> Map RPC endpoints and the trust relationships they expose.</p>

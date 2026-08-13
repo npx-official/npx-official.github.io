@@ -4,6 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="referrer" content="no-referrer" />
+    <meta name="description" content="NIGHT PULSE X is a security research and offensive security portfolio covering penetration testing, writeups, tools, roadmaps, and practical knowledge." />
+    <meta name="keywords" content="security research, penetration testing, cyber security, writeups, bug bounty, red team, HTB, TryHackMe, tools, roadmaps" />
+    <meta name="theme-color" content="#0a0a0f" />
+    <meta property="og:title" content="NIGHT PULSE X" />
+    <meta property="og:description" content="Security research, practical writeups, tools, and learning resources for offensive security." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://npx-official.github.io" />
+    <meta property="og:image" content="https://npx-official.github.io/assets/images/avatar.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="NIGHT PULSE X" />
+    <meta name="twitter:description" content="Cybersecurity research, writeups, and pentesting resources." />
+    <link rel="canonical" href="https://npx-official.github.io/" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' data: https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';" />
     <title>NIGHT PULSE X • Home</title>
     <link rel="icon" href="assets/images/favicon.ico" />
@@ -65,6 +77,34 @@
             z-index: 1;
         }
         
+        .skip-link {
+            position: absolute;
+            left: 1rem;
+            top: -3rem;
+            z-index: 2000;
+            background: #6fffe0;
+            color: #0a0a0f;
+            padding: 0.75rem 1rem;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: top 0.2s ease;
+        }
+        .skip-link:focus {
+            top: 1rem;
+        }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
         /* ====== HEADER ====== */
         .header {
             display: flex;
@@ -807,6 +847,7 @@
     </style>
 </head>
 <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
 
     <!-- ====== BACKGROUNDS ====== -->
     <div class="bg-animation"></div>
@@ -815,7 +856,7 @@
     <div class="mouse-glow-effect" id="mouseGlowEffect"></div>
 
     <!-- ====== CONTAINER ====== -->
-    <div class="container">
+    <div class="container" id="main-content">
 
         <!-- ====== HEADER ====== -->
         <header class="header">
@@ -823,7 +864,7 @@
                 <img src="assets/images/npx-logo.svg" alt="NPX" />
                 <span>NIGHT PULSE X</span>
             </div>
-            <nav class="nav">
+            <nav class="nav" aria-label="Main navigation">
                 <a href="/" class="active"><i class="fas fa-house"></i> Home</a>
                 <a href="/about"><i class="fas fa-user-astronaut"></i> About</a>
                 <a href="/updates"><i class="fas fa-bolt"></i> Updates</a>
@@ -834,9 +875,10 @@
         </header>
 
         <!-- ====== HERO ====== -->
-        <section class="hero">
+        <main>
+        <section class="hero" aria-labelledby="home-title">
             <img src="assets/images/avatar.png" alt="NIGHT PULSE X" class="avatar" />
-            <h1>NIGHT PULSE X</h1>
+            <h1 id="home-title">NIGHT PULSE X</h1>
             <p>Penetration Testing • Security Research • Future Ready</p>
             <div class="hero-buttons">
                 <a href="/writeups" class="btn btn-primary"><i class="fas fa-book"></i> Explore Writeups</a>
@@ -844,10 +886,11 @@
             </div>
             <div class="search-wrap">
                 <i class="fas fa-search search-icon"></i>
-                <input id="siteSearch" class="search-box" type="text" placeholder="Search pages, tools, roadmaps, and notes..." aria-label="Site search" />
-                <ul id="searchResults" class="search-results"></ul>
+                <label class="sr-only" for="siteSearch">Search the site</label>
+                <input id="siteSearch" class="search-box" type="text" placeholder="Search pages, tools, roadmaps, and notes..." aria-label="Site search" aria-expanded="false" aria-controls="searchResults" />
+                <ul id="searchResults" class="search-results" aria-live="polite"></ul>
             </div>
-            <div class="stats">
+            <div class="stats" aria-label="Site statistics">
                 <div class="stat">
                     <h3 id="totalWriteups">36</h3>
                     <span>Total Writeups</span>
@@ -1110,11 +1153,16 @@
         const searchInput = document.getElementById('siteSearch');
         const searchResults = document.getElementById('searchResults');
         if (searchInput && searchResults) {
+            const updateSearchState = (isOpen) => {
+                searchResults.style.display = isOpen ? 'block' : 'none';
+                searchInput.setAttribute('aria-expanded', String(isOpen));
+            };
+
             searchInput.addEventListener('input', (event) => {
                 const query = event.target.value.trim().toLowerCase();
                 if (!query) {
                     searchResults.innerHTML = '';
-                    searchResults.style.display = 'none';
+                    updateSearchState(false);
                     return;
                 }
 
@@ -1125,19 +1173,25 @@
 
                 if (!matches.length) {
                     searchResults.innerHTML = '<li><a href="#"><span>Nothing found</span><span class="kind">Try another term</span></a></li>';
-                    searchResults.style.display = 'block';
+                    updateSearchState(true);
                     return;
                 }
 
                 searchResults.innerHTML = matches.map(page => `
                     <li><a href="${page.url}"><span>${page.label}</span><span class="kind">${page.kind}</span></a></li>
                 `).join('');
-                searchResults.style.display = 'block';
+                updateSearchState(true);
+            });
+
+            searchInput.addEventListener('focus', () => {
+                if (searchInput.value.trim()) {
+                    updateSearchState(true);
+                }
             });
 
             document.addEventListener('click', (event) => {
-                if (!event.target.closest('.search-box')) {
-                    searchResults.style.display = 'none';
+                if (!event.target.closest('.search-box') && !event.target.closest('.search-results')) {
+                    updateSearchState(false);
                 }
             });
         }
