@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="no-referrer" />
     <title>Bug Bounty Learning Path • NIGHT PULSE X</title>
     <link rel="icon" href="../../assets/images/favicon.ico" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -1077,6 +1078,26 @@
                         }
                     });
                 });
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('a[href]').forEach(link => {
+                const href = (link.getAttribute('href') || '').trim();
+                const isExternal = /^https?:\/\//i.test(href) || href.startsWith('//');
+                if (!isExternal) return;
+
+                link.setAttribute('referrerpolicy', 'no-referrer');
+                const relParts = new Set((link.getAttribute('rel') || '').split(/\s+/).filter(Boolean));
+                relParts.add('noopener');
+                relParts.add('noreferrer');
+                link.setAttribute('rel', Array.from(relParts).join(' '));
+            });
+
+            document.querySelectorAll('meta[name="referrer"]').forEach(meta => {
+                meta.setAttribute('content', 'no-referrer');
             });
         });
     </script>

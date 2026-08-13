@@ -410,6 +410,103 @@
             gap: 1.5rem;
             margin: 3rem 0;
         }
+        .feature-section {
+            margin-top: 4rem;
+        }
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin: 1rem 0 1.5rem;
+        }
+        .filter-btn {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(111, 255, 224, 0.12);
+            color: rgba(255,255,255,0.7);
+            padding: 0.7rem 1rem;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 600;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background: rgba(111, 255, 224, 0.08);
+            border-color: rgba(111, 255, 224, 0.35);
+            color: #6fffe0;
+            transform: translateY(-2px);
+        }
+        .path-grid, .timeline-grid, .resource-grid, .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.25rem;
+        }
+        .path-card, .tool-card, .resource-card, .timeline-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(111, 255, 224, 0.08);
+            border-radius: 1.25rem;
+            padding: 1.25rem;
+            transition: 0.3s;
+        }
+        .path-card:hover, .tool-card:hover, .resource-card:hover, .timeline-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(111, 255, 224, 0.35);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+        }
+        .path-card .path-tag, .tool-card .tool-tag {
+            display: inline-block;
+            padding: 0.35rem 0.7rem;
+            border-radius: 999px;
+            font-size: 0.7rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            background: rgba(111, 255, 224, 0.08);
+            color: #6fffe0;
+            margin-bottom: 0.7rem;
+            border: 1px solid rgba(111, 255, 224, 0.12);
+        }
+        .path-card h4, .tool-card h4, .resource-card h4, .timeline-card h4 {
+            margin: 0 0 0.5rem;
+            color: #fff;
+        }
+        .path-card p, .tool-card p, .resource-card p, .timeline-card p {
+            color: rgba(255,255,255,0.55);
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+        .path-card ul, .resource-card ul {
+            margin: 0.8rem 0 0;
+            padding-left: 1rem;
+            color: rgba(255,255,255,0.7);
+            list-style: disc;
+        }
+        .tool-card .tool-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+        .timeline-card {
+            position: relative;
+            padding-left: 1rem;
+        }
+        .timeline-card::before {
+            content: "";
+            position: absolute;
+            left: -0.15rem;
+            top: 1.2rem;
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            background: #6fffe0;
+            box-shadow: 0 0 12px rgba(111,255,224,0.5);
+        }
+        .timeline-card .timeline-year {
+            font-size: 0.72rem;
+            color: #6fffe0;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
         .quick-card {
             background: rgba(255,255,255,0.02);
             border: 1px solid rgba(111, 255, 224, 0.06);
@@ -607,6 +704,69 @@
                 <a href="/writeups">Explore →</a>
             </div>
         </div>
+
+        <section class="feature-section">
+            <h2 class="section-title"><i class="fas fa-route"></i> Learning Paths</h2>
+            <div class="filter-bar">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="web">Web</button>
+                <button class="filter-btn" data-filter="redteam">Red Team</button>
+                <button class="filter-btn" data-filter="cloud">Cloud</button>
+            </div>
+            <div class="path-grid" id="learningPaths"></div>
+        </section>
+
+        <section class="feature-section">
+            <h2 class="section-title"><i class="fas fa-tools"></i> Tools & Stack</h2>
+            <div class="tool-grid">
+                <div class="tool-card">
+                    <span class="tool-icon">🔎</span>
+                    <span class="tool-tag">Recon</span>
+                    <h4>Nmap</h4>
+                    <p>Port discovery, service detection, and enumeration with structured scanning workflows.</p>
+                </div>
+                <div class="tool-card">
+                    <span class="tool-icon">🧪</span>
+                    <span class="tool-tag">Web</span>
+                    <h4>Burp Suite</h4>
+                    <p>Intercepting proxy and traffic inspection for web testing and API analysis.</p>
+                </div>
+                <div class="tool-card">
+                    <span class="tool-icon">⚡</span>
+                    <span class="tool-tag">Discovery</span>
+                    <h4>FFUF</h4>
+                    <p>Fast fuzzing for directories, subdomains, and hidden application endpoints.</p>
+                </div>
+                <div class="tool-card">
+                    <span class="tool-icon">📦</span>
+                    <span class="tool-tag">Cloud</span>
+                    <h4>AWS / Azure</h4>
+                    <p>Identity review, public exposure testing, and security posture checks.</p>
+                </div>
+                <div class="tool-card">
+                    <span class="tool-icon">🖥️</span>
+                    <span class="tool-tag">Ops</span>
+                    <h4>Linux / Bash</h4>
+                    <p>Automation, scripting, enumeration, and task execution in real-world labs.</p>
+                </div>
+                <div class="tool-card">
+                    <span class="tool-icon">🔐</span>
+                    <span class="tool-tag">Defense</span>
+                    <h4>Security Mindset</h4>
+                    <p>Threat modeling, validation, forensic thinking, and careful exploitation boundaries.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="feature-section">
+            <h2 class="section-title"><i class="fas fa-book"></i> Security Resources</h2>
+            <div class="resource-grid" id="resourceGrid"></div>
+        </section>
+
+        <section class="feature-section">
+            <h2 class="section-title"><i class="fas fa-chart-line"></i> Journey Timeline</h2>
+            <div class="timeline-grid" id="timelineGrid"></div>
+        </section>
 
         <footer class="footer">
             <p><i class="fas fa-circle" style="color: #6fffe0; font-size: 0.5rem;"></i> 2026 · NIGHT PULSE X</p>
@@ -835,6 +995,97 @@
 
             console.log(`[✓] Loaded ${featuredProjects.length} featured projects!`);
         })();
+
+        const learningPaths = [
+            {
+                title: 'Web Security Track',
+                tag: 'Web',
+                filter: 'web',
+                description: 'From recon and enumeration to XSS, auth bypass, SSRF, and business logic flaws.',
+                items: ['HTTP fundamentals', 'Burp workflow', 'Parameter tampering', 'API testing', 'Auth & authz']
+            },
+            {
+                title: 'Red Team Foundations',
+                tag: 'Red Team',
+                filter: 'redteam',
+                description: 'Hands-on path focused on attack paths, privilege escalation, and structured tradecraft.',
+                items: ['Recon', 'Privilege escalation', 'Post-exploitation', 'AD fundamentals', 'Operational security']
+            },
+            {
+                title: 'Cloud Security Path',
+                tag: 'Cloud',
+                filter: 'cloud',
+                description: 'Secure design review, IAM hygiene, public exposure checks, and misconfiguration analysis.',
+                items: ['AWS identity review', 'Public exposure checks', 'Security groups', 'Data exposure mapping', 'Hardening']
+            },
+            {
+                title: 'Bug Bounty Workflow',
+                tag: 'Web',
+                filter: 'web',
+                description: 'Program triage, recon flow, impact validation, and responsible disclosure mindset.',
+                items: ['Target selection', 'Scope review', 'Manual testing', 'Evidence gathering', 'Responsible disclosure']
+            }
+        ];
+
+        const resourceData = [
+            { title: 'OWASP', text: 'Web security principles and major risk coverage.', url: 'https://owasp.org/' },
+            { title: 'PortSwigger', text: 'Advanced web security labs and practical learning.', url: 'https://portswigger.net/' },
+            { title: 'HTB Academy', text: 'Realistic training paths with guided labs.', url: 'https://academy.hackthebox.com/' },
+            { title: 'TryHackMe', text: 'Hands-on security rooms and structured progression.', url: 'https://tryhackme.com/' },
+            { title: 'CISA KEV', text: 'Known exploited vulnerabilities and active risk catalog.', url: 'https://www.cisa.gov/known-exploited-vulnerabilities-catalog' },
+            { title: 'NVD', text: 'Vulnerability references and security advisories.', url: 'https://nvd.nist.gov/vuln' }
+        ];
+
+        const timelineData = [
+            { year: '2024', title: 'Foundation', text: 'Built the base security portfolio and started consolidating writeups and learning notes.' },
+            { year: '2025', title: 'Expansion', text: 'Expanded into more machines, labs, and research documentation across web and infrastructure topics.' },
+            { year: '2026', title: 'Knowledge Hub', text: 'Transformed the site into a richer security knowledge base with structured learning and project showcases.' }
+        ];
+
+        const pathRoot = document.getElementById('learningPaths');
+        if (pathRoot) {
+            pathRoot.innerHTML = learningPaths.map(path => `
+                <div class="path-card" data-filter="${path.filter}">
+                    <span class="path-tag">${path.tag}</span>
+                    <h4>${path.title}</h4>
+                    <p>${path.description}</p>
+                    <ul>${path.items.map(item => `<li>${item}</li>`).join('')}</ul>
+                </div>
+            `).join('');
+        }
+
+        const resourceRoot = document.getElementById('resourceGrid');
+        if (resourceRoot) {
+            resourceRoot.innerHTML = resourceData.map(item => `
+                <div class="resource-card">
+                    <h4>${item.title}</h4>
+                    <p>${item.text}</p>
+                    <ul><li><a href="${item.url}" target="_blank" rel="noopener noreferrer">Open resource</a></li></ul>
+                </div>
+            `).join('');
+        }
+
+        const timelineRoot = document.getElementById('timelineGrid');
+        if (timelineRoot) {
+            timelineRoot.innerHTML = timelineData.map(item => `
+                <div class="timeline-card">
+                    <span class="timeline-year">${item.year}</span>
+                    <h4>${item.title}</h4>
+                    <p>${item.text}</p>
+                </div>
+            `).join('');
+        }
+
+        document.querySelectorAll('.filter-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const selected = button.dataset.filter;
+                document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.toggle('active', btn === button));
+                document.querySelectorAll('.path-card').forEach(card => {
+                    const show = selected === 'all' || card.dataset.filter === selected;
+                    card.style.display = show ? 'block' : 'none';
+                });
+            });
+        });
 
         // ====== PAGE ROUTING ======
         (function() {
