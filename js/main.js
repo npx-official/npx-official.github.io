@@ -1,4 +1,4 @@
-// ====== PRELOADER ======
+// ====== SAFETY HARDENING ======
 document.addEventListener('DOMContentLoaded', () => {
     const preloader = document.getElementById('preloader');
     if (preloader) {
@@ -6,6 +6,26 @@ document.addEventListener('DOMContentLoaded', () => {
             preloader.classList.add('hidden');
         }, 1500);
     }
+
+    document.querySelectorAll('a[href]').forEach(link => {
+        const href = (link.getAttribute('href') || '').trim();
+        const isExternal = /^https?:\/\//i.test(href) || href.startsWith('//');
+
+        if (isExternal) {
+            link.setAttribute('referrerpolicy', 'no-referrer');
+        }
+
+        if (link.target === '_blank' || isExternal) {
+            const relParts = new Set((link.getAttribute('rel') || '').split(/\s+/).filter(Boolean));
+            relParts.add('noopener');
+            relParts.add('noreferrer');
+            link.setAttribute('rel', Array.from(relParts).join(' '));
+        }
+    });
+
+    document.querySelectorAll('meta[name="referrer"]').forEach(meta => {
+        meta.setAttribute('content', 'no-referrer');
+    });
 });
 
 // ====== MOUSE GLOW ======

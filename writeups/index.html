@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="no-referrer" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' data: https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';" />
     <title>Writeups • NIGHT PULSE X</title>
     <link rel="icon" href="/assets/images/favicon.ico" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -267,17 +269,17 @@
             
             <!-- السطر الأول: الأزرار الرئيسية -->
             <div class="filter-row">
-                <button class="filter-btn active" data-filter="all" onclick="closeAllSubs()">All</button>
+                <button class="filter-btn active" data-filter="all">All</button>
                 
-                <button class="filter-btn" data-filter="htb" onclick="toggleSub('htbSub')">
+                <button class="filter-btn" data-filter="htb" data-submenu="htbSub">
                     <i class="fas fa-shield-halved"></i> Hack The Box
                 </button>
                 
-                <button class="filter-btn" data-filter="tryhackme" onclick="toggleSub('thmSub')">
+                <button class="filter-btn" data-filter="tryhackme" data-submenu="thmSub">
                     <i class="fas fa-user-secret"></i> TryHackMe
                 </button>
                 
-                <button class="filter-btn" data-filter="hacker101" onclick="toggleSub('h101Sub')">
+                <button class="filter-btn" data-filter="hacker101" data-submenu="h101Sub">
                     <i class="fas fa-shield"></i> Hacker101
                 </button>
             </div>
@@ -315,114 +317,130 @@
         <footer class="footer">
             <p><i class="fas fa-circle" style="color: #6fffe0; font-size: 0.5rem;"></i> 2026 · NIGHT PULSE X</p>
             <div class="social">
-                <a href="https://github.com/npx-official" target="_blank"><i class="fab fa-github"></i></a>
-                <a href="https://app.hackthebox.com/users/2207141" target="_blank"><i class="fas fa-shield-halved"></i></a>
-                <a href="https://tryhackme.com/p/npx.off" target="_blank"><i class="fas fa-user-secret"></i></a>
-                <a href="https://www.linkedin.com/in/night-pulse-x-337a89275" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="https://github.com/npx-official" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
+                <a href="https://app.hackthebox.com/users/2207141" target="_blank" rel="noopener noreferrer"><i class="fas fa-shield-halved"></i></a>
+                <a href="https://tryhackme.com/p/npx.off" target="_blank" rel="noopener noreferrer"><i class="fas fa-user-secret"></i></a>
+                <a href="https://www.linkedin.com/in/night-pulse-x-337a89275" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
             </div>
         </footer>
 
     </div>
 
     <script>
-        // نجوم
-        (function() {
-            const container = document.getElementById('stars');
-            for (let i = 0; i < 80; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                const size = Math.random() * 3 + 1;
-                star.style.width = size + 'px';
-                star.style.height = size + 'px';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.setProperty('--d', (2 + Math.random() * 4) + 's');
-                star.style.animationDelay = (Math.random() * 5) + 's';
-                star.style.opacity = Math.random() * 0.5 + 0.2;
-                container.appendChild(star);
-            }
-        })();
-
-        // ====== دوال إظهار/إخفاء القوائم الفرعية مع التصفية ======
-        function toggleSub(id) {
-            const el = document.getElementById(id);
-            const isVisible = el.classList.contains('show');
-            
-            // إغلاق جميع القوائم الفرعية أولاً
-            closeAllSubs();
-            
-            // إذا كانت مغلقة، افتحها
-            if (!isVisible) {
-                el.classList.add('show');
-                // تفعيل التصفية للمنصة الرئيسية (لإظهار كل ما يتبعها)
-                applyFilterFromBtn(el.parentElement.querySelector(`[onclick*="${id}"]`));
-            }
-        }
-
         function closeAllSubs() {
             document.querySelectorAll('.sub-filters').forEach(el => {
                 el.classList.remove('show');
             });
         }
 
-        // دالة مساعدة لتطبيق التصفية عند فتح القائمة
-        function applyFilterFromBtn(btn) {
-            if (btn) {
-                // إزالة active من جميع الأزرار
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                
-                // استدعاء دالة التصفية من ملف writeups.js
-                if (typeof applyFilter === 'function') {
-                    applyFilter(btn.dataset.filter);
-                }
+        function toggleSub(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const isVisible = el.classList.contains('show');
+            closeAllSubs();
+            if (!isVisible) {
+                el.classList.add('show');
             }
         }
+
+        function applyFilterFromBtn(btn) {
+            if (!btn) return;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            if (typeof applyFilter === 'function') {
+                applyFilter(btn.dataset.filter);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('stars');
+            if (container) {
+                for (let i = 0; i < 80; i++) {
+                    const star = document.createElement('div');
+                    star.className = 'star';
+                    const size = Math.random() * 3 + 1;
+                    star.style.width = size + 'px';
+                    star.style.height = size + 'px';
+                    star.style.left = Math.random() * 100 + '%';
+                    star.style.top = Math.random() * 100 + '%';
+                    star.style.setProperty('--d', (2 + Math.random() * 4) + 's');
+                    star.style.animationDelay = (Math.random() * 5) + 's';
+                    star.style.opacity = Math.random() * 0.5 + 0.2;
+                    container.appendChild(star);
+                }
+            }
+
+            document.querySelectorAll('.filter-btn[data-submenu]').forEach(button => {
+                button.addEventListener('click', () => {
+                    const submenuId = button.dataset.submenu;
+                    toggleSub(submenuId);
+                    applyFilterFromBtn(button);
+                });
+            });
+
+            document.querySelectorAll('.filter-btn[data-filter="all"]').forEach(button => {
+                button.addEventListener('click', () => {
+                    closeAllSubs();
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    button.classList.add('active');
+                    if (typeof applyFilter === 'function') {
+                        applyFilter('all');
+                    }
+                });
+            });
+
+            document.querySelectorAll('.sub-filters .filter-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    button.classList.add('active');
+                    closeAllSubs();
+                    if (typeof applyFilter === 'function') {
+                        applyFilter(button.dataset.filter);
+                    }
+                });
+            });
+        });
     </script>
 
     <script src="/js/writeups.js"></script>
     <script>
-        loadAllWriteups();
+        window.addEventListener('DOMContentLoaded', () => {
+            if (typeof loadAllWriteups === 'function') {
+                loadAllWriteups();
+            }
 
-        // Mouse effects
-        (function() {
-            const trail = document.getElementById("mouseTrail");
-            const glow = document.getElementById("mouseGlowEffect");
-            let x = 0, y = 0;
-            let trailX = 0, trailY = 0;
+            const trail = document.getElementById('mouseTrail');
+            const glow = document.getElementById('mouseGlowEffect');
+            if (trail && glow) {
+                let x = 0, y = 0;
+                let trailX = 0, trailY = 0;
 
-            document.addEventListener("mousemove", (e) => {
-                x = e.clientX; y = e.clientY;
-                glow.style.left = x + "px"; glow.style.top = y + "px";
-                glow.classList.add("active");
-                clearTimeout(window.glowTimeout);
-                window.glowTimeout = setTimeout(() => glow.classList.remove("active"), 200);
-            });
+                document.addEventListener('mousemove', (e) => {
+                    x = e.clientX; y = e.clientY;
+                    glow.style.left = x + 'px';
+                    glow.style.top = y + 'px';
+                    glow.classList.add('active');
+                    clearTimeout(window.glowTimeout);
+                    window.glowTimeout = setTimeout(() => glow.classList.remove('active'), 200);
+                });
 
-            setInterval(() => {
-                trailX += (x - trailX) * 0.15;
-                trailY += (y - trailY) * 0.15;
-                trail.style.left = trailX + "px";
-                trail.style.top = trailY + "px";
-            }, 16);
+                setInterval(() => {
+                    trailX += (x - trailX) * 0.15;
+                    trailY += (y - trailY) * 0.15;
+                    trail.style.left = trailX + 'px';
+                    trail.style.top = trailY + 'px';
+                }, 16);
 
-            document.addEventListener("mouseleave", () => {
-                trail.style.opacity = "0";
-                glow.style.opacity = "0";
-            });
-            document.addEventListener("mouseenter", () => {
-                trail.style.opacity = "1";
-                glow.style.opacity = "1";
-            });
-        })();
+                document.addEventListener('mouseleave', () => {
+                    trail.style.opacity = '0';
+                    glow.style.opacity = '0';
+                });
+                document.addEventListener('mouseenter', () => {
+                    trail.style.opacity = '1';
+                    glow.style.opacity = '1';
+                });
+            }
+        });
     </script>
-<script>
-    page('/', () => { window.location.href = 'index.html'; });
-    page('/about', () => { window.location.href = 'about.html'; });
-    page('/writeups', () => { window.location.href = 'writeups.html'; });
-    page('/certifications', () => { window.location.href = 'certifications.html'; });
-    page('/contact', () => { window.location.href = 'contact.html'; });
-    page();
-</script>
 </body>
 </html>

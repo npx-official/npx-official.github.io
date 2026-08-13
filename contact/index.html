@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="no-referrer" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' data: https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';" />
     <title>Contact • NIGHT PULSE X</title>
     <link rel="icon" href="../assets/images/favicon.ico" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -216,23 +218,23 @@
         <h1 class="page-title"><i class="fas fa-envelope"></i> Connect With Me</h1>
 
         <div class="social-grid">
-            <a href="https://github.com/npx-official" target="_blank" class="social-card">
+            <a href="https://github.com/npx-official" target="_blank" rel="noopener noreferrer" class="social-card">
                 <i class="fab fa-github"></i>
                 <h4>GitHub</h4>
             </a>
-            <a href="https://app.hackthebox.com/users/2207141" target="_blank" class="social-card">
+            <a href="https://app.hackthebox.com/users/2207141" target="_blank" rel="noopener noreferrer" class="social-card">
                 <i class="fas fa-shield-halved"></i>
                 <h4>Hack The Box</h4>
             </a>
-            <a href="https://tryhackme.com/p/npx.off" target="_blank" class="social-card">
+            <a href="https://tryhackme.com/p/npx.off" target="_blank" rel="noopener noreferrer" class="social-card">
                 <i class="fas fa-user-secret"></i>
                 <h4>TryHackMe</h4>
             </a>
-            <a href="https://www.linkedin.com/in/night-pulse-x-337a89275" target="_blank" class="social-card">
+            <a href="https://www.linkedin.com/in/night-pulse-x-337a89275" target="_blank" rel="noopener noreferrer" class="social-card">
                 <i class="fab fa-linkedin"></i>
                 <h4>LinkedIn</h4>
             </a>
-            <a href="https://discord.com/users/npx.official" target="_blank" class="social-card">
+            <a href="https://discord.com/users/npx.official" target="_blank" rel="noopener noreferrer" class="social-card">
                 <i class="fab fa-discord"></i>
                 <h4>Discord</h4>
             </a>
@@ -241,10 +243,10 @@
         <footer class="footer">
             <p><i class="fas fa-circle" style="color: #6fffe0; font-size: 0.5rem;"></i> 2026 · NIGHT PULSE X</p>
             <div class="social">
-                <a href="https://github.com/npx-official" target="_blank"><i class="fab fa-github"></i></a>
-                <a href="https://app.hackthebox.com/users/2207141" target="_blank"><i class="fas fa-shield-halved"></i></a>
-                <a href="https://tryhackme.com/p/npx.off" target="_blank"><i class="fas fa-user-secret"></i></a>
-                <a href="https://www.linkedin.com/in/night-pulse-x-337a89275" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="https://github.com/npx-official" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
+                <a href="https://app.hackthebox.com/users/2207141" target="_blank" rel="noopener noreferrer"><i class="fas fa-shield-halved"></i></a>
+                <a href="https://tryhackme.com/p/npx.off" target="_blank" rel="noopener noreferrer"><i class="fas fa-user-secret"></i></a>
+                <a href="https://www.linkedin.com/in/night-pulse-x-337a89275" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
             </div>
         </footer>
 
@@ -315,14 +317,5 @@
     </script>
 
     <script src="../js/main.js"></script>
-    <script>
-        page('/', () => { window.location.href = '../index.html'; });
-        page('/about', () => { window.location.href = '../about/index.html'; });
-        page('/writeups', () => { window.location.href = '../writeups/index.html'; });
-        page('/projects', () => { window.location.href = '../projects/index.html'; });
-        page('/certifications', () => { window.location.href = '../certifications/index.html'; });
-        page('/contact', () => { window.location.href = 'index.html'; });
-        page();
-    </script>
 </body>
 </html>
