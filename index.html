@@ -158,6 +158,63 @@
             justify-content: center;
             flex-wrap: wrap;
         }
+        .search-wrap {
+            max-width: 760px;
+            margin: 1.5rem auto 0;
+            position: relative;
+        }
+        .search-box {
+            width: 100%;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(111, 255, 224, 0.12);
+            border-radius: 999px;
+            padding: 1rem 1.2rem 1rem 3.2rem;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+        .search-box:focus {
+            border-color: rgba(111, 255, 224, 0.35);
+            box-shadow: 0 0 30px rgba(111, 255, 224, 0.12);
+        }
+        .search-icon {
+            position: absolute;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255,255,255,0.5);
+        }
+        .search-results {
+            display: none;
+            list-style: none;
+            margin: 0.8rem auto 0;
+            padding: 0.8rem 1rem;
+            max-width: 760px;
+            background: rgba(10,10,15,0.85);
+            border: 1px solid rgba(111,255,224,0.12);
+            border-radius: 1rem;
+            box-shadow: 0 18px 40px rgba(0,0,0,0.24);
+        }
+        .search-results li {
+            padding: 0.7rem 0.45rem;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .search-results li:last-child { border-bottom: none; }
+        .search-results a {
+            color: #eafcfa;
+            text-decoration: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+        .search-results .kind {
+            color: #6fffe0;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
         .btn {
             padding: 0.8rem 2rem;
             border-radius: 50px;
@@ -556,7 +613,7 @@
 
         .footer {
             margin-top: 3rem;
-            padding-top: 2rem;
+            padding: 2rem 0 0.5rem;
             border-top: 1px solid rgba(111, 255, 224, 0.06);
             display: flex;
             justify-content: space-between;
@@ -565,6 +622,17 @@
             gap: 1rem;
         }
         .footer p { color: rgba(255,255,255,0.2); font-size: 0.9rem; }
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .footer-links a {
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+        .footer-links a:hover { color: #6fffe0; }
         .social a {
             color: rgba(255,255,255,0.2);
             font-size: 1.2rem;
@@ -642,6 +710,11 @@
                 <a href="/writeups"><i class="fas fa-pen-fancy"></i> Writeups</a>
                 <a href="/projects"><i class="fas fa-code"></i> Projects</a>
                 <a href="/certifications"><i class="fas fa-certificate"></i> Certs</a>
+                <a href="/updates"><i class="fas fa-bolt"></i> Updates</a>
+                <a href="/roadmaps"><i class="fas fa-map"></i> Roadmaps</a>
+                <a href="/timeline"><i class="fas fa-clock"></i> Timeline</a>
+                <a href="/tools"><i class="fas fa-tools"></i> Tools</a>
+                <a href="/research"><i class="fas fa-book-open"></i> Research</a>
                 <a href="/contact"><i class="fas fa-envelope"></i> Contact</a>
             </nav>
         </header>
@@ -653,6 +726,11 @@
             <div class="hero-buttons">
                 <a href="/writeups" class="btn btn-primary"><i class="fas fa-book"></i> Explore Writeups</a>
                 <a href="/about" class="btn btn-secondary"><i class="fas fa-user"></i> About Me</a>
+            </div>
+            <div class="search-wrap">
+                <i class="fas fa-search search-icon"></i>
+                <input id="siteSearch" class="search-box" type="text" placeholder="Search pages, tools, roadmaps, and notes..." aria-label="Site search" />
+                <ul id="searchResults" class="search-results"></ul>
             </div>
             <div class="stats">
                 <div class="stat">
@@ -770,6 +848,16 @@
 
         <footer class="footer">
             <p><i class="fas fa-circle" style="color: #6fffe0; font-size: 0.5rem;"></i> 2026 · NIGHT PULSE X</p>
+            <div class="footer-links">
+                <a href="/about">About</a>
+                <a href="/projects">Projects</a>
+                <a href="/writeups">Writeups</a>
+                <a href="/updates">Updates</a>
+                <a href="/roadmaps">Roadmaps</a>
+                <a href="/tools">Tools</a>
+                <a href="/research">Research</a>
+                <a href="/contact">Contact</a>
+            </div>
             <div class="social">
                 <a href="https://github.com/npx-official" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
                 <a href="https://app.hackthebox.com/users/2207141" target="_blank" rel="noopener noreferrer"><i class="fas fa-shield-halved"></i></a>
@@ -995,6 +1083,55 @@
 
             console.log(`[✓] Loaded ${featuredProjects.length} featured projects!`);
         })();
+
+        const sitePages = [
+            { label: 'Home', url: '/', kind: 'Main' },
+            { label: 'About', url: '/about', kind: 'Profile' },
+            { label: 'Projects', url: '/projects', kind: 'Work' },
+            { label: 'Writeups', url: '/writeups', kind: 'Notes' },
+            { label: 'Certifications', url: '/certifications', kind: 'Badges' },
+            { label: 'Updates', url: '/updates', kind: 'Growth' },
+            { label: 'Roadmaps', url: '/roadmaps', kind: 'Plan' },
+            { label: 'Timeline', url: '/timeline', kind: 'Archive' },
+            { label: 'Tools', url: '/tools', kind: 'Toolkit' },
+            { label: 'Research', url: '/research', kind: 'Notes' },
+            { label: 'Contact', url: '/contact', kind: 'Reach' }
+        ];
+
+        const searchInput = document.getElementById('siteSearch');
+        const searchResults = document.getElementById('searchResults');
+        if (searchInput && searchResults) {
+            searchInput.addEventListener('input', (event) => {
+                const query = event.target.value.trim().toLowerCase();
+                if (!query) {
+                    searchResults.innerHTML = '';
+                    searchResults.style.display = 'none';
+                    return;
+                }
+
+                const matches = sitePages.filter(page =>
+                    page.label.toLowerCase().includes(query) ||
+                    page.kind.toLowerCase().includes(query)
+                ).slice(0, 6);
+
+                if (!matches.length) {
+                    searchResults.innerHTML = '<li><a href="#"><span>Nothing found</span><span class="kind">Try another term</span></a></li>';
+                    searchResults.style.display = 'block';
+                    return;
+                }
+
+                searchResults.innerHTML = matches.map(page => `
+                    <li><a href="${page.url}"><span>${page.label}</span><span class="kind">${page.kind}</span></a></li>
+                `).join('');
+                searchResults.style.display = 'block';
+            });
+
+            document.addEventListener('click', (event) => {
+                if (!event.target.closest('.search-box')) {
+                    searchResults.style.display = 'none';
+                }
+            });
+        }
 
         const learningPaths = [
             {

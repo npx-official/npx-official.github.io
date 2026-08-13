@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="no-referrer" />
+    <title>Research Notes • NIGHT PULSE X</title>
+    <link rel="icon" href="../assets/images/favicon.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #0a0a0f;
+            color: #edf2ff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .bg {
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle at 15% 15%, rgba(111,255,224,0.12), transparent 24%),
+                radial-gradient(circle at 75% 20%, rgba(167,139,250,0.12), transparent 28%),
+                #0a0a0f;
+            z-index: 0;
+        }
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1160px;
+            margin: 0 auto;
+            padding: 2rem 1.25rem 4rem;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+            background: rgba(10,10,15,0.7);
+            border: 1px solid rgba(111,255,224,0.12);
+            border-radius: 1.5rem;
+            backdrop-filter: blur(16px);
+            margin-bottom: 2rem;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: #6fffe0;
+        }
+        .logo img { width: 38px; height: 38px; }
+        .nav a {
+            text-decoration: none;
+            color: rgba(255,255,255,0.62);
+            margin-left: 1rem;
+            font-size: 0.92rem;
+        }
+        .nav a:hover { color: #6fffe0; }
+        .hero {
+            text-align: center;
+            padding: 2rem 0 1rem;
+        }
+        .hero h1 {
+            font-size: clamp(2.4rem, 6vw, 4rem);
+            margin: 0 0 1rem;
+            background: linear-gradient(135deg, #fff, #6fffe0, #c4b5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            max-width: 760px;
+            margin: 0 auto;
+            color: rgba(255,255,255,0.72);
+            line-height: 1.7;
+        }
+        .notes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
+            margin-top: 2rem;
+        }
+        .note {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(111,255,224,0.1);
+            border-radius: 1.5rem;
+            padding: 1.3rem;
+            transition: 0.3s ease;
+        }
+        .note:hover {
+            transform: translateY(-6px);
+            border-color: rgba(111,255,224,0.32);
+            box-shadow: 0 18px 36px rgba(0,0,0,0.24);
+        }
+        .tag {
+            display: inline-block;
+            padding: 0.45rem 0.8rem;
+            border-radius: 999px;
+            background: rgba(111,255,224,0.08);
+            border: 1px solid rgba(111,255,224,0.14);
+            color: #6fffe0;
+            font-size: 0.68rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 0.8rem;
+        }
+        .note h3 { margin: 0 0 0.6rem; color: #fff; }
+        .note p { margin: 0; color: rgba(255,255,255,0.66); line-height: 1.7; }
+        .cta {
+            margin-top: 2.5rem;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.9rem 1.5rem;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: 0.25s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #6fffe0, #7dd3fc);
+            color: #08111a;
+        }
+        .btn-secondary {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(111,255,224,0.14);
+            color: #fff;
+        }
+        .btn:hover { transform: translateY(-2px); }
+        @media (max-width: 720px) {
+            .header { flex-direction: column; }
+            .nav { display: flex; flex-wrap: wrap; justify-content: center; }
+            .nav a { margin: 0.4rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <img src="../assets/images/npx-logo.svg" alt="NPX" />
+                <span>NIGHT PULSE X</span>
+            </div>
+            <nav class="nav">
+                <a href="/">Home</a>
+                <a href="/updates">Updates</a>
+                <a href="/roadmaps">Roadmaps</a>
+                <a href="/tools">Tools</a>
+                <a href="/projects">Projects</a>
+            </nav>
+        </header>
+
+        <section class="hero">
+            <h1>Research Notes</h1>
+            <p>
+                Research notes are meant to capture what matters most: security patterns, exploit logic, common mistakes, and the practical thinking behind real-world findings.
+            </p>
+        </section>
+
+        <section class="notes">
+            <article class="note">
+                <div class="tag">Web</div>
+                <h3>Broken trust boundaries</h3>
+                <p>Many issues are not purely code-level; they come from trusting client-side state, incomplete validation, or assumptions between layers.</p>
+            </article>
+
+            <article class="note">
+                <div class="tag">Recon</div>
+                <h3>Map before testing</h3>
+                <p>Good enumeration reveals hidden endpoints, mismatched services, and overlooked exposure paths. It often reduces wasted testing time dramatically.</p>
+            </article>
+
+            <article class="note">
+                <div class="tag">API</div>
+                <h3>Authorization is the real battleground</h3>
+                <p>Most serious API issues are not about input parsing alone, but about whether the caller is actually allowed to do the action.</p>
+            </article>
+
+            <article class="note">
+                <div class="tag">Cloud</div>
+                <h3>Identity is the new perimeter</h3>
+                <p>Weak IAM choices, public assets, and broad trust often create bigger business risk than software bugs alone.</p>
+            </article>
+
+            <article class="note">
+                <div class="tag">Ops</div>
+                <h3>Privilege escalation is a design story</h3>
+                <p>Escalation paths usually stem from weak privilege boundaries, excessive sudo, or poor service isolation.</p>
+            </article>
+
+            <article class="note">
+                <div class="tag">Mindset</div>
+                <h3>Write clearly, validate carefully</h3>
+                <p>Strong findings are not just exploitable; they are understandable, reproducible, and grounded in impact and context.</p>
+            </article>
+        </section>
+
+        <div class="cta">
+            <a href="/tools" class="btn btn-primary"><i class="fas fa-tools"></i> Open Tools</a>
+            <a href="/updates" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back to Updates</a>
+        </div>
+
+        <footer class="footer" style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(111,255,224,0.12); display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
+            <p style="margin: 0; color: rgba(255,255,255,0.5);">© 2026 · NIGHT PULSE X</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
+                <a href="/about" style="color: rgba(255,255,255,0.6); text-decoration: none;">About</a>
+                <a href="/projects" style="color: rgba(255,255,255,0.6); text-decoration: none;">Projects</a>
+                <a href="/writeups" style="color: rgba(255,255,255,0.6); text-decoration: none;">Writeups</a>
+                <a href="/roadmaps" style="color: rgba(255,255,255,0.6); text-decoration: none;">Roadmaps</a>
+                <a href="/timeline" style="color: rgba(255,255,255,0.6); text-decoration: none;">Timeline</a>
+                <a href="/contact" style="color: rgba(255,255,255,0.6); text-decoration: none;">Contact</a>
+            </div>
+            <div style="display: flex; gap: 1rem; font-size: 1.1rem;">
+                <a href="https://github.com/npx-official" target="_blank" rel="noopener noreferrer" style="color: rgba(255,255,255,0.7);"><i class="fab fa-github"></i></a>
+                <a href="https://app.hackthebox.com/users/2207141" target="_blank" rel="noopener noreferrer" style="color: rgba(255,255,255,0.7);"><i class="fas fa-shield-halved"></i></a>
+                <a href="https://tryhackme.com/p/npx.off" target="_blank" rel="noopener noreferrer" style="color: rgba(255,255,255,0.7);"><i class="fas fa-user-secret"></i></a>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

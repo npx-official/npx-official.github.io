@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="no-referrer" />
+    <title>Roadmaps • NIGHT PULSE X</title>
+    <link rel="icon" href="../assets/images/favicon.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #0a0a0f;
+            color: #edf2ff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .bg {
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle at 15% 10%, rgba(111,255,224,0.12), transparent 25%),
+                radial-gradient(circle at 85% 20%, rgba(167,139,250,0.12), transparent 26%),
+                #0a0a0f;
+            z-index: 0;
+        }
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1160px;
+            margin: 0 auto;
+            padding: 2rem 1.25rem 4rem;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+            background: rgba(10,10,15,0.7);
+            border: 1px solid rgba(111,255,224,0.12);
+            border-radius: 1.5rem;
+            backdrop-filter: blur(16px);
+            margin-bottom: 2rem;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: #6fffe0;
+        }
+        .logo img { width: 38px; height: 38px; }
+        .nav a {
+            text-decoration: none;
+            color: rgba(255,255,255,0.62);
+            margin-left: 1rem;
+            font-size: 0.92rem;
+        }
+        .nav a:hover { color: #6fffe0; }
+        .hero {
+            text-align: center;
+            padding: 2rem 0 1rem;
+        }
+        .hero h1 {
+            font-size: clamp(2.4rem, 6vw, 4rem);
+            margin: 0 0 1rem;
+            background: linear-gradient(135deg, #fff, #6fffe0, #c4b5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            max-width: 760px;
+            margin: 0 auto;
+            color: rgba(255,255,255,0.72);
+            line-height: 1.7;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.25rem;
+            margin-top: 2rem;
+        }
+        .card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(111,255,224,0.1);
+            border-radius: 1.5rem;
+            padding: 1.3rem;
+            transition: 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(111,255,224,0.32);
+            box-shadow: 0 18px 36px rgba(0,0,0,0.24);
+        }
+        .badge {
+            display: inline-block;
+            padding: 0.45rem 0.8rem;
+            border-radius: 999px;
+            background: rgba(111,255,224,0.08);
+            border: 1px solid rgba(111,255,224,0.14);
+            color: #6fffe0;
+            font-size: 0.7rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 0.8rem;
+        }
+        .card h3 { margin: 0 0 0.75rem; color: #fff; }
+        .card p, .card li { color: rgba(255,255,255,0.66); line-height: 1.7; }
+        .card ul {
+            padding-left: 1.1rem;
+            margin: 0.9rem 0 0;
+        }
+        .timeline {
+            margin-top: 2.5rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(111,255,224,0.1);
+            background: rgba(255,255,255,0.02);
+            border-radius: 1.5rem;
+        }
+        .timeline h2 {
+            margin-top: 0;
+            color: #fff;
+        }
+        .timeline-row {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .timeline-row:last-child { border-bottom: none; }
+        .time {
+            color: #6fffe0;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+        .cta {
+            margin-top: 2.5rem;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.9rem 1.5rem;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: 0.25s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #6fffe0, #7dd3fc);
+            color: #08111a;
+        }
+        .btn-secondary {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(111,255,224,0.14);
+            color: #fff;
+        }
+        .btn:hover { transform: translateY(-2px); }
+        @media (max-width: 720px) {
+            .header { flex-direction: column; }
+            .nav { display: flex; flex-wrap: wrap; justify-content: center; }
+            .nav a { margin: 0.4rem; }
+            .timeline-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <img src="../assets/images/npx-logo.svg" alt="NPX" />
+                <span>NIGHT PULSE X</span>
+            </div>
+            <nav class="nav">
+                <a href="/">Home</a>
+                <a href="/updates">Updates</a>
+                <a href="/projects">Projects</a>
+                <a href="/writeups">Writeups</a>
+                <a href="/about">About</a>
+            </nav>
+        </header>
+
+        <section class="hero">
+            <h1>Security Roadmaps</h1>
+            <p>
+                A practical progression model for learning security with depth, not noise. These tracks are designed to move from fundamentals to real-world impact without losing structure.
+            </p>
+        </section>
+
+        <section class="grid">
+            <article class="card">
+                <div class="badge">Phase 1</div>
+                <h3>Foundations</h3>
+                <p>Begin with the basics: networking, Linux, web fundamentals, and the way security failures are built.</p>
+                <ul>
+                    <li>Networking and HTTP</li>
+                    <li>Linux command line</li>
+                    <li>Web basics and browser behavior</li>
+                </ul>
+            </article>
+
+            <article class="card">
+                <div class="badge">Phase 2</div>
+                <h3>Web Security</h3>
+                <p>Focus on core web attacks, unsafe validation, business logic abuse, auth weaknesses, and misconfigurations.</p>
+                <ul>
+                    <li>OWASP Top 10</li>
+                    <li>IDOR / SSRF / XSS</li>
+                    <li>Broken auth and session logic</li>
+                </ul>
+            </article>
+
+            <article class="card">
+                <div class="badge">Phase 3</div>
+                <h3>API Security</h3>
+                <p>Move into modern APIs and understand the risks behind untrusted data, auth models, and object-level access controls.</p>
+                <ul>
+                    <li>REST and GraphQL</li>
+                    <li>BOLA and mass assignment</li>
+                    <li>Data exposure and rate limits</li>
+                </ul>
+            </article>
+
+            <article class="card">
+                <div class="badge">Phase 4</div>
+                <h3>Recon & Enumeration</h3>
+                <p>Develop the habit of mapping targets before exploiting anything: subdomains, ports, headers, and exposure paths.</p>
+                <ul>
+                    <li>OSINT and recon</li>
+                    <li>nmap and HTTP probing</li>
+                    <li>Fuzzing and hidden endpoints</li>
+                </ul>
+            </article>
+
+            <article class="card">
+                <div class="badge">Phase 5</div>
+                <h3>Privilege Escalation</h3>
+                <p>Expand from web to system-level abuse, local escalation, and understanding how a weak chain leads to compromise.</p>
+                <ul>
+                    <li>Linux privilege paths</li>
+                    <li>Sudo and service abuse</li>
+                    <li>Post-exploitation hygiene</li>
+                </ul>
+            </article>
+
+            <article class="card">
+                <div class="badge">Phase 6</div>
+                <h3>Cloud & Modern Attack Surface</h3>
+                <p>Review identity, configuration, public assets, and cloud control planes with a practical attack-defense lens.</p>
+                <ul>
+                    <li>IAM and access review</li>
+                    <li>Storage exposure</li>
+                    <li>Identity drift and posture checks</li>
+                </ul>
+            </article>
+        </section>
+
+        <div class="timeline">
+            <h2>Suggested Learning Timeline</h2>
+            <div class="timeline-row">
+                <div class="time">Month 1</div>
+                <div>Linux basics, networking, HTTP, and safe practice labs.</div>
+            </div>
+            <div class="timeline-row">
+                <div class="time">Month 2</div>
+                <div>Web security fundamentals with OWASP, internal testing workflow, and structured writeups.</div>
+            </div>
+            <div class="timeline-row">
+                <div class="time">Month 3</div>
+                <div>API testing, recon automation, and vulnerability validation with realistic scenarios.</div>
+            </div>
+            <div class="timeline-row">
+                <div class="time">Month 4</div>
+                <div>Privilege escalation, cloud review, and deeper detection of weak trust boundaries.</div>
+            </div>
+            <div class="timeline-row">
+                <div class="time">Month 5+</div>
+                <div>Apply the method to real programs, write strong reports, and turn findings into repeatable skills.</div>
+            </div>
+        </div>
+
+        <div class="cta">
+            <a href="/updates" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Back to Updates</a>
+            <a href="/projects" class="btn btn-secondary"><i class="fas fa-rocket"></i> See Projects</a>
+        </div>
+
+        <footer class="footer" style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(111,255,224,0.12); display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
+            <p style="margin: 0; color: rgba(255,255,255,0.5);">© 2026 · NIGHT PULSE X</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
+                <a href="/about" style="color: rgba(255,255,255,0.6); text-decoration: none;">About</a>
+                <a href="/certifications" style="color: rgba(255,255,255,0.6); text-decoration: none;">Certs</a>
+                <a href="/tools" style="color: rgba(255,255,255,0.6); text-decoration: none;">Tools</a>
+                <a href="/research" style="color: rgba(255,255,255,0.6); text-decoration: none;">Research</a>
+                <a href="/timeline" style="color: rgba(255,255,255,0.6); text-decoration: none;">Timeline</a>
+                <a href="/contact" style="color: rgba(255,255,255,0.6); text-decoration: none;">Contact</a>
+            </div>
+            <div style="display: flex; gap: 1rem; font-size: 1.1rem;">
+                <a href="https://github.com/npx-official" target="_blank" rel="noopener noreferrer" style="color: rgba(255,255,255,0.7);"><i class="fab fa-github"></i></a>
+                <a href="https://app.hackthebox.com/users/2207141" target="_blank" rel="noopener noreferrer" style="color: rgba(255,255,255,0.7);"><i class="fas fa-shield-halved"></i></a>
+                <a href="https://tryhackme.com/p/npx.off" target="_blank" rel="noopener noreferrer" style="color: rgba(255,255,255,0.7);"><i class="fas fa-user-secret"></i></a>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

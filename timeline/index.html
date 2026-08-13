@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="no-referrer" />
+    <title>Timeline • NIGHT PULSE X</title>
+    <link rel="icon" href="../assets/images/favicon.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #0a0a0f;
+            color: #edf2ff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .bg {
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle at 20% 10%, rgba(111,255,224,0.12), transparent 28%),
+                radial-gradient(circle at 80% 25%, rgba(167,139,250,0.12), transparent 25%),
+                #0a0a0f;
+            z-index: 0;
+        }
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem 1.25rem 4rem;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            border: 1px solid rgba(111,255,224,0.12);
+            border-radius: 1.5rem;
+            background: rgba(10,10,15,0.7);
+            backdrop-filter: blur(16px);
+            margin-bottom: 2rem;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: #6fffe0;
+        }
+        .logo img { width: 38px; height: 38px; }
+        .nav a {
+            color: rgba(255,255,255,0.62);
+            text-decoration: none;
+            margin-left: 1rem;
+            font-size: 0.92rem;
+        }
+        .nav a:hover { color: #6fffe0; }
+        .hero {
+            text-align: center;
+            padding: 2rem 0 1rem;
+        }
+        .hero h1 {
+            font-size: clamp(2.2rem, 6vw, 4rem);
+            margin: 0 0 1rem;
+            background: linear-gradient(135deg, #fff, #6fffe0, #c4b5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            max-width: 760px;
+            margin: 0 auto;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.7;
+        }
+        .timeline {
+            position: relative;
+            margin-top: 2.5rem;
+            padding-left: 1rem;
+        }
+        .timeline::before {
+            content: "";
+            position: absolute;
+            left: 18px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, rgba(111,255,224,0.6), rgba(167,139,250,0.2));
+        }
+        .entry {
+            position: relative;
+            margin-left: 2rem;
+            margin-bottom: 1.5rem;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(111,255,224,0.1);
+            border-radius: 1.25rem;
+            padding: 1.25rem 1.5rem 1.2rem 1.5rem;
+        }
+        .entry::before {
+            content: "";
+            position: absolute;
+            left: -2.1rem;
+            top: 1.3rem;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #6fffe0;
+            box-shadow: 0 0 0 6px rgba(111,255,224,0.08), 0 0 20px rgba(111,255,224,0.5);
+        }
+        .year {
+            display: inline-block;
+            margin-bottom: 0.7rem;
+            color: #6fffe0;
+            font-size: 0.75rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+        .entry h3 {
+            margin: 0 0 0.5rem;
+            font-size: 1.25rem;
+            color: #fff;
+        }
+        .entry p {
+            margin: 0;
+            color: rgba(255,255,255,0.68);
+            line-height: 1.7;
+        }
+        .cta {
+            margin-top: 2.5rem;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.9rem 1.5rem;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: 0.25s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #6fffe0, #7dd3fc);
+            color: #08111a;
+        }
+        .btn-secondary {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(111,255,224,0.14);
+            color: #fff;
+        }
+        .btn:hover { transform: translateY(-2px); }
+        @media (max-width: 720px) {
+            .header { flex-direction: column; }
+            .nav { display: flex; flex-wrap: wrap; justify-content: center; }
+            .nav a { margin: 0.4rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <img src="../assets/images/npx-logo.svg" alt="NPX" />
+                <span>NIGHT PULSE X</span>
+            </div>
+            <nav class="nav">
+                <a href="/">Home</a>
+                <a href="/about">About</a>
+                <a href="/projects">Projects</a>
+                <a href="/writeups">Writeups</a>
+                <a href="/roadmaps">Roadmaps</a>
+            </nav>
+        </header>
+
+        <section class="hero">
+            <h1>Timeline & Archive</h1>
+            <p>
+                A quick record of the learning path, milestone moments, and the direction of steady growth. This page keeps the story visible without cluttering the main home page.
+            </p>
+        </section>
+
+        <section class="timeline">
+            <article class="entry">
+                <span class="year">2024</span>
+                <h3>Foundation Phase</h3>
+                <p>Started building a structured understanding of networking, Linux, HTTP, and workflow discipline. The focus was learning how systems behave before trying to break them.</p>
+            </article>
+
+            <article class="entry">
+                <span class="year">2025</span>
+                <h3>Web Security Depth</h3>
+                <p>Moved into authentication weaknesses, SSRF, IDOR, business logic abuse, and reviewing application behavior through a security lens. The emphasis shifted from collecting tools to building judgment.</p>
+            </article>
+
+            <article class="entry">
+                <span class="year">2025</span>
+                <h3>Writeups & Portfolio Growth</h3>
+                <p>Started publishing structured writeups and project notes to turn research into reusable evidence. This made the work easier to review, improve, and present professionally.</p>
+            </article>
+
+            <article class="entry">
+                <span class="year">2026</span>
+                <h3>Roadmap Expansion</h3>
+                <p>Created a cleaner public structure: updates, roadmaps, research notes, and tool pages that support the portfolio without overwhelming the homepage. The site became more durable and easier to navigate.</p>
+            </article>
+
+            <article class="entry">
+                <span class="year">Next</span>
+                <h3>Certification + Real Practice</h3>
+                <p>Current direction is to combine cert targets, lab repetition, and real-world application security review to improve both depth and practical confidence.</p>
+            </article>
+        </section>
+
+        <div class="cta">
+            <a href="/roadmaps" class="btn btn-primary"><i class="fas fa-map"></i> Open Roadmaps</a>
+            <a href="/updates" class="btn btn-secondary"><i class="fas fa-bolt"></i> View Updates</a>
+        </div>
+
+        <footer class="footer" style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(111,255,224,0.12); display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
+            <p style="margin: 0; color: rgba(255,255,255,0.5);">© 2026 · NIGHT PULSE X</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
+                <a href="/about" style="color: rgba(255,255,255,0.6); text-decoration: none;">About</a>
+                <a href="/projects" style="color: rgba(255,255,255,0.6); text-decoration: none;">Projects</a>
+                <a href="/certifications" style="color: rgba(255,255,255,0.6); text-decoration: none;">Certs</a>
+                <a href="/roadmaps" style="color: rgba(255,255,255,0.6); text-decoration: none;">Roadmaps</a>
+                <a href="/tools" style="color: rgba(255,255,255,0.6); text-decoration: none;">Tools</a>
+                <a href="/contact" style="color: rgba(255,255,255,0.6); text-decoration: none;">Contact</a>
+            </div>
+            <div style="display: flex; gap: 1rem; font-size: 1.1rem;">
+                <a href="https://github.com/npx-official" target="_blank" rel="noopener noreferrer" style="color: rgba(255,255,255,0.7);"><i class="fab fa-github"></i></a>
+                <a href="https://app.hackthebox.com/users/2207141" target="_blank" rel="noopener noreferrer" style="color: rgba(255,255,255,0.7);"><i class="fas fa-shield-halved"></i></a>
+                <a href="https://tryhackme.com/p/npx.off" target="_blank" rel="noopener noreferrer" style="color: rgba(255,255,255,0.7);"><i class="fas fa-user-secret"></i></a>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="no-referrer" />
+    <title>Updates • NIGHT PULSE X</title>
+    <link rel="icon" href="../assets/images/favicon.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #0a0a0f;
+            color: #edf2ff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .bg {
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle at 20% 10%, rgba(111,255,224,0.12), transparent 28%),
+                radial-gradient(circle at 80% 20%, rgba(167,139,250,0.12), transparent 25%),
+                #0a0a0f;
+            z-index: 0;
+        }
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem 1.25rem 4rem;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            border: 1px solid rgba(111,255,224,0.12);
+            border-radius: 1.5rem;
+            background: rgba(10,10,15,0.7);
+            backdrop-filter: blur(16px);
+            margin-bottom: 2rem;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: #6fffe0;
+        }
+        .logo img { width: 38px; height: 38px; }
+        .nav a {
+            color: rgba(255,255,255,0.62);
+            text-decoration: none;
+            margin-left: 1rem;
+            font-size: 0.92rem;
+        }
+        .nav a:hover { color: #6fffe0; }
+        .hero {
+            text-align: center;
+            padding: 2rem 0 1rem;
+        }
+        .hero h1 {
+            font-size: clamp(2.2rem, 6vw, 4rem);
+            margin: 0 0 1rem;
+            background: linear-gradient(135deg, #fff, #6fffe0, #c4b5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            max-width: 700px;
+            margin: 0 auto;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.7;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.25rem;
+            margin-top: 2rem;
+        }
+        .card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(111,255,224,0.1);
+            border-radius: 1.5rem;
+            padding: 1.3rem;
+            transition: 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(111,255,224,0.32);
+            box-shadow: 0 18px 36px rgba(0,0,0,0.24);
+        }
+        .badge {
+            display: inline-block;
+            padding: 0.45rem 0.8rem;
+            border-radius: 999px;
+            background: rgba(111,255,224,0.08);
+            border: 1px solid rgba(111,255,224,0.15);
+            color: #6fffe0;
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 0.8rem;
+        }
+        .card h3 { margin: 0 0 0.7rem; color: #fff; }
+        .card p { margin: 0; color: rgba(255,255,255,0.65); line-height: 1.7; }
+        .stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .stack span {
+            font-size: 0.75rem;
+            border-radius: 999px;
+            padding: 0.45rem 0.7rem;
+            background: rgba(167,139,250,0.08);
+            border: 1px solid rgba(167,139,250,0.2);
+            color: #d8c7ff;
+        }
+        .cta {
+            margin-top: 2.5rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.9rem 1.5rem;
+            border-radius: 999px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: 0.25s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #6fffe0, #7dd3fc);
+            color: #08111a;
+        }
+        .btn-secondary {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(111,255,224,0.15);
+            color: #fff;
+        }
+        .btn:hover { transform: translateY(-2px); }
+        @media (max-width: 720px) {
+            .header { flex-direction: column; }
+            .nav { display: flex; flex-wrap: wrap; justify-content: center; }
+            .nav a { margin: 0.4rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <img src="../assets/images/npx-logo.svg" alt="NPX" />
+                <span>NIGHT PULSE X</span>
+            </div>
+            <nav class="nav">
+                <a href="/">Home</a>
+                <a href="/about">About</a>
+                <a href="/writeups">Writeups</a>
+                <a href="/projects">Projects</a>
+                <a href="/updates">Updates</a>
+                <a href="/roadmaps">Roadmaps</a>
+            </nav>
+        </header>
+
+        <section class="hero">
+            <h1>Updates & Growth</h1>
+            <p>
+                This page keeps the site feeling fresh without crowding the homepage. It holds the new research areas,
+                project growth, and long-term goals in a clean and structured format.
+            </p>
+        </section>
+
+        <section class="grid">
+            <article class="card">
+                <div class="badge">Web</div>
+                <h3>Application Security</h3>
+                <p>Focused work on authentication abuse, insecure workflows, SSRF, IDOR, business logic flaws, and API risk review.</p>
+                <div class="stack">
+                    <span>OWASP</span>
+                    <span>API</span>
+                    <span>Auth</span>
+                    <span>SSRF</span>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="badge">Ops</div>
+                <h3>Linux & Enumeration</h3>
+                <p>Continuous work around privilege escalation paths, service discovery, real-world recon, and practical lab-based learning.</p>
+                <div class="stack">
+                    <span>Linux</span>
+                    <span>Recon</span>
+                    <span>Escalation</span>
+                    <span>Bash</span>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="badge">Cloud</div>
+                <h3>Cloud Review</h3>
+                <p>Review of IAM risks, public exposure, over-permissive configs, and blast-radius analysis in modern cloud environments.</p>
+                <div class="stack">
+                    <span>AWS</span>
+                    <span>IAM</span>
+                    <span>Misconfigs</span>
+                    <span>Access</span>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="badge">Research</div>
+                <h3>Threat Intelligence</h3>
+                <p>Tracking new CVEs, exploit activity, security advisories, and practical notes that help convert research into usable knowledge.</p>
+                <div class="stack">
+                    <span>CVE</span>
+                    <span>Advisories</span>
+                    <span>Research</span>
+                    <span>Intel</span>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="badge">Milestone</div>
+                <h3>Portfolio Expansion</h3>
+                <p>The site is evolving into a stronger knowledge base with structured writeups, project showcases, and safer browsing patterns.</p>
+                <div class="stack">
+                    <span>Portfolio</span>
+                    <span>Growth</span>
+                    <span>Structure</span>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="badge">Next</div>
+                <h3>Next Phase</h3>
+                <p>Next steps include a more refined roadmap page, tool library, research notes, and stronger visual storytelling.</p>
+                <div class="stack">
+                    <span>Roadmaps</span>
+                    <span>Tools</span>
+                    <span>Notes</span>
+                    <span>UX</span>
+                </div>
+            </article>
+        </section>
+
+        <div class="cta">
+            <a href="/projects" class="btn btn-primary"><i class="fas fa-rocket"></i> Explore Projects</a>
+            <a href="/roadmaps" class="btn btn-secondary"><i class="fas fa-map"></i> View Roadmaps</a>
+            <a href="/" class="btn btn-secondary"><i class="fas fa-home"></i> Back to Home</a>
+        </div>
+
+        <footer class="footer" style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(111,255,224,0.12); display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
+            <p style="margin: 0; color: rgba(255,255,255,0.5);">© 2026 · NIGHT PULSE X</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
+                <a href="/about" style="color: rgba(255,255,255,0.6); text-decoration: none;">About</a>
+                <a href="/projects" style="color: rgba(255,255,255,0.6); text-decoration: none;">Projects</a>
+                <a href="/writeups" style="color: rgba(255,255,255,0.6); text-decoration: none;">Writeups</a>
+                <a href="/roadmaps" style="color: rgba(255,255,255,0.6); text-decoration: none;">Roadmaps</a>
+                <a href="/timeline" style="color: rgba(255,255,255,0.6); text-decoration: none;">Timeline</a>
+                <a href="/contact" style="color: rgba(255,255,255,0.6); text-decoration: none;">Contact</a>
+            </div>
+            <div style="display: flex; gap: 1rem; font-size: 1.1rem;">
+                <a href="https://github.com/npx-official" target="_blank" rel="noopener noreferrer" style="color: rgba(255,255,255,0.7);"><i class="fab fa-github"></i></a>
+                <a href="https://app.hackthebox.com/users/2207141" target="_blank" rel="noopener noreferrer" style="color: rgba(255,255,255,0.7);"><i class="fas fa-shield-halved"></i></a>
+                <a href="https://tryhackme.com/p/npx.off" target="_blank" rel="noopener noreferrer" style="color: rgba(255,255,255,0.7);"><i class="fas fa-user-secret"></i></a>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
