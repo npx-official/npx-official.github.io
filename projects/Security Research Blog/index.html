@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Security Research Blog by NIGHT PULSE X — articles, research notes, and offensive security insights covering AD security, cloud security, and advanced attack techniques." />
+    <title>NIGHT PULSE X • Security Research Blog</title>
+    <link rel="icon" href="../../assets/images/favicon.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            background: #0a0a0f;
+            color: #e0e5f0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .bg-animation {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0;
+            background: radial-gradient(ellipse at 20% 50%, rgba(111,255,224,0.05), transparent 50%), radial-gradient(ellipse at 80% 50%, rgba(124,58,237,0.05), transparent 50%);
+            animation: bgMove 10s ease-in-out infinite alternate;
+        }
+        @keyframes bgMove { 0% { transform: scale(1) rotate(0deg); } 100% { transform: scale(1.1) rotate(3deg); } }
+        .stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .star { position: absolute; background: white; border-radius: 50%; animation: twinkle var(--d) ease-in-out infinite alternate; }
+        @keyframes twinkle { 0% { opacity: 0.1; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1.5); } }
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem 3rem 3rem; position: relative; z-index: 1; }
+        .header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 2rem; background: rgba(10,10,15,0.6); backdrop-filter: blur(20px); border: 1px solid rgba(111,255,224,0.08); border-radius: 2rem; margin-bottom: 3rem; }
+        .logo { display: flex; align-items: center; gap: 12px; font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, #6fffe0, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .logo img { width: 40px; height: 40px; }
+        .nav { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 0.3rem; }
+        .nav a { color: rgba(255,255,255,0.5); text-decoration: none; padding: 0.4rem 0.8rem; font-size: 0.85rem; transition: 0.3s; position: relative; border-radius: 0.5rem; }
+        .nav a::after { content: ''; position: absolute; bottom: 2px; left: 50%; width: 0; height: 2px; background: linear-gradient(90deg, #6fffe0, #a78bfa); transition: 0.3s; transform: translateX(-50%); }
+        .nav a:hover { color: #fff; background: rgba(255,255,255,0.03); }
+        .nav a:hover::after { width: 60%; }
+        .nav a.active { color: #fff; background: rgba(111,255,224,0.05); }
+        .nav a.active::after { width: 60%; }
+        .nav a i { margin-right: 4px; font-size: 0.8rem; }
+        .page-title { font-size: 2.8rem; font-weight: 700; text-align: center; margin-bottom: 0.5rem; background: linear-gradient(135deg, #6fffe0, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; justify-content: center; gap: 15px; }
+        .page-subtitle { text-align: center; color: rgba(255,255,255,0.4); font-size: 1.1rem; margin-bottom: 2rem; letter-spacing: 1px; }
+        .project-shell { display: grid; grid-template-columns: 1.4fr 0.8fr; gap: 1.8rem; margin-top: 2rem; }
+        .panel { background: rgba(255,255,255,0.02); border: 1px solid rgba(111,255,224,0.06); border-radius: 1.5rem; padding: 1.8rem; box-shadow: 0 8px 30px rgba(0,0,0,0.18); }
+        .hero-card { display: flex; flex-direction: column; gap: 1rem; }
+        .project-badge { display: inline-flex; align-items: center; gap: 8px; width: fit-content; background: rgba(111,255,224,0.08); color: #6fffe0; border: 1px solid rgba(111,255,224,0.15); padding: 0.45rem 0.9rem; border-radius: 999px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+        .project-hero { display: flex; justify-content: space-between; gap: 1rem; align-items: center; }
+        .project-icon { font-size: 3rem; width: 80px; height: 80px; display: inline-flex; align-items: center; justify-content: center; background: rgba(111,255,224,0.06); border: 1px solid rgba(111,255,224,0.12); border-radius: 1.2rem; }
+        .project-title { color: #f0f4ff; font-size: clamp(1.8rem, 2vw, 2.6rem); line-height: 1.2; margin: 0; }
+        .project-desc { color: rgba(255,255,255,0.65); line-height: 1.8; font-size: 1rem; }
+        .tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 0.5rem; }
+        .tag { font-size: 0.65rem; padding: 0.28rem 0.8rem; border-radius: 999px; background: rgba(111,255,224,0.08); border: 1px solid rgba(111,255,224,0.08); color: rgba(255,255,255,0.58); text-transform: uppercase; font-weight: 700; letter-spacing: 0.08em; }
+        .detail-list { display: grid; gap: 1rem; }
+        .detail-item { padding: 1rem; border-radius: 1rem; background: rgba(255,255,255,0.015); border: 1px solid rgba(255,255,255,0.04); }
+        .detail-label { display: block; color: #6fffe0; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; font-weight: 700; }
+        .detail-value { color: rgba(255,255,255,0.72); line-height: 1.7; font-size: 0.95rem; }
+        .feature-list { list-style: none; margin-top: 0.8rem; display: grid; gap: 0.85rem; }
+        .feature-list li { color: rgba(255,255,255,0.72); line-height: 1.7; padding-left: 1.3rem; position: relative; }
+        .feature-list li::before { content: '•'; position: absolute; left: 0; color: #6fffe0; font-size: 1.2rem; line-height: 1; }
+        .cta-row { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1rem; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; padding: 0.8rem 1.3rem; border-radius: 999px; text-decoration: none; font-weight: 700; transition: 0.3s; border: 1px solid rgba(111,255,224,0.15); }
+        .btn-primary { background: linear-gradient(135deg, #6fffe0, #a78bfa); color: #0a0a0f; }
+        .btn-secondary { color: #6fffe0; background: rgba(111,255,224,0.04); }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(111,255,224,0.08); }
+        .side-panel { display: grid; gap: 1.5rem; }
+        .meta-box { display: grid; gap: 0.8rem; }
+        .meta-box .meta-item { display: grid; grid-template-columns: 120px 1fr; gap: 0.5rem; align-items: start; color: rgba(255,255,255,0.72); font-size: 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.04); padding-bottom: 0.6rem; }
+        .meta-box .meta-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .meta-box .meta-item strong { color: #eaf4ff; font-weight: 600; }
+        .footer { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(111,255,224,0.06); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .footer p { color: rgba(255,255,255,0.2); font-size: 0.9rem; }
+        .social a { color: rgba(255,255,255,0.2); font-size: 1.2rem; margin-left: 1.5rem; transition: 0.3s; }
+        .social a:hover { color: #6fffe0; transform: translateY(-3px); }
+        @media (max-width: 900px) { .project-shell { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            .header { flex-direction: column; gap: 1rem; padding: 1rem; border-radius: 1.5rem; }
+            .nav { justify-content: center; gap: 0.2rem; }
+            .nav a { font-size: 0.7rem; padding: 0.3rem 0.5rem; }
+            .nav a i { display: none; }
+            .page-title { font-size: 2rem; }
+            .project-hero { flex-direction: column; align-items: flex-start; }
+            .footer { flex-direction: column; text-align: center; }
+            .social a { margin: 0 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="stars" id="stars"></div>
+
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <img src="../../assets/images/npx-logo.svg" alt="NPX" />
+                <span>NIGHT PULSE X</span>
+            </div>
+            <nav aria-label="Main navigation" class="nav">
+                <a href="../../index.html"><i class="fas fa-house"></i> Home</a>
+                <a href="../../about/index.html"><i class="fas fa-user-astronaut"></i> About</a>
+                <a href="../../updates/index.html"><i class="fas fa-bolt"></i> Updates</a>
+                <a href="../../projects/index.html" class="active"><i class="fas fa-code"></i> Projects</a>
+                <a href="../../writeups/index.html"><i class="fas fa-pen-fancy"></i> Writeups</a>
+                <a href="../../contact/index.html"><i class="fas fa-envelope"></i> Contact</a>
+            </nav>
+        </header>
+
+        <h1 class="page-title"><i class="fas fa-pen-fancy"></i> Security Research Blog</h1>
+        <p class="page-subtitle">Technical articles, research findings, and offensive security notes</p>
+
+        <div class="project-shell">
+            <section class="panel hero-card">
+                <span class="project-badge"><i class="fas fa-book"></i> Research</span>
+                <div class="project-hero">
+                    <div>
+                        <h2 class="project-title">Security Research Blog</h2>
+                    </div>
+                    <div class="project-icon">📖</div>
+                </div>
+
+                <p class="project-desc">
+                    This blog is a structured archive of security research, technical notes, and operational writeups covering Active Directory security, cloud penetration testing, vulnerability analysis, and defensive awareness. It is built to document practical findings and learning outcomes from hands-on research.
+                </p>
+
+                <div class="tag-list">
+                    <span class="tag">Blog</span>
+                    <span class="tag">Research</span>
+                    <span class="tag">AD Security</span>
+                    <span class="tag">Cloud Security</span>
+                    <span class="tag">Writeups</span>
+                </div>
+
+                <div class="cta-row">
+                    <a href="#overview" class="btn btn-primary"><i class="fas fa-arrow-down"></i> Explore</a>
+                    <a href="../../projects/index.html" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back to Projects</a>
+                </div>
+            </section>
+
+            <aside class="side-panel">
+                <div class="panel meta-box">
+                    <div class="meta-item"><strong>Type</strong><span>Research Blog</span></div>
+                    <div class="meta-item"><strong>Focus</strong><span>Offensive Security</span></div>
+                    <div class="meta-item"><strong>Topics</strong><span>AD, Cloud, Web, Exploit</span></div>
+                    <div class="meta-item"><strong>Status</strong><span>Coming Soon</span></div>
+                </div>
+            </aside>
+        </div>
+
+        <div class="project-shell" id="overview">
+            <section class="panel">
+                <div class="detail-list">
+                    <div class="detail-item">
+                        <span class="detail-label">Overview</span>
+                        <div class="detail-value">
+                            The Security Research Blog is intended to document findings from offensive security work, lab exploration, and practical testing in a clear and repeatable way. It helps bridge the gap between hands-on exploitation and written technical understanding.
+                        </div>
+                    </div>
+
+                    <div class="detail-item">
+                        <span class="detail-label">Core Themes</span>
+                        <ul class="feature-list">
+                            <li>Active Directory security and privilege escalation research.</li>
+                            <li>Cloud penetration testing and configuration review.</li>
+                            <li>Attack paths, exploitation logic, and control bypass analysis.</li>
+                            <li>Research-driven analysis for practical security learning.</li>
+                        </ul>
+                    </div>
+
+                    <div class="detail-item">
+                        <span class="detail-label">Purpose</span>
+                        <div class="detail-value">
+                            The goal is to produce structured, readable, and useful content for learning, skill development, and ongoing technical documentation in the cybersecurity field.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <aside class="panel">
+                <div class="detail-list">
+                    <div class="detail-item">
+                        <span class="detail-label">Audience</span>
+                        <div class="detail-value">Security professionals, students, researchers, and enthusiasts looking for practical learning material.</div>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Primary Skills</span>
+                        <div class="detail-value">Vulnerability analysis, exploitation, cloud review, AD research, and technical writing.</div>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Format</span>
+                        <div class="detail-value">Written technical notes, structured research summaries, and practical walkthroughs.</div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <footer class="footer">
+            <p><i class="fas fa-circle" style="color: #6fffe0; font-size: 0.5rem;"></i> 2026 · NIGHT PULSE X</p>
+            <div class="social">
+                <a href="https://github.com/npx-official" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
+                <a href="https://app.hackthebox.com/users/2207141" target="_blank" rel="noopener noreferrer"><i class="fas fa-shield-halved"></i></a>
+                <a href="https://tryhackme.com/p/npx.off" target="_blank" rel="noopener noreferrer"><i class="fas fa-user-secret"></i></a>
+                <a href="https://www.linkedin.com/in/night-pulse-x-337a89275" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        (function() {
+            const container = document.getElementById('stars');
+            for (let i = 0; i < 80; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 3 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.setProperty('--d', (2 + Math.random() * 4) + 's');
+                star.style.animationDelay = (Math.random() * 5) + 's';
+                star.style.opacity = Math.random() * 0.5 + 0.2;
+                container.appendChild(star);
+            }
+        })();
+    </script>
+</body>
+</html>
