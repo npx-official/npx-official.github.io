@@ -7,6 +7,7 @@
     <link rel="icon" href="../assets/images/favicon.ico" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <style>
+        /* ===== RESET & BASE ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background: #0a0a0f;
@@ -27,7 +28,7 @@
         
         .container { max-width: 1200px; margin: 0 auto; padding: 2rem 3rem; position: relative; z-index: 1; }
         
-        /* ====== HEADER ====== */
+        /* ===== HEADER ===== */
         .header {
             display: flex;
             align-items: center;
@@ -83,7 +84,7 @@
         .nav a.active::after { width: 60%; }
         .nav a i { margin-right: 4px; font-size: 0.8rem; }
 
-        /* ====== PAGE TITLE ====== */
+        /* ===== PAGE TITLE ===== */
         .page-title {
             font-size: 2.8rem;
             font-weight: 700;
@@ -105,7 +106,7 @@
             letter-spacing: 1px;
         }
 
-        /* ====== FILTER BAR ====== */
+        /* ===== FILTER BAR ===== */
         .filter-bar {
             display: flex;
             flex-wrap: wrap;
@@ -147,21 +148,16 @@
             transform: translateY(-2px);
             background: rgba(255,255,255,0.02);
         }
-        .filter-btn:hover i {
-            opacity: 1;
-        }
+        .filter-btn:hover i { opacity: 1; }
         .filter-btn.active {
             border-color: #6fffe0;
             color: #6fffe0;
             background: rgba(111, 255, 224, 0.06);
             box-shadow: 0 0 25px rgba(111, 255, 224, 0.05);
         }
-        .filter-btn.active i {
-            opacity: 1;
-            color: #6fffe0;
-        }
+        .filter-btn.active i { opacity: 1; color: #6fffe0; }
 
-        /* ====== PROJECTS GRID ====== */
+        /* ===== PROJECTS GRID ===== */
         .projects-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -203,9 +199,7 @@
             display: inline-block;
             transition: transform 0.4s ease;
         }
-        .project-card:hover .project-icon {
-            transform: scale(1.2) rotate(5deg);
-        }
+        .project-card:hover .project-icon { transform: scale(1.2) rotate(5deg); }
         .project-card .project-category {
             font-size: 0.65rem;
             text-transform: uppercase;
@@ -268,7 +262,7 @@
         .project-card .project-link i { transition: 0.3s; }
         .project-card .project-link:hover i { transform: translateX(4px); }
 
-        /* ====== EMPTY STATE ====== */
+        /* ===== EMPTY STATE ===== */
         .empty-state {
             text-align: center;
             padding: 4rem 0;
@@ -280,37 +274,104 @@
             display: block;
             margin-bottom: 1rem;
         }
-        .empty-state strong {
-            color: #6fffe0;
+        .empty-state strong { color: #6fffe0; }
+
+        /* ============================================================
+                   FOOTER – تصميم متكامل وجذاب (تم إصلاحه بالكامل)
+                   ============================================================ */
+        .footer {
+            margin-top: 4rem;
+            padding: 3rem 2rem 2rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-top: 1px solid rgba(111, 255, 224, 0.06);
+            border-radius: 1.5rem 1.5rem 0 0;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+        .footer-brand {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .footer-logo img {
+            width: 40px;
+            height: 40px;
+        }
+        .footer-logo span {
+            font-size: 1.3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #6fffe0, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .footer-brand p {
+            color: rgba(255, 255, 255, 0.25);
+            font-size: 0.9rem;
+            max-width: 300px;
+            line-height: 1.6;
         }
 
-        /* ====== FOOTER ====== */
-        .footer {
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(111, 255, 224, 0.06);
+        .footer-links {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
+            flex-direction: column;
+            gap: 0.2rem;
         }
-        .footer p {
-            color: rgba(255,255,255,0.2);
+        .footer-links h4 {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 0.6rem;
+            font-weight: 600;
+        }
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.3);
+            text-decoration: none;
             font-size: 0.9rem;
+            padding: 0.2rem 0;
+            transition: 0.3s;
+            display: inline-block;
         }
-        .social a {
-            color: rgba(255,255,255,0.2);
-            font-size: 1.2rem;
-            margin-left: 1.5rem;
+        .footer-links a:hover {
+            color: #6fffe0;
+            transform: translateX(4px);
+        }
+
+        .footer-social {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.6rem;
+        }
+        .footer-social h4 {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+        }
+        .footer-social .social-icons {
+            display: flex;
+            gap: 1.2rem;
+        }
+        .footer-social .social-icons a {
+            color: rgba(255, 255, 255, 0.25);
+            font-size: 1.4rem;
             transition: 0.3s;
         }
-        .social a:hover {
+        .footer-social .social-icons a:hover {
             color: #6fffe0;
             transform: translateY(-3px);
         }
 
-        /* ====== MOUSE EFFECTS ====== */
+        /* ===== MOUSE EFFECTS ===== */
         .mouse-trail {
             position: fixed;
             width: 8px;
@@ -340,7 +401,16 @@
             background: radial-gradient(circle, rgba(111, 255, 224, 0.12), transparent 70%);
         }
 
-        /* ====== RESPONSIVE ====== */
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 992px) {
+            .footer {
+                grid-template-columns: 1fr 1fr;
+                gap: 2rem;
+            }
+            .footer-social {
+                align-items: flex-start;
+            }
+        }
         @media (max-width: 768px) {
             .container { padding: 1rem; }
             .header { flex-direction: column; gap: 1rem; padding: 1rem; border-radius: 1.5rem; }
@@ -350,16 +420,24 @@
             .page-title { font-size: 2rem; }
             .page-title i { display: none; }
             .projects-grid { grid-template-columns: 1fr; }
-            .footer { flex-direction: column; text-align: center; }
-            .social a { margin: 0 0.8rem; }
-            .filter-bar { 
-                gap: 0.4rem; 
+            .footer {
+                grid-template-columns: 1fr;
+                text-align: center;
+                padding: 2rem 1rem;
+            }
+            .footer-brand { align-items: center; }
+            .footer-brand p { max-width: 100%; }
+            .footer-links { align-items: center; }
+            .footer-social { align-items: center; }
+            .social-icons { justify-content: center; }
+            .filter-bar {
+                gap: 0.4rem;
                 padding: 0.5rem 0.8rem;
                 border-radius: 1rem;
             }
-            .filter-btn { 
-                font-size: 0.65rem; 
-                padding: 0.3rem 0.8rem; 
+            .filter-btn {
+                font-size: 0.65rem;
+                padding: 0.3rem 0.8rem;
             }
             .filter-btn i { display: none; }
         }
@@ -376,31 +454,27 @@
     <div class="mouse-glow-effect" id="mouseGlowEffect"></div>
 
     <div class="container">
-        <!-- ====== HEADER ====== -->
+        <!-- ===== HEADER ===== -->
         <header class="header">
             <div class="logo">
                 <img src="../assets/images/npx-logo.svg" alt="NPX" />
                 <span>NIGHT PULSE X</span>
             </div>
             <nav class="nav">
-                <a href="../index.html"><i class="fas fa-house"></i> Home</a>
-                <a href="../about/index.html"><i class="fas fa-user-astronaut"></i> About</a>
-                <a href="../updates/index.html"><i class="fas fa-bolt"></i> Updates</a>
-                <a href="../writeups/index.html"><i class="fas fa-pen-fancy"></i> Writeups</a>
-                <a href="index.html" class="active"><i class="fas fa-code"></i> Projects</a>
-                <a href="../research/index.html"><i class="fas fa-book-open"></i> Research</a>
-                <a href="../tools/index.html"><i class="fas fa-tools"></i> Tools</a>
-                <a href="../roadmaps/index.html"><i class="fas fa-map"></i> Roadmaps</a>
-                <a href="../timeline/index.html"><i class="fas fa-clock"></i> Timeline</a>
-                <a href="../contact/index.html"><i class="fas fa-envelope"></i> Contact</a>
+                <a href="../../index.html"><i class="fas fa-house"></i> Home</a>
+                <a href="../../about/index.html"><i class="fas fa-user-astronaut"></i> About</a>
+                <a href="../../updates/index.html"><i class="fas fa-bolt"></i> Updates</a>
+                <a href="../../projects/index.html" class="active"><i class="fas fa-code"></i> Projects</a>
+                <a href="../../writeups/index.html"><i class="fas fa-pen-fancy"></i> Writeups</a>
+                <a href="../../contact/index.html"><i class="fas fa-envelope"></i> Contact</a>
             </nav>
         </header>
 
-        <!-- ====== PAGE HEADER ====== -->
+        <!-- ===== PAGE HEADER ===== -->
         <h1 class="page-title"><i class="fas fa-code"></i> Projects</h1>
         <p class="page-subtitle">Tools, exploits, and research developed by NIGHT PULSE X</p>
 
-        <!-- ====== FILTER BAR (موحد) ====== -->
+        <!-- ===== FILTER BAR ===== -->
         <div class="filter-bar">
             <button class="filter-btn active" data-filter="all">
                 <i class="fas fa-th-list"></i> All
@@ -434,23 +508,46 @@
             </button>
         </div>
 
-        <!-- ====== PROJECTS GRID ====== -->
+        <!-- ===== PROJECTS GRID ===== -->
         <div class="projects-grid" id="projectsGrid"></div>
 
-        <!-- ====== FOOTER ====== -->
+        <!-- ===== FOOTER – تم إصلاحه بالكامل ===== -->
         <footer class="footer">
-            <p><i class="fas fa-circle" style="color: #6fffe0; font-size: 0.5rem;"></i> 2026 · NIGHT PULSE X</p>
-            <div class="social">
-                <a href="https://github.com/npx-official" target="_blank"><i class="fab fa-github"></i></a>
-                <a href="https://app.hackthebox.com/users/2207141" target="_blank"><i class="fas fa-shield-halved"></i></a>
-                <a href="https://tryhackme.com/p/npx.off" target="_blank"><i class="fas fa-user-secret"></i></a>
-                <a href="https://www.linkedin.com/in/night-pulse-x-337a89275" target="_blank"><i class="fab fa-linkedin"></i></a>
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <img src="../assets/images/npx-logo.svg" alt="NPX" />
+                    <span>NIGHT PULSE X</span>
+                </div>
+                <p>Offensive security research, exploit development, and cloud penetration testing.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Explore</h4>
+                <a href="/tools">Tools</a>
+                <a href="/roadmaps">Roadmaps</a>
+                <a href="/research">Research</a>
+            </div>
+            <div class="footer-social">
+                <h4>Connect</h4>
+                <div class="social-icons">
+                    <a href="https://github.com/npx-official" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://app.hackthebox.com/users/2207141" target="_blank" rel="noopener noreferrer" aria-label="Hack The Box">
+                        <i class="fas fa-shield-halved"></i>
+                    </a>
+                    <a href="https://tryhackme.com/p/npx.off" target="_blank" rel="noopener noreferrer" aria-label="TryHackMe">
+                        <i class="fas fa-user-secret"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/night-pulse-x-337a89275" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                </div>
             </div>
         </footer>
     </div>
 
     <script>
-        // ====== STARS ======
+        // ===== STARS =====
         (function() {
             const container = document.getElementById('stars');
             for (let i = 0; i < 80; i++) {
@@ -468,7 +565,7 @@
             }
         })();
 
-        // ====== MOUSE EFFECT ======
+        // ===== MOUSE EFFECT =====
         (function() {
             const trail = document.getElementById("mouseTrail");
             const glow = document.getElementById("mouseGlowEffect");
@@ -498,7 +595,7 @@
             });
         })();
 
-        // ====== PROJECTS DATA ======
+        // ===== PROJECTS DATA =====
         (function() {
             const projects = [
                 {
@@ -557,7 +654,6 @@
                 }
             ];
 
-            // ====== RENDER FUNCTION ======
             function renderProjects(filter) {
                 const container = document.getElementById('projectsGrid');
                 if (!container) return;
@@ -595,7 +691,6 @@
                 `).join('');
             }
 
-            // ====== SETUP FILTERS ======
             function setupFilters() {
                 const buttons = document.querySelectorAll('.filter-btn');
                 buttons.forEach(btn => {
@@ -607,7 +702,6 @@
                 });
             }
 
-            // ====== INIT ======
             document.addEventListener('DOMContentLoaded', function() {
                 renderProjects('all');
                 setupFilters();
