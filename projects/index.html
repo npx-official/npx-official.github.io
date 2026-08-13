@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="referrer" content="no-referrer" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' data: https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';" />
     <title>NIGHT PULSE X • Projects</title>
     <link rel="icon" href="../assets/images/favicon.ico" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -28,6 +26,8 @@
         @keyframes twinkle { 0% { opacity: 0.1; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1.5); } }
         
         .container { max-width: 1200px; margin: 0 auto; padding: 2rem 3rem; position: relative; z-index: 1; }
+        
+        /* ====== HEADER ====== */
         .header {
             display: flex;
             align-items: center;
@@ -50,30 +50,40 @@
             -webkit-text-fill-color: transparent;
         }
         .logo img { width: 40px; height: 40px; }
+        .nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 0.3rem;
+        }
         .nav a {
             color: rgba(255,255,255,0.5);
             text-decoration: none;
-            margin-left: 2rem;
-            font-size: 0.95rem;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
             transition: 0.3s;
             position: relative;
+            border-radius: 0.5rem;
         }
         .nav a::after {
             content: '';
             position: absolute;
-            bottom: -4px;
-            left: 0;
+            bottom: 2px;
+            left: 50%;
             width: 0;
             height: 2px;
-            background: #6fffe0;
+            background: linear-gradient(90deg, #6fffe0, #a78bfa);
             transition: 0.3s;
+            transform: translateX(-50%);
         }
-        .nav a:hover { color: #fff; }
-        .nav a:hover::after { width: 100%; }
-        .nav a.active { color: #fff; }
-        .nav a.active::after { width: 100%; }
-        .nav a i { margin-right: 6px; }
+        .nav a:hover { color: #fff; background: rgba(255,255,255,0.03); }
+        .nav a:hover::after { width: 60%; }
+        .nav a.active { color: #fff; background: rgba(111,255,224,0.05); }
+        .nav a.active::after { width: 60%; }
+        .nav a i { margin-right: 4px; font-size: 0.8rem; }
 
+        /* ====== PAGE TITLE ====== */
         .page-title {
             font-size: 2.8rem;
             font-weight: 700;
@@ -100,41 +110,58 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 0.7rem;
-            width: min(100%, 980px);
-            margin: 0 auto 2.5rem;
-            padding: 0.75rem 0.85rem;
-            background: rgba(255,255,255,0.02);
+            gap: 0.5rem;
+            margin-bottom: 2.5rem;
+            padding: 0.6rem 1.2rem;
+            background: rgba(10, 10, 15, 0.4);
             border: 1px solid rgba(111, 255, 224, 0.06);
-            border-radius: 999px;
-            box-shadow: 0 18px 40px rgba(0,0,0,0.12);
+            border-radius: 1.5rem;
+            backdrop-filter: blur(10px);
         }
         .filter-btn {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.08);
-            color: rgba(255,255,255,0.62);
-            padding: 0.55rem 1.2rem;
-            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.06);
+            color: rgba(255,255,255,0.4);
+            padding: 0.4rem 1.2rem;
+            border-radius: 50px;
             cursor: pointer;
-            font-size: 0.82rem;
-            transition: 0.25s ease;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: 0.3s;
             font-family: inherit;
-            letter-spacing: 0.4px;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
             white-space: nowrap;
         }
+        .filter-btn i {
+            font-size: 0.8rem;
+            opacity: 0.5;
+            transition: 0.3s;
+        }
         .filter-btn:hover {
-            border-color: rgba(111, 255, 224, 0.25);
+            border-color: rgba(111, 255, 224, 0.3);
             color: #fff;
             transform: translateY(-2px);
-            background: rgba(111, 255, 224, 0.04);
+            background: rgba(255,255,255,0.02);
+        }
+        .filter-btn:hover i {
+            opacity: 1;
         }
         .filter-btn.active {
-            border-color: rgba(111, 255, 224, 0.35);
+            border-color: #6fffe0;
             color: #6fffe0;
-            background: linear-gradient(135deg, rgba(111,255,224,0.12), rgba(167,139,250,0.12));
-            box-shadow: 0 0 22px rgba(111, 255, 224, 0.08);
+            background: rgba(111, 255, 224, 0.06);
+            box-shadow: 0 0 25px rgba(111, 255, 224, 0.05);
+        }
+        .filter-btn.active i {
+            opacity: 1;
+            color: #6fffe0;
         }
 
+        /* ====== PROJECTS GRID ====== */
         .projects-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -151,7 +178,20 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            animation: fadeInUp 0.5s ease forwards;
+            opacity: 0;
         }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .project-card:nth-child(1) { animation-delay: 0.05s; }
+        .project-card:nth-child(2) { animation-delay: 0.1s; }
+        .project-card:nth-child(3) { animation-delay: 0.15s; }
+        .project-card:nth-child(4) { animation-delay: 0.2s; }
+        .project-card:nth-child(5) { animation-delay: 0.25s; }
+        .project-card:nth-child(6) { animation-delay: 0.3s; }
+
         .project-card:hover {
             transform: translateY(-8px);
             border-color: #6fffe0;
@@ -194,7 +234,7 @@
             margin-bottom: 1rem;
         }
         .project-card .project-tags span {
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             padding: 0.2rem 0.8rem;
             border-radius: 20px;
             background: rgba(111, 255, 224, 0.08);
@@ -204,7 +244,6 @@
             font-weight: 600;
             letter-spacing: 0.5px;
         }
-
         .project-card .project-link {
             color: #6fffe0;
             text-decoration: none;
@@ -229,105 +268,49 @@
         .project-card .project-link i { transition: 0.3s; }
         .project-card .project-link:hover i { transform: translateX(4px); }
 
+        /* ====== EMPTY STATE ====== */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 0;
+            color: rgba(255,255,255,0.15);
+            grid-column: 1 / -1;
+        }
+        .empty-state i {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
+        .empty-state strong {
+            color: #6fffe0;
+        }
+
+        /* ====== FOOTER ====== */
         .footer {
             margin-top: 3rem;
-            padding: 1.75rem 1.4rem 1.1rem;
-            border: 1px solid rgba(111, 255, 224, 0.08);
-            border-radius: 1.5rem;
-            background: linear-gradient(180deg, rgba(11, 16, 25, 0.7), rgba(9, 12, 18, 0.9));
+            padding-top: 2rem;
+            border-top: 1px solid rgba(111, 255, 224, 0.06);
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
             flex-wrap: wrap;
-            gap: 1.5rem;
-            box-shadow: 0 18px 40px rgba(0,0,0,0.14);
+            gap: 1rem;
         }
-        .footer-brand {
-            flex: 1.4;
-            min-width: 240px;
+        .footer p {
+            color: rgba(255,255,255,0.2);
+            font-size: 0.9rem;
         }
-        .footer-logo {
-            display: flex;
-            align-items: center;
-            gap: 0.7rem;
-            margin-bottom: 0.7rem;
+        .social a {
+            color: rgba(255,255,255,0.2);
+            font-size: 1.2rem;
+            margin-left: 1.5rem;
+            transition: 0.3s;
+        }
+        .social a:hover {
             color: #6fffe0;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-        }
-        .footer-logo img { width: 34px; height: 34px; }
-        .footer-brand p {
-            margin: 0;
-            color: rgba(255,255,255,0.62);
-            line-height: 1.7;
-            max-width: 420px;
-        }
-        .footer-links {
-            flex: 1;
-            display: grid;
-            grid-template-columns: repeat(2, minmax(120px, 1fr));
-            gap: 1rem 1.5rem;
-        }
-        .footer-links h4 {
-            margin: 0 0 0.55rem;
-            color: #eaf4ff;
-            font-size: 0.8rem;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-        }
-        .footer-links a {
-            display: block;
-            color: rgba(255,255,255,0.66);
-            text-decoration: none;
-            margin: 0.35rem 0;
-            transition: 0.2s ease;
-        }
-        .footer-links a:hover {
-            color: #6fffe0;
-            transform: translateX(2px);
-        }
-        .footer-social {
-            flex: 0 0 auto;
-            display: flex;
-            gap: 0.9rem;
-            padding-top: 0.35rem;
-        }
-        .footer-social a {
-            color: rgba(255,255,255,0.72);
-            font-size: 1.1rem;
-            width: 2.2rem;
-            height: 2.2rem;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            border: 1px solid rgba(111,255,224,0.08);
-            background: rgba(255,255,255,0.02);
-            transition: all 0.3s ease;
-        }
-        .footer-social a:hover {
-            color: #6fffe0;
-            border-color: rgba(111, 255, 224, 0.22);
-            background: rgba(111,255,224,0.04);
             transform: translateY(-3px);
-            box-shadow: 0 0 24px rgba(111,255,224,0.08);
         }
 
-        @media (max-width: 768px) {
-            .container { padding: 1rem; }
-            .header { flex-direction: column; gap: 1rem; padding: 1rem; }
-            .nav a { margin: 0 0.8rem; font-size: 0.85rem; }
-            .page-title { font-size: 2rem; }
-            .projects-grid { grid-template-columns: 1fr; }
-            .footer { flex-direction: column; text-align: center; }
-            .social a { margin: 0 0.8rem; }
-            .filter-bar { gap: 0.5rem; }
-            .filter-btn { font-size: 0.75rem; padding: 0.4rem 1rem; }
-        }
-        @media (max-width: 480px) {
-            .page-title { font-size: 1.8rem; }
-        }
-
+        /* ====== MOUSE EFFECTS ====== */
         .mouse-trail {
             position: fixed;
             width: 8px;
@@ -356,6 +339,34 @@
             height: 350px;
             background: radial-gradient(circle, rgba(111, 255, 224, 0.12), transparent 70%);
         }
+
+        /* ====== RESPONSIVE ====== */
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            .header { flex-direction: column; gap: 1rem; padding: 1rem; border-radius: 1.5rem; }
+            .nav { justify-content: center; gap: 0.2rem; }
+            .nav a { font-size: 0.7rem; padding: 0.3rem 0.5rem; }
+            .nav a i { display: none; }
+            .page-title { font-size: 2rem; }
+            .page-title i { display: none; }
+            .projects-grid { grid-template-columns: 1fr; }
+            .footer { flex-direction: column; text-align: center; }
+            .social a { margin: 0 0.8rem; }
+            .filter-bar { 
+                gap: 0.4rem; 
+                padding: 0.5rem 0.8rem;
+                border-radius: 1rem;
+            }
+            .filter-btn { 
+                font-size: 0.65rem; 
+                padding: 0.3rem 0.8rem; 
+            }
+            .filter-btn i { display: none; }
+        }
+        @media (max-width: 480px) {
+            .page-title { font-size: 1.5rem; }
+            .filter-btn { font-size: 0.55rem; padding: 0.25rem 0.6rem; }
+        }
     </style>
 </head>
 <body>
@@ -365,70 +376,77 @@
     <div class="mouse-glow-effect" id="mouseGlowEffect"></div>
 
     <div class="container">
+        <!-- ====== HEADER ====== -->
         <header class="header">
             <div class="logo">
                 <img src="../assets/images/npx-logo.svg" alt="NPX" />
                 <span>NIGHT PULSE X</span>
             </div>
             <nav class="nav">
-                <a href="/"><i class="fas fa-house"></i> Home</a>
-                <a href="/about"><i class="fas fa-user-astronaut"></i> About</a>
-                <a href="/updates"><i class="fas fa-bolt"></i> Updates</a>
-                <a href="/projects" class="active"><i class="fas fa-code"></i> Projects</a>
-                <a href="/writeups"><i class="fas fa-pen-fancy"></i> Writeups</a>
-                <a href="/contact"><i class="fas fa-envelope"></i> Contact</a>
+                <a href="../index.html"><i class="fas fa-house"></i> Home</a>
+                <a href="../about/index.html"><i class="fas fa-user-astronaut"></i> About</a>
+                <a href="../updates/index.html"><i class="fas fa-bolt"></i> Updates</a>
+                <a href="../writeups/index.html"><i class="fas fa-pen-fancy"></i> Writeups</a>
+                <a href="index.html" class="active"><i class="fas fa-code"></i> Projects</a>
+                <a href="../contact/index.html"><i class="fas fa-envelope"></i> Contact</a>
             </nav>
         </header>
 
+        <!-- ====== PAGE HEADER ====== -->
         <h1 class="page-title"><i class="fas fa-code"></i> Projects</h1>
         <p class="page-subtitle">Tools, exploits, and research developed by NIGHT PULSE X</p>
 
-        <!-- ====== FILTER BAR ====== -->
+        <!-- ====== FILTER BAR (موحد) ====== -->
         <div class="filter-bar">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="exploit">Exploits</button>
-            <button class="filter-btn" data-filter="tool">Tools</button>
-            <button class="filter-btn" data-filter="web">Web</button>
-            <button class="filter-btn" data-filter="network">Network</button>
-            <button class="filter-btn" data-filter="cloud">Cloud</button>
-            <button class="filter-btn" data-filter="mobile">Mobile</button>
-            <button class="filter-btn" data-filter="osint">OSINT</button>
-            <button class="filter-btn" data-filter="red-team">Red Team</button>
-            <button class="filter-btn" data-filter="cve">CVE</button>
+            <button class="filter-btn active" data-filter="all">
+                <i class="fas fa-th-list"></i> All
+            </button>
+            <button class="filter-btn" data-filter="exploit">
+                <i class="fas fa-bolt"></i> Exploits
+            </button>
+            <button class="filter-btn" data-filter="framework">
+                <i class="fas fa-layer-group"></i> Frameworks
+            </button>
+            <button class="filter-btn" data-filter="tool">
+                <i class="fas fa-tools"></i> Tools
+            </button>
+            <button class="filter-btn" data-filter="web">
+                <i class="fas fa-globe"></i> Web
+            </button>
+            <button class="filter-btn" data-filter="cloud">
+                <i class="fas fa-cloud"></i> Cloud
+            </button>
+            <button class="filter-btn" data-filter="privesc">
+                <i class="fas fa-arrow-up"></i> Privesc
+            </button>
+            <button class="filter-btn" data-filter="cve">
+                <i class="fas fa-shield-alt"></i> CVE
+            </button>
+            <button class="filter-btn" data-filter="network">
+                <i class="fas fa-network-wired"></i> Network
+            </button>
+            <button class="filter-btn" data-filter="osint">
+                <i class="fas fa-eye"></i> OSINT
+            </button>
         </div>
 
+        <!-- ====== PROJECTS GRID ====== -->
         <div class="projects-grid" id="projectsGrid"></div>
 
+        <!-- ====== FOOTER ====== -->
         <footer class="footer">
-            <div class="footer-brand">
-                <div class="footer-logo">
-                    <img src="../assets/images/npx-logo.svg" alt="NPX" />
-                    <span>NIGHT PULSE X</span>
-                </div>
-                <p>Project archive covering tools, research, security workflows, and practical experimentation from the offensive security track.</p>
-            </div>
-            <div class="footer-links">
-                <div>
-                    <h4>Explore</h4>
-                    <a href="/tools">Tools</a>
-                    <a href="/roadmaps">Roadmaps</a>
-                </div>
-                <div>
-                    <h4>More</h4>
-                    <a href="/timeline">Timeline</a>
-                    <a href="/research">Research</a>
-                </div>
-            </div>
-            <div class="footer-social">
-                <a href="https://github.com/npx-official" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
-                <a href="https://app.hackthebox.com/users/2207141" target="_blank" rel="noopener noreferrer"><i class="fas fa-shield-halved"></i></a>
-                <a href="https://tryhackme.com/p/npx.off" target="_blank" rel="noopener noreferrer"><i class="fas fa-user-secret"></i></a>
-                <a href="https://www.linkedin.com/in/night-pulse-x-337a89275" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
+            <p><i class="fas fa-circle" style="color: #6fffe0; font-size: 0.5rem;"></i> 2026 · NIGHT PULSE X</p>
+            <div class="social">
+                <a href="https://github.com/npx-official" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://app.hackthebox.com/users/2207141" target="_blank"><i class="fas fa-shield-halved"></i></a>
+                <a href="https://tryhackme.com/p/npx.off" target="_blank"><i class="fas fa-user-secret"></i></a>
+                <a href="https://www.linkedin.com/in/night-pulse-x-337a89275" target="_blank"><i class="fab fa-linkedin"></i></a>
             </div>
         </footer>
     </div>
 
     <script>
+        // ====== STARS ======
         (function() {
             const container = document.getElementById('stars');
             for (let i = 0; i < 80; i++) {
@@ -446,6 +464,7 @@
             }
         })();
 
+        // ====== MOUSE EFFECT ======
         (function() {
             const trail = document.getElementById("mouseTrail");
             const glow = document.getElementById("mouseGlowEffect");
@@ -474,22 +493,28 @@
                 glow.style.opacity = "1";
             });
         })();
-    </script>
 
-    <!-- ====== PROJECT DATA ====== -->
-    <script>
+        // ====== PROJECTS DATA ======
         (function() {
-            // ====== قائمة المشاريع ======
+            // ====== قائمة المشاريع (مشروع واحد) ======
             const projects = [
+ 
                 {
                     name: 'NPX Framework — Pentesting Automation Suite',
                     desc: 'Modular Python framework for automating penetration testing workflows. Includes modules for reconnaissance, exploitation, and reporting.',
                     icon: '🛠️',
-                    category: 'tool',
+                    category: 'Framework',
                     tags: ['Python', 'Automation', 'Pentesting', 'Recon', 'Exploitation'],
-                    link: 'https://github.com/npx-official/npx-framework',
-                    status: 'live',
-                    featured: true
+                    link: 'https://github.com/npx-official/npx-framework'
+                },
+                {
+                    name: 'Arsenal — Red Team Encyclopedia',
+                    desc: 'Structured offensive security knowledge base covering reconnaissance, enumeration, vulnerability analysis, web attacks, exploitation, Active Directory, and privilege escalation.',
+                    icon: '⚔️',
+                    category: 'framework',
+                    tags: ['Red Team', 'Knowledge Base', 'AD Security', 'Privilege Escalation', 'Recon'],
+                    link: '/projects/arsenal/',
+                    status: 'live'
                 },
                 {
                     name: 'Bug Bounty Learning Path',
@@ -497,9 +522,8 @@
                     icon: '🎯',
                     category: 'web',
                     tags: ['Bug Bounty', 'Learning', 'Roadmap', 'Web Security'],
-                    link: '/projects/Bug%20Bounty%20Learning%20Path',
-                    status: 'live',
-                    featured: true
+                    link: '/projects/Bug Bounty Learning Path',
+                    status: 'live'
                 },
                 {
                     name: 'Custom Exploit Scripts',
@@ -508,18 +532,7 @@
                     category: 'exploit',
                     tags: ['Exploit', 'CVE', 'Python', 'Security'],
                     link: '#',
-                    status: 'coming',
-                    featured: false
-                },
-                {
-                    name: 'Bug Bounty Hunters Atlas',
-                    desc: 'The ultimate guide to where to hunt for vulnerabilities. A curated list of language registries, CMS plugins, and CI/CD tools for security researchers.',
-                    icon: '🛡️',
-                    category: 'web',
-                    tags: ['Bug Bounty', 'Recon', 'Research', 'CVE', 'Hunting'],
-                    link: '/projects/Bug%20Bounty%20Hunters%20Atlas',
-                    status: 'live',
-                    featured: true
+                    status: 'coming'
                 },
                 {
                     name: 'Security Research Blog',
@@ -528,51 +541,24 @@
                     category: 'web',
                     tags: ['Blog', 'Research', 'AD Security', 'Cloud Security'],
                     link: '#',
-                    status: 'coming',
-                    featured: false
+                    status: 'coming'
                 },
-                {
-                    name: 'CloudScout — AWS Security Auditing Tool',
-                    desc: 'CLI tool that scans AWS environments for security misconfigurations including public S3 buckets, IAM users without MFA, and open security groups.',
-                    icon: '☁️',
-                    category: 'cloud',
-                    tags: ['AWS', 'Security', 'Auditing', 'Python', 'Cloud'],
-                    link: 'https://github.com/npx-official/cloudscout',
-                    status: 'live',
-                    featured: false
-                },
-                {
-                    name: 'Arsenal — Red Team Encyclopedia',
-                    desc: 'A structured offensive security knowledge base covering reconnaissance, enumeration, vulnerability analysis, web attacks, exploitation, Active Directory, privilege escalation, post-exploitation, tools, payloads, and red team methodology.',
-                    icon: '⚔️',
-                    category: 'red-team',
-                    tags: [
-                        'Reconnaissance',
-                        'Enumeration',
-                        'Web Security',
-                        'API Security',
-                        'Exploitation',
-                        'Active Directory',
-                        'Privilege Escalation',
-                        'Post-Exploitation',
-                        'Red Team',
-                        'Bug Bounty',
-                        'CTF',
-                        'Tools',
-                        'Payloads'
-                    ],
-                    link: '/projects/arsenal/',
-                    status: 'live',
-                    featured: true
-                }
+{
+    name: 'CloudScout — AWS Security Auditing Tool',
+    desc: 'CLI tool that scans AWS environments for security misconfigurations including public S3 buckets, IAM users without MFA, and open security groups.',
+    icon: '☁️',
+    category: 'cloud',
+    tags: ['AWS', 'Security', 'Auditing', 'Python', 'Cloud'],
+    link: 'https://github.com/npx-official/cloudscout',
+    status: 'live'
+}
             ];
 
-            // ====== دالة التصفية والعرض ======
+            // ====== RENDER FUNCTION ======
             function renderProjects(filter) {
                 const container = document.getElementById('projectsGrid');
                 if (!container) return;
 
-                // تصفية المشاريع
                 const filtered = filter === 'all'
                     ? projects
                     : projects.filter(p =>
@@ -580,18 +566,16 @@
                         p.tags.some(t => t.toLowerCase().includes(filter.toLowerCase()))
                     );
 
-                // عرض رسالة إذا لم يتم العثور على مشاريع
                 if (filtered.length === 0) {
                     container.innerHTML = `
-                        <div style="text-align:center;padding:4rem 0;color:rgba(255,255,255,0.15);grid-column:1/-1;">
-                            <i class="fas fa-search" style="font-size:3rem;display:block;margin-bottom:1rem;"></i>
-                            No projects found for "<strong style="color:#6fffe0;">${filter}</strong>"
+                        <div class="empty-state">
+                            <i class="fas fa-search"></i>
+                            No projects found for "<strong>${filter}</strong>"
                         </div>
                     `;
                     return;
                 }
 
-                // عرض المشاريع المصفاة
                 container.innerHTML = filtered.map(p => `
                     <div class="project-card">
                         <div class="project-category">${p.category}</div>
@@ -601,27 +585,18 @@
                         <div class="project-tags">
                             ${p.tags.map(t => `<span>${t}</span>`).join('')}
                         </div>
-                        <a href="${p.link}" class="project-link" target="_blank" rel="noopener noreferrer">
-                            View Project <i class="fas fa-arrow-right"></i>
+                        <a href="${p.link}" class="project-link" target="${p.link.startsWith('http') ? '_blank' : '_self'}" rel="noopener noreferrer">
+                            ${p.status === 'coming' ? '🚧 Coming Soon' : 'View Project'} <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
                 `).join('');
             }
 
-            // ====== دالة للحصول على المشاريع المميزة ======
-            function getFeaturedProjects(limit) {
-                const featured = projects.filter(p => p.featured === true);
-                if (limit && limit > 0) {
-                    return featured.slice(0, limit);
-                }
-                return featured;
-            }
-
-            // ====== ربط أزرار التصفية ======
+            // ====== SETUP FILTERS ======
             function setupFilters() {
                 const buttons = document.querySelectorAll('.filter-btn');
                 buttons.forEach(btn => {
-                    btn.addEventListener('click', function(e) {
+                    btn.addEventListener('click', function() {
                         buttons.forEach(b => b.classList.remove('active'));
                         this.classList.add('active');
                         renderProjects(this.dataset.filter);
@@ -629,18 +604,12 @@
                 });
             }
 
-            // ====== تشغيل الصفحة ======
+            // ====== INIT ======
             document.addEventListener('DOMContentLoaded', function() {
                 renderProjects('all');
                 setupFilters();
-                console.log('[✓] Projects loaded successfully!');
+                console.log('[✓] Projects page loaded successfully!');
             });
-
-            // ====== تصدير الدوال للاستخدام في صفحات أخرى ======
-            window.projects = projects;
-            window.getFeaturedProjects = getFeaturedProjects;
-            window.renderProjects = renderProjects;
-
         })();
     </script>
 </body>
