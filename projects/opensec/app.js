@@ -726,7 +726,7 @@ function renderHeader() {
                 </a>
                 
                 <!-- زر Home الجديد -->
-                <a href="/" class="btn-home" style="
+                <a href="/projects/opensec/" class="btn-home" style="
                     display: flex;
                     align-items: center;
                     gap: 0.4rem;
