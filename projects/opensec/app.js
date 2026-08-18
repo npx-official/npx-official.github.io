@@ -719,15 +719,40 @@ function renderHeader() {
     return `
         <header class="app-header">
             <div class="header-inner">
-                <a href="#top" class="logo">
+                <!-- الشعار -->
+                <a href="/" class="logo">
                     <span class="logo-dot"></span>
-                    <span class="logo-text">NIGHT PULSE X</span>
+                    <span class="logo-text">OPENSEC</span>
                 </a>
+                
+                <!-- زر Home الجديد -->
+                <a href="/" class="btn-home" style="
+                    display: flex;
+                    align-items: center;
+                    gap: 0.4rem;
+                    padding: 0.3rem 0.8rem;
+                    border-radius: 0.375rem;
+                    background: rgba(0, 255, 183, 0.08);
+                    border: 1px solid rgba(0, 255, 183, 0.15);
+                    color: var(--accent-green);
+                    text-decoration: none;
+                    font-family: var(--font-mono);
+                    font-size: 0.7rem;
+                    font-weight: 600;
+                    transition: all 0.3s;
+                "
+                onmouseover="this.style.background='var(--gradient-main)'; this.style.color='#000000'; this.style.borderColor='transparent';"
+                onmouseout="this.style.background='rgba(0, 255, 183, 0.08)'; this.style.color='var(--accent-green)'; this.style.borderColor='rgba(0, 255, 183, 0.15)';">
+                    <i class="fas fa-home"></i> Home
+                </a>
+
                 <div class="header-divider"></div>
+                
                 <div class="header-search">
                     <i class="fas fa-search"></i>
                     <input type="text" placeholder="Search techniques, labs, CVEs..." />
                 </div>
+                
                 <div class="header-badge">
                     <span class="badge primary">${APP_CONFIG.weeksLabel}</span>
                     <span class="badge version">${APP_CONFIG.version}</span>
@@ -736,7 +761,6 @@ function renderHeader() {
         </header>
     `;
 }
-
 function renderHero() {
     return `
         <section class="hero-section">
@@ -749,7 +773,7 @@ function renderHero() {
                 <p class="hero-description">A free platform bringing together a structured curriculum, local labs, a Field Manual, notes, and a final review. It doesn't rely on paid content, and you don't need any external links to start studying.</p>
                 <div class="hero-actions">
                     <a href="#curriculum" class="btn-primary">CONTINUE ACADEMY <i class="fas fa-arrow-right"></i></a>
-                    <a href="#lab" class="btn-secondary"><i class="fas fa-terminal"></i> OPEN LAB 01</a>
+                    <a href="/#lab" class="btn-secondary"><i class="fas fa-terminal"></i> OPEN LAB 01</a>
                 </div>
                 <div class="hero-stats">
                     <div class="stat-item"><span class="stat-number">13</span><span class="stat-label">Weeks</span></div>
@@ -877,7 +901,10 @@ function renderCurriculum() {
                         <div><i class="fas fa-check-circle"></i> Evidence + finding review</div>
                         <div><i class="far fa-circle"></i> Readiness checkpoint</div>
                     </div>
-                    <button class="btn-module" data-week="${state.selectedWeek}">OPEN WEEK ${state.selectedWeek} <i class="fas fa-arrow-right"></i></button>
+                    <!-- الزر الذي يفتح صفحة HTML خارجية -->
+                    <button class="btn-module" data-week="${state.selectedWeek}" onclick="openWeekPage('${state.selectedWeek}')">
+                        OPEN WEEK ${state.selectedWeek} <i class="fas fa-arrow-right"></i>
+                    </button>
                 </div>
             </div>
         </section>
@@ -1144,12 +1171,119 @@ function attachEventListeners() {
         });
     }
     
-    document.querySelectorAll('.btn-module').forEach(btn => {
-        btn.addEventListener('click', function() {
-            alert(`Opening Week ${this.dataset.week} module...`);
-        });
-    });
+    // ✅ تم حذف الحدث الخاص بـ btn-module
 }
+
+// ============================================================
+// 🆕 OPEN WEEK PAGE (OVERLAY WITH BLUR AND EXTERNAL HTML)
+// ============================================================
+
+window.openWeekPage = function(weekNumber) {
+    // ✅ المسار الكامل للملفات (مجرد تغيير هنا)
+    const fileName = `pages/w${weekNumber}.html`;
+    
+    // إنشاء عنصر Overlay
+    let overlay = document.getElementById('week-page-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'week-page-overlay';
+        overlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 99999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        `;
+        document.body.appendChild(overlay);
+    }
+    
+    // إنشاء iframe لعرض صفحة HTML
+    let iframe = document.getElementById('week-page-iframe');
+    if (!iframe) {
+        iframe = document.createElement('iframe');
+        iframe.id = 'week-page-iframe';
+        iframe.style.cssText = `
+            width: 100%;
+            height: 100%;
+            max-width: 1200px;
+            max-height: 90vh;
+            border: none;
+            border-radius: 12px;
+            background: #fff;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        `;
+        overlay.appendChild(iframe);
+    }
+    
+    // إضافة زر إغلاق
+    let closeBtn = document.getElementById('week-page-close-btn');
+    if (!closeBtn) {
+        closeBtn = document.createElement('button');
+        closeBtn.id = 'week-page-close-btn';
+        closeBtn.innerHTML = '✕';
+        closeBtn.style.cssText = `
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 100000;
+            transition: all 0.3s ease;
+        `;
+        closeBtn.onmouseover = () => closeBtn.style.transform = 'scale(1.1)';
+        closeBtn.onmouseout = () => closeBtn.style.transform = 'scale(1)';
+        closeBtn.onclick = closeWeekPage;
+        overlay.appendChild(closeBtn);
+    }
+    
+    // عرض الـ overlay
+    overlay.style.display = 'flex';
+    
+    // تحميل صفحة HTML داخل الـ iframe (باستخدام المسار الكامل)
+    iframe.src = fileName;
+    
+    iframe.onload = function() {
+        console.log(`✅ Page ${fileName} loaded successfully!`);
+    };
+    
+    iframe.onerror = function() {
+        // في حال لم يتم العثور على الملف
+        iframe.srcdoc = `
+            <html>
+                <body style="font-family: Arial, sans-serif; padding: 2rem; text-align: center;">
+                    <h2 style="color: #d63031;">⚠️ Page Not Found</h2>
+                    <p>The file <strong>${fileName}</strong> does not exist.</p>
+                    <p>Please create this HTML file inside the <strong>pages/</strong> folder.</p>
+                </body>
+            </html>
+        `;
+    };
+};
+
+// دالة إغلاق الصفحة
+window.closeWeekPage = function() {
+    const overlay = document.getElementById('week-page-overlay');
+    if (overlay) {
+        overlay.style.display = 'none';
+        const iframe = document.getElementById('week-page-iframe');
+        if (iframe) {
+            iframe.src = 'about:blank';
+        }
+    }
+};
 
 // ============================================================
 // 🚀 INIT
