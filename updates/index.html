@@ -128,14 +128,67 @@
             color: rgba(255,255,255,0.7);
             line-height: 1.7;
         }
+
+        /* ====== الإشعار ====== */
+        .notification-banner {
+            margin: 1.5rem auto 0;
+            padding: 1rem 1.5rem;
+            max-width: 700px;
+            background: rgba(111, 255, 224, 0.06);
+            border: 1px solid rgba(111, 255, 224, 0.2);
+            border-radius: 1rem;
+            color: #6fffe0;
+            font-size: 1.05rem;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            animation: fadeInDown 0.6s ease;
+            transition: all 0.4s ease;
+        }
+        .notification-banner a {
+            color: #a78bfa;
+            text-decoration: underline;
+            font-weight: 600;
+        }
+        .notification-banner .close-btn {
+            background: rgba(255,255,255,0.06);
+            border: none;
+            color: rgba(255,255,255,0.5);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            transition: 0.3s;
+            margin-left: 0.3rem;
+        }
+        .notification-banner .close-btn:hover {
+            background: rgba(255,255,255,0.12);
+            color: #fff;
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .notification-banner.hidden {
+            opacity: 0;
+            transform: translateY(-30px);
+            pointer-events: none;
+            max-height: 0;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            overflow: hidden;
+            border-width: 0;
+        }
+
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 1.25rem;
             margin-top: 2rem;
         }
-
-        /* ====== توحيد تصميم البطاقات مع الصفحة الرئيسية ====== */
         .card {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(111, 255, 224, 0.06);
@@ -147,33 +200,22 @@
             animation: fadeInUp 0.6s ease forwards;
             opacity: 0;
         }
-
         .card:hover {
             transform: translateY(-6px);
             border-color: #6fffe0;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), 0 0 50px rgba(111, 255, 224, 0.05);
             background: rgba(111, 255, 224, 0.02);
         }
-
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
         .card:nth-child(1) { animation-delay: 0.1s; }
         .card:nth-child(2) { animation-delay: 0.2s; }
         .card:nth-child(3) { animation-delay: 0.3s; }
         .card:nth-child(4) { animation-delay: 0.4s; }
         .card:nth-child(5) { animation-delay: 0.5s; }
         .card:nth-child(6) { animation-delay: 0.6s; }
-
-        /* ====== توحيد شكل البادجات ====== */
         .badge {
             display: inline-block;
             padding: 0.25rem 0.8rem;
@@ -187,29 +229,24 @@
             border: 1px solid rgba(111, 255, 224, 0.12);
             color: #6fffe0;
         }
-
-        /* ====== توحيد العناوين والنصوص ====== */
         .card h3 {
             color: #f0f4ff;
             font-size: 1.1rem;
             margin-bottom: 0.5rem;
             font-weight: 600;
         }
-
         .card p {
             color: rgba(255, 255, 255, 0.55);
             font-size: 0.9rem;
             line-height: 1.6;
             margin: 0;
         }
-
         .stack {
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
             margin-top: 1rem;
         }
-
         .stack span {
             font-size: 0.75rem;
             border-radius: 999px;
@@ -218,7 +255,6 @@
             border: 1px solid rgba(167,139,250,0.2);
             color: #d8c7ff;
         }
-
         .cta {
             margin-top: 2.5rem;
             display: flex;
@@ -362,15 +398,8 @@
             .header { flex-direction: column; }
             .nav { justify-content: center; }
             .nav a { margin: 0.3rem 0.5rem; }
+            .notification-banner { font-size: 0.9rem; padding: 0.8rem 1rem; }
         }
-    </style>
-    <meta property="og:title" content="NIGHT PULSE X" />
-    <meta property="og:description" content="Security research, writeups, tools, and practical learning resources from NIGHT PULSE X." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://npx-official.github.io/" />
-    <meta name="twitter:card" content="summary_large_image" />
-
-    <style>
         .skip-link {
             position: absolute;
             left: 1rem;
@@ -388,7 +417,11 @@
             top: 1rem;
         }
     </style>
-
+    <meta property="og:title" content="NIGHT PULSE X" />
+    <meta property="og:description" content="Security research, writeups, tools, and practical learning resources from NIGHT PULSE X." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://npx-official.github.io/" />
+    <meta name="twitter:card" content="summary_large_image" />
 </head>
 <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
@@ -403,9 +436,9 @@
                 <span>NIGHT PULSE X</span>
             </div>
             <nav aria-label="Main navigation" class="nav">
-                <a href="/" ><i class="fas fa-house"></i> Home</a>
+                <a href="/"><i class="fas fa-house"></i> Home</a>
                 <a href="/about"><i class="fas fa-user-astronaut"></i> About</a>
-                <a href="/updates"><i class="fas fa-bolt"></i> Updates</a>
+                <a href="/updates" class="active"><i class="fas fa-bolt"></i> Updates</a>
                 <a href="/projects"><i class="fas fa-code"></i> Projects</a>
                 <a href="/writeups"><i class="fas fa-pen-fancy"></i> Writeups</a>
                 <a href="/contact"><i class="fas fa-envelope"></i> Contact</a>
@@ -418,6 +451,18 @@
                 This page keeps the site feeling fresh without crowding the homepage. It holds the new research areas,
                 project growth, and long-term goals in a clean and structured format.
             </p>
+
+            <!-- ====== الإشعار ====== -->
+            <div class="notification-banner" id="updateNotification">
+                <i class="fas fa-bell" style="color: #fbbf24;"></i>
+                <span>
+                    All updates will be added in the 
+                    <a href="https://nightpulse-x.vercel.app" target="_blank" rel="noopener noreferrer">second site</a>
+                </span>
+                <button class="close-btn" onclick="dismissNotification()" aria-label="Close notification">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
         </section>
 
         <section class="grid">
@@ -528,6 +573,7 @@
         </footer>
     </div>
     <script>
+        // ====== STARS ======
         (function() {
             const container = document.getElementById('stars');
             if (!container) return;
@@ -546,6 +592,7 @@
             }
         })();
 
+        // ====== MOUSE EFFECT ======
         (function() {
             const trail = document.getElementById('mouseTrail');
             const glow = document.getElementById('mouseGlowEffect');
@@ -579,6 +626,24 @@
                 glow.style.opacity = '1';
             });
         })();
+
+        // ====== إخفاء الإشعار ======
+        function dismissNotification() {
+            const banner = document.getElementById('updateNotification');
+            if (banner) {
+                banner.classList.add('hidden');
+                // حفظ الحالة في localStorage
+                localStorage.setItem('notificationDismissed', 'true');
+            }
+        }
+
+        // ====== التحقق من حالة الإشعار عند التحميل ======
+        document.addEventListener('DOMContentLoaded', function() {
+            const banner = document.getElementById('updateNotification');
+            if (banner && localStorage.getItem('notificationDismissed') === 'true') {
+                banner.classList.add('hidden');
+            }
+        });
     </script>
 </body>
 </html>

@@ -847,8 +847,252 @@
     </style>
 </head>
 <body>
-    <a class="skip-link" href="#main-content">Skip to content</a>
+<!-- ====== الإشعار الجانبي الدائم ====== -->
+<div id="sideNotification" style="
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 9999;
+    width: 320px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: rgba(10, 10, 15, 0.95);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(111, 255, 224, 0.2);
+    border-radius: 1.5rem;
+    padding: 2rem 1.5rem;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), 0 0 60px rgba(111, 255, 224, 0.06);
+    animation: slideInRight 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+">
+    <!-- زر الإغلاق -->
+    <button onclick="dismissSideNotification()" style="
+        position: sticky;
+        float: right;
+        top: 0;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.06);
+        color: rgba(255,255,255,0.4);
+        font-size: 1.2rem;
+        cursor: pointer;
+        padding: 0.3rem 0.7rem;
+        border-radius: 999px;
+        transition: 0.3s;
+        margin-bottom: 0.5rem;
+        z-index: 10;
+    " onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.color='#fff'" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.color='rgba(255,255,255,0.4)'">
+        <i class="fas fa-times"></i>
+    </button>
 
+    <!-- الأيقونة -->
+    <div style="text-align: center; margin-bottom: 1.2rem; clear: both;">
+        <div style="
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6fffe0, #a78bfa);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.8rem;
+            font-size: 2rem;
+            box-shadow: 0 0 40px rgba(111, 255, 224, 0.2);
+            animation: pulseIcon 2.5s ease-in-out infinite;
+        ">
+            🚀
+        </div>
+        <h4 style="color: #fff; margin: 0 0 0.2rem; font-size: 1.3rem; letter-spacing: 0.5px;">
+            New Site Launch!
+        </h4>
+        <p style="color: rgba(255,255,255,0.35); font-size: 0.75rem; margin: 0; letter-spacing: 1px; text-transform: uppercase;">
+            ✦ NIGHT PULSE X 2.0 ✦
+        </p>
+    </div>
+
+    <!-- النص المطول -->
+    <div style="
+        background: rgba(111, 255, 224, 0.03);
+        border: 1px solid rgba(111, 255, 224, 0.06);
+        border-radius: 1rem;
+        padding: 1rem 1.2rem;
+        margin-bottom: 1.2rem;
+    ">
+        <p style="color: rgba(255,255,255,0.7); font-size: 0.95rem; line-height: 1.8; text-align: center; margin: 0;">
+            <span style="color: #6fffe0; font-weight: 600;">All updates</span> will be added in the 
+            <a href="https://nightpulse-x.vercel.app" target="_blank" rel="noopener noreferrer" style="
+                color: #a78bfa; 
+                text-decoration: underline; 
+                font-weight: 700;
+                text-underline-offset: 2px;
+                transition: 0.3s;
+            " onmouseover="this.style.color='#6fffe0'" onmouseout="this.style.color='#a78bfa'">
+                second site
+            </a>
+            <br>
+            <span style="color: rgba(255,255,255,0.35); font-size: 0.85rem;">
+                Find new writeups, tools, roadmaps, and research notes.
+            </span>
+        </p>
+    </div>
+
+    <!-- قائمة الميزات الجديدة -->
+    <div style="margin-bottom: 1.2rem;">
+        <p style="color: rgba(255,255,255,0.4); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; text-align: center; margin-bottom: 0.6rem;">
+            What's new?
+        </p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem;">
+            <div style="
+                background: rgba(111, 255, 224, 0.04);
+                border-radius: 0.5rem;
+                padding: 0.3rem 0.5rem;
+                text-align: center;
+                font-size: 0.7rem;
+                color: rgba(255,255,255,0.5);
+            ">
+                📝 Writeups
+            </div>
+            <div style="
+                background: rgba(167, 139, 250, 0.04);
+                border-radius: 0.5rem;
+                padding: 0.3rem 0.5rem;
+                text-align: center;
+                font-size: 0.7rem;
+                color: rgba(255,255,255,0.5);
+            ">
+                🛠️ Tools
+            </div>
+            <div style="
+                background: rgba(111, 255, 224, 0.04);
+                border-radius: 0.5rem;
+                padding: 0.3rem 0.5rem;
+                text-align: center;
+                font-size: 0.7rem;
+                color: rgba(255,255,255,0.5);
+            ">
+                🗺️ Roadmaps
+            </div>
+            <div style="
+                background: rgba(167, 139, 250, 0.04);
+                border-radius: 0.5rem;
+                padding: 0.3rem 0.5rem;
+                text-align: center;
+                font-size: 0.7rem;
+                color: rgba(255,255,255,0.5);
+            ">
+                🔬 Research
+            </div>
+        </div>
+    </div>
+
+    <!-- أزرار -->
+    <div style="display: flex; flex-direction: column; gap: 0.6rem;">
+        <a href="https://nightpulse-x.vercel.app" target="_blank" rel="noopener noreferrer" style="
+            display: block;
+            text-align: center;
+            padding: 0.7rem;
+            background: linear-gradient(135deg, #6fffe0, #a78bfa);
+            color: #0a0a0f;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: 0.3s;
+            letter-spacing: 0.3px;
+        " onmouseover="this.style.transform='scale(1.03)'; this.style.boxShadow='0 0 30px rgba(111,255,224,0.2)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">
+            Visit New Site →
+        </a>
+        <button onclick="dismissSideNotification()" style="
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 0.5rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            color: rgba(255,255,255,0.4);
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: 0.3s;
+            font-weight: 500;
+        " onmouseover="this.style.background='rgba(255,255,255,0.06)'; this.style.color='#fff'" onmouseout="this.style.background='rgba(255,255,255,0.03)'; this.style.color='rgba(255,255,255,0.4)'">
+            Close
+        </button>
+    </div>
+</div>
+
+<style>
+    @keyframes slideInRight {
+        from { opacity: 0; transform: translateY(-50%) translateX(80px); }
+        to { opacity: 1; transform: translateY(-50%) translateX(0); }
+    }
+    @keyframes pulseIcon {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.08); }
+    }
+    #sideNotification.hidden {
+        opacity: 0;
+        transform: translateY(-50%) translateX(120px);
+        pointer-events: none;
+    }
+    /* تخصيص شريط التمرير */
+    #sideNotification::-webkit-scrollbar {
+        width: 4px;
+    }
+    #sideNotification::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    #sideNotification::-webkit-scrollbar-thumb {
+        background: rgba(111, 255, 224, 0.2);
+        border-radius: 10px;
+    }
+    @media (max-width: 768px) {
+        #sideNotification {
+            right: 10px;
+            width: 260px;
+            padding: 1.5rem 1rem;
+            font-size: 0.85rem;
+            max-height: 85vh;
+        }
+        #sideNotification .side-title { font-size: 1rem; }
+        #sideNotification .btn-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+        #sideNotification {
+            right: 50%;
+            transform: translateX(50%) translateY(-50%);
+            width: 92%;
+            max-width: 340px;
+            padding: 1.5rem 1rem;
+        }
+        #sideNotification.hidden {
+            transform: translateX(50%) translateY(-50%) translateY(40px);
+            opacity: 0;
+        }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50%) translateY(-50%) translateY(30px); }
+            to { opacity: 1; transform: translateX(50%) translateY(-50%) translateY(0); }
+        }
+    }
+</style>
+
+<script>
+    function dismissSideNotification() {
+        const el = document.getElementById('sideNotification');
+        if (el) {
+            el.classList.add('hidden');
+            // استخدام sessionStorage بدلاً من localStorage عشان يختفي بس في الجلسة الحالية
+            sessionStorage.setItem('sideNotificationDismissed', 'true');
+        }
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        const el = document.getElementById('sideNotification');
+        // إظهار الإشعار في كل الصفحات ما لم يغلقه المستخدم في هذه الجلسة
+        if (el && sessionStorage.getItem('sideNotificationDismissed') === 'true') {
+            el.classList.add('hidden');
+        }
+    });
+</script>
     <!-- ====== BACKGROUNDS ====== -->
     <div class="bg-animation"></div>
     <div class="stars" id="stars"></div>
@@ -883,6 +1127,7 @@
             <div class="hero-buttons">
                 <a href="/writeups" class="btn btn-primary"><i class="fas fa-book"></i> Explore Writeups</a>
                 <a href="/about" class="btn btn-secondary"><i class="fas fa-user"></i> About Me</a>
+                <a href="https://nightpulse-x.vercel.app" class="btn btn-secondary"><i class="fas fa-user"></i> WEBSITE 2</a>
             </div>
             <div class="search-wrap">
                 <i class="fas fa-search search-icon"></i>
@@ -890,6 +1135,7 @@
                 <input id="siteSearch" class="search-box" type="text" placeholder="Search pages, tools, roadmaps, and notes..." aria-label="Site search" aria-expanded="false" aria-controls="searchResults" />
                 <ul id="searchResults" class="search-results" aria-live="polite"></ul>
             </div>
+
             <div class="stats" aria-label="Site statistics">
                 <div class="stat">
                     <h3 id="totalWriteups">36</h3>
@@ -905,6 +1151,8 @@
                 </div>
             </div>
         </section>
+
+
 
         <!-- ====== WRITEUPS ====== -->
         <h2 class="section-title"><i class="fas fa-star"></i> Featured Writeups</h2>
